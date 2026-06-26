@@ -5,6 +5,11 @@
     "app": "进入 Rezics",
     "language": "语言"
   },
+  "theme": {
+    "toggle": "切换主题",
+    "light": "亮色",
+    "dark": "深色"
+  },
   "cta": {
     "enterApp": "进入作品索引",
     "readProduct": "查看产品",

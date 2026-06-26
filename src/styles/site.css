@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+@theme inline {
   --font-sans: "Inter", "rezics-sans", var(--font-sans-cjk, "Source Han Sans TC"), system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-serif: "Source Serif 4", "rezics-serif", var(--font-serif-cjk, "Source Han Serif TC"), Georgia, serif;
   --font-mono: "CaskaydiaMono Nerd Font", "Cascadia Code", "rezics-mono", "Sarasa Mono TC", ui-monospace, "SF Mono", Menlo, monospace;
@@ -25,7 +25,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --font-sans-cjk: "Source Han Sans TC", "Noto Sans TC";
   --font-serif-cjk: "Source Han Serif TC", "Noto Serif TC";
   --colors-background: #ffffff;
@@ -37,14 +37,29 @@
   --colors-text-secondary: #5f6368;
   --colors-text-tertiary: #7a7a7a;
   --colors-text-on-brand: #ffffff;
-  --colors-text-brand: #db515c;
-  --colors-brand-fill: #db515c;
-  --colors-brand-fill-hover: #c94651;
+  --colors-text-brand: #ef4444;
+  --colors-brand-fill: #ef4444;
+  --colors-brand-fill-hover: #dc2626;
   --colors-border-whisper: rgba(0, 0, 0, 0.1);
   --colors-border-defined: #d9d9d9;
+  --color-background: var(--colors-background);
+  --color-foreground: var(--colors-foreground);
+  --color-surface-canvas: var(--colors-surface-canvas);
+  --color-surface-base: var(--colors-surface-base);
+  --color-surface-subtle: var(--colors-surface-subtle);
+  --color-text-primary: var(--colors-text-primary);
+  --color-text-secondary: var(--colors-text-secondary);
+  --color-text-tertiary: var(--colors-text-tertiary);
+  --color-text-on-brand: var(--colors-text-on-brand);
+  --color-text-brand: var(--colors-text-brand);
+  --color-brand-fill: var(--colors-brand-fill);
+  --color-brand-fill-hover: var(--colors-brand-fill-hover);
+  --color-border-whisper: var(--colors-border-whisper);
+  --color-border-defined: var(--colors-border-defined);
 }
 
 .dark {
+  color-scheme: dark;
   --colors-background: #000000;
   --colors-foreground: #f5f5f5;
   --colors-surface-canvas: #000000;
@@ -54,38 +69,39 @@
   --colors-text-secondary: #b6b6b6;
   --colors-text-tertiary: #8a8a8a;
   --colors-text-on-brand: #ffffff;
-  --colors-text-brand: #db515c;
-  --colors-brand-fill: #db515c;
-  --colors-brand-fill-hover: #c94651;
+  --colors-text-brand: #ef4444;
+  --colors-brand-fill: #ef4444;
+  --colors-brand-fill-hover: #dc2626;
   --colors-border-whisper: rgba(255, 255, 255, 0.12);
   --colors-border-defined: #3a3a3a;
+  --color-background: var(--colors-background);
+  --color-foreground: var(--colors-foreground);
+  --color-surface-canvas: var(--colors-surface-canvas);
+  --color-surface-base: var(--colors-surface-base);
+  --color-surface-subtle: var(--colors-surface-subtle);
+  --color-text-primary: var(--colors-text-primary);
+  --color-text-secondary: var(--colors-text-secondary);
+  --color-text-tertiary: var(--colors-text-tertiary);
+  --color-text-on-brand: var(--colors-text-on-brand);
+  --color-text-brand: var(--colors-text-brand);
+  --color-brand-fill: var(--colors-brand-fill);
+  --color-brand-fill-hover: var(--colors-brand-fill-hover);
+  --color-border-whisper: var(--colors-border-whisper);
+  --color-border-defined: var(--colors-border-defined);
   --shadow-modal: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.28), 0 8px 16px rgba(0, 0, 0, 0.32), 0 16px 32px rgba(0, 0, 0, 0.4);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    --colors-background: #000000;
-    --colors-foreground: #f5f5f5;
-    --colors-surface-canvas: #000000;
-    --colors-surface-base: #0b0b0b;
-    --colors-surface-subtle: #202020;
-    --colors-text-primary: #f5f5f5;
-    --colors-text-secondary: #b6b6b6;
-    --colors-text-tertiary: #8a8a8a;
-    --colors-text-on-brand: #ffffff;
-    --colors-text-brand: #db515c;
-    --colors-brand-fill: #db515c;
-    --colors-brand-fill-hover: #c94651;
-    --colors-border-whisper: rgba(255, 255, 255, 0.12);
-    --colors-border-defined: #3a3a3a;
-    --shadow-modal: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.28), 0 8px 16px rgba(0, 0, 0, 0.32), 0 16px 32px rgba(0, 0, 0, 0.4);
-  }
 }
 
 body {
   margin: 0;
   background-color: var(--colors-background);
   color: var(--colors-foreground);
+}
+
+.theme-switching,
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition-duration: 0ms !important;
 }
 
 * {

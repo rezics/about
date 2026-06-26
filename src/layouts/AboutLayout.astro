@@ -35,6 +35,18 @@ const alternateLinks = ABOUT_LOCALES.map((alternateLocale) => ({
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <script is:inline>
+      (() => {
+        try {
+          const storedTheme = localStorage.getItem("rezics-theme");
+          document.documentElement.classList.toggle("dark", storedTheme === "dark");
+          document.documentElement.classList.toggle("light", storedTheme !== "dark");
+        } catch {
+          document.documentElement.classList.add("light");
+        }
+      })();
+    </script>
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
     {
@@ -91,6 +103,52 @@ const alternateLinks = ABOUT_LOCALES.map((alternateLocale) => ({
           </a>
         </nav>
         <div class="flex min-w-0 shrink-0 items-center gap-2">
+          <button
+            class="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-md border border-border-defined px-3 text-sm font-medium leading-[1.4] text-text-primary transition-colors hover:bg-surface-subtle"
+            type="button"
+            aria-label={common.theme.toggle}
+            aria-pressed="false"
+            title={common.theme.toggle}
+            data-theme-toggle
+            data-light-label={common.theme.light}
+            data-dark-label={common.theme.dark}
+          >
+            <svg
+              class="h-4 w-4"
+              aria-hidden="true"
+              data-theme-icon="light"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2"></path>
+              <path d="M12 20v2"></path>
+              <path d="m4.93 4.93 1.41 1.41"></path>
+              <path d="m17.66 17.66 1.41 1.41"></path>
+              <path d="M2 12h2"></path>
+              <path d="M20 12h2"></path>
+              <path d="m6.34 17.66-1.41 1.41"></path>
+              <path d="m19.07 4.93-1.41 1.41"></path>
+            </svg>
+            <svg
+              class="hidden h-4 w-4"
+              aria-hidden="true"
+              data-theme-icon="dark"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 3a6.5 6.5 0 0 0 8 8 8 8 0 1 1-8-8Z"></path>
+            </svg>
+            <span data-theme-label>{common.theme.light}</span>
+          </button>
           <a
             class="inline-flex h-10 shrink-0 items-center justify-center rounded-md border border-border-defined px-3 text-sm font-medium leading-[1.4] text-text-primary no-underline transition-colors hover:bg-surface-subtle"
             href={getAppEntryUrl(locale)}
@@ -133,5 +191,39 @@ const alternateLinks = ABOUT_LOCALES.map((alternateLocale) => ({
         <p class="m-0 md:text-right">{common.footer.originNote}</p>
       </div>
     </footer>
+    <script>
+      const syncThemeToggle = () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+          const label = button.querySelector<HTMLElement>("[data-theme-label]");
+          const lightIcon = button.querySelector<SVGElement>('[data-theme-icon="light"]');
+          const darkIcon = button.querySelector<SVGElement>('[data-theme-icon="dark"]');
+
+          button.setAttribute("aria-pressed", String(isDark));
+          if (label) {
+            label.textContent = isDark ? button.dataset.darkLabel ?? "Dark" : button.dataset.lightLabel ?? "Light";
+          }
+          lightIcon?.classList.toggle("hidden", isDark);
+          darkIcon?.classList.toggle("hidden", !isDark);
+        });
+      };
+
+      document.querySelectorAll<HTMLButtonElement>("[data-theme-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const root = document.documentElement;
+          const nextTheme = document.documentElement.classList.contains("dark") ? "light" : "dark";
+
+          root.classList.add("theme-switching");
+          root.classList.toggle("dark", nextTheme === "dark");
+          root.classList.toggle("light", nextTheme === "light");
+          localStorage.setItem("rezics-theme", nextTheme);
+          syncThemeToggle();
+          requestAnimationFrame(() => {
+            root.classList.remove("theme-switching");
+          });
+        });
+      });
+      syncThemeToggle();
+    </script>
   </body>
 </html>

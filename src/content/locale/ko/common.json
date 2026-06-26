@@ -5,6 +5,11 @@
     "app": "Rezics 열기",
     "language": "언어"
   },
+  "theme": {
+    "toggle": "테마 전환",
+    "light": "라이트",
+    "dark": "다크"
+  },
   "cta": {
     "enterApp": "작품 카탈로그 열기",
     "readProduct": "제품 보기",

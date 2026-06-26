@@ -5,6 +5,11 @@
     "app": "Rezics を開く",
     "language": "言語"
   },
+  "theme": {
+    "toggle": "テーマを切り替える",
+    "light": "ライト",
+    "dark": "ダーク"
+  },
   "cta": {
     "enterApp": "作品カタログを開く",
     "readProduct": "製品を見る",

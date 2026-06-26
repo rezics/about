@@ -5,6 +5,11 @@
     "app": "Open Rezics",
     "language": "Language"
   },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "cta": {
     "enterApp": "Open the catalog",
     "readProduct": "Explore products",

@@ -5,6 +5,11 @@
     "app": "Rezics öffnen",
     "language": "Sprache"
   },
+  "theme": {
+    "toggle": "Theme umschalten",
+    "light": "Hell",
+    "dark": "Dunkel"
+  },
   "cta": {
     "enterApp": "Katalog öffnen",
     "readProduct": "Produkte ansehen",

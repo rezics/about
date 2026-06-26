@@ -26,6 +26,11 @@ export type AboutCommonCopy = {
     app: string;
     language: string;
   };
+  theme: {
+    toggle: string;
+    light: string;
+    dark: string;
+  };
   cta: {
     enterApp: string;
     readProduct: string;
