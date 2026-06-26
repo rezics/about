@@ -1,0 +1,16 @@
+---
+import type { AboutCommonCopy } from "../content/types";
+
+type Props = {
+  common: AboutCommonCopy;
+};
+
+const { common } = Astro.props;
+---
+
+<footer class="w-full border-t border-border-whisper">
+  <div class="w-full max-w-6xl mx-auto grid gap-3 px-6 py-8 text-sm leading-[1.55] text-text-tertiary sm:px-8 md:grid-cols-[auto_minmax(0,1fr)] md:justify-between md:gap-8">
+    <p class="m-0 text-text-primary">Rezics</p>
+    <p class="m-0 md:text-right">{common.footer.originNote}</p>
+  </div>
+</footer>
