@@ -18,7 +18,10 @@ import {
   type AboutPageId,
   getCanonicalUrl,
   getPagePath,
+  matchAboutLocale,
+  negotiateAboutLocale,
 } from "./i18n/locales";
+import { onRequest as languageMiddleware } from "../functions/_middleware";
 
 const packageRoot = new URL("..", import.meta.url).pathname;
 
@@ -210,5 +213,52 @@ describe("@rezics/about static routing", () => {
         );
       }
     }
+  });
+
+  test("matches browser language tags to supported about locales", () => {
+    expect(matchAboutLocale("zh-TW")).toBe("zh-hant");
+    expect(matchAboutLocale("zh-HK")).toBe("zh-hant");
+    expect(matchAboutLocale("zh")).toBe("zh-hant");
+    expect(matchAboutLocale("zh-CN")).toBe("zh-hans");
+    expect(matchAboutLocale("zh-SG")).toBe("zh-hans");
+    expect(matchAboutLocale("en-US")).toBe("en");
+    expect(matchAboutLocale("ja-JP")).toBe("ja");
+    expect(matchAboutLocale("ko-KR")).toBe("ko");
+    expect(matchAboutLocale("de-DE")).toBe("de");
+    expect(matchAboutLocale("fr-FR")).toBeUndefined();
+  });
+
+  test("negotiates the best locale from Accept-Language", () => {
+    expect(negotiateAboutLocale("fr-FR,ja;q=0.8,en;q=0.6")).toBe("ja");
+    expect(negotiateAboutLocale("zh-CN,zh;q=0.9,en;q=0.8")).toBe("zh-hans");
+    expect(negotiateAboutLocale("zh-TW,zh;q=0.9,en;q=0.8")).toBe("zh-hant");
+    expect(negotiateAboutLocale("en-US;q=0.4,ja-JP;q=0.9")).toBe("ja");
+    expect(negotiateAboutLocale("fr-FR,es-ES;q=0.9")).toBe("zh-hant");
+    expect(negotiateAboutLocale(null)).toBe("zh-hant");
+  });
+
+  test("redirects language-neutral entrypoints with Accept-Language", async () => {
+    const response = await languageMiddleware({
+      request: new Request("https://about.rezics.com/product/?ref=nav", {
+        headers: { "Accept-Language": "ja-JP,ja;q=0.9,en;q=0.6" },
+      }),
+      next: () => new Response("next"),
+    });
+
+    expect(response.status).toBe(302);
+    expect(response.headers.get("Location")).toBe(
+      "https://about.rezics.com/ja/product/?ref=nav",
+    );
+    expect(response.headers.get("Vary")).toBe("Accept-Language");
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+  });
+
+  test("leaves localized routes untouched in the language middleware", async () => {
+    const response = await languageMiddleware({
+      request: new Request("https://about.rezics.com/en/"),
+      next: () => new Response("next"),
+    });
+
+    expect(await response.text()).toBe("next");
   });
 });

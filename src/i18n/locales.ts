@@ -56,6 +56,87 @@ export function isAboutLocale(value: string): value is AboutLocale {
   return ABOUT_LOCALE_SET.has(value);
 }
 
+export function normalizeLocaleTag(value: string): string {
+  return value.trim().toLowerCase().replaceAll("_", "-");
+}
+
+export function matchAboutLocale(value: string): AboutLocale | undefined {
+  const localeTag = normalizeLocaleTag(value);
+
+  if (isAboutLocale(localeTag)) {
+    return localeTag;
+  }
+
+  if (localeTag === "zh" || localeTag.startsWith("zh-")) {
+    if (
+      localeTag.startsWith("zh-hant") ||
+      ["zh-tw", "zh-hk", "zh-mo"].some((prefix) =>
+        localeTag.startsWith(prefix),
+      )
+    ) {
+      return "zh-hant";
+    }
+
+    if (
+      localeTag.startsWith("zh-hans") ||
+      ["zh-cn", "zh-sg"].some((prefix) => localeTag.startsWith(prefix))
+    ) {
+      return "zh-hans";
+    }
+
+    return DEFAULT_LOCALE;
+  }
+
+  const baseLanguage = localeTag.split("-")[0];
+  if (baseLanguage && isAboutLocale(baseLanguage)) {
+    return baseLanguage;
+  }
+
+  return undefined;
+}
+
+function parseAcceptLanguage(acceptLanguage: string): string[] {
+  return acceptLanguage
+    .split(",")
+    .map((entry, index) => {
+      const [tag = "", ...parameters] = entry.trim().split(";");
+      const qualityParameter = parameters.find((parameter) =>
+        parameter.trim().startsWith("q="),
+      );
+      const quality = qualityParameter
+        ? Number.parseFloat(qualityParameter.trim().slice(2))
+        : 1;
+
+      return {
+        index,
+        tag,
+        quality: Number.isFinite(quality) ? quality : 0,
+      };
+    })
+    .filter((entry) => entry.tag.length > 0 && entry.quality > 0)
+    .sort(
+      (left, right) => right.quality - left.quality || left.index - right.index,
+    )
+    .map((entry) => entry.tag);
+}
+
+export function negotiateAboutLocale(
+  acceptLanguage: string | null | undefined,
+): AboutLocale {
+  if (!acceptLanguage) {
+    return DEFAULT_LOCALE;
+  }
+
+  for (const localeTag of parseAcceptLanguage(acceptLanguage)) {
+    const matchedLocale = matchAboutLocale(localeTag);
+    if (matchedLocale) {
+      return matchedLocale;
+    }
+  }
+
+  return DEFAULT_LOCALE;
+}
+
 export function getPagePath(locale: AboutLocale, page: AboutPageId): string {
   const pagePath = ABOUT_PAGE_PATHS[page];
   return pagePath ? `/${locale}/${pagePath}/` : `/${locale}/`;

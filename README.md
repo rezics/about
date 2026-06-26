@@ -23,10 +23,38 @@ task about:test
 ## Cloudflare Pages
 
 - Project path: `package/about`
-- Build command: `bun astro build` (Pages-native build runs in `package/about`;
-  no per-package script, so invoke Astro directly)
+- Build command: `task build`
 - Build output directory: `dist`
 - Custom domain: `about.rezics.com`
+
+Deployment is handled by GitHub Actions in
+`.github/workflows/deploy-cloudflare-pages.yml` using Cloudflare Pages Direct
+Upload.
+
+Triggers:
+
+- Push a version tag matching `v*`, for example `v0.1.0`.
+- Run the workflow manually from GitHub Actions with `workflow_dispatch`.
+
+Required GitHub repository settings:
+
+- Secret `CLOUDFLARE_API_TOKEN`: Cloudflare API token created from
+  **Permission policies** > **Custom** > **Edit Cloudflare Workers**. Do not use
+  the read-only **Workers CI** template.
+- Secret `CLOUDFLARE_ACCOUNT_ID`: Cloudflare account ID that owns the Pages
+  project.
+- Optional variable `CLOUDFLARE_PAGES_PROJECT_NAME`: Pages project name. The
+  workflow defaults to `rezics-about` if this variable is not set.
+
+The workflow deploys with Cloudflare branch metadata set to `main` by default.
+For manual runs, the `cloudflare_branch` input can override that value.
+
+If the Pages project does not exist yet, create it once with Wrangler:
+
+```bash
+bunx wrangler login
+bunx wrangler pages project create rezics-about --production-branch main
+```
 
 This package is static-first. It does not require Workers bindings, auth,
 database access, or shared app runtime state. `rezics.com` and
