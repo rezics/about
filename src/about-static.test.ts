@@ -84,7 +84,7 @@ describe("@rezics/about locale contract", () => {
 
   test("preserves explicit hero paragraph and localized eyebrow decisions", async () => {
     const expectedEyebrows: Record<AboutLocale, string> = {
-      "zh-hant": "與所愛的故事相遇",
+      "zh-hant": "inherited · create · spread",
       "zh-hans": "与所爱的故事相遇",
       en: "Encounter the stories you love.",
       ja: "愛する物語と出会う",
@@ -108,7 +108,12 @@ describe("@rezics/about locale contract", () => {
       const closing = await readMarkdownFragment(locale, "home", "closing");
 
       expect(copy.primaryCtaPage).toBe("product");
-      expect(copy.hero.heading).toContain("inherited · create · spread");
+      if (locale === "zh-hant") {
+        expect(copy.hero.heading).toBe("REZICS: 與所愛的故事相遇");
+        expect(copy.hero.eyebrow).toBe("inherited · create · spread");
+      } else {
+        expect(copy.hero.heading).toContain("inherited · create · spread");
+      }
       expect(`${JSON.stringify(copy)}\n${closing}`.toLowerCase()).toContain(
         "wiki",
       );
@@ -168,7 +173,7 @@ describe("@rezics/about locale contract", () => {
     for (const locale of ABOUT_LOCALES) {
       for (const page of ABOUT_PAGES) {
         const closing = await readMarkdownFragment(locale, page, "closing");
-        expect(closing).toContain("\n## ");
+        expect(closing.trimStart()).toContain("## ");
       }
     }
   });

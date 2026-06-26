@@ -4,7 +4,6 @@ import { getCommonCopy, getHomePageCopy } from "../../content/aboutContent";
 import {
   ABOUT_LOCALES,
   type AboutLocale,
-  getAppEntryUrl,
   getPagePath,
 } from "../../i18n/locales";
 import AboutLayout from "../../layouts/AboutLayout.astro";
@@ -17,70 +16,171 @@ const locale = Astro.params.locale as AboutLocale;
 const common = getCommonCopy(locale);
 const copy = getHomePageCopy(locale);
 const primaryHref = getPagePath(locale, copy.primaryCtaPage);
+const [heroPrefix, heroRest] = copy.hero.heading.includes(": ")
+  ? copy.hero.heading.split(": ", 2)
+  : [copy.hero.heading, ""];
+
+const ui = locale === "zh-hant"
+      ? {
+      storyImageAlt: "紅色 REZICS 書本與檔案紙張構成的故事起源靜物",
+      storyCta: "閱讀我們的故事",
+      whyHeading: "為什麼 Rezics 存在？",
+      whyLead: "當作品、討論與知識被拆散到不同平台，人們需要一個能保存脈絡的公共入口。",
+      beliefHeading: "我們相信",
+      beliefLead: "好的索引不只是資料庫。它應該讓作品身份、來源事實與社群語境互相連接。",
+      productHeading: "從理念走向產品",
+      productBody: "Rezics Catalog、Realms、Wiki、Shelves 與 Graph 會把這些信念落成可使用的產品表面：找到作品，保存事實，並讓社群知識留在作品旁邊。",
+    }
+  : {
+      storyImageAlt: "Red Rezics book with archival papers",
+      storyCta: "Read our story",
+      whyHeading: "Why Rezics exists",
+      whyLead: "Works, discussion, and knowledge are spread across platforms. Rezics keeps their context connected.",
+      beliefHeading: "What we believe",
+      beliefLead: "A good index is more than a database. It connects identity, sources, and community context.",
+      productHeading: "From idea to product",
+      productBody: "Rezics products turn these beliefs into surfaces for finding works, preserving facts, and keeping community knowledge nearby.",
+    };
 ---
 
 <AboutLayout locale={locale} page="home" common={common} meta={copy.meta}>
-  <section class="w-full max-w-6xl mx-auto px-6 py-20 sm:px-8 lg:py-28">
-    <div class="grid gap-8 lg:max-w-4xl">
-      <div class="grid gap-5">
-        <p class="m-0 text-sm font-medium leading-[1.4] text-text-brand">{copy.hero.eyebrow}</p>
-        <h1 class="m-0 text-3xl font-medium leading-none tracking-normal text-text-primary">
-          {copy.hero.heading}
-        </h1>
-      </div>
-      <div class="about-prose about-prose-hero grid max-w-3xl gap-4 text-lg leading-[1.55] text-text-secondary">
-        <MarkdownFragment locale={locale} page="home" slug="hero" />
-      </div>
-      <div class="flex flex-wrap items-center gap-3">
-        <a
-          class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md bg-brand-fill px-4 py-2 text-sm font-medium leading-[1.4] text-text-on-brand no-underline transition-colors hover:bg-brand-fill-hover"
-          href={primaryHref}
-        >
-          {common.cta.readProduct}
-        </a>
-        <a
-          class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-md border border-border-defined px-4 py-2 text-sm font-medium leading-[1.4] text-text-primary no-underline transition-colors hover:bg-surface-subtle"
-          href={getAppEntryUrl(locale)}
-        >
-          {common.cta.enterApp}
-        </a>
+  <section class="relative overflow-hidden border-b border-border-whisper bg-surface-canvas">
+    <div class="w-full max-w-7xl mx-auto grid min-h-[min(760px,calc(100svh-73px))] px-6 py-14 sm:px-8 lg:py-16">
+      <div class="grid max-w-5xl content-center gap-8">
+        <div class="grid gap-7">
+          <h1 class="m-0 max-w-4xl text-[clamp(2.55rem,5.9vw,5.75rem)] font-semibold leading-[1.02] tracking-normal text-text-primary">
+            {
+              heroRest ? (
+                <>
+                  {heroPrefix}:
+                  <span class="block">{heroRest}</span>
+                </>
+              ) : (
+                copy.hero.heading
+              )
+            }
+          </h1>
+          <p class="m-0 font-mono text-sm leading-[1.5] tracking-normal text-text-brand sm:text-base">
+            {copy.hero.eyebrow}
+          </p>
+        </div>
+        <div class="about-prose about-prose-hero grid max-w-2xl gap-4 text-[1.0625rem] leading-[1.75] text-text-secondary sm:text-lg">
+          <MarkdownFragment locale={locale} page="home" slug="hero" />
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <a
+            class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-md bg-brand-fill px-5 py-2.5 text-sm font-semibold leading-[1.4] text-text-on-brand no-underline transition-colors hover:bg-brand-fill-hover"
+            href={primaryHref}
+          >
+            {common.cta.readProduct}
+          </a>
+          <a
+            class="inline-flex min-h-12 shrink-0 items-center justify-center rounded-md border border-border-defined px-5 py-2.5 text-sm font-semibold leading-[1.4] text-text-primary no-underline transition-colors hover:bg-surface-subtle"
+            href="#our-story"
+          >
+            {ui.storyCta}
+          </a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="w-full max-w-6xl mx-auto grid gap-8 px-6 py-14 sm:px-8 md:grid-cols-2 lg:py-16">
-    {
-      copy.sections.map((section) => (
-        <article class="min-w-0 border-t border-border-defined pt-6">
-          <p class="m-0 mb-3 text-sm font-medium leading-[1.4] text-text-brand">{section.eyebrow}</p>
-          <h2 class="m-0 mb-4 text-2xl font-medium leading-[1.4] text-text-primary">
-            {section.title}
-          </h2>
-          <p class="m-0 text-base leading-[1.55] text-text-secondary">{section.body}</p>
-        </article>
-      ))
-    }
+  <section class="w-full bg-surface-subtle">
+    <div class="w-full max-w-7xl mx-auto grid gap-12 px-6 py-16 sm:px-8 lg:grid-cols-[minmax(16rem,0.38fr)_minmax(0,0.62fr)] lg:gap-16 lg:py-20">
+      <div class="max-w-md">
+        <h2 class="m-0 text-3xl font-semibold leading-[1.18] tracking-normal text-text-primary sm:text-4xl">
+          {ui.whyHeading}
+        </h2>
+        <p class="m-0 mt-5 text-base leading-[1.7] text-text-secondary">
+          {ui.whyLead}
+        </p>
+      </div>
+      <div class="grid border-t border-border-defined">
+        {
+          copy.sections.map((section, index) => (
+            <article class="grid gap-5 border-b border-border-whisper py-7 md:grid-cols-[5.5rem_minmax(0,1fr)] md:gap-8">
+              <div class="flex items-start gap-3">
+                <span class="font-mono text-sm leading-[1.6] text-text-brand">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span class="mt-2 h-px w-8 bg-brand-fill" aria-hidden="true"></span>
+              </div>
+              <div class="min-w-0">
+                <p class="m-0 mb-3 text-sm font-semibold leading-[1.4] text-text-brand">{section.eyebrow}</p>
+                <h3 class="m-0 max-w-3xl text-2xl font-semibold leading-[1.35] tracking-normal text-text-primary">
+                  {section.title}
+                </h3>
+                <p class="m-0 mt-4 max-w-3xl text-base leading-[1.75] text-text-secondary">{section.body}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
   </section>
 
-  <section class="w-full max-w-6xl mx-auto grid gap-8 px-6 py-14 sm:px-8 lg:py-16">
-    {
-      copy.storySections.map((section) => (
-        <article class="grid gap-4 border-t border-border-whisper pt-6 md:grid-cols-[minmax(10rem,0.32fr)_minmax(0,0.68fr)] md:gap-12">
-          <p class="m-0 text-sm font-medium leading-[1.4] text-text-brand">{section.eyebrow}</p>
-          <div class="min-w-0">
-            <h2 class="m-0 mb-4 text-2xl font-medium leading-[1.4] text-text-primary">
+  <section class="w-full max-w-7xl mx-auto px-6 py-20 sm:px-8 lg:py-24">
+    <div class="mb-12 max-w-3xl">
+      <h2 class="m-0 text-3xl font-semibold leading-[1.18] tracking-normal text-text-primary sm:text-4xl">
+        {ui.beliefHeading}
+      </h2>
+      <p class="m-0 mt-5 text-base leading-[1.7] text-text-secondary">
+        {ui.beliefLead}
+      </p>
+    </div>
+    <div class="grid gap-px overflow-hidden rounded-md border border-border-whisper bg-border-whisper md:grid-cols-2">
+      {
+        copy.storySections.map((section) => (
+          <article class="min-w-0 bg-surface-canvas p-6 sm:p-8 lg:p-9">
+            <p class="m-0 mb-5 flex items-center gap-3 text-sm font-semibold leading-[1.4] text-text-brand">
+              <span class="h-2 w-2 rounded-full bg-brand-fill" aria-hidden="true"></span>
+              {section.eyebrow}
+            </p>
+            <h3 class="m-0 text-2xl font-semibold leading-[1.35] tracking-normal text-text-primary">
               {section.title}
-            </h2>
-            <p class="m-0 text-base leading-[1.55] text-text-secondary">{section.body}</p>
-          </div>
-        </article>
-      ))
-    }
+            </h3>
+            <p class="m-0 mt-4 text-base leading-[1.75] text-text-secondary">{section.body}</p>
+          </article>
+        ))
+      }
+    </div>
   </section>
 
-  <section class="w-full max-w-6xl mx-auto px-6 py-14 sm:px-8 lg:py-16">
-    <article class="about-prose grid max-w-3xl gap-4 text-base leading-[1.55] text-text-secondary">
-      <MarkdownFragment locale={locale} page="home" slug="closing" />
-    </article>
+  <section id="our-story" class="w-full scroll-mt-24 border-y border-border-whisper bg-surface-subtle">
+    <div class="w-full max-w-7xl mx-auto grid gap-12 px-6 py-20 sm:px-8 lg:grid-cols-[minmax(0,0.52fr)_minmax(0,0.48fr)] lg:items-center lg:gap-16 lg:py-24">
+      <figure class="m-0 overflow-hidden rounded-md border border-border-whisper bg-surface-base shadow-modal">
+        <img
+          class="block aspect-[4/3] h-auto w-full object-cover"
+          src="/images/about-origin-still-life.webp"
+          alt={ui.storyImageAlt}
+          width="1456"
+          height="1088"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+      <article class="about-prose grid max-w-xl gap-5 text-base leading-[1.8] text-text-secondary">
+        <MarkdownFragment locale={locale} page="home" slug="closing" />
+      </article>
+    </div>
+  </section>
+
+  <section class="w-full max-w-7xl mx-auto px-6 py-20 sm:px-8 lg:py-24">
+    <div class="grid gap-8 border-t border-border-defined pt-10 lg:grid-cols-[minmax(0,0.56fr)_auto] lg:items-end">
+      <div class="max-w-3xl">
+        <h2 class="m-0 text-3xl font-semibold leading-[1.18] tracking-normal text-text-primary sm:text-4xl">
+          {ui.productHeading}
+        </h2>
+        <p class="m-0 mt-5 text-base leading-[1.75] text-text-secondary">
+          {ui.productBody}
+        </p>
+      </div>
+      <a
+        class="inline-flex min-h-12 w-fit shrink-0 items-center justify-center rounded-md bg-brand-fill px-5 py-2.5 text-sm font-semibold leading-[1.4] text-text-on-brand no-underline transition-colors hover:bg-brand-fill-hover"
+        href={primaryHref}
+      >
+        {common.cta.readProduct}
+      </a>
+    </div>
   </section>
 </AboutLayout>
