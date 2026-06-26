@@ -149,8 +149,48 @@ body {
   --font-serif-cjk: "Source Han Serif KR", "Noto Serif KR";
 }
 
-.language-switcher summary::-webkit-details-marker {
+.language-switcher summary::-webkit-details-marker,
+.settings-switcher summary::-webkit-details-marker {
   display: none;
+}
+
+.settings-popover {
+  opacity: 0;
+  transform: translateY(-4px);
+  transform-origin: top right;
+}
+
+.settings-switcher[open] .settings-popover {
+  animation: settings-popover-enter 160ms ease-out forwards;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 4rem 0 0;
+  overflow-y: auto;
+  background: var(--colors-surface-canvas);
+  box-shadow: var(--shadow-modal);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+
+.mobile-menu.is-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+@keyframes settings-popover-enter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .about-prose :where(p, h2) {

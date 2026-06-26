@@ -38,7 +38,7 @@
       "status": "available",
       "statusLabel": "Verfügbar",
       "summary": "Der öffentliche sprachübergreifende Index für Werke, Aliase, Quellen, Beziehungen und medienbezogene Metadaten.",
-      "href": "https://book.rezics.com/de/",
+      "href": "https://www.rezics.com/de/",
       "ctaLabel": "Katalog öffnen",
       "features": [
         "Gemeinsame Work Units für Bücher, Spiele, Medien, Posts und gemischte Werke",
@@ -52,7 +52,7 @@
       "status": "preview",
       "statusLabel": "Vorschau",
       "summary": "Die Haupt-Web-App zum Browsen, Reviewen, Sammeln und Beitragen zum Katalog.",
-      "href": "https://book.rezics.com/de/",
+      "href": "https://www.rezics.com/de/",
       "ctaLabel": "App öffnen",
       "features": [
         "Interaktive Suche und Werkdetailseiten",

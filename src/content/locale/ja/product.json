@@ -38,7 +38,7 @@
       "status": "available",
       "statusLabel": "利用可能",
       "summary": "作品、別名、出典、関係、媒体 metadata を整理する、公開された言語横断の作品索引。",
-      "href": "https://book.rezics.com/ja/",
+      "href": "https://www.rezics.com/ja/",
       "ctaLabel": "カタログを開く",
       "features": [
         "本、ゲーム、メディア、投稿、混合型作品の共有 Work Unit",
@@ -52,7 +52,7 @@
       "status": "preview",
       "statusLabel": "プレビュー",
       "summary": "カタログを閲覧、レビュー、収集、編集するための主要 Web アプリ。",
-      "href": "https://book.rezics.com/ja/",
+      "href": "https://www.rezics.com/ja/",
       "ctaLabel": "アプリを開く",
       "features": [
         "インタラクティブな検索と作品詳細",

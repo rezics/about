@@ -38,7 +38,7 @@
       "status": "available",
       "statusLabel": "可用",
       "summary": "公开的跨语言作品索引，整理作品、别名、来源、关联与媒介 metadata。",
-      "href": "https://book.rezics.com/zh-hans/",
+      "href": "https://www.rezics.com/zh-hans/",
       "ctaLabel": "打开目录",
       "features": [
         "为书籍、游戏、媒体、帖子与混合型作品建立共享 Work Unit",
@@ -52,7 +52,7 @@
       "status": "preview",
       "statusLabel": "预览",
       "summary": "用来浏览、评论、收藏与贡献目录的主要 Web 应用。",
-      "href": "https://book.rezics.com/zh-hans/",
+      "href": "https://www.rezics.com/zh-hans/",
       "ctaLabel": "打开应用",
       "features": [
         "互动搜索与作品详情页",

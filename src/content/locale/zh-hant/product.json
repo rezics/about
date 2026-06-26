@@ -38,7 +38,7 @@
       "status": "available",
       "statusLabel": "可用",
       "summary": "公開的跨語言作品索引，整理作品、別名、來源、關聯與媒介 metadata。",
-      "href": "https://book.rezics.com/zh-hant/",
+      "href": "https://www.rezics.com/zh-hant/",
       "ctaLabel": "開啟目錄",
       "features": [
         "為書籍、遊戲、媒體、貼文與混合型作品建立共享 Work Unit",
@@ -52,7 +52,7 @@
       "status": "preview",
       "statusLabel": "預覽",
       "summary": "用來瀏覽、評論、收藏與貢獻目錄的主要 Web 應用。",
-      "href": "https://book.rezics.com/zh-hant/",
+      "href": "https://www.rezics.com/zh-hant/",
       "ctaLabel": "開啟應用",
       "features": [
         "互動搜尋與作品詳情頁",

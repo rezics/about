@@ -38,7 +38,7 @@
       "status": "available",
       "statusLabel": "Available",
       "summary": "The public cross-language index for works, aliases, sources, relationships, and media-specific metadata.",
-      "href": "https://book.rezics.com/en/",
+      "href": "https://www.rezics.com/en/",
       "ctaLabel": "Open catalog",
       "features": [
         "Shared Work Units for books, games, media, posts, and mixed works",
@@ -52,7 +52,7 @@
       "status": "preview",
       "statusLabel": "Preview",
       "summary": "The main web app for browsing, reviewing, collecting, and contributing to the catalog.",
-      "href": "https://book.rezics.com/en/",
+      "href": "https://www.rezics.com/en/",
       "ctaLabel": "Open app",
       "features": [
         "Interactive search and work detail pages",

@@ -38,7 +38,7 @@
       "status": "available",
       "statusLabel": "사용 가능",
       "summary": "작품, 별칭, 출처, 관계, 매체별 metadata를 정리하는 공개 다국어 작품 색인입니다.",
-      "href": "https://book.rezics.com/ko/",
+      "href": "https://www.rezics.com/ko/",
       "ctaLabel": "카탈로그 열기",
       "features": [
         "도서, 게임, 미디어, 게시물, 혼합형 작품을 위한 공유 Work Unit",
@@ -52,7 +52,7 @@
       "status": "preview",
       "statusLabel": "미리보기",
       "summary": "카탈로그를 탐색하고, 리뷰하고, 수집하고, 기여하는 기본 웹 앱입니다.",
-      "href": "https://book.rezics.com/ko/",
+      "href": "https://www.rezics.com/ko/",
       "ctaLabel": "앱 열기",
       "features": [
         "상호작용형 검색과 작품 상세 페이지",
