@@ -1,8 +1,8 @@
 ## Statisches Produktverzeichnis
 
 Diese Seite ist das öffentliche Produktverzeichnis der Rezics-Familie. Sie zeigt,
-welche Oberflächen existieren, welche nutzbar sind und welche als künftige
-Produktrichtungen benannt sind.
+welche Oberflächen existieren und dass sie derzeit als Pre-production geführt
+werden.
 
 ## App-Grenze
 

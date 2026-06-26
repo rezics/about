@@ -28,15 +28,15 @@
     {
       "eyebrow": "상태",
       "title": "이 목록은 미래 지향적인 표면도 보여 줄 수 있습니다.",
-      "body": "계획 중 상태는 제품 이름이 방향을 나타낸다는 뜻이며, 전체 workflow가 이미 제공된다는 뜻은 아닙니다."
+      "body": "Pre-production 상태는 제품 이름이 방향을 나타낸다는 뜻이며, 전체 workflow가 이미 제공된다는 뜻은 아닙니다."
     }
   ],
   "products": [
     {
       "name": "Rezics Catalog",
       "category": "카탈로그",
-      "status": "available",
-      "statusLabel": "사용 가능",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "작품, 별칭, 출처, 관계, 매체별 metadata를 정리하는 공개 다국어 작품 색인입니다.",
       "href": "https://www.rezics.com/ko/",
       "ctaLabel": "카탈로그 열기",
@@ -49,8 +49,8 @@
     {
       "name": "Rezics Web",
       "category": "앱",
-      "status": "preview",
-      "statusLabel": "미리보기",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "카탈로그를 탐색하고, 리뷰하고, 수집하고, 기여하는 기본 웹 앱입니다.",
       "href": "https://www.rezics.com/ko/",
       "ctaLabel": "앱 열기",
@@ -64,7 +64,7 @@
       "name": "Rezics Realms",
       "category": "커뮤니티",
       "status": "planned",
-      "statusLabel": "계획 중",
+      "statusLabel": "Pre-production",
       "summary": "공개 카탈로그를 fork하지 않고 커뮤니티가 작품을 분류하고, 토론하고, 큐레이션하는 공간입니다.",
       "features": [
         "Realm 멤버십과 지역 토론",
@@ -76,7 +76,7 @@
       "name": "Rezics Wiki",
       "category": "지식",
       "status": "planned",
-      "statusLabel": "계획 중",
+      "statusLabel": "Pre-production",
       "summary": "맥락을 필요한 작품과 커뮤니티 곁에 두는 협업 지식 페이지와 realm wiki 포털입니다.",
       "features": [
         "배경, 타임라인, 예시, 해석을 기록하는 wiki 게시물",
@@ -88,7 +88,7 @@
       "name": "Rezics Shelves",
       "category": "발견",
       "status": "planned",
-      "statusLabel": "계획 중",
+      "statusLabel": "Pre-production",
       "summary": "작품, 리뷰, 태그, realms, 다른 서가 항목을 지나는 큐레이션 경로입니다.",
       "features": [
         "불투명한 추천 목록이 아닌 설명 가능한 컬렉션",
@@ -100,7 +100,7 @@
       "name": "Rezics Graph",
       "category": "플랫폼",
       "status": "planned",
-      "statusLabel": "계획 중",
+      "statusLabel": "Pre-production",
       "summary": "카탈로그 정체성, 출처 사실, 커뮤니티 분류, 지식 표면을 지탱하는 공유 제품 그래프입니다.",
       "features": [
         "작품, 태그, realm, 서가, 리뷰, wiki 관계",

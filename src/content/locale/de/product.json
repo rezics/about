@@ -28,15 +28,15 @@
     {
       "eyebrow": "Status",
       "title": "Die Liste darf zukunftsgerichtete Oberflächen zeigen.",
-      "body": "Geplant bedeutet, dass der Produktname eine Richtung beschreibt, nicht dass der vollständige Workflow bereits verfügbar ist."
+      "body": "Pre-production bedeutet, dass der Produktname eine Richtung beschreibt, nicht dass der vollständige Workflow bereits verfügbar ist."
     }
   ],
   "products": [
     {
       "name": "Rezics Catalog",
       "category": "Katalog",
-      "status": "available",
-      "statusLabel": "Verfügbar",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "Der öffentliche sprachübergreifende Index für Werke, Aliase, Quellen, Beziehungen und medienbezogene Metadaten.",
       "href": "https://www.rezics.com/de/",
       "ctaLabel": "Katalog öffnen",
@@ -49,8 +49,8 @@
     {
       "name": "Rezics Web",
       "category": "App",
-      "status": "preview",
-      "statusLabel": "Vorschau",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "Die Haupt-Web-App zum Browsen, Reviewen, Sammeln und Beitragen zum Katalog.",
       "href": "https://www.rezics.com/de/",
       "ctaLabel": "App öffnen",
@@ -64,7 +64,7 @@
       "name": "Rezics Realms",
       "category": "Community",
       "status": "planned",
-      "statusLabel": "Geplant",
+      "statusLabel": "Pre-production",
       "summary": "Community-Räume zum Klassifizieren, Diskutieren und Kuratieren von Werken, ohne den öffentlichen Katalog zu forken.",
       "features": [
         "Realm-Mitgliedschaft und lokale Diskussion",
@@ -76,7 +76,7 @@
       "name": "Rezics Wiki",
       "category": "Wissen",
       "status": "planned",
-      "statusLabel": "Geplant",
+      "statusLabel": "Pre-production",
       "summary": "Gemeinsame Wissensseiten und Realm-Wiki-Portale, die Kontext bei den Werken und Communities halten, die ihn brauchen.",
       "features": [
         "Wiki-Beiträge für Hintergründe, Zeitlinien, Beispiele und Deutung",
@@ -88,7 +88,7 @@
       "name": "Rezics Shelves",
       "category": "Entdeckung",
       "status": "planned",
-      "statusLabel": "Geplant",
+      "statusLabel": "Pre-production",
       "summary": "Kuratierte Pfade durch Werke, Reviews, Tags, Realms und weitere Regal-Einträge.",
       "features": [
         "Erklärbare Sammlungen statt undurchsichtiger Empfehlungslisten",
@@ -100,7 +100,7 @@
       "name": "Rezics Graph",
       "category": "Plattform",
       "status": "planned",
-      "statusLabel": "Geplant",
+      "statusLabel": "Pre-production",
       "summary": "Der gemeinsame Produktgraph hinter Katalogidentität, Quellenfakten, Community-Klassifikation und Wissensoberflächen.",
       "features": [
         "Beziehungen zwischen Werk, Tag, Realm, Regal, Review und Wiki",

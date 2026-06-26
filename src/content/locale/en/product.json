@@ -28,15 +28,15 @@
     {
       "eyebrow": "Status",
       "title": "The list is allowed to show future-facing surfaces.",
-      "body": "A planned status means the product name is directional, not a claim that the full workflow is already available."
+      "body": "Pre-production means the product name is directional, not a claim that the full workflow is already available."
     }
   ],
   "products": [
     {
       "name": "Rezics Catalog",
       "category": "Catalog",
-      "status": "available",
-      "statusLabel": "Available",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "The public cross-language index for works, aliases, sources, relationships, and media-specific metadata.",
       "href": "https://www.rezics.com/en/",
       "ctaLabel": "Open catalog",
@@ -49,8 +49,8 @@
     {
       "name": "Rezics Web",
       "category": "App",
-      "status": "preview",
-      "statusLabel": "Preview",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "The main web app for browsing, reviewing, collecting, and contributing to the catalog.",
       "href": "https://www.rezics.com/en/",
       "ctaLabel": "Open app",
@@ -64,7 +64,7 @@
       "name": "Rezics Realms",
       "category": "Community",
       "status": "planned",
-      "statusLabel": "Planned",
+      "statusLabel": "Pre-production",
       "summary": "Community spaces that classify, discuss, and curate works without forking the public catalog.",
       "features": [
         "Realm membership and local discussion",
@@ -76,7 +76,7 @@
       "name": "Rezics Wiki",
       "category": "Knowledge",
       "status": "planned",
-      "statusLabel": "Planned",
+      "statusLabel": "Pre-production",
       "summary": "Collaborative knowledge pages and realm wiki portals that keep context near the works and communities that need it.",
       "features": [
         "Wiki posts for background, timelines, examples, and interpretation",
@@ -88,7 +88,7 @@
       "name": "Rezics Shelves",
       "category": "Discovery",
       "status": "planned",
-      "statusLabel": "Planned",
+      "statusLabel": "Pre-production",
       "summary": "Curated paths through works, reviews, tags, realms, and other shelf items.",
       "features": [
         "Explainable collections instead of opaque recommendation lists",
@@ -100,7 +100,7 @@
       "name": "Rezics Graph",
       "category": "Platform",
       "status": "planned",
-      "statusLabel": "Planned",
+      "statusLabel": "Pre-production",
       "summary": "The shared product graph behind catalog identity, source facts, community classification, and knowledge surfaces.",
       "features": [
         "Work, tag, realm, shelf, review, and wiki relationships",

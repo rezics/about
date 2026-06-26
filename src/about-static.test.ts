@@ -167,9 +167,15 @@ describe("@rezics/about locale contract", () => {
       expect(source).toContain(expected);
     }
 
-    expect(source).toContain('"status":"available"');
-    expect(source).toContain('"status":"preview"');
-    expect(source).toContain('"status":"planned"');
+    for (const locale of ABOUT_LOCALES) {
+      const products = getProductPageCopy(locale).products;
+      expect(products.every((product) => product.status === "planned")).toBe(
+        true,
+      );
+      expect(
+        products.every((product) => product.statusLabel === "Pre-production"),
+      ).toBe(true);
+    }
   });
 
   test("keeps long prose in markdown fragments instead of page json", async () => {

@@ -28,15 +28,15 @@
     {
       "eyebrow": "状態",
       "title": "この一覧は、将来向けの表面も表示できます。",
-      "body": "計画中という状態は、名前が方向性を示すものであり、完全なワークフローがすでに利用可能という意味ではありません。"
+      "body": "Pre-production は、名前が方向性を示すものであり、完全なワークフローがすでに利用可能という意味ではありません。"
     }
   ],
   "products": [
     {
       "name": "Rezics Catalog",
       "category": "カタログ",
-      "status": "available",
-      "statusLabel": "利用可能",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "作品、別名、出典、関係、媒体 metadata を整理する、公開された言語横断の作品索引。",
       "href": "https://www.rezics.com/ja/",
       "ctaLabel": "カタログを開く",
@@ -49,8 +49,8 @@
     {
       "name": "Rezics Web",
       "category": "アプリ",
-      "status": "preview",
-      "statusLabel": "プレビュー",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "カタログを閲覧、レビュー、収集、編集するための主要 Web アプリ。",
       "href": "https://www.rezics.com/ja/",
       "ctaLabel": "アプリを開く",
@@ -64,7 +64,7 @@
       "name": "Rezics Realms",
       "category": "コミュニティ",
       "status": "planned",
-      "statusLabel": "計画中",
+      "statusLabel": "Pre-production",
       "summary": "公開カタログを fork せず、コミュニティが作品を分類、議論、キュレーションする空間。",
       "features": [
         "Realm メンバーシップとローカルな議論",
@@ -76,7 +76,7 @@
       "name": "Rezics Wiki",
       "category": "知識",
       "status": "planned",
-      "statusLabel": "計画中",
+      "statusLabel": "Pre-production",
       "summary": "作品とコミュニティのそばに文脈を置く、協働知識ページと realm wiki ポータル。",
       "features": [
         "背景、時系列、例、解釈を記録する wiki 投稿",
@@ -88,7 +88,7 @@
       "name": "Rezics Shelves",
       "category": "発見",
       "status": "planned",
-      "statusLabel": "計画中",
+      "statusLabel": "Pre-production",
       "summary": "作品、レビュー、タグ、realms、その他の棚項目を通るキュレーションされた道筋。",
       "features": [
         "不透明な推薦リストではなく、説明可能なコレクション",
@@ -100,7 +100,7 @@
       "name": "Rezics Graph",
       "category": "プラットフォーム",
       "status": "planned",
-      "statusLabel": "計画中",
+      "statusLabel": "Pre-production",
       "summary": "カタログ ID、出典事実、コミュニティ分類、知識表面を支える共有製品グラフ。",
       "features": [
         "作品、タグ、realm、棚、レビュー、wiki の関係",

@@ -28,15 +28,15 @@
     {
       "eyebrow": "狀態",
       "title": "這個列表可以展示面向未來的產品表面。",
-      "body": "「計畫中」代表這個產品名稱是方向性的，而不是宣稱完整工作流已經上線。"
+      "body": "Pre-production 代表這個產品名稱是方向性的，而不是宣稱完整工作流已經上線。"
     }
   ],
   "products": [
     {
       "name": "Rezics Catalog",
       "category": "目錄",
-      "status": "available",
-      "statusLabel": "可用",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "公開的跨語言作品索引，整理作品、別名、來源、關聯與媒介 metadata。",
       "href": "https://www.rezics.com/zh-hant/",
       "ctaLabel": "開啟目錄",
@@ -49,8 +49,8 @@
     {
       "name": "Rezics Web",
       "category": "應用",
-      "status": "preview",
-      "statusLabel": "預覽",
+      "status": "planned",
+      "statusLabel": "Pre-production",
       "summary": "用來瀏覽、評論、收藏與貢獻目錄的主要 Web 應用。",
       "href": "https://www.rezics.com/zh-hant/",
       "ctaLabel": "開啟應用",
@@ -64,7 +64,7 @@
       "name": "Rezics Realms",
       "category": "社群",
       "status": "planned",
-      "statusLabel": "計畫中",
+      "statusLabel": "Pre-production",
       "summary": "讓社群分類、討論與策展作品，而不必 fork 公開目錄的社群空間。",
       "features": [
         "Realm 成員與本地討論",
@@ -76,7 +76,7 @@
       "name": "Rezics Wiki",
       "category": "知識",
       "status": "planned",
-      "statusLabel": "計畫中",
+      "statusLabel": "Pre-production",
       "summary": "協作知識頁與 realm wiki 入口，讓脈絡留在需要它的作品與社群旁邊。",
       "features": [
         "用 wiki 貼文記錄背景、時間線、範例與解讀",
@@ -88,7 +88,7 @@
       "name": "Rezics Shelves",
       "category": "發現",
       "status": "planned",
-      "statusLabel": "計畫中",
+      "statusLabel": "Pre-production",
       "summary": "穿過作品、評論、標籤、realms 與其他書架項目的策展路徑。",
       "features": [
         "用可解釋的收藏取代黑箱推薦列表",
@@ -100,7 +100,7 @@
       "name": "Rezics Graph",
       "category": "平台",
       "status": "planned",
-      "statusLabel": "計畫中",
+      "statusLabel": "Pre-production",
       "summary": "支撐目錄身份、來源事實、社群分類與知識表面的共享產品圖譜。",
       "features": [
         "作品、標籤、realm、書架、評論與 wiki 的關係",
