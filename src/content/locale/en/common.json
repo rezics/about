@@ -13,7 +13,8 @@
   "cta": {
     "enterApp": "Open the catalog",
     "readProduct": "Explore products",
-    "backHome": "Back to about"
+    "backHome": "Back to about",
+    "backProduct": "Back to products"
   },
   "footer": {
     "originNote": "Interactive catalog, shelf, and community workflows open in the main Rezics app."

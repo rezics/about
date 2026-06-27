@@ -13,7 +13,8 @@
   "cta": {
     "enterApp": "进入作品索引",
     "readProduct": "查看产品",
-    "backHome": "回到关于页"
+    "backHome": "回到关于页",
+    "backProduct": "回到产品"
   },
   "footer": {
     "originNote": "互动索引、书架与社区工作流在 Rezics 主应用中开启。"

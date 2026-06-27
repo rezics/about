@@ -1,11 +1,7 @@
-## A public index for creative abundance
+## Our story
 
-Rezics begins with books because web fiction makes the problem impossible to
-ignore. The goal is broader: any work should be findable across language,
-platform, and community boundaries.
+The Re in Rezics comes from reincarnation. Not in a mystical sense, but as a simple idea: the things people create, learn, and love do not truly disappear. They return in new languages, media, communities, and interpretations.
 
-## Knowledge stays beside the work
+We began with web novels and born-digital books because they exposed the fracture first: platforms, languages, versions, tags, wiki knowledge, and community context splitting apart at scale. But Rezics is not only for books. It is for every story worth preserving, understanding, and encountering again.
 
-The catalog, reviews, shelves, wiki knowledge, and Realm discussion all point
-back to the same work identity. That is how inherited knowledge can keep moving
-forward without losing where it came from.
+That is inherited · create · spread: inherited knowledge, new understanding and creation, and the continued movement of the things people love.

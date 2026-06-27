@@ -1,112 +1,162 @@
 {
   "meta": {
-    "title": "Rezics Products | Rezics",
-    "description": "浏览 Rezics 产品家族：目录、Web 应用、Realms、Wiki、书架与共享图谱，都建立在同一个作品身份之上。"
+    "title": "Rezics 产品 | Rezics",
+    "description": "浏览 Rezics 产品家族：Library、Tags、Zone、Realm、Review、Wiki、Shelf 与 Progress，都围绕故事身份连接起来。"
   },
-  "hero": {
-    "eyebrow": "产品",
-    "heading": "Rezics 产品"
-  },
-  "sections": [
-    {
-      "eyebrow": "共享基础",
-      "title": "每个产品表面都从同一个作品身份开始。",
-      "body": "目录项、评论、书架、标签、wiki 页面与 realm 讨论，都回到共享的 Work Unit，而不是变成彼此分离的数据库。"
-    },
-    {
-      "eyebrow": "产品边界",
-      "title": "这个站点介绍产品；互动工作流留在主应用。",
-      "body": "搜索、收藏、投票、编辑、加入 realm、wiki 创作，以及其他需要登录状态的流程，都在 Rezics 主应用中完成。"
-    }
-  ],
-  "storySections": [
-    {
-      "eyebrow": "列表逻辑",
-      "title": "产品可以拆开，但图谱不应该拆开。",
-      "body": "Rezics Web、Realms、Wiki、Shelves 与 Graph 可以成为不同产品表面，但仍然共享目录身份、来源事实与社区分类。"
-    },
-    {
-      "eyebrow": "状态",
-      "title": "这个列表可以展示面向未来的产品表面。",
-      "body": "Pre-production 代表这个产品名称是方向性的，而不是宣称完整工作流已经上线。"
-    }
-  ],
+  "hero": { "eyebrow": "产品", "heading": "Rezics 产品家族" },
   "products": [
     {
-      "name": "Rezics Catalog",
-      "category": "目录",
+      "slug": "library",
+      "name": "Rezics Library",
+      "category": "身份",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "公开的跨语言作品索引，整理作品、别名、来源、关联与媒介 metadata。",
+      "summary": "开放、跨平台、跨语言的故事与作品 metadata 基础。",
       "href": "https://www.rezics.com/zh-hans/",
-      "ctaLabel": "打开目录",
-      "features": [
-        "为书籍、游戏、媒体、帖子与混合型作品建立共享 Work Unit",
-        "保存事实、别名、来源链接、翻译与关联作品",
-        "让作品在语言、平台、版本与社区之间维持同一个身份"
-      ]
+      "ctaLabel": "了解 Library",
+      "features": ["保存故事、作品、别名、来源、版本、语言与关联", "支持网络小说、数字原生书籍、互动小说与混合型作品", "让评论、wiki、tag、zone 与 realm 都能回到同一个身份"],
+      "detail": {
+        "heading": "故事身份的公共基础",
+        "lead": "Rezics Library 是整个系统的起点。它不把故事锁在单一平台、语言或媒介里，而是建立一个可以被引用、翻译、补充与讨论的公共身份。",
+        "sections": [
+          { "eyebrow": "Open Metadata", "title": "作品资料应该能被社区共同补全。", "body": "Library 保留名称、别名、来源、版本、语言、关联作品与媒介信息，让不同社区能在同一个身份上贡献事实。" },
+          { "eyebrow": "Beyond Platform", "title": "故事不属于发布它的单一平台。", "body": "同一个故事可能出现在原站、翻译站、出版版、改编作品与社区整理中。Library 让这些入口能够连接。" },
+          { "eyebrow": "Born Digital", "title": "从网络小说开始，但不止于书。", "body": "互动小说、游戏、世界观、系列与混合型创作都需要更灵活的身份模型。Library 是 Rezics 面向所有故事形态的底层。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Web",
-      "category": "应用",
+      "slug": "tags",
+      "name": "Rezics Tags",
+      "category": "共识",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "用来浏览、评论、收藏与贡献目录的主要 Web 应用。",
-      "href": "https://www.rezics.com/zh-hans/",
-      "ctaLabel": "打开应用",
-      "features": [
-        "互动搜索与作品详情页",
-        "评论、书架、标签与收藏工作流",
-        "需要登录的目录与社区贡献流程"
-      ]
+      "summary": "全局 tag 与 realm 视角的 vote 系统，让分类能流动，也能保留语境。",
+      "ctaLabel": "了解 Tags",
+      "features": ["用全局 tag 建立跨语言、跨社区的共同分类语言", "用 realm vote 处理 tag 歧义与社区视角差异", "让发现、zone、shelf、review 与 forum 讨论共享同一套分类基础"],
+      "detail": {
+        "heading": "分类不是平台单方面的答案",
+        "lead": "Rezics Tags 把全局分类与社区共识连接起来。它不要求所有人对一个 tag 有完全相同的理解，而是让不同 realm 能表达自己的判断。",
+        "sections": [
+          { "eyebrow": "Global Language", "title": "全局 tag 让社区不被切成孤岛。", "body": "如果每个社区都各自建立 tag，发现就会被割裂。Rezics 用全局 tag 作为共同语言。" },
+          { "eyebrow": "Realm Vote", "title": "同一个 tag 可以有不同社区视角。", "body": "硬科幻、后宫、幕后流这类分类常常有语义争议。Realm vote 让社区能从自己的认知出发判断。" },
+          { "eyebrow": "Discovery", "title": "好的分类应该帮助人找到真正想看的故事。", "body": "Tags 会影响 zone、搜索、书架、推荐路径与社区讨论，让分类服务于相遇。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Realms",
+      "slug": "zone",
+      "name": "Rezics Zone",
+      "category": "场所",
+      "status": "planned",
+      "statusLabel": "Pre-production",
+      "summary": "一个故事、世界、系列、主题或类型在 Rezics 上形成的完整场所。",
+      "ctaLabel": "了解 Zone",
+      "features": ["用 query、tag、metadata 与 realm 组成可客制化的入口", "可以承载 wiki、结构化知识、自定义主题与社区空间", "让书库、类型库、系列宇宙与专题入口都成为同一套模型"],
+      "detail": {
+        "heading": "Everything is Zone",
+        "lead": "Rezics Zone 不是固定分类页，而是一个故事、世界、系列、主题或类型形成的完整场所。Harry Potter 可以是 Zone，Fate 可以是 Zone，硬科幻与互动小说也可以是 Zone。",
+        "sections": [
+          { "eyebrow": "Custom Place", "title": "Zone 可以承载一个故事宇宙的入口。", "body": "一个 Zone 可以包含作品列表、wiki、结构化知识、review、realm-based community、自定义主题与策展路径。" },
+          { "eyebrow": "Query Native", "title": "Rezics 不需要把所有库写死。", "body": "旧平台常把书库、影视库、游戏库分成不同世界。Rezics 用 query、tag、metadata 与 realm 组成 zone。" },
+          { "eyebrow": "Community Layer", "title": "Zone 让知识与社区在同一个地方生长。", "body": "当 wiki、forum、tag 共识与作品身份聚集在一个 Zone，它就成为故事被理解、讨论与延续的公共空间。" }
+        ]
+      }
+    },
+    {
+      "slug": "realm",
+      "name": "Rezics Realm",
       "category": "社区",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "让社区分类、讨论与策展作品，而不必 fork 公开目录的社区空间。",
-      "features": [
-        "Realm 成员与本地讨论",
-        "社区语境中的标签应用",
-        "围绕共同兴趣的动态与入口"
-      ]
+      "summary": "建立在全局作品身份与 tag 系统上的 forum-grade 社区。",
+      "ctaLabel": "了解 Realm",
+      "features": ["让社区成为 context，而不是把内容锁进 group", "基于全局 tag 与作品身份建立真正的论坛结构", "支持 realm 视角的分类、讨论、vote 与知识整理"],
+      "detail": {
+        "heading": "Build your forum",
+        "lead": "Rezics Realm 不是又一个 group。它是建立在全局作品身份、tag 与 zone 之上的 forum-grade 社区，让社区形成自己的语境，但不必从公共网络中切出去。",
+        "sections": [
+          { "eyebrow": "Context", "title": "社区应该是理解内容的语境。", "body": "传统 group 往往把内容锁在群里，内容沉没后很难重新找到。Realm 把社区视角接到作品、tag、wiki 与 review 上。" },
+          { "eyebrow": "Forum Grade", "title": "Rezics 想提供论坛，而不只是聊天群。", "body": "基于全局 tag 和作品身份，Realm 可以组织板块、讨论、issue、vote 与知识入口。" },
+          { "eyebrow": "Voice", "title": "不同社区可以保留不同声音。", "body": "Rezics 尊重所有声音，也让社区能用自己的方式理解故事。Realm 让差异被表达，而不是被平台分类抹平。" }
+        ]
+      }
     },
     {
+      "slug": "review",
+      "name": "Rezics Review",
+      "category": "声音",
+      "status": "planned",
+      "statusLabel": "Pre-production",
+      "summary": "让评分、短评、长评与讨论彼此连接，让评价真正产生价值。",
+      "ctaLabel": "了解 Review",
+      "features": ["区分 rating、remark 与 review 的不同表达层次", "让读后感不必重复发布到别的平台才能被讨论", "把评论接到作品身份、tag、realm 与 zone"],
+      "detail": {
+        "heading": "评价不该只是分数",
+        "lead": "Rezics Review 让读者在故事旁边留下声音。它可以是分数、短评、长文、讨论入口，也可以成为他人理解故事的路径。",
+        "sections": [
+          { "eyebrow": "After Reading", "title": "被故事击中之后，感想不该被迫搬家。", "body": "写完 review 还要重新发到 Reddit 或其他论坛才能交流，本身就是割裂。Rezics 让评论自然接上作品与社区。" },
+          { "eyebrow": "Layers", "title": "不同评价形式应该有不同位置。", "body": "Rating、remark 与 review 承载不同深度。Rezics 让轻量感想与长篇分析都能找到自己的位置。" },
+          { "eyebrow": "Conversation", "title": "好的评论应该引发理解，而不只是留下结论。", "body": "Review 可以连接 tag、realm 讨论与 wiki 背景，让评价成为理解故事的一部分。" }
+        ]
+      }
+    },
+    {
+      "slug": "wiki",
       "name": "Rezics Wiki",
       "category": "知识",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "协作知识页与 realm wiki 入口，让脉络留在需要它的作品与社区旁边。",
-      "features": [
-        "用 wiki 帖子记录背景、时间线、范例与解读",
-        "由社区维护的 Realm wiki 专区",
-        "让知识接在作品旁边，而不是散落到不同工具"
-      ]
+      "summary": "跨语言、开放编辑，并与故事、zone、realm、tag、review 连接的知识系统。",
+      "ctaLabel": "了解 Wiki",
+      "features": ["整理世界观、角色、时间线、设定、范例与考据", "让 wiki 不再孤立，而是连到作品身份与社区语境", "支持 zone 与 realm 中的专业化知识入口"],
+      "detail": {
+        "heading": "不止 wiki",
+        "lead": "Rezics Wiki 不是孤立百科。它继承 wiki 的开放编辑能力，但把知识接到故事、zone、realm、tag、review 与结构化 metadata 上。",
+        "sections": [
+          { "eyebrow": "Open Editing", "title": "知识可以由社区共同整理。", "body": "世界观、编年史、角色关系、设定解释与阅读顺序都需要长期维护。Rezics Wiki 让这些知识可以公开补全、修正与翻译。" },
+          { "eyebrow": "Connected", "title": "wiki 应该留在需要它的故事旁边。", "body": "传统 wiki 常常成为另一个孤岛。Rezics Wiki 连接作品身份、Zone、Realm、Tag 与 Review。" },
+          { "eyebrow": "Structured", "title": "知识不只是一篇页面。", "body": "Rezics 会把可结构化的部分与自由书写并存，让知识既能被阅读，也能被搜索、引用、比较与重用。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Shelves",
-      "category": "发现",
+      "slug": "shelf",
+      "name": "Rezics Shelf",
+      "category": "策展",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "穿过作品、评论、标签、realms 与其他书架项目的策展路径。",
-      "features": [
-        "用可解释的收藏取代黑箱推荐列表",
-        "书架项目可以承载评论与分类脉络",
-        "让读者与社区围绕共享作品身份策展"
-      ]
+      "summary": "个人与社区的策展路径，让下一个故事不是黑箱推荐，而是可理解的发现。",
+      "ctaLabel": "了解 Shelf",
+      "features": ["收藏故事、review、wiki、zone 与其他 shelf 项目", "用可解释的策展取代单纯算法推荐", "让读者、社区与创作者建立自己的发现入口"],
+      "detail": {
+        "heading": "策展是一种理解",
+        "lead": "Rezics Shelf 不只是收藏列表。它让读者和社区建立自己的阅读路径、主题入口与推荐语境。",
+        "sections": [
+          { "eyebrow": "Curation", "title": "书架可以承载判断，而不只是保存。", "body": "一个 Shelf 可以收集作品、评论、wiki、zone 或其他 shelf，并说明为什么它们值得一起被看见。" },
+          { "eyebrow": "Discovery", "title": "发现不应该完全交给黑箱。", "body": "Rezics 让读者看到社区与策展者如何组织故事，让推荐变得可解释、可讨论，也更容易被信任。" },
+          { "eyebrow": "Path", "title": "每个人都可以留下自己的故事路径。", "body": "Shelf 让个人热爱、社区共识与主题策展成为可分享的入口，帮助更多人走向适合自己的故事。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Graph",
-      "category": "平台",
+      "slug": "progress",
+      "name": "Rezics Progress",
+      "category": "足迹",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "支撑目录身份、来源事实、社区分类与知识表面的共享产品图谱。",
-      "features": [
-        "作品、标签、realm、书架、评论与 wiki 的关系",
-        "面向产品表面的 contract-first 数据形状",
-        "让未来 Rezics 工具不必重复建立事实"
-      ]
+      "summary": "跨平台记录你的阅读、观看、游玩与追踪足迹。",
+      "ctaLabel": "了解 Progress",
+      "features": ["基于开放 metadata 记录真正超越平台的个人进度", "支持阅读、观看、游玩与混合型故事体验", "把个人足迹接到 review、shelf、zone 与发现路径"],
+      "detail": {
+        "heading": "记录你和故事一起走过的路",
+        "lead": "Rezics Progress 让个人足迹不被平台切碎。你在不同地方阅读、观看、游玩或追踪的故事，都应该能回到同一个身份。",
+        "sections": [
+          { "eyebrow": "Beyond Platform", "title": "进度不应该只属于某个 app。", "body": "当同一个故事跨越原站、翻译、出版版或改编作品，个人足迹也需要能跨平台延续。" },
+          { "eyebrow": "Experience", "title": "故事体验不只有阅读。", "body": "Rezics Progress 面向小说、互动小说、游戏、影像与混合型作品，让不同媒介中的故事旅程都能被记录。" },
+          { "eyebrow": "Memory", "title": "足迹会成为日后理解与分享的基础。", "body": "Progress 可以接上 review、shelf 与 zone，让你不只是记得看过什么，也能回到当时的理解与下一步发现。" }
+        ]
+      }
     }
   ]
 }

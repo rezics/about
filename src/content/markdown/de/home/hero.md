@@ -1,3 +1,3 @@
-Re stammt von reincarnation, aber nicht in einem mystischen Sinn. Es geht um eine einfache Idee: Was Menschen erschaffen, lernen und lieben, verschwindet nicht. Es findet neue Formen, gelangt in neue Hände und wächst weiter.
+Wenn dich eine Geschichte bewegt, sollte sie nicht in einer Plattform, Sprache oder Community eingeschlossen sein. Du solltest sie nicht verlassen müssen, um Rezensionen, Diskussionen, Wissen und Menschen zu finden, die von ihr genauso berührt wurden.
 
-REZICS baut auf dieser Idee auf. Wir wollen eine Community sein, in der Wissen und Kreativität frei weitergetragen, neu geschaffen und weiterverbreitet werden, damit alle gemeinsam verfolgen können, was sie wirklich lieben.
+Rezics ist dieser Ort: Geschichten, Eindrücke, wiki, tags, forums, zones und Menschen finden wieder zusammen, damit das, was du liebst, gefunden, verstanden und weitergetragen werden kann.

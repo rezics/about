@@ -1,112 +1,162 @@
 {
   "meta": {
-    "title": "Rezics Products | Rezics",
-    "description": "Rezics 製品ファミリーを紹介します。カタログ、Web アプリ、Realms、Wiki、棚、共有グラフは、同じ作品 ID の上にあります。"
+    "title": "Rezics 製品 | Rezics",
+    "description": "Rezics の製品群、Library、Tags、Zone、Realm、Review、Wiki、Shelf、Progress は、すべて物語のアイデンティティを中心につながっています。"
   },
-  "hero": {
-    "eyebrow": "製品",
-    "heading": "Rezics 製品"
-  },
-  "sections": [
-    {
-      "eyebrow": "共有基盤",
-      "title": "すべての製品表面は、同じ作品 ID から始まります。",
-      "body": "カタログ項目、レビュー、棚、タグ、wiki ページ、realm の議論は、別々のデータベースではなく共有 Work Unit に戻ります。"
-    },
-    {
-      "eyebrow": "製品境界",
-      "title": "このサイトは製品を紹介し、操作は本体アプリが担います。",
-      "body": "検索、保存、投票、編集、realm 参加、wiki 執筆など、ログイン状態を必要とする操作は Rezics 本体アプリで行います。"
-    }
-  ],
-  "storySections": [
-    {
-      "eyebrow": "一覧の考え方",
-      "title": "製品は分けられても、グラフは分けません。",
-      "body": "Rezics Web、Realms、Wiki、Shelves、Graph は別々の製品表面になり得ますが、カタログ ID、出典事実、コミュニティ分類は共有します。"
-    },
-    {
-      "eyebrow": "状態",
-      "title": "この一覧は、将来向けの表面も表示できます。",
-      "body": "Pre-production は、名前が方向性を示すものであり、完全なワークフローがすでに利用可能という意味ではありません。"
-    }
-  ],
+  "hero": { "eyebrow": "製品", "heading": "Rezics 製品ファミリー" },
   "products": [
     {
-      "name": "Rezics Catalog",
-      "category": "カタログ",
+      "slug": "library",
+      "name": "Rezics Library",
+      "category": "Identity",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "作品、別名、出典、関係、媒体 metadata を整理する、公開された言語横断の作品索引。",
+      "summary": "物語と作品のための、オープンで多言語・クロスプラットフォームな metadata 基盤。",
       "href": "https://www.rezics.com/ja/",
-      "ctaLabel": "カタログを開く",
-      "features": [
-        "本、ゲーム、メディア、投稿、混合型作品の共有 Work Unit",
-        "事実、別名、出典リンク、翻訳、関連作品",
-        "言語、プラットフォーム、版、コミュニティを越えるひとつの作品 ID"
-      ]
+      "ctaLabel": "Library を見る",
+      "features": ["物語、作品、別名、出典、版、言語、関係を保存", "Web 小説、デジタル書籍、インタラクティブ作品、混合型作品に対応", "review、wiki、tag、zone、realm を同じ identity に接続"],
+      "detail": {
+        "heading": "物語 identity の公共基盤",
+        "lead": "Rezics Library はシステムの出発点です。物語をひとつのプラットフォーム、言語、メディアに閉じ込めず、引用、翻訳、補足、議論できる identity を作ります。",
+        "sections": [
+          { "eyebrow": "Open Metadata", "title": "作品データはコミュニティで補えるべきです。", "body": "名称、別名、出典、版、言語、関連作品、メディア情報をまとめ、孤立した項目ではなく同じ identity へ貢献できるようにします。" },
+          { "eyebrow": "Beyond Platform", "title": "物語は公開された平台だけのものではありません。", "body": "原サイト、翻訳、出版版、改編、コミュニティ整理をつなげ、入口同士が隠し合わないようにします。" },
+          { "eyebrow": "Born Digital", "title": "Web 小説から始まり、本だけで終わりません。", "body": "インタラクティブ作品、ゲーム、世界観、シリーズ、混合型創作にも柔軟な identity モデルが必要です。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Web",
-      "category": "アプリ",
+      "slug": "tags",
+      "name": "Rezics Tags",
+      "category": "Consensus",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "カタログを閲覧、レビュー、収集、編集するための主要 Web アプリ。",
-      "href": "https://www.rezics.com/ja/",
-      "ctaLabel": "アプリを開く",
-      "features": [
-        "インタラクティブな検索と作品詳細",
-        "レビュー、棚、タグ、コレクション操作",
-        "ログインした利用者によるカタログとコミュニティへの貢献"
-      ]
+      "summary": "global tag と realm vote により、分類を流通させながら文脈も保ちます。",
+      "ctaLabel": "Tags を見る",
+      "features": ["言語とコミュニティを越える共通分類言語", "tag の曖昧さを realm vote で扱う", "発見、zone、shelf、review、forum を同じ分類基盤につなぐ"],
+      "detail": {
+        "heading": "分類は平台の一方的な答えではありません",
+        "lead": "Rezics Tags は global な分類とコミュニティの合意を接続します。すべてのコミュニティに同じ意味を強制せず、realm ごとの判断を表現できます。",
+        "sections": [
+          { "eyebrow": "Global Language", "title": "global tag はコミュニティを孤島にしません。", "body": "各コミュニティが別々の tag を作ると発見は分断されます。Rezics は共通言語として global tag を使います。" },
+          { "eyebrow": "Realm Vote", "title": "同じ tag に複数のコミュニティ視点を持てます。", "body": "ハード SF やハーレムのような分類は議論を伴います。realm vote はその視点を表現します。" },
+          { "eyebrow": "Discovery", "title": "良い分類は、本当に読みたい物語へ導きます。", "body": "Tags は zone、検索、shelf、推薦経路、議論に関わり、出会いのために使われます。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Realms",
-      "category": "コミュニティ",
+      "slug": "zone",
+      "name": "Rezics Zone",
+      "category": "Place",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "公開カタログを fork せず、コミュニティが作品を分類、議論、キュレーションする空間。",
-      "features": [
-        "Realm メンバーシップとローカルな議論",
-        "コミュニティ文脈でのタグ適用",
-        "共有された関心を中心にした feed と入口"
-      ]
+      "summary": "物語、世界、シリーズ、テーマ、ジャンルが Rezics 上で形成する完全な場所。",
+      "ctaLabel": "Zone を見る",
+      "features": ["query、tag、metadata、realm で入口を構成", "wiki、構造化知識、テーマ、コミュニティ空間を含められる", "ライブラリ、ジャンル、物語世界、特集を同じモデルで扱う"],
+      "detail": {
+        "heading": "Everything is Zone",
+        "lead": "Rezics Zone は固定カテゴリページではありません。物語、世界、シリーズ、テーマ、ジャンルを中心に形成される完全な場所です。",
+        "sections": [
+          { "eyebrow": "Custom Place", "title": "Zone は物語世界への入口になります。", "body": "作品一覧、wiki、構造化知識、review、realm-based community、テーマ、策展経路を含められます。" },
+          { "eyebrow": "Query Native", "title": "Rezics はすべての庫を固定しません。", "body": "query、tag、metadata、realm から zone を作るため、汎用性と専門性を両立できます。" },
+          { "eyebrow": "Community Layer", "title": "Zone は知識とコミュニティを同じ場所で育てます。", "body": "wiki、forum、tag 合意、story identity が集まると、Zone は理解と議論の公共空間になります。" }
+        ]
+      }
     },
     {
+      "slug": "realm",
+      "name": "Rezics Realm",
+      "category": "Community",
+      "status": "planned",
+      "statusLabel": "Pre-production",
+      "summary": "global な作品 identity と tag の上に作られる forum-grade なコミュニティ。",
+      "ctaLabel": "Realm を見る",
+      "features": ["コミュニティを content を閉じ込める group ではなく context にする", "global tag と story identity に基づくフォーラム構造", "realm 視点の分類、議論、vote、知識整理"],
+      "detail": {
+        "heading": "Build your forum",
+        "lead": "Rezics Realm は単なる group ではありません。global な story identity、tag、zone の上に作られる forum-grade なコミュニティです。",
+        "sections": [
+          { "eyebrow": "Context", "title": "コミュニティは content を理解する context です。", "body": "Realm はコミュニティ視点を作品、tag、wiki、review に接続し、議論を物語のそばに戻します。" },
+          { "eyebrow": "Forum Grade", "title": "Rezics はチャット群ではなくフォーラムを目指します。", "body": "板、議論、issue、vote、知識入口を長期的に整理できます。" },
+          { "eyebrow": "Voice", "title": "異なるコミュニティは異なる声を保てます。", "body": "Rezics は多様な声を尊重し、差異を一つの平台分類に押し込めません。" }
+        ]
+      }
+    },
+    {
+      "slug": "review",
+      "name": "Rezics Review",
+      "category": "Voice",
+      "status": "planned",
+      "statusLabel": "Pre-production",
+      "summary": "rating、remark、review、議論を接続し、評価に本当の価値を持たせます。",
+      "ctaLabel": "Review を見る",
+      "features": ["rating、remark、review を異なる表現層として扱う", "感想を別平台へ再投稿せず議論できる", "review を story identity、tag、realm、zone へ接続"],
+      "detail": {
+        "heading": "評価は点数だけではありません",
+        "lead": "Rezics Review は読者の声を物語のそばに残します。点数、短評、長文、議論の入口として、他の人が物語を理解する助けになります。",
+        "sections": [
+          { "eyebrow": "After Reading", "title": "心を動かされた感想は別の場所へ移る必要がありません。", "body": "review を書いたあと Reddit などへ再投稿するのは分断です。Rezics は review とコミュニティを直接つなぎます。" },
+          { "eyebrow": "Layers", "title": "評価形式ごとに場所が必要です。", "body": "軽い反応と長い分析を同じ型に押し込めず、それぞれの深さを保ちます。" },
+          { "eyebrow": "Conversation", "title": "良い review は結論だけでなく理解を生みます。", "body": "tag、realm の議論、wiki 文脈と接続し、評価を物語理解の一部にします。" }
+        ]
+      }
+    },
+    {
+      "slug": "wiki",
       "name": "Rezics Wiki",
-      "category": "知識",
+      "category": "Knowledge",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "作品とコミュニティのそばに文脈を置く、協働知識ページと realm wiki ポータル。",
-      "features": [
-        "背景、時系列、例、解釈を記録する wiki 投稿",
-        "コミュニティが維持する Realm wiki zones",
-        "知識を別ツールに散らさず、作品に接続する構造"
-      ]
+      "summary": "物語、zone、realm、tag、review とつながる、多言語・オープン編集の知識システム。",
+      "ctaLabel": "Wiki を見る",
+      "features": ["世界観、人物、年表、設定、考察を整理", "wiki を story identity と community context に接続", "zone と realm の専門知識入口を支える"],
+      "detail": {
+        "heading": "wiki を超えて",
+        "lead": "Rezics Wiki は孤立した百科ではありません。wiki のオープン編集を受け継ぎ、知識を物語、zone、realm、tag、review、metadata へ接続します。",
+        "sections": [
+          { "eyebrow": "Open Editing", "title": "知識はコミュニティで整理できます。", "body": "世界観、年表、人物関係、設定説明、読む順番を公開で補完、修正、翻訳できます。" },
+          { "eyebrow": "Connected", "title": "wiki は必要とされる物語のそばにあるべきです。", "body": "Rezics Wiki は story identity、Zone、Realm、Tags、Review と接続します。" },
+          { "eyebrow": "Structured", "title": "知識は一枚のページだけではありません。", "body": "構造化データと自由記述を並存させ、読む、探す、引用する、比較する、再利用することを可能にします。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Shelves",
-      "category": "発見",
+      "slug": "shelf",
+      "name": "Rezics Shelf",
+      "category": "Curation",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "作品、レビュー、タグ、realms、その他の棚項目を通るキュレーションされた道筋。",
-      "features": [
-        "不透明な推薦リストではなく、説明可能なコレクション",
-        "レビューと分類文脈を持てる棚項目",
-        "共有作品 ID を中心にした読者とコミュニティのキュレーション"
-      ]
+      "summary": "次の物語をブラックボックスではなく、理解できる策展として見つけるための個人・コミュニティの経路。",
+      "ctaLabel": "Shelf を見る",
+      "features": ["物語、review、wiki、zone、他の shelf を収集", "説明できる策展で推薦を補う", "読者、コミュニティ、創作者が入口を作れる"],
+      "detail": {
+        "heading": "策展は理解の一形態です",
+        "lead": "Rezics Shelf は保存リストではありません。読者とコミュニティが読書経路、テーマ入口、推薦文脈を作るための仕組みです。",
+        "sections": [
+          { "eyebrow": "Curation", "title": "棚は保存だけでなく判断を持てます。", "body": "作品、review、wiki、zone、他の shelf を集め、なぜ一緒に見るべきかを示せます。" },
+          { "eyebrow": "Discovery", "title": "発見を完全にブラックボックスへ渡すべきではありません。", "body": "人やコミュニティが物語をどう整理したかを見えるようにします。" },
+          { "eyebrow": "Path", "title": "誰もが物語への道筋を残せます。", "body": "個人の好み、コミュニティ合意、テーマ策展を共有できる入口にします。" }
+        ]
+      }
     },
     {
-      "name": "Rezics Graph",
-      "category": "プラットフォーム",
+      "slug": "progress",
+      "name": "Rezics Progress",
+      "category": "Journey",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "カタログ ID、出典事実、コミュニティ分類、知識表面を支える共有製品グラフ。",
-      "features": [
-        "作品、タグ、realm、棚、レビュー、wiki の関係",
-        "製品表面のための contract-first なデータ形状",
-        "将来の Rezics ツールが事実を重複させないための基盤"
-      ]
+      "summary": "読む、見る、遊ぶ、追う体験をプラットフォームを越えて記録します。",
+      "ctaLabel": "Progress を見る",
+      "features": ["特定 app に閉じない個人進捗", "読書、視聴、プレイ、混合型の物語体験に対応", "review、shelf、zone、発見経路へ接続"],
+      "detail": {
+        "heading": "物語と歩いた道を記録する",
+        "lead": "Rezics Progress は個人の足跡を平台ごとに分断しません。異なる場所で読んだり、見たり、遊んだりした物語も同じ identity へ戻ります。",
+        "sections": [
+          { "eyebrow": "Beyond Platform", "title": "進捗はひとつの app だけのものではありません。", "body": "原サイト、翻訳、出版版、改編を越えて、個人の進捗も続くべきです。" },
+          { "eyebrow": "Experience", "title": "物語体験は読書だけではありません。", "body": "小説、インタラクティブ作品、ゲーム、映像、混合型作品の旅を記録できます。" },
+          { "eyebrow": "Memory", "title": "足跡は後の理解と共有の基盤になります。", "body": "Progress は review、shelf、zone と接続し、何を体験したかだけでなく、どう理解したかへ戻れます。" }
+        ]
+      }
     }
   ]
 }

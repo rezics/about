@@ -13,7 +13,8 @@
   "cta": {
     "enterApp": "작품 카탈로그 열기",
     "readProduct": "제품 보기",
-    "backHome": "소개로 돌아가기"
+    "backHome": "소개로 돌아가기",
+    "backProduct": "제품으로 돌아가기"
   },
   "footer": {
     "originNote": "상호작용형 카탈로그, 서가, 커뮤니티 작업은 Rezics 기본 앱에서 열립니다."

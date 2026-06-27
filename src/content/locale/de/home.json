@@ -1,45 +1,50 @@
 {
   "meta": {
-    "title": "Rezics | inherited · create · spread",
-    "description": "Rezics ist eine Community, in der Werke, Wissen und Kreativität über Plattformen, Sprachen und Communities hinweg weitergetragen, neu geschaffen und weiterverbreitet werden."
+    "title": "REZICS: Begegne den Geschichten, die du liebst",
+    "description": "Rezics ist ein Ort, an dem Geschichten, Wissen, Rezensionen, Communities und Menschen wieder zusammenkommen: plattformübergreifend, mehrsprachig, offen editierbar und strukturiert."
   },
   "hero": {
     "eyebrow": "Begegne den Geschichten, die du liebst.",
-    "heading": "inherited · create · spread"
+    "heading": "REZICS: inherited · create · spread"
   },
   "primaryCtaPage": "product",
   "sections": [
     {
-      "eyebrow": "Der Anfang",
-      "title": "Webromane und digital entstandene Bücher sind alten Katalogen bereits entwachsen.",
-      "body": "Serielle Fiction, unabhängiges Schreiben und plattform-native Bücher bewegen sich zu schnell und über zu viele Orte und Sprachen, um von klassischen Regalen oder einsprachigen Datenbanken gut geordnet zu werden."
+      "eyebrow": "Nach der Geschichte",
+      "title": "Nach einem Abenteuer sollte eine Geschichte nicht auf der letzten Seite enden.",
+      "body": "Menschen wollen Eindrücke festhalten, Gleichgesinnte finden, Welten ordnen, Fragen zu Details stellen, Deutungen lesen und manchmal Neues schaffen. All das gehört zur gleichen Geschichte, landet aber oft an verschiedenen Orten."
     },
     {
-      "eyebrow": "Die Richtung",
-      "title": "Je leichter Schaffen wird, desto mehr braucht jedes Medium einen besseren öffentlichen Index.",
-      "body": "Derselbe Druck erreicht Spiele, Medien, Posts, Welten und gemischte Werkformen. Rezics ist von Beginn an für diese Zukunft gebaut."
+      "eyebrow": "Alte Eingänge",
+      "title": "Kataloge, Wikis, Foren und Gruppen sind wertvoll, tragen aber jeweils nur einen Teil.",
+      "body": "Ein Katalog listet Werke, ein Wiki bewahrt Wissen, ein Forum ermöglicht Diskussion, eine Gruppe sammelt Menschen. Getrennt voneinander können Geschichte, Wissen, Rezensionen und Community aber keinen dauerhaft wachsenden Ort bilden."
+    },
+    {
+      "eyebrow": "Neue Grundlage",
+      "title": "Rezics behandelt Plattformunabhängigkeit, Mehrsprachigkeit und offene Zusammenarbeit von Anfang an als Grundlage.",
+      "body": "Geschichten gehören nicht einer einzelnen Plattform und sollten nicht in einer einzigen Sprache eingeschlossen sein. Rezics verbindet Quellen, Sprachen und Community-Perspektiven durch i18n-first Design, offene Bearbeitung, strukturierte Daten und gemeinschaftlichen Konsens."
     }
   ],
   "storySections": [
     {
-      "eyebrow": "Über Plattformen hinweg",
-      "title": "Menschen brauchen einen Ort für das Werk selbst, nicht nur für die Kopie einer Plattform.",
-      "body": "Ein Werk kann viele Verlage, Sprachen, Aliase, Fassungen und Communities haben. Rezics gibt ihm eine gemeinsame Identität, damit Leser über diese Grenzen hinweg im selben Kontext ankommen."
+      "eyebrow": "Identity",
+      "title": "Geschichten brauchen eine öffentliche Identität über Plattformen, Sprachen und Medien hinweg.",
+      "body": "Werke, Reihen, Welten, interaktive Fiktion, Spiele und hybride Schöpfungen brauchen Identitäten, die zitiert, übersetzt, ergänzt und diskutiert werden können."
     },
     {
-      "eyebrow": "Tag-shelf discovery",
-      "title": "Tags und Regale sollen zeigen, was wirklich passt.",
-      "body": "Rezics verbindet gemeinsame Tags, realm-spezifische Klassifikation und Regale, die Reviews tragen können. So zeigt Browsing nicht nur, was ein Werk ist, sondern auch, warum jemand es gesammelt hat."
+      "eyebrow": "Place",
+      "title": "Geschichten sollen Orte werden, an denen Menschen, Wissen, Eindrücke und Communities zusammenkommen.",
+      "body": "Wer über einen Roman sprechen, die Chronologie einer Welt ordnen oder eine unklare Stelle verstehen will, sollte die Geschichte nicht verlassen müssen."
     },
     {
-      "eyebrow": "Für Schaffende",
-      "title": "Bessere Klassifikation hilft Schaffenden, die richtigen Leser zu finden.",
-      "body": "Wenn Leser Werke in der Sprache ihrer Communities beschreiben, erhalten Schaffende klarere Signale darüber, wen ein Werk erreicht, wo es Resonanz findet und welche nahen Zielgruppen sich dafür interessieren könnten."
+      "eyebrow": "Consensus",
+      "title": "Klassifikation ist keine einseitige Plattformantwort, sondern Konsens, den Communities bilden.",
+      "body": "Globale tags geben gemeinsame Sprache; realm votes lassen Communities aus ihrer Perspektive beurteilen, ob ein tag wirklich zu einer Geschichte passt."
     },
     {
-      "eyebrow": "Realms",
-      "title": "Communities sollten Katalog, Diskussion und Wiki nicht auf mehrere Orte verteilen müssen.",
-      "body": "Realms sammeln Menschen um das, was sie lieben, und lassen sie Werke neben dem gemeinsamen öffentlichen Index klassifizieren, besprechen, kuratieren und dokumentieren."
+      "eyebrow": "Freedom",
+      "title": "Rezics respektiert jede Stimme und glaubt, dass offene Diskussion Struktur braucht.",
+      "body": "Wir verteidigen freie Meinungsäußerung, aber Freiheit sollte nicht bedeuten, dass Information in Feeds verschwindet. Forum-grade Diskussion, editierbares Wissen, nachvollziehbare Quellen und erkennbare Community-Kontexte machen Stimmen sichtbar und verständlich."
     }
   ]
 }

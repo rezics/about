@@ -9,14 +9,20 @@ export type ContentSection = {
 export type ProductStatus = "available" | "preview" | "planned";
 
 export type ProductEntry = {
+  slug: string;
   name: string;
   category: string;
   status: ProductStatus;
   statusLabel: string;
   summary: string;
   href?: string;
-  ctaLabel?: string;
+  ctaLabel: string;
   features: string[];
+  detail: {
+    heading: string;
+    lead: string;
+    sections: ContentSection[];
+  };
 };
 
 export type AboutCommonCopy = {
@@ -35,6 +41,7 @@ export type AboutCommonCopy = {
     enterApp: string;
     readProduct: string;
     backHome: string;
+    backProduct: string;
   };
   footer: {
     originNote: string;
@@ -66,7 +73,9 @@ export type HomePageCopy = BaseAboutPageCopy & {
   primaryCtaPage: AboutPageId;
 };
 
-export type ProductPageCopy = BaseAboutPageCopy & {
+export type ProductPageCopy = {
+  meta: AboutPageMeta;
+  hero: AboutHeroCopy;
   products: ProductEntry[];
 };
 

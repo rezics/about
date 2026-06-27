@@ -27,7 +27,7 @@ import type {
 
 export const ABOUT_MARKDOWN_FRAGMENTS = {
   home: ["hero", "closing"],
-  product: ["hero", "closing"],
+  product: ["hero"],
 } as const satisfies Record<AboutPageId, readonly MarkdownFragmentSlug[]>;
 
 const commonCopyByLocale = {

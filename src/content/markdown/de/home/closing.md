@@ -1,11 +1,7 @@
-## Ein öffentlicher Index für schöpferische Fülle
+## Unsere Geschichte
 
-Rezics beginnt bei Büchern, weil Web-Fiction das Problem unübersehbar macht. Das
-Ziel ist breiter: Jedes Werk soll über Sprach-, Plattform- und Community-Grenzen
-hinweg auffindbar sein.
+Das Re in Rezics kommt von reincarnation. Nicht im mystischen Sinn, sondern als einfache Idee: Was Menschen schaffen, lernen und lieben, verschwindet nicht wirklich. Es erscheint in neuen Sprachen, Medien, Communities und Deutungen wieder.
 
-## Wissen bleibt beim Werk
+Wir begannen mit Webromanen und digital nativen Büchern, weil dort die Spaltung von Plattformen, Sprachen, Versionen, tags, wiki-Wissen und Community-Kontext früh sichtbar wurde. Doch Rezics ist nicht nur für Bücher gedacht, sondern für jede Geschichte, die bewahrt, verstanden und wiedergefunden werden sollte.
 
-Katalog, Reviews, Regale, Wiki-Wissen und Realm-Diskussion verweisen auf dieselbe
-Werkidentität. So kann geerbtes Wissen weiterwandern, ohne seine Herkunft zu
-verlieren.
+Das ist inherited · create · spread: vorhandenes Wissen erben, neues Verständnis und neue Schöpfung ermöglichen und geliebte Dinge weitertragen.

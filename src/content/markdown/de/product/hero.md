@@ -1,3 +1,1 @@
-Rezics ist eine Produktfamilie, um Werke zu finden, Fakten zu bewahren und Community-Wissen neben den Werken zu halten, die es erklärt.
-
-Alle Oberflächen sind derzeit als Pre-production markiert, damit das Verzeichnis zeigen kann, wohin sich das System entwickelt.
+Rezics-Produkte sind keine getrennten Werkzeuge. Sie sind verschiedene Oberflächen desselben Ortes, verbunden durch story identity, damit Wissen, reviews, Communities, Klassifikation, Kuration und persönliche Wege in einem System wachsen können.

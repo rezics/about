@@ -1,0 +1,135 @@
+---
+import ArrowLeft from "@lucide/astro/icons/arrow-left";
+import ExternalLink from "@lucide/astro/icons/external-link";
+import {
+  getCommonCopy,
+  getProductPageCopy,
+} from "../../../content/aboutContent";
+import {
+  ABOUT_LOCALES,
+  ABOUT_SITE_ORIGIN,
+  type AboutLocale,
+  getPagePath,
+  getProductDetailPath,
+} from "../../../i18n/locales";
+import AboutLayout from "../../../layouts/AboutLayout.astro";
+
+export function getStaticPaths() {
+  return ABOUT_LOCALES.flatMap((locale) =>
+    getProductPageCopy(locale).products.map((product) => ({
+      params: { locale, slug: product.slug },
+    })),
+  );
+}
+
+const locale = Astro.params.locale as AboutLocale;
+const slug = Astro.params.slug;
+const common = getCommonCopy(locale);
+const productCopy = getProductPageCopy(locale);
+const product = productCopy.products.find((entry) => entry.slug === slug);
+
+if (!product) {
+  return Astro.redirect(getPagePath(locale, "product"));
+}
+
+const alternatePathByLocale = Object.fromEntries(
+  ABOUT_LOCALES.map((alternateLocale) => [
+    alternateLocale,
+    getProductDetailPath(alternateLocale, product.slug),
+  ]),
+) as Record<AboutLocale, string>;
+const canonicalUrl = `${ABOUT_SITE_ORIGIN}${getProductDetailPath(locale, product.slug)}`;
+---
+
+<AboutLayout
+  locale={locale}
+  page="product"
+  common={common}
+  meta={{
+    title: `${product.name} | Rezics`,
+    description: product.summary,
+  }}
+  canonicalUrl={canonicalUrl}
+  alternatePathByLocale={alternatePathByLocale}
+>
+  <section class="w-full max-w-7xl mx-auto px-6 py-12 sm:px-8 lg:py-16">
+    <a
+      class="mb-12 inline-flex min-h-10 w-fit items-center gap-2 rounded-md border border-border-defined px-3 py-2 text-sm font-semibold leading-[1.4] text-text-primary no-underline transition-colors hover:bg-surface-subtle"
+      href={getPagePath(locale, "product")}
+    >
+      <ArrowLeft class="h-4 w-4" aria-hidden="true" />
+      {common.cta.backProduct}
+    </a>
+
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,0.58fr)_minmax(18rem,0.42fr)] lg:items-start">
+      <div class="grid gap-7">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-flex min-h-7 shrink-0 items-center rounded-md bg-surface-subtle px-2.5 text-xs font-medium leading-[1.4] text-text-secondary">
+            {product.category}
+          </span>
+          <span
+            class:list={[
+              "inline-flex min-h-7 shrink-0 items-center rounded-md bg-surface-subtle px-2.5 text-xs font-medium leading-[1.4]",
+              product.status === "available"
+                ? "text-text-brand"
+                : "text-text-tertiary",
+            ]}
+          >
+            {product.statusLabel}
+          </span>
+        </div>
+
+        <div class="grid gap-5">
+          <h1 class="m-0 text-[clamp(2.5rem,5vw,5rem)] font-semibold leading-[1.03] tracking-normal text-text-primary">
+            {product.name}
+          </h1>
+          <p class="m-0 max-w-3xl text-xl leading-[1.65] text-text-secondary">
+            {product.detail.lead}
+          </p>
+        </div>
+      </div>
+
+      <aside class="grid gap-5 rounded-md border border-border-whisper bg-surface-subtle p-6">
+        <h2 class="m-0 text-lg font-semibold leading-[1.3] text-text-primary">
+          {product.detail.heading}
+        </h2>
+        <ul class="m-0 grid gap-3 pl-5 text-base leading-[1.65] text-text-secondary">
+          {product.features.map((feature) => <li>{feature}</li>)}
+        </ul>
+        {
+          product.href ? (
+            <a
+              class="inline-flex min-h-11 w-fit items-center gap-2 rounded-md bg-brand-fill px-4 py-2 text-sm font-semibold leading-[1.4] text-text-on-brand no-underline transition-colors hover:bg-brand-fill-hover"
+              href={product.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {common.cta.enterApp}
+              <ExternalLink class="h-4 w-4" aria-hidden="true" />
+            </a>
+          ) : null
+        }
+      </aside>
+    </div>
+  </section>
+
+  <section class="w-full border-t border-border-whisper bg-surface-subtle">
+    <div class="w-full max-w-7xl mx-auto grid gap-px px-6 py-14 sm:px-8 md:grid-cols-3 lg:py-20">
+      {
+        product.detail.sections.map((section) => (
+          <article class="min-w-0 bg-surface-canvas p-6 sm:p-8">
+            <p class="m-0 mb-4 text-sm font-semibold leading-[1.4] text-text-brand">
+              {section.eyebrow}
+            </p>
+            <h2 class="m-0 text-2xl font-semibold leading-[1.25] tracking-normal text-text-primary">
+              {section.title}
+            </h2>
+            <p class="m-0 mt-4 text-base leading-[1.75] text-text-secondary">
+              {section.body}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</AboutLayout>

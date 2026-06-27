@@ -142,6 +142,13 @@ export function getPagePath(locale: AboutLocale, page: AboutPageId): string {
   return pagePath ? `/${locale}/${pagePath}/` : `/${locale}/`;
 }
 
+export function getProductDetailPath(
+  locale: AboutLocale,
+  productSlug: string,
+): string {
+  return `/${locale}/product/${productSlug}/`;
+}
+
 export function getCanonicalUrl(
   locale: AboutLocale,
   page: AboutPageId,

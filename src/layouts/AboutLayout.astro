@@ -17,14 +17,19 @@ type Props = {
   page: AboutPageId;
   common: AboutCommonCopy;
   meta: AboutPageMeta;
+  canonicalUrl?: string;
+  alternatePathByLocale?: Record<AboutLocale, string>;
 };
 
-const { locale, page, common, meta } = Astro.props;
+const { locale, page, common, meta, canonicalUrl, alternatePathByLocale } = Astro.props;
 const localeMeta = ABOUT_LOCALE_META[locale];
 const alternateLinks = ABOUT_LOCALES.map((alternateLocale) => ({
-  canonical: getCanonicalUrl(alternateLocale, page),
+  canonical: alternatePathByLocale?.[alternateLocale]
+    ? `${new URL(alternatePathByLocale[alternateLocale], "https://about.rezics.com").origin}${alternatePathByLocale[alternateLocale]}`
+    : getCanonicalUrl(alternateLocale, page),
   meta: ABOUT_LOCALE_META[alternateLocale],
 }));
+const currentCanonicalUrl = canonicalUrl ?? getCanonicalUrl(locale, page);
 ---
 
 <!doctype html>
@@ -57,15 +62,15 @@ const alternateLinks = ABOUT_LOCALES.map((alternateLocale) => ({
       hreflang="x-default"
       href={getCanonicalUrl(DEFAULT_LOCALE, page)}
     />
-    <link rel="canonical" href={getCanonicalUrl(locale, page)} />
+    <link rel="canonical" href={currentCanonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Rezics" />
     <meta property="og:title" content={meta.title} />
     <meta property="og:description" content={meta.description} />
-    <meta property="og:url" content={getCanonicalUrl(locale, page)} />
+    <meta property="og:url" content={currentCanonicalUrl} />
   </head>
   <body class="min-h-screen bg-surface-canvas text-text-primary font-sans antialiased">
-    <SiteHeader locale={locale} page={page} common={common} />
+    <SiteHeader locale={locale} page={page} common={common} alternatePathByLocale={alternatePathByLocale} />
     <main class="w-full">
       <slot />
     </main>

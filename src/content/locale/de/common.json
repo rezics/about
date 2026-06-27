@@ -13,7 +13,8 @@
   "cta": {
     "enterApp": "Katalog öffnen",
     "readProduct": "Produkte ansehen",
-    "backHome": "Zurück zur Übersicht"
+    "backHome": "Zurück zur Übersicht",
+    "backProduct": "Zurück zu den Produkten"
   },
   "footer": {
     "originNote": "Interaktive Katalog-, Regal- und Community-Abläufe öffnen sich in der Rezics-Hauptanwendung."

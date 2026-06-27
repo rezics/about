@@ -1,112 +1,162 @@
 {
   "meta": {
-    "title": "Rezics Products | Rezics",
-    "description": "Entdecke die Rezics-Produktfamilie: Katalog, Web-App, Realms, Wiki, Regale und Graph-Oberflächen auf einer gemeinsamen Werkidentität."
+    "title": "Rezics Produkte | Rezics",
+    "description": "Die Rezics-Produktfamilie: Library, Tags, Zone, Realm, Review, Wiki, Shelf und Progress, verbunden durch die Identität von Geschichten."
   },
-  "hero": {
-    "eyebrow": "Produkte",
-    "heading": "Rezics-Produkte"
-  },
-  "sections": [
-    {
-      "eyebrow": "Gemeinsame Grundlage",
-      "title": "Jede Oberfläche beginnt mit derselben Werkidentität.",
-      "body": "Katalogeinträge, Reviews, Regale, Tags, Wiki-Seiten und Realm-Diskussionen zeigen auf gemeinsame Work Units zurück, statt getrennte Datenbanken zu werden."
-    },
-    {
-      "eyebrow": "Produktgrenze",
-      "title": "Diese Site stellt Produkte vor; die App besitzt Interaktion.",
-      "body": "Suche, Speichern, Abstimmen, Bearbeiten, Realm-Mitgliedschaft, Wiki-Autorschaft und andere angemeldete Abläufe bleiben in der Rezics-Hauptanwendung."
-    }
-  ],
-  "storySections": [
-    {
-      "eyebrow": "Verzeichnislogik",
-      "title": "Produkte können getrennt werden, ohne den Graphen zu trennen.",
-      "body": "Rezics Web, Realms, Wiki, Shelves und Graph können eigene Produktoberflächen werden und trotzdem Katalogidentität, Quellenfakten und Community-Klassifikation teilen."
-    },
-    {
-      "eyebrow": "Status",
-      "title": "Die Liste darf zukunftsgerichtete Oberflächen zeigen.",
-      "body": "Pre-production bedeutet, dass der Produktname eine Richtung beschreibt, nicht dass der vollständige Workflow bereits verfügbar ist."
-    }
-  ],
+  "hero": { "eyebrow": "Produkte", "heading": "Rezics Produktfamilie" },
   "products": [
     {
-      "name": "Rezics Catalog",
-      "category": "Katalog",
+      "slug": "library",
+      "name": "Rezics Library",
+      "category": "Identity",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "Der öffentliche sprachübergreifende Index für Werke, Aliase, Quellen, Beziehungen und medienbezogene Metadaten.",
+      "summary": "Eine offene, plattformübergreifende und mehrsprachige metadata-Grundlage für Geschichten und Werke.",
       "href": "https://www.rezics.com/de/",
-      "ctaLabel": "Katalog öffnen",
-      "features": [
-        "Gemeinsame Work Units für Bücher, Spiele, Medien, Posts und gemischte Werke",
-        "Fakten, Aliase, Quellenlinks, Übersetzungen und verwandte Werke",
-        "Eine Werkidentität über Sprachen, Plattformen, Fassungen und Communities hinweg"
-      ]
+      "ctaLabel": "Library ansehen",
+      "features": ["Geschichten, Werke, Aliase, Quellen, Versionen, Sprachen und Beziehungen bewahren", "Webromane, digital native Bücher, interaktive Fiktion und hybride Werke unterstützen", "reviews, wiki, tags, zones und realms mit einer gemeinsamen identity verbinden"],
+      "detail": {
+        "heading": "Die öffentliche Grundlage für story identity",
+        "lead": "Rezics Library ist der Anfang des Systems. Sie verhindert, dass Geschichten in einer Plattform, Sprache oder einem Medium eingeschlossen werden.",
+        "sections": [
+          { "eyebrow": "Open Metadata", "title": "Werkdaten sollten gemeinschaftlich ergänzt werden können.", "body": "Library hält Namen, Aliase, Quellen, Versionen, Sprachen, Beziehungen und Medieninformationen an einer gemeinsamen Identität zusammen." },
+          { "eyebrow": "Beyond Platform", "title": "Eine Geschichte gehört nicht der Plattform, die sie veröffentlicht.", "body": "Originalseiten, Übersetzungen, Ausgaben, Adaptionen und Community-Archive werden als verbundene Eingänge sichtbar." },
+          { "eyebrow": "Born Digital", "title": "Beginnend mit Webfiction, aber nicht auf Bücher begrenzt.", "body": "Interaktive Fiktion, Spiele, Welten, Reihen und hybride Werke brauchen flexible Identitätsmodelle." }
+        ]
+      }
     },
     {
-      "name": "Rezics Web",
-      "category": "App",
+      "slug": "tags",
+      "name": "Rezics Tags",
+      "category": "Consensus",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "Die Haupt-Web-App zum Browsen, Reviewen, Sammeln und Beitragen zum Katalog.",
-      "href": "https://www.rezics.com/de/",
-      "ctaLabel": "App öffnen",
-      "features": [
-        "Interaktive Suche und Werkdetailseiten",
-        "Review-, Regal-, Tag- und Sammlungsabläufe",
-        "Angemeldete Beiträge zu Katalog und Community"
-      ]
+      "summary": "Globale tags und realm votes, damit Klassifikation wandern kann und Kontext behält.",
+      "ctaLabel": "Tags ansehen",
+      "features": ["Eine gemeinsame Klassifikationssprache über Sprachen und Communities hinweg", "realm votes für Mehrdeutigkeit und lokale Perspektiven", "discovery, zones, shelves, reviews und forum-Diskussion über dieselbe tag-Basis verbinden"],
+      "detail": {
+        "heading": "Klassifikation ist keine einseitige Plattformantwort",
+        "lead": "Rezics Tags verbindet globale Klassifikation mit Community-Konsens, ohne allen dieselbe Bedeutung aufzuzwingen.",
+        "sections": [
+          { "eyebrow": "Global Language", "title": "Globale tags verhindern isolierte Communities.", "body": "Gemeinsame tags machen Werke, zones, shelves und reviews über Community-Grenzen hinweg auffindbar." },
+          { "eyebrow": "Realm Vote", "title": "Derselbe tag kann mehrere Community-Perspektiven haben.", "body": "realm votes lassen Communities beurteilen, ob ein tag aus ihrer Sicht zu einer Geschichte passt." },
+          { "eyebrow": "Discovery", "title": "Gute Klassifikation führt zu passenden Geschichten.", "body": "Tags beeinflussen zones, Suche, shelves, Empfehlungen und Diskussionen." }
+        ]
+      }
     },
     {
-      "name": "Rezics Realms",
+      "slug": "zone",
+      "name": "Rezics Zone",
+      "category": "Place",
+      "status": "planned",
+      "statusLabel": "Pre-production",
+      "summary": "Ein vollständiger Ort für eine Geschichte, Welt, Reihe, ein Thema oder Genre in Rezics.",
+      "ctaLabel": "Zone ansehen",
+      "features": ["Eingänge aus queries, tags, metadata und realms zusammensetzen", "wiki, strukturiertes Wissen, eigene Themen und Community-Räume tragen", "Bibliotheken, Genre-Hubs, Story-Welten und Themen als ein Modell behandeln"],
+      "detail": {
+        "heading": "Everything is Zone",
+        "lead": "Rezics Zone ist keine feste Kategorieseite, sondern der Ort, der um eine Geschichte, Welt, Reihe, ein Thema oder Genre entsteht.",
+        "sections": [
+          { "eyebrow": "Custom Place", "title": "Eine Zone kann Eingang zu einem Story-Universum sein.", "body": "Werke, wiki, strukturiertes Wissen, reviews, realm-based community, Themen und kuratierte Pfade können zusammenkommen." },
+          { "eyebrow": "Query Native", "title": "Rezics muss Bibliotheken nicht hart codieren.", "body": "zones entstehen aus queries, tags, metadata und realms und können zugleich allgemein und spezialisiert sein." },
+          { "eyebrow": "Community Layer", "title": "Zone lässt Wissen und Community gemeinsam wachsen.", "body": "Wenn wiki, forum, tag-Konsens und story identity zusammenkommen, wird Zone öffentlicher Raum." }
+        ]
+      }
+    },
+    {
+      "slug": "realm",
+      "name": "Rezics Realm",
       "category": "Community",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "Community-Räume zum Klassifizieren, Diskutieren und Kuratieren von Werken, ohne den öffentlichen Katalog zu forken.",
-      "features": [
-        "Realm-Mitgliedschaft und lokale Diskussion",
-        "Community-spezifische Tag-Anwendungen",
-        "Feeds und Portale rund um gemeinsame Interessen"
-      ]
+      "summary": "Forum-grade Communities auf globaler story identity und tags.",
+      "ctaLabel": "Realm ansehen",
+      "features": ["Community als context statt als group, die Inhalte einsperrt", "Forumstruktur auf globalen tags und story identity", "realm-spezifische Klassifikation, Diskussion, votes und Wissensarbeit"],
+      "detail": {
+        "heading": "Build your forum",
+        "lead": "Rezics Realm ist nicht noch eine Gruppe, sondern eine forum-grade Community auf story identity, tags und zones.",
+        "sections": [
+          { "eyebrow": "Context", "title": "Community ist Kontext zum Verstehen von Inhalten.", "body": "Realm verbindet Community-Perspektiven zurück mit Werken, tags, wiki und reviews." },
+          { "eyebrow": "Forum Grade", "title": "Rezics will Foren bieten, nicht nur Chatgruppen.", "body": "Boards, Diskussionen, issues, votes und Wissenseingänge können langfristig organisiert werden." },
+          { "eyebrow": "Voice", "title": "Verschiedene Communities behalten verschiedene Stimmen.", "body": "Rezics respektiert Unterschiede, statt sie in eine Plattformkategorie zu pressen." }
+        ]
+      }
     },
     {
+      "slug": "review",
+      "name": "Rezics Review",
+      "category": "Voice",
+      "status": "planned",
+      "statusLabel": "Pre-production",
+      "summary": "ratings, remarks, reviews und Diskussion verbinden, damit Bewertung Wert bekommt.",
+      "ctaLabel": "Review ansehen",
+      "features": ["rating, remark und review als verschiedene Ausdrucksebenen", "Eindrücke diskutieren, ohne sie anderswo neu zu posten", "reviews mit story identity, tags, realms und zones verbinden"],
+      "detail": {
+        "heading": "Bewertung ist mehr als eine Zahl",
+        "lead": "Rezics Review lässt Leser ihre Stimme neben der Geschichte hinterlassen: als Zahl, Kurzreaktion, Essay oder Diskussionseingang.",
+        "sections": [
+          { "eyebrow": "After Reading", "title": "Nach einer bewegenden Geschichte sollte dein Eindruck nicht umziehen müssen.", "body": "Eine review zu schreiben und dann anderswo neu zu posten, nur um zu diskutieren, ist Fragmentierung." },
+          { "eyebrow": "Layers", "title": "Unterschiedliche Bewertungsformen brauchen unterschiedliche Plätze.", "body": "Leichte Reaktionen und lange Analysen können nebeneinander bestehen." },
+          { "eyebrow": "Conversation", "title": "Gute reviews schaffen Verständnis.", "body": "reviews können tags, realm-Diskussionen und wiki-Kontext verbinden." }
+        ]
+      }
+    },
+    {
+      "slug": "wiki",
       "name": "Rezics Wiki",
-      "category": "Wissen",
+      "category": "Knowledge",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "Gemeinsame Wissensseiten und Realm-Wiki-Portale, die Kontext bei den Werken und Communities halten, die ihn brauchen.",
-      "features": [
-        "Wiki-Beiträge für Hintergründe, Zeitlinien, Beispiele und Deutung",
-        "Von Communities gepflegte Realm wiki zones",
-        "Wissen bleibt mit Werken verbunden statt über Werkzeuge verstreut"
-      ]
+      "summary": "Ein mehrsprachiges, offen editierbares Wissenssystem, verbunden mit stories, zones, realms, tags und reviews.",
+      "ctaLabel": "Wiki ansehen",
+      "features": ["Welten, Figuren, Zeitlinien, Einstellungen und Recherche ordnen", "wiki mit story identity und Community-Kontext verbinden", "Spezialisierte Wissenseingänge in zones und realms unterstützen"],
+      "detail": {
+        "heading": "Mehr als wiki",
+        "lead": "Rezics Wiki ist keine isolierte Enzyklopädie. Es übernimmt offene Bearbeitung und verbindet Wissen mit stories, zones, realms, tags, reviews und metadata.",
+        "sections": [
+          { "eyebrow": "Open Editing", "title": "Wissen kann gemeinsam organisiert werden.", "body": "Welten, Chronologien, Beziehungen, Erklärungen und Reihenfolgen können offen ergänzt, korrigiert und übersetzt werden." },
+          { "eyebrow": "Connected", "title": "wiki sollte neben den Geschichten bleiben, die es brauchen.", "body": "Rezics Wiki verbindet story identity, Zone, Realm, Tags und Review." },
+          { "eyebrow": "Structured", "title": "Wissen ist mehr als eine Seite.", "body": "Strukturierte Daten und freies Schreiben können gelesen, gesucht, zitiert, verglichen und wiederverwendet werden." }
+        ]
+      }
     },
     {
-      "name": "Rezics Shelves",
-      "category": "Entdeckung",
+      "slug": "shelf",
+      "name": "Rezics Shelf",
+      "category": "Curation",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "Kuratierte Pfade durch Werke, Reviews, Tags, Realms und weitere Regal-Einträge.",
-      "features": [
-        "Erklärbare Sammlungen statt undurchsichtiger Empfehlungslisten",
-        "Regal-Einträge mit Review- und Klassifikationskontext",
-        "Kuration durch Leser und Communities rund um gemeinsame Werkidentität"
-      ]
+      "summary": "Persönliche und Community-Kuration, die Entdeckung verständlich statt black-box macht.",
+      "ctaLabel": "Shelf ansehen",
+      "features": ["stories, reviews, wiki, zones und andere shelf items sammeln", "Erklärbare Kuration statt reiner Algorithmusempfehlung", "Eingänge für Leser, Communities und Creator bauen"],
+      "detail": {
+        "heading": "Kuration ist eine Form des Verstehens",
+        "lead": "Rezics Shelf ist mehr als eine Merkliste. Es baut Lesewege, Themenzugänge und Empfehlungskontext.",
+        "sections": [
+          { "eyebrow": "Curation", "title": "Ein shelf kann Urteil tragen, nicht nur speichern.", "body": "Werke, reviews, wiki, zones oder andere shelves können gemeinsam begründet werden." },
+          { "eyebrow": "Discovery", "title": "Entdeckung sollte nicht vollständig black-box sein.", "body": "Menschen können sehen, wie Communities und Kuratoren Geschichten ordnen." },
+          { "eyebrow": "Path", "title": "Jeder kann einen Pfad durch Geschichten hinterlassen.", "body": "Persönlicher Geschmack, Community-Konsens und Themenkuration werden teilbare Eingänge." }
+        ]
+      }
     },
     {
-      "name": "Rezics Graph",
-      "category": "Plattform",
+      "slug": "progress",
+      "name": "Rezics Progress",
+      "category": "Journey",
       "status": "planned",
       "statusLabel": "Pre-production",
-      "summary": "Der gemeinsame Produktgraph hinter Katalogidentität, Quellenfakten, Community-Klassifikation und Wissensoberflächen.",
-      "features": [
-        "Beziehungen zwischen Werk, Tag, Realm, Regal, Review und Wiki",
-        "Contract-first Datenformen für Produktoberflächen",
-        "Eine Grundlage für künftige Rezics-Werkzeuge ohne doppelte Fakten"
-      ]
+      "summary": "Lesen, Schauen, Spielen und Folgen über Plattformen hinweg aufzeichnen.",
+      "ctaLabel": "Progress ansehen",
+      "features": ["Persönlichen Fortschritt jenseits einer einzelnen Plattform festhalten", "Lesen, Schauen, Spielen und hybride Story-Erfahrungen unterstützen", "Persönliche Wege mit reviews, shelves, zones und discovery verbinden"],
+      "detail": {
+        "heading": "Zeichne den Weg auf, den du mit Geschichten gegangen bist",
+        "lead": "Rezics Progress verhindert, dass persönliche Wege durch Plattformen zerschnitten werden.",
+        "sections": [
+          { "eyebrow": "Beyond Platform", "title": "Fortschritt sollte nicht einer einzigen app gehören.", "body": "Wenn Geschichten über Originalseiten, Übersetzungen, Ausgaben und Adaptionen wandern, sollte Fortschritt folgen können." },
+          { "eyebrow": "Experience", "title": "Story-Erfahrung ist nicht nur Lesen.", "body": "Romane, interaktive Fiktion, Spiele, Video und hybride Werke können aufgezeichnet werden." },
+          { "eyebrow": "Memory", "title": "Fortschritt wird Grundlage für späteres Verstehen.", "body": "Progress verbindet sich mit reviews, shelves und zones, damit Erinnerung wieder zugänglich wird." }
+        ]
+      }
     }
   ]
 }

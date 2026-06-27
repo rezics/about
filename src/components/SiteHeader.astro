@@ -20,13 +20,14 @@ type Props = {
   locale: AboutLocale;
   page: AboutPageId;
   common: AboutCommonCopy;
+  alternatePathByLocale?: Record<AboutLocale, string>;
 };
 
-const { locale, page, common } = Astro.props;
+const { locale, page, common, alternatePathByLocale } = Astro.props;
 const githubUrl = "https://github.com/rezics";
 const alternateLinks = ABOUT_LOCALES.map((alternateLocale) => ({
   locale: alternateLocale,
-  href: getPagePath(alternateLocale, page),
+  href: alternatePathByLocale?.[alternateLocale] ?? getPagePath(alternateLocale, page),
   meta: ABOUT_LOCALE_META[alternateLocale],
 }));
 ---

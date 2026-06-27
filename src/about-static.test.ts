@@ -18,6 +18,7 @@ import {
   type AboutPageId,
   getCanonicalUrl,
   getPagePath,
+  getProductDetailPath,
   matchAboutLocale,
   negotiateAboutLocale,
 } from "./i18n/locales";
@@ -74,8 +75,15 @@ describe("@rezics/about locale contract", () => {
         expect(copy.meta.description.length).toBeGreaterThan(40);
         expect(copy.hero.eyebrow.length).toBeGreaterThan(1);
         expect(copy.hero.heading.length).toBeGreaterThan(4);
-        expect(copy.sections.length).toBeGreaterThanOrEqual(1);
-        expect(copy.storySections.length).toBeGreaterThanOrEqual(1);
+        if (page === "home") {
+          const homeCopy = getHomePageCopy(locale);
+          expect(homeCopy.sections.length).toBeGreaterThanOrEqual(1);
+          expect(homeCopy.storySections.length).toBeGreaterThanOrEqual(1);
+        } else {
+          expect(getProductPageCopy(locale).products.length).toBeGreaterThanOrEqual(
+            8,
+          );
+        }
 
         for (const slug of ABOUT_MARKDOWN_FRAGMENTS[page]) {
           const fragment = await readMarkdownFragment(locale, page, slug);
@@ -129,11 +137,20 @@ describe("@rezics/about locale contract", () => {
       const product = getProductPageCopy(locale);
 
       expect("products" in home).toBe(false);
-      expect(product.products.length).toBeGreaterThanOrEqual(6);
-      expect(product.products[0]?.name).toBe("Rezics Catalog");
+      expect(product.products.length).toBe(8);
+      expect(product.products[0]?.name).toBe("Rezics Library");
       expect(product.products.every((entry) => entry.category.length > 0)).toBe(
         true,
       );
+      expect(product.products.every((entry) => entry.slug.length > 0)).toBe(
+        true,
+      );
+      expect(product.products.every((entry) => entry.ctaLabel.length > 0)).toBe(
+        true,
+      );
+      expect(
+        product.products.every((entry) => entry.detail.sections.length >= 3),
+      ).toBe(true);
       expect(
         product.products.every((entry) => entry.statusLabel.length > 0),
       ).toBe(true);
@@ -147,22 +164,24 @@ describe("@rezics/about locale contract", () => {
       "closing",
     )}`;
 
-    expect(source).toContain("Web novels");
+    expect(source).toContain("web novels");
     expect(source).toContain("born-digital books");
-    expect(source).toContain("As creation gets easier");
-    expect(source).toContain("Tag-shelf discovery");
+    expect(source).toContain("platforms");
+    expect(source).toContain("community");
   });
 
   test("keeps product page focused on the Rezics product directory", () => {
     const source = JSON.stringify(getProductPageCopy("en"));
 
     for (const expected of [
-      "Rezics Catalog",
-      "Rezics Web",
-      "Rezics Realms",
+      "Rezics Library",
+      "Rezics Tags",
+      "Rezics Zone",
+      "Rezics Realm",
+      "Rezics Review",
       "Rezics Wiki",
-      "Rezics Shelves",
-      "Rezics Graph",
+      "Rezics Shelf",
+      "Rezics Progress",
     ]) {
       expect(source).toContain(expected);
     }
@@ -180,10 +199,8 @@ describe("@rezics/about locale contract", () => {
 
   test("keeps long prose in markdown fragments instead of page json", async () => {
     for (const locale of ABOUT_LOCALES) {
-      for (const page of ABOUT_PAGES) {
-        const closing = await readMarkdownFragment(locale, page, "closing");
-        expect(closing.trimStart()).toContain("## ");
-      }
+      const closing = await readMarkdownFragment(locale, "home", "closing");
+      expect(closing.trimStart()).toContain("## ");
     }
   });
 });
@@ -208,6 +225,9 @@ describe("@rezics/about static routing", () => {
     for (const locale of ABOUT_LOCALES) {
       expect(getPagePath(locale, "home")).toBe(`/${locale}/`);
       expect(getPagePath(locale, "product")).toBe(`/${locale}/product/`);
+      expect(getProductDetailPath(locale, "wiki")).toBe(
+        `/${locale}/product/wiki/`,
+      );
     }
   });
 
