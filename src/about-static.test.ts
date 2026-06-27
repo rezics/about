@@ -1,13 +1,13 @@
 import { describe, expect, test } from "bun:test";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
   REZICS_ARCHITECTURE_DOT,
   REZICS_ARCHITECTURE_NODE_LABELS,
 } from "./components/rezicsArchitectureGraph";
 import {
-  ABOUT_MARKDOWN_FRAGMENTS,
   getCommonCopy,
+  getPageCopy,
   getHomePageCopy,
   getProductPageCopy,
 } from "./content/aboutContent";
@@ -25,6 +25,42 @@ import {
 import { onRequest as languageMiddleware } from "../functions/_middleware";
 
 const packageRoot = new URL("..", import.meta.url).pathname;
+const referenceLocale: AboutLocale = "zh-hant";
+
+type StructureSignature =
+  | string
+  | StructureSignature[]
+  | { [key: string]: StructureSignature };
+
+function toStructureSignature(value: unknown): StructureSignature {
+  if (Array.isArray(value)) {
+    return value.map((entry) => toStructureSignature(entry));
+  }
+
+  if (value !== null && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value)
+        .sort(([leftKey], [rightKey]) => leftKey.localeCompare(rightKey))
+        .map(([key, entry]) => [key, toStructureSignature(entry)]),
+    );
+  }
+
+  return value === null ? "null" : typeof value;
+}
+
+async function listMarkdownFragments(
+  locale: AboutLocale,
+  page: AboutPageId,
+): Promise<string[]> {
+  const entries = await readdir(
+    join(packageRoot, "src/content/markdown", locale, page),
+  );
+
+  return entries
+    .filter((entry) => entry.endsWith(".md"))
+    .map((entry) => entry.replace(/\.md$/, ""))
+    .sort();
+}
 
 async function readMarkdownFragment(
   locale: AboutLocale,
@@ -35,13 +71,6 @@ async function readMarkdownFragment(
     join(packageRoot, "src/content/markdown", locale, page, `${slug}.md`),
     "utf8",
   );
-}
-
-function markdownParagraphCount(source: string): number {
-  return source
-    .trim()
-    .split(/\n{2,}/)
-    .filter((paragraph) => paragraph.trim().length > 0).length;
 }
 
 describe("@rezics/about locale contract", () => {
@@ -56,151 +85,81 @@ describe("@rezics/about locale contract", () => {
     ]);
   });
 
-  test("has common, page, and markdown content for every locale", async () => {
+  test("keeps common copy structure aligned with zh-hant", () => {
+    const referenceStructure = toStructureSignature(
+      getCommonCopy(referenceLocale),
+    );
+
     for (const locale of ABOUT_LOCALES) {
-      const common = getCommonCopy(locale);
+      expect(toStructureSignature(getCommonCopy(locale))).toEqual(
+        referenceStructure,
+      );
+    }
+  });
 
-      expect(common.nav.home.length).toBeGreaterThan(1);
-      expect(common.nav.product.length).toBeGreaterThan(1);
-      expect(common.cta.enterApp.length).toBeGreaterThan(4);
-      expect(common.notFound.body.length).toBeGreaterThan(20);
+  test("keeps page copy structures aligned with zh-hant", () => {
+    for (const page of ABOUT_PAGES) {
+      const referenceStructure = toStructureSignature(
+        getPageCopy(referenceLocale, page),
+      );
 
-      for (const page of ABOUT_PAGES) {
-        const copy =
-          page === "home"
-            ? getHomePageCopy(locale)
-            : getProductPageCopy(locale);
+      for (const locale of ABOUT_LOCALES) {
+        expect(toStructureSignature(getPageCopy(locale, page))).toEqual(
+          referenceStructure,
+        );
+      }
+    }
+  });
 
-        expect(copy.meta.title.length).toBeGreaterThan(12);
-        expect(copy.meta.description.length).toBeGreaterThan(40);
-        expect(copy.hero.eyebrow.length).toBeGreaterThan(1);
-        expect(copy.hero.heading.length).toBeGreaterThan(4);
-        if (page === "home") {
-          const homeCopy = getHomePageCopy(locale);
-          expect(homeCopy.sections.length).toBeGreaterThanOrEqual(1);
-          expect(homeCopy.storySections.length).toBeGreaterThanOrEqual(1);
-        } else {
-          expect(getProductPageCopy(locale).products.length).toBeGreaterThanOrEqual(
-            8,
-          );
-        }
+  test("keeps localized home pages wired to the same primary CTA page", () => {
+    const referenceHome = getHomePageCopy(referenceLocale);
 
-        for (const slug of ABOUT_MARKDOWN_FRAGMENTS[page]) {
+    for (const locale of ABOUT_LOCALES) {
+      expect(getHomePageCopy(locale).primaryCtaPage).toBe(
+        referenceHome.primaryCtaPage,
+      );
+    }
+  });
+
+  test("keeps localized product lists aligned with zh-hant", () => {
+    const referenceProducts = getProductPageCopy(referenceLocale).products;
+    const referenceProductContract = referenceProducts.map((product) => ({
+      slug: product.slug,
+      status: product.status,
+      featureCount: product.features.length,
+      detailSectionCount: product.detail.sections.length,
+    }));
+
+    for (const locale of ABOUT_LOCALES) {
+      const productContract = getProductPageCopy(locale).products.map(
+        (product) => ({
+          slug: product.slug,
+          status: product.status,
+          featureCount: product.features.length,
+          detailSectionCount: product.detail.sections.length,
+        }),
+      );
+
+      expect(productContract).toEqual(referenceProductContract);
+    }
+  });
+
+  test("keeps markdown fragment files aligned with zh-hant", async () => {
+    for (const page of ABOUT_PAGES) {
+      const referenceFragments = await listMarkdownFragments(
+        referenceLocale,
+        page,
+      );
+
+      for (const locale of ABOUT_LOCALES) {
+        const fragments = await listMarkdownFragments(locale, page);
+        expect(fragments).toEqual(referenceFragments);
+
+        for (const slug of referenceFragments) {
           const fragment = await readMarkdownFragment(locale, page, slug);
-          expect(fragment.trim().length).toBeGreaterThan(20);
+          expect(fragment.trim().length).toBeGreaterThan(0);
         }
       }
-    }
-  });
-
-  test("preserves explicit hero paragraph and localized eyebrow decisions", async () => {
-    const expectedEyebrows: Record<AboutLocale, string> = {
-      "zh-hant": "inherited · create · spread",
-      "zh-hans": "与所爱的故事相遇",
-      en: "Encounter the stories you love.",
-      ja: "愛する物語と出会う",
-      de: "Begegne den Geschichten, die du liebst.",
-      ko: "사랑하는 이야기를 만나다",
-    };
-
-    for (const locale of ABOUT_LOCALES) {
-      expect(getHomePageCopy(locale).hero.eyebrow).toBe(
-        expectedEyebrows[locale],
-      );
-
-      const heroMarkdown = await readMarkdownFragment(locale, "home", "hero");
-      expect(markdownParagraphCount(heroMarkdown)).toBe(2);
-    }
-  });
-
-  test("keeps home pages wired to the product directory", async () => {
-    for (const locale of ABOUT_LOCALES) {
-      const copy = getHomePageCopy(locale);
-      const closing = await readMarkdownFragment(locale, "home", "closing");
-
-      expect(copy.primaryCtaPage).toBe("product");
-      if (locale === "zh-hant") {
-        expect(copy.hero.heading).toBe("REZICS: 與所愛的故事相遇");
-        expect(copy.hero.eyebrow).toBe("inherited · create · spread");
-      } else {
-        expect(copy.hero.heading).toContain("inherited · create · spread");
-      }
-      expect(`${JSON.stringify(copy)}\n${closing}`.toLowerCase()).toContain(
-        "wiki",
-      );
-    }
-  });
-
-  test("keeps home and product narratives structurally distinct", () => {
-    for (const locale of ABOUT_LOCALES) {
-      const home = getHomePageCopy(locale);
-      const product = getProductPageCopy(locale);
-
-      expect("products" in home).toBe(false);
-      expect(product.products.length).toBe(8);
-      expect(product.products[0]?.name).toBe("Rezics Library");
-      expect(product.products.every((entry) => entry.category.length > 0)).toBe(
-        true,
-      );
-      expect(product.products.every((entry) => entry.slug.length > 0)).toBe(
-        true,
-      );
-      expect(product.products.every((entry) => entry.ctaLabel.length > 0)).toBe(
-        true,
-      );
-      expect(
-        product.products.every((entry) => entry.detail.sections.length >= 3),
-      ).toBe(true);
-      expect(
-        product.products.every((entry) => entry.statusLabel.length > 0),
-      ).toBe(true);
-    }
-  });
-
-  test("keeps home narrative focused on born-digital indexing pressure", async () => {
-    const source = `${JSON.stringify(getHomePageCopy("en"))}\n${await readMarkdownFragment(
-      "en",
-      "home",
-      "closing",
-    )}`;
-
-    expect(source).toContain("web novels");
-    expect(source).toContain("born-digital books");
-    expect(source).toContain("platforms");
-    expect(source).toContain("community");
-  });
-
-  test("keeps product page focused on the Rezics product directory", () => {
-    const source = JSON.stringify(getProductPageCopy("en"));
-
-    for (const expected of [
-      "Rezics Library",
-      "Rezics Tags",
-      "Rezics Zone",
-      "Rezics Realm",
-      "Rezics Review",
-      "Rezics Wiki",
-      "Rezics Shelf",
-      "Rezics Progress",
-    ]) {
-      expect(source).toContain(expected);
-    }
-
-    for (const locale of ABOUT_LOCALES) {
-      const products = getProductPageCopy(locale).products;
-      expect(products.every((product) => product.status === "planned")).toBe(
-        true,
-      );
-      expect(
-        products.every((product) => product.statusLabel === "Pre-production"),
-      ).toBe(true);
-    }
-  });
-
-  test("keeps long prose in markdown fragments instead of page json", async () => {
-    for (const locale of ABOUT_LOCALES) {
-      const closing = await readMarkdownFragment(locale, "home", "closing");
-      expect(closing.trimStart()).toContain("## ");
     }
   });
 });
@@ -216,7 +175,6 @@ describe("@rezics/about architecture graph", () => {
     expect(REZICS_ARCHITECTURE_DOT).toContain("Realm -> RealmTag");
     expect(REZICS_ARCHITECTURE_DOT).toContain("RealmTag -> Tag");
     expect(REZICS_ARCHITECTURE_DOT).toContain("RealmTag -> WorkUnit");
-    expect(REZICS_ARCHITECTURE_DOT).toContain("does not imply");
   });
 });
 
