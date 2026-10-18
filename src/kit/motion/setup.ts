@@ -2,12 +2,10 @@
 // behaviour register it from their own page scripts with onPage() (see src/kit/README.md).
 import { startComposers } from './composer';
 import { startNavigation } from './nav';
-import { startNotify } from './notify';
 import { startPage } from './page';
 
 export function setupMotion() {
   startNavigation();
-  startNotify();
   startPage();
   startComposers();
 }

@@ -1,50 +1,73 @@
 ---
-// Home (DESIGN.md "Composition plan"): each layout family once, the composing square first.
+// Home (DESIGN.md "Composition plan", phones first): the statement and the strip of nine kind
+// squares first, then the parts picker, then each remaining layout family once.
 import PageLayout from '../kit/layouts/PageLayout.astro';
 import Section from '../kit/components/Section.astro';
-import Composer from '../kit/components/Composer.astro';
 import KindSquare from '../kit/components/KindSquare.astro';
 import ModuleSquare from '../kit/components/ModuleSquare.astro';
-import EmptySquare from '../kit/components/EmptySquare.astro';
-import NotifyCall from '../kit/components/NotifyCall.astro';
+import SquareName from '../kit/components/SquareName.astro';
+import PartsList from '../kit/components/PartsList.astro';
+import ProductCall from '../kit/components/ProductCall.astro';
+import Arrow from '../kit/components/Arrow.astro';
 import { kinds, modules, partById, site, moduleHref, kindById } from '../kit/content';
-import { kindFields } from '../kit/theme';
+import { kindFields, fieldStyle } from '../kit/theme';
 
 const h = site.home;
-const items = kinds.map((k) => ({ id: k.id, name: k.name, field: kindFields[k.id], parts: k.parts }));
 const identity = partById('identity');
+// The parts picker works without script: radio buttons, and one rule per kind shows its panel.
+const pickCss = kinds
+  .map((k) => `.pick:has(input[value="${k.id}"]:checked) [data-pick-panel="${k.id}"]{display:block}`)
+  .join('');
 ---
-<PageLayout meta={site.meta} home>
-  <!-- 1 Hero: split frame, the composing square as the scene -->
-  <section class="hero grid" aria-labelledby="hero-title" data-hero>
-    <div class="hero__text">
+<PageLayout meta={site.meta} home action={false}>
+  <!-- 1 Hero: the statement, the action, and the strip of nine kind squares (the signature) -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__text grid">
       <h1 id="hero-title" class="t-xl hero__title">{h.hero.headline}</h1>
       <p class="lede hero__lede">{h.hero.lede}</p>
-      <div class="hero__actions">
-        <NotifyCall label={h.hero.primary} />
-        <a class="link-draw hero__secondary" href="#index">{h.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
-      </div>
+      <div class="hero__action"><ProductCall label={h.hero.primary} /></div>
     </div>
-    <div class="hero__scene">
-      <Composer items={items} class="hero__composer" data-hero-composer />
-      <p class="hero__caption mono">{h.hero.caption}</p>
+    <div class="strip" id="kinds" data-strip>
+      <ul class="strip__row" role="list">
+        {kinds.map((k) => (
+          <li class="strip__item">
+            <KindSquare kind={k.id} mode="flood" describe sizes="(max-width: 599px) 40vw, 12vw" />
+            <span class="strip__dot" aria-hidden="true"></span>
+          </li>
+        ))}
+      </ul>
+      <div class="strip__foot">
+        <p class="strip__caption mono">{h.hero.caption}</p>
+        <button type="button" class="strip__toggle mono" data-strip-toggle data-pause={site.ui.pause} data-play={site.ui.play} aria-pressed="false" hidden>{site.ui.pause}</button>
+      </div>
     </div>
   </section>
 
-  <!-- 2 Index: gallery wall of the nine kinds, one cell left for the next -->
-  <Section id="index" mood="normal" labelledby="index-title" class="index">
-    <div class="col-1-4 index__text">
-      <h2 id="index-title" class="t-l">{h.index.headline}</h2>
+  <!-- 2 Parts: pick a kind, see its eight parts as a list -->
+  <Section id="parts" mood="normal" labelledby="parts-title" class="parts">
+    <div class="col-1-4 parts__text">
+      <h2 id="parts-title" class="t-l">{h.index.headline}</h2>
       <p class="muted">{h.index.body}</p>
     </div>
-    <ul class="col-5-12 index__grid" role="list" data-reveal="slot">
-      {kinds.map((k, i) => (
-        <li>
-          <KindSquare kind={k.id} mode="flood" describe sizes="(max-width: 767px) 33vw, 22vw" data-index-first={i === 0 ? '' : undefined} />
-        </li>
+    <fieldset class="col-5-12 pick" data-pick>
+      <legend class="pick__legend mono">{site.ui.pick}</legend>
+      <div class="pick__tabs">
+        {kinds.map((k, i) => (
+          <label class="pick__tab" style={fieldStyle(kindFields[k.id])}>
+            <input class="sr-only" type="radio" name="pick-kind" value={k.id} checked={i === 0} />
+            <span class="pick__sq"><SquareName name={k.name} /></span>
+          </label>
+        ))}
+      </div>
+      {kinds.map((k) => (
+        <div class="pick__panel" data-pick-panel={k.id} style={fieldStyle(kindFields[k.id])}>
+          <p class="pick__name t-m">{k.name}</p>
+          <PartsList parts={k.parts} notes={k.partNotes} />
+        </div>
       ))}
-      <li class="index__next"><EmptySquare label={h.index.nextKind} /></li>
-    </ul>
+      <p class="pick__caption mono">{site.kindPage.partsCaption}</p>
+    </fieldset>
+    <Fragment set:html={`<style>${pickCss}</style>`} />
   </Section>
 
   <!-- 3 One identity: sticky square left, chapters right -->
@@ -68,7 +91,7 @@ const identity = partById('identity');
             <span class="identity__kind mono">{kindById(c.kind).name}</span>
             <h3 class="t-l">{c.title}</h3>
             <p class="identity__body">{c.body}</p>
-            <div class="identity__inline" aria-hidden="true"><KindSquare kind={c.kind} mode="image" link={false} sizes="40vw" /></div>
+            <div class="identity__inline" aria-hidden="true"><KindSquare kind={c.kind} mode="image" link={false} sizes="(max-width: 767px) calc(100vw - 32px), 1px" /></div>
           </li>
         ))}
       </ol>
@@ -76,7 +99,7 @@ const identity = partById('identity');
   </Section>
 
   <!-- 4 Community: asymmetric pair -->
-  <Section mood="airy" labelledby="community-title" class="community">
+  <Section mood="normal" labelledby="community-title" class="community">
     <div class="col-1-6 community__square">
       <ModuleSquare module="community" />
     </div>
@@ -113,7 +136,7 @@ const identity = partById('identity');
           <a class="engine__row" href={moduleHref(m.id)} data-preview-key={m.id} data-active={i === 0 ? '' : undefined}>
             <span class="engine__name t-l">{m.name}</span>
             <span class="engine__summary">{m.summary}</span>
-            <span class="arrow engine__arrow" aria-hidden="true">→</span>
+            <Arrow class="engine__arrow" />
           </a>
         </li>
       ))}
@@ -125,7 +148,7 @@ const identity = partById('identity');
     <div class="col-1-5 agents__text">
       <h2 id="agents-title" class="t-l">{h.agents.headline}</h2>
       <p class="muted">{h.agents.body}</p>
-      <p><a class="link-draw agents__more" href="/developers/">{site.nav.developers}<span class="arrow" aria-hidden="true"> →</span></a></p>
+      <p><a class="link-draw agents__more" href="/developers/">{site.nav.developers}<Arrow /></a></p>
     </div>
     <dl class="col-7-12 agents__facts">
       {h.agents.facts.map((f) => (
@@ -150,50 +173,121 @@ const identity = partById('identity');
     </ol>
   </Section>
 
-  <!-- 8 Finale: the giant call to action; the notify square follows in the footer -->
+  <!-- 8 Finale: the last square, the action into REZICS (the footer adds no second one here) -->
   <Section mood="normal" labelledby="finale-title" class="finale-cta">
-    <h2 id="finale-title" class="col-1-10 finale-cta__title" data-split="lines">{h.finale.headline}</h2>
-    <p class="col-1-6 lede">{h.finale.body}</p>
-    <div class="col-7-12 finale-cta__action"><NotifyCall /></div>
+    <h2 id="finale-title" class="col-1-7 finale-cta__title">{h.finale.headline}</h2>
+    <div class="finale-cta__square">
+      <p class="finale-cta__body"><span class="finale-cta__cursor" aria-hidden="true" data-cursor></span>{h.finale.body}</p>
+      <ProductCall />
+    </div>
   </Section>
 </PageLayout>
 
 <script>
-  import { initHero } from '../home/hero';
-  initHero();
+  import { initStrip } from '../home/strip';
+  initStrip();
 </script>
 
 <style>
   /* 1 Hero */
-  .hero {
-    position: relative;
-    z-index: 2;
-    min-height: calc(100svh - var(--header-h));
-    padding-block: clamp(24px, 4vw, 56px);
-    align-items: center;
-    row-gap: 40px;
-  }
-  .hero__text { grid-column: 1 / span 6; display: flex; flex-direction: column; gap: 28px; }
-  .hero__title { max-width: 9.5em; margin-left: -0.04em; }
-  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
-  .hero__secondary { font-weight: 700; min-height: 24px; }
-  .hero__scene { grid-column: 7 / span 6; justify-self: end; width: min(100%, calc(100svh - var(--header-h) - 150px)); min-width: min(100%, 420px); }
-  .hero__caption { margin-top: 12px; color: var(--c-muted); }
-  :global(.motion .hero__composer:not(.is-assembled) .composer__part[data-on='true']),
-  :global(.motion .hero__composer:not(.is-assembled) .composer__item[data-on='true']) { visibility: hidden; }
-  @media (max-width: 899px) {
-    .hero { min-height: 0; }
-    .hero__text, .hero__scene { grid-column: 1 / -1; }
-    .hero__scene { justify-self: stretch; width: 100%; min-width: 0; }
+  .hero { padding-block: clamp(24px, 4vw, 56px) clamp(32px, 4vw, 64px); }
+  .hero__text { row-gap: 24px; align-items: end; }
+  .hero__title { grid-column: 1 / span 10; max-width: 15em; margin-left: -0.04em; }
+  .hero__lede { grid-column: 1 / span 7; }
+  .hero__action { grid-column: 9 / span 4; justify-self: end; align-self: end; }
+  @media (max-width: 767px) {
+    .hero__title, .hero__lede, .hero__action { grid-column: 1 / -1; justify-self: start; }
   }
 
-  /* 2 Index */
-  .index__text { display: flex; flex-direction: column; gap: 16px; align-self: start; position: sticky; top: calc(var(--header-h) + 32px); }
-  .index__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(8px, 1vw, 16px); }
-  @media (max-width: 767px) {
-    .index__text { position: static; }
-    .index__grid { gap: 6px; }
+  /* The strip: nine squares in one row on desktop, a scroll-snap row on phones. */
+  .strip { margin-top: clamp(28px, 4vw, 56px); }
+  .strip__row {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: clamp(6px, 0.8vw, 12px);
+    padding-inline: var(--gutter);
   }
+  .strip__item { position: relative; min-width: 0; }
+  .strip__dot {
+    position: absolute;
+    left: 50%;
+    bottom: -14px;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    background: var(--c-mark);
+    opacity: 0;
+    transition: opacity var(--d-s) var(--ease-snap);
+  }
+  .strip__item:has(.is-lit) .strip__dot { opacity: 1; }
+  .strip__foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-top: 22px;
+    padding-inline: var(--gutter);
+  }
+  .strip__caption { color: var(--c-muted); }
+  .strip__toggle {
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--c-line-strong);
+    color: var(--c-fg);
+    transition: background-color var(--d-s), color var(--d-s);
+  }
+  @media (hover: hover) { .strip__toggle:hover { background: var(--c-fg); color: var(--c-bg); } }
+  .strip__toggle:focus-visible { background: var(--c-fg); color: var(--c-bg); }
+  @media (max-width: 599px) {
+    .strip__row {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 40vw;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      scrollbar-width: none;
+      padding-bottom: 18px;
+      mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+    }
+    .strip__item { scroll-snap-align: start; }
+    .strip__dot { bottom: 2px; }
+    .strip__foot { margin-top: 8px; }
+  }
+
+  /* 2 Parts picker */
+  .parts__text { display: flex; flex-direction: column; gap: 16px; align-self: start; }
+  .pick { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+  .pick__legend { color: var(--c-muted); margin-bottom: 12px; padding: 0; }
+  .pick__tabs { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px; }
+  .pick__tab { position: relative; cursor: pointer; }
+  .pick__sq {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    container-type: inline-size;
+    background: var(--field);
+    transition: translate var(--d-s) var(--ease-snap);
+  }
+  /* The chosen kind steps up one notch and carries the red mark. */
+  .pick__tab:has(input:checked) .pick__sq { translate: 0 -6px; }
+  .pick__tab:has(input:checked)::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -12px;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    background: var(--c-mark);
+  }
+  @media (hover: hover) { .pick__tab:hover .pick__sq { translate: 0 -6px; } }
+  .pick__tab:has(input:focus-visible) .pick__sq { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .pick__panel { display: none; margin-top: 8px; }
+  .pick__name { margin-bottom: 12px; }
+  /* Chips slot into place, one after another, whenever a panel opens. */
+  .pick__panel :global(.chip) { animation: rz-slot var(--d-m) cubic-bezier(0.16, 0.84, 0.3, 1.02) both; animation-delay: calc(var(--i) * 40ms); }
+  .pick__caption { color: var(--c-muted); }
 
   /* 3 Identity */
   .identity__stage-wrap { align-self: stretch; }
@@ -231,21 +325,22 @@ const identity = partById('identity');
     flex-direction: column;
     gap: 12px;
     max-width: var(--measure);
-    opacity: 0.45;
-    transition: opacity var(--d-m) var(--ease-snap);
+    color: var(--c-muted);
+    transition: color var(--d-m) var(--ease-snap);
   }
-  .identity__chapter[data-active] { opacity: 1; }
-  :global(html:not(.js)) .identity__chapter { opacity: 1; }
+  .identity__chapter:last-child { min-height: 40svh; }
+  /* The chapter in view is ink, the others muted (still AA on paper). */
+  .identity__chapter[data-active], :global(html:not(.js)) .identity__chapter { color: var(--c-fg); }
   .identity__kind { color: var(--c-muted); }
   .identity__body { font-size: var(--t-m); line-height: 1.65; }
-  .identity__inline { display: none; width: 40%; margin-top: 8px; }
+  .identity__inline { display: none; width: 100%; margin-top: 8px; }
   @media (max-width: 767px) {
     .identity__stage-wrap { display: none; }
-    .identity__chapter { min-height: 0; opacity: 1; }
+    .identity__chapter, .identity__chapter:last-child { min-height: 0; color: var(--c-fg); }
     .identity__inline { display: block; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .identity__chapter { opacity: 1; }
+    .identity__chapter { color: var(--c-fg); }
   }
 
   /* 4 Community */
@@ -260,8 +355,9 @@ const identity = partById('identity');
   /* 5 Engine */
   .engine__aside { display: flex; flex-direction: column; gap: 16px; align-self: start; position: sticky; top: calc(var(--header-h) + 32px); }
   .engine__preview { position: relative; aspect-ratio: 1; margin-top: 16px; overflow: clip; }
-  .engine__preview-item { position: absolute; inset: 0; translate: 0 101%; transition: translate var(--d-m) var(--ease-snap); }
-  .engine__preview-item[data-active] { translate: 0 0; z-index: 1; }
+  /* Inactive squares slide out below and then leave the rendering (no stacked hidden text). */
+  .engine__preview-item { position: absolute; inset: 0; translate: 0 101%; visibility: hidden; transition: translate var(--d-m) var(--ease-snap), visibility 0s linear var(--d-m); }
+  .engine__preview-item[data-active] { translate: 0 0; z-index: 1; visibility: visible; transition-delay: 0s; }
   .engine__list { border-top: 1px solid var(--c-line-strong); }
   .engine__row {
     display: grid;
@@ -269,24 +365,29 @@ const identity = partById('identity');
     align-items: center;
     gap: var(--gutter);
     min-height: clamp(88px, 9vw, 128px);
+    padding-inline: 12px;
     border-bottom: 1px solid var(--c-line-strong);
-    background: linear-gradient(var(--c-ink) 0 0) left bottom / 0% 3px no-repeat;
-    transition: background-size var(--d-m) var(--ease-snap);
+    /* Hover and focus: the row floods with ink from the left in one step and its text inverts,
+       the primary button's verb. */
+    box-shadow: inset 0 0 0 0 var(--c-ink);
+    transition: box-shadow var(--d-m) var(--ease-snap), color var(--d-s) var(--ease-snap);
   }
   .engine__name { line-height: 1.1; }
-  .engine__summary { color: var(--c-muted); }
-  .engine__arrow { font-size: var(--t-m); }
+  .engine__summary { color: var(--c-muted); transition: color var(--d-s) var(--ease-snap); }
+  .engine__row :global(.engine__arrow) { width: 1.25em; height: 1.25em; font-size: var(--t-m); }
   @media (hover: hover) {
-    .engine__row:hover { background-size: 100% 3px; }
-    .engine__row:hover .engine__arrow { translate: 0.4em 0; }
+    .engine__row:hover { box-shadow: inset 60em 0 0 0 var(--c-ink); color: var(--c-paper); }
+    .engine__row:hover .engine__summary { color: #c4cbd6; }
+    .engine__row:hover :global(.engine__arrow) { translate: 0.4em 0; }
   }
-  .engine__row:focus-visible { background-size: 100% 3px; }
+  .engine__row:focus-visible { box-shadow: inset 60em 0 0 0 var(--c-ink); color: var(--c-paper); }
+  .engine__row:focus-visible .engine__summary { color: #c4cbd6; }
   @media (max-width: 767px) {
     .engine__aside { position: static; }
     .engine__preview { display: none; }
     .engine__row { grid-template-columns: 1fr auto; padding-block: 16px; row-gap: 4px; }
     .engine__summary { grid-column: 1; grid-row: 2; }
-    .engine__arrow { grid-row: 1 / span 2; grid-column: 2; }
+    .engine__row :global(.engine__arrow) { grid-row: 1 / span 2; grid-column: 2; }
   }
 
   /* 6 Agents */
@@ -306,6 +407,21 @@ const identity = partById('identity');
 
   /* 8 Finale */
   .finale-cta { border-top: 1px solid var(--c-line); }
-  .finale-cta__title { font-weight: 900; font-size: clamp(3rem, 0.8rem + 8.6vw, 10rem); line-height: 1.04; letter-spacing: var(--track-display); margin-left: -0.05em; }
-  .finale-cta__action { align-self: end; justify-self: start; }
+  .finale-cta__title { font-weight: 900; font-size: clamp(3rem, 0.8rem + 8.6vw, 10rem); line-height: 1.04; letter-spacing: var(--track-display); margin-left: -0.05em; align-self: end; }
+  .finale-cta__square {
+    grid-column: 9 / span 4;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding: clamp(20px, 3vw, 40px);
+    border: 1px solid var(--c-line-strong);
+  }
+  .finale-cta__body { font-size: var(--t-m); font-weight: 700; line-height: 1.5; }
+  .finale-cta__cursor { display: inline-block; width: 4px; height: 1.25em; margin-right: 0.4em; vertical-align: -0.2em; background: var(--c-mark); }
+  @media (max-width: 767px) {
+    .finale-cta__square { grid-column: 1 / -1; aspect-ratio: auto; min-height: 240px; }
+  }
 </style>

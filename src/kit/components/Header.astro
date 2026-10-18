@@ -10,6 +10,8 @@
 import { kinds, modules, site, kindHref, moduleHref, kindImage } from '../content';
 import { kindFields, moduleFields } from '../theme';
 import Logo from './Logo.astro';
+import ProductCall from './ProductCall.astro';
+import Arrow from './Arrow.astro';
 import Square from './Square.astro';
 
 interface Props {
@@ -50,9 +52,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
       <span class="tabs__marker" aria-hidden="true" data-tabs-marker></span>
     </nav>
     <div class="header__end">
-      <a class="btn btn--small header__action" href="#notify" data-notify-link>
-        <span class="btn__label"><span>{nav.action}</span><span aria-hidden="true">{nav.action}</span></span>
-      </a>
+      <ProductCall size="small" class="header__action" />
       <button type="button" class="header__menu" command="show-modal" commandfor="menu" aria-haspopup="dialog" data-menu-open>
         {nav.menu}
       </button>
@@ -64,7 +64,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
       <div class="panel__intro">
         <p class="panel__title">{nav.productsIntro.title}</p>
         <p class="panel__body">{nav.productsIntro.body}</p>
-        <a class="panel__all link-draw" href="/#index">{nav.productsIntro.all}<span class="arrow" aria-hidden="true"> →</span></a>
+        <a class="panel__all link-draw" href="/#kinds">{nav.productsIntro.all}<Arrow /></a>
       </div>
       <div class="panel__group panel__group--works">
         <p class="panel__label mono">{nav.groups.works}</p>
@@ -96,7 +96,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
       <div class="panel__intro">
         <p class="panel__title">{nav.engineIntro.title}</p>
         <p class="panel__body">{nav.engineIntro.body}</p>
-        <a class="panel__all link-draw" href="/engine/">{nav.engineIntro.all}<span class="arrow" aria-hidden="true"> →</span></a>
+        <a class="panel__all link-draw" href="/engine/">{nav.engineIntro.all}<Arrow /></a>
       </div>
       <ul class="panel__squares panel__modules" role="list">
         {modules.map((m) => (
@@ -143,8 +143,8 @@ const agents = kinds.filter((k) => k.group === 'agents');
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    background: var(--c-paper);
-    color: var(--c-ink);
+    background: var(--c-bg);
+    color: var(--c-fg);
     border-bottom: 1px solid var(--c-line);
     transition: translate var(--d-m) var(--ease-snap);
   }
@@ -159,8 +159,9 @@ const agents = kinds.filter((k) => k.group === 'agents');
   }
   .header__end { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
 
-  /* Tabs, with the red square marker under the current tab; it slides to the tab under the
-     pointer (nav.ts). Without script each current tab draws its own marker. */
+  /* Tabs: the current section carries a filled red square (drawn from aria-current, which
+     nav.ts recomputes on every page load, Back included); hover and focus get their own
+     outlined square, which slides between tabs (nav.ts). */
   .header__tabs { position: relative; }
   .header__tabs ul { display: flex; gap: clamp(8px, 2vw, 28px); }
   .tab {
@@ -173,7 +174,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
     font-size: var(--t-s);
     font-weight: 700;
     letter-spacing: 0.04em;
-    color: var(--c-ink);
+    color: var(--c-fg);
   }
   .tab__caret {
     width: 6px;
@@ -185,8 +186,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
     transition: rotate var(--d-s) var(--ease-snap), translate var(--d-s) var(--ease-snap);
   }
   .tab[aria-expanded='true'] .tab__caret { rotate: 225deg; translate: 0 2px; }
-  .tab[aria-current]::after,
-  .tabs__marker {
+  .tab[aria-current]::after {
     content: '';
     position: absolute;
     left: 50%;
@@ -196,19 +196,26 @@ const agents = kinds.filter((k) => k.group === 'agents');
     margin-left: -4px;
     background: var(--c-mark);
   }
-  :global(html.js) .tab[aria-current]::after { display: none; }
-  .tabs__marker { display: none; left: 0; margin-left: -4px; }
-  :global(html.js) .tabs__marker { display: block; opacity: 0; }
-
+  .tabs__marker {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    border: 1.5px solid var(--c-mark);
+    opacity: 0;
+    pointer-events: none;
+  }
   .header__menu {
     display: none;
     min-height: 44px;
     padding: 0 12px;
-    border: 2px solid var(--c-ink);
+    border: 2px solid var(--c-fg);
     font-size: var(--t-s);
     font-weight: 700;
   }
-  @media (hover: hover) { .header__menu:hover { background: var(--c-ink); color: var(--c-paper); } }
+  @media (hover: hover) { .header__menu:hover { background: var(--c-fg); color: var(--c-bg); } }
 
   @media (max-width: 899px) {
     .header__bar { grid-template-columns: auto 1fr; }
@@ -216,8 +223,9 @@ const agents = kinds.filter((k) => k.group === 'agents');
     .header__menu { display: inline-flex; align-items: center; }
   }
   @media (max-width: 420px) {
-    .header__action { --btn-sq: 0px; padding-left: 12px; }
-    .header__action :global(.btn__label) { margin-left: 0; }
+    .header__end :global(.header__action) { --btn-sq: 4px; padding-left: 12px; }
+    .header__end :global(.header__action .btn__icon) { display: none; }
+    .header__end :global(.header__action .btn__label) { margin-left: 0; }
   }
 
   /* Panels: full width below the bar. */
@@ -231,12 +239,12 @@ const agents = kinds.filter((k) => k.group === 'agents');
     padding: 0;
     border: 0;
     border-bottom: 1px solid var(--c-line-strong);
-    background: var(--c-paper);
-    color: var(--c-ink);
+    background: var(--c-bg);
+    color: var(--c-fg);
     overflow: auto;
     overscroll-behavior: contain;
   }
-  .panel::backdrop { background: rgb(14 20 32 / 0.18); }
+  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 18%, transparent); }
   .panel__inner { padding-block: clamp(24px, 3vw, 40px) clamp(32px, 4vw, 56px); row-gap: 24px; }
   .panel__intro { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 12px; }
   .panel__title { font-size: var(--t-m); font-weight: 900; line-height: 1.3; }
@@ -264,12 +272,12 @@ const agents = kinds.filter((k) => k.group === 'agents');
     margin: 0;
     padding: 0 var(--gutter) 32px;
     border: 0;
-    background: var(--c-paper);
-    color: var(--c-ink);
+    background: var(--c-bg);
+    color: var(--c-fg);
     overflow: auto;
     overscroll-behavior: contain;
   }
-  .sheet::backdrop { background: var(--c-ink); }
+  .sheet::backdrop { background: var(--c-fg); }
   .sheet__top { display: flex; justify-content: space-between; align-items: center; height: var(--header-h); }
   .sheet__top .header__menu { display: inline-flex; align-items: center; }
   .sheet__label { color: var(--c-muted); margin: 24px 0 12px; }

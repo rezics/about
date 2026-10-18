@@ -1,13 +1,14 @@
 ---
-/** A call to action that lands on the footer's notify form (#notify). */
-import { site } from '../content';
+/**
+ * Deprecated: REZICS is live and there is no notify form. Kept so older pages still build; it
+ * renders ProductCall (「前往 REZICS」). Use ProductCall in new code (src/kit/README.md "Changes").
+ */
+import ProductCall from './ProductCall.astro';
 
 interface Props {
   label?: string;
   class?: string;
 }
-const { label = site.nav.action, class: className } = Astro.props;
+const { class: className } = Astro.props;
 ---
-<a class:list={['btn', className]} href="#notify" data-notify-link>
-  <span class="btn__label"><span>{label}</span><span aria-hidden="true">{label}</span></span>
-</a>
+<ProductCall class={className} />

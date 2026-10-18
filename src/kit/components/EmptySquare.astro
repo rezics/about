@@ -9,6 +9,8 @@ interface Props {
 const { label, class: className, as: Tag = 'p' } = Astro.props;
 ---
 <div class:list={['empty', className]} data-empty-square>
+  <span class="empty__line empty__line--v" aria-hidden="true"></span>
+  <span class="empty__line empty__line--h" aria-hidden="true"></span>
   <span class="empty__cursor" aria-hidden="true" data-cursor></span>
   {label && <Tag class="empty__label">{label}</Tag>}
 </div>
@@ -18,10 +20,10 @@ const { label, class: className, as: Tag = 'p' } = Astro.props;
     aspect-ratio: 1;
     container-type: inline-size;
     border: 1px dashed var(--c-line-strong);
-    background:
-      linear-gradient(var(--c-line) 0 0) 50% 0 / 1px 100% no-repeat,
-      linear-gradient(var(--c-line) 0 0) 0 50% / 100% 1px no-repeat;
   }
+  .empty__line { position: absolute; background: var(--c-line); }
+  .empty__line--v { left: 50%; top: 0; bottom: 0; width: 1px; }
+  .empty__line--h { top: 50%; left: 0; right: 0; height: 1px; }
   .empty__cursor {
     position: absolute;
     left: 6cqi;

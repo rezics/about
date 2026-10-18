@@ -12,7 +12,7 @@ tasks:
       - corepack yarn install
 
   dev:
-    desc: Astro dev server on 127.0.0.1 (run by an agent it starts in the background; system CJK font stands in; the notify form needs `task preview`)
+    desc: Astro dev server on 127.0.0.1 (run by an agent it starts in the background; system CJK font stands in)
     cmds:
       - npx astro dev {{.CLI_ARGS}}
 
@@ -33,13 +33,12 @@ tasks:
       - node scripts/postbuild.mjs
 
   preview:
-    desc: Production build served with the Worker and a local D1 on 127.0.0.1:4400 (PORT=… to change)
+    desc: Production build served as static assets (wrangler, as deployed) on 127.0.0.1:4400 (PORT=… to change)
     deps: [build]
     vars:
       PORT: '{{.PORT | default "4400"}}'
     cmds:
-      - CI=1 npx wrangler d1 migrations apply DB --local --persist-to .wrangler/state
-      - npx wrangler dev --ip 127.0.0.1 --port {{.PORT}} --persist-to .wrangler/state
+      - npx wrangler dev --ip 127.0.0.1 --port {{.PORT}}
 
   check:
     desc: Types (astro check), then a build and the unit and build tests
@@ -54,7 +53,7 @@ tasks:
       - npx vitest run tests/unit {{.CLI_ARGS}}
 
   e2e:
-    desc: Playwright end-to-end tests on a production build with the Worker (queued on a shared slot)
+    desc: Playwright end-to-end tests on the production build (queued on a shared slot)
     deps: [build]
     cmds:
       - scripts/slot.sh npx playwright test {{.CLI_ARGS}}

@@ -1,37 +1,14 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
+  // Static assets only: no Worker script, no bindings.
   "name": "rezics-about",
-  "main": "./worker/index.ts",
   "compatibility_date": "2026-10-01",
   "assets": {
     "directory": "dist",
-    "binding": "ASSETS",
     "not_found_handling": "404-page",
-    "html_handling": "auto-trailing-slash",
-    // Static assets answer everything except the notify endpoint.
-    "run_worker_first": ["/api/*"]
+    "html_handling": "auto-trailing-slash"
   },
-  "vars": { "ABOUT_SITE_URL": "http://127.0.0.1:4400" },
   "env": {
-    "production": {
-      "name": "rezics-about-production",
-      "vars": { "ABOUT_SITE_URL": "https://about.rezics.com" },
-      "d1_databases": [
-        {
-          "binding": "DB",
-          "database_name": "rezics-about",
-          "database_id": "00000000-0000-0000-0000-000000000000",
-          "migrations_dir": "migrations"
-        }
-      ]
-    }
-  },
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "rezics-about",
-      "database_id": "00000000-0000-0000-0000-000000000000",
-      "migrations_dir": "migrations"
-    }
-  ]
+    "production": { "name": "rezics-about-production" }
+  }
 }
