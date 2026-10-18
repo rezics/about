@@ -86,8 +86,8 @@ const columns = s.hero.headline.split(/(?<=，)/);
   <Section mood="normal" labelledby="sr-world" class="srw">
     <h2 id="sr-world" class="col-full t-l">{s.world.headline}</h2>
     <div class="col-1-4"><Picture name="books-serial" alt={s.world.alt} sizes="(max-width: 767px) 92vw, 28vw" /></div>
-    <ul class="col-5-8 srw__grid" role="list" data-reveal="slot">
-      {s.world.squares.map((w) => <li class="srw__sq"><span>{w}</span></li>)}
+    <ul class="col-5-8 srw__chips" role="list" data-reveal="slot">
+      {s.world.squares.map((w) => <li class="srw__chip">{w}</li>)}
     </ul>
     <div class="col-9-12 srw__text">
       <p>{s.world.body}</p>
@@ -193,10 +193,9 @@ const columns = s.hero.headline.split(/(?<=，)/);
   }
 
   /* S5 */
-  .srw__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; align-content: start; }
-  .srw__sq { aspect-ratio: 1; container-type: inline-size; display: grid; place-items: center; border: 1px solid var(--field); background: var(--c-paper); }
-  .srw__sq:nth-child(odd) { background: var(--bk-t08); }
-  .srw__sq span { font-weight: 900; font-size: 28cqi; }
+  .srw__chips { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+  .srw__chip { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 16px; border: 1.5px solid var(--field); background: var(--c-paper); font-weight: 900; font-size: var(--t-m); }
+  .srw__chip::before { content: ''; width: 0.5em; height: 0.5em; background: var(--field); }
   .srw__text { display: flex; flex-direction: column; gap: 16px; }
   .srw__items { display: flex; flex-direction: column; gap: 10px; }
   .srw__items li { padding-left: 16px; border-left: 3px solid var(--field); }

@@ -18,7 +18,6 @@ const next = site.pages.find((pg) => pg.slug === 'editions')!;
 const total = p.positions[p.positions.length - 1]!.chapter;
 const chapters = Array.from({ length: total }, (_, i) => i + 1);
 const marks = new Set(p.positions.map((x) => x.chapter));
-const routeField = { field: '#e1e9e3', on: 'ink' } as const;
 ---
 <MiniSiteLayout>
   <!-- S1 Hero: full-bleed field band -->
@@ -75,7 +74,7 @@ const routeField = { field: '#e1e9e3', on: 'ink' } as const;
                     <span class="wip__name">{e.name}</span>
                     {e.aliases && <span class="wip__aliases">{p.aliases}{e.aliases}</span>}
                     <span class="wip__note">{e.note}</span>
-                    <span class="wip__source mono">{p.source.replace('{n}', String(e.chapter))}</span>
+                    <span class="wip__source">{p.source.replace('{n}', String(e.chapter))}</span>
                   </li>
                 ))}
               </ul>
@@ -94,7 +93,7 @@ const routeField = { field: '#e1e9e3', on: 'ink' } as const;
 
   <!-- S4 REZICS never receives the text: statement + fine print -->
   <Section mood="airy" band="ink" labelledby="wi-text" class="wit">
-    <h2 id="wi-text" class="col-1-10 t-mega wit__statement" data-split="lines">{s.text.statement}</h2>
+    <h2 id="wi-text" class="col-1-10 t-xl wit__statement" data-split="lines">{s.text.statement}</h2>
     <ul class="col-5-12 wit__facts" role="list">
       {s.text.facts.map((f) => <li>{f}</li>)}
     </ul>
@@ -106,15 +105,15 @@ const routeField = { field: '#e1e9e3', on: 'ink' } as const;
       <h2 id="wi-zone" class="t-l">{s.zone.headline}</h2>
       <p>{s.zone.body}</p>
     </div>
-    <div class="col-5-12 wiz__wall" data-reveal="slot">
-      <div class="wiz__hub">
-        <Square name={s.zone.squares[0]!} field={kindFields.books} />
-        <p class="wiz__hub-note">{s.zone.hub}</p>
-      </div>
-      {s.zone.squares.slice(1).map((name) => (
-        <div class="wiz__route"><Square name={name} field={routeField} /></div>
-      ))}
+    <div class="col-5-8 wiz__hub">
+      <Square name={s.zone.squares[0]!} field={kindFields.books} />
+      <p class="wiz__hub-note">{s.zone.hub}</p>
     </div>
+    <ul class="col-9-12 wiz__routes" role="list" data-reveal="slot">
+      {s.zone.squares.slice(1).map((name) => (
+        <li class="wiz__route">{name}</li>
+      ))}
+    </ul>
   </Section>
 
   <!-- S6 Agents propose, people review: data/facts -->
@@ -205,7 +204,11 @@ const routeField = { field: '#e1e9e3', on: 'ink' } as const;
   }
   .wip__pos[aria-pressed='true'] { color: var(--on-field); }
   .wip__pos[aria-pressed='true']::before { clip-path: inset(0 0 0 0); }
-  @media (hover: hover) { .wip__pos:hover::before { clip-path: inset(0 0 0 0); } .wip__pos:hover { color: var(--on-field); } }
+  @media (hover: hover) {
+    .wip__pos:hover::before { clip-path: inset(0 0 0 0); }
+    .wip__pos:hover { color: var(--on-field); }
+    .wip__pos[aria-pressed='true']:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+  }
   .wip__pos:focus-visible::before { clip-path: inset(0 0 0 0); }
   .wip__pos:focus-visible { color: var(--on-field); }
   .wip__rail {
@@ -237,7 +240,7 @@ const routeField = { field: '#e1e9e3', on: 'ink' } as const;
   .wip__name { font-weight: 900; font-size: var(--t-m); line-height: 1.3; }
   .wip__aliases { font-size: var(--t-s); color: var(--c-muted); }
   .wip__note { font-size: var(--t-body); }
-  .wip__source { color: var(--field); font-weight: 700; }
+  .wip__source { color: var(--field); font-weight: 700; font-size: var(--t-s); }
   .wip__side { display: flex; flex-direction: column; gap: 20px; padding: 20px; background: var(--bk-t08); border-top: 2px solid var(--field); }
   .wip__status { font-weight: 700; }
   .wip__rules { display: flex; flex-direction: column; gap: 12px; font-size: var(--t-s); }
@@ -258,14 +261,20 @@ const routeField = { field: '#e1e9e3', on: 'ink' } as const;
 
   /* S5 */
   .wiz__text { display: flex; flex-direction: column; gap: 16px; }
-  .wiz__wall { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1vw, 14px); align-items: start; }
-  .wiz__hub { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; gap: 10px; }
+  .wiz__hub { display: flex; flex-direction: column; gap: 10px; }
   .wiz__hub-note { font-weight: 700; font-size: var(--t-s); }
-  .wiz__route :global(.sq) { border: 1px solid var(--c-line-strong); }
-  @media (max-width: 767px) {
-    .wiz__wall { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .wiz__hub { grid-column: 1 / -1; grid-row: auto; }
+  .wiz__routes { display: flex; flex-direction: column; border-top: 2px solid var(--field); align-self: start; }
+  .wiz__route {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    border-bottom: 1px solid var(--c-line-strong);
+    font-weight: 900;
+    font-size: var(--t-m);
   }
+  .wiz__route::before { content: ''; width: 0.6em; height: 0.6em; border: 2px solid var(--field); flex: none; }
+  @media (max-width: 767px) { .wiz__hub { max-width: 320px; } }
 
   /* S6 */
   .wir__states { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); border-top: 2px solid var(--c-fg); }

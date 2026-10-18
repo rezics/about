@@ -59,9 +59,11 @@ const start = s.action.states.length - 1;
         ))}
       </div>
       <div class="wka__square" aria-hidden="true">
-        {s.action.states.map((st, i) => (
-          <span class="wka__face" data-action-face data-on={String(i === start)}>{st.button}</span>
-        ))}
+        <span class="wka__roll">
+          {s.action.states.map((st, i) => (
+            <span class="wka__face" data-action-face data-on={String(i === start)}>{st.button}</span>
+          ))}
+        </span>
       </div>
       <p class="sr-only" aria-live="polite" data-action-live></p>
       <p class="wka__caption muted">{s.action.caption}</p>
@@ -198,13 +200,14 @@ const start = s.action.states.length - 1;
     overflow: clip;
     display: grid;
   }
+  /* One line tall and clipped, so a label rolls out of view as the next rolls in. */
+  .wka__roll { align-self: center; justify-self: center; display: grid; overflow: clip; padding-block: 0.08em; }
   .wka__face {
     grid-area: 1 / 1;
-    align-self: center;
     justify-self: center;
     font-weight: 900;
-    font-size: 21cqi;
-    line-height: 1;
+    font-size: 19cqi;
+    line-height: 1.1;
     letter-spacing: var(--track-display);
     white-space: nowrap;
   }
@@ -229,14 +232,13 @@ const start = s.action.states.length - 1;
 
   /* S4 */
   .wkr__figure { display: flex; flex-direction: column; gap: clamp(20px, 3vw, 40px); align-self: center; }
-  .wkr__targets { display: flex; flex-wrap: wrap; gap: 0 0.6em; font-weight: 900; font-size: var(--t-mega); line-height: 1; letter-spacing: var(--track-display); }
+  .wkr__targets { display: flex; flex-wrap: wrap; gap: 0.1em 0.5em; font-weight: 900; font-size: var(--t-xl); line-height: 1.1; letter-spacing: var(--track-display); }
   .wkr__target { color: var(--c-muted); }
   .wkr__target:first-child { color: var(--field); text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.12em; }
   .wkr__scopes { display: flex; gap: 8px; flex-wrap: wrap; }
   .wkr__scope { padding: 10px 14px; border: 1.5px solid var(--field); font-weight: 700; font-size: var(--t-s); }
   .wkr__scope:first-child { background: var(--field); color: var(--on-field); }
   .wkr__text { display: flex; flex-direction: column; gap: 16px; align-self: center; }
-  @media (max-width: 767px) { .wkr__targets { font-size: clamp(3rem, 18vw, 5rem); } }
 
   /* S5 */
   .wke__box { padding: clamp(20px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 18px; }

@@ -147,9 +147,11 @@ const after = nextSite(site);
   .pbb__stage[data-state='3'] .pbb__tick { background: currentColor; }
   .pbb__list { display: flex; flex-direction: column; }
   .pbb__step { min-height: 52svh; padding: 8px 0 40px; border-top: 1px solid var(--c-line-strong); display: flex; flex-direction: column; gap: 10px; transition: opacity var(--d-m); }
-  :global(.motion) .pbb__step:not([data-active]) { opacity: 0.45; }
+  .pbb__step { position: relative; padding-left: 18px; }
+  .pbb__step::before { content: ''; position: absolute; left: 0; top: 0; bottom: 40px; width: 4px; background: var(--field); scale: 1 0; transform-origin: 50% 0; transition: scale var(--d-m) var(--ease-snap); }
+  .pbb__step[data-active]::before { scale: 1 1; }
   .pbb__n { color: var(--c-muted); padding-top: 6px; }
-  .pbb__caption { grid-column: 7 / span 6; padding-top: 16px; border-top: 1px solid var(--c-line-strong); font-size: var(--t-s); }
+  .pbb__caption { padding-top: 16px; border-top: 1px solid var(--c-line-strong); font-size: var(--t-s); }
   @media (max-width: 767px) {
     .pbb__stage-wrap { position: sticky; top: calc(var(--header-h) + var(--bar-h)); z-index: 2; background: var(--c-paper); padding-block: 8px; }
     .pbb__stage { position: static; aspect-ratio: 3 / 1; }

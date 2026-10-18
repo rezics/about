@@ -37,7 +37,7 @@ const show = ROWS.filter((r) => fin.rows[r]).join(' ');
     <div class="bm__frame" aria-hidden="true" data-bm-frame data-show={show} data-lang={fin.lang} style={`--mark:${fin.mark}`}>
       <div class="bm__labels">
         <span class="bm__label bm__label--work">{s.rows.work}</span>
-        {ROWS.map((row) => <span class="bm__label" data-row={row} data-label={row}>{s.rows[row]}</span>)}
+        {ROWS.map((row) => <span class="bm__label" data-label={row}>{s.rows[row]}</span>)}
       </div>
       <div class="bm__track" data-bm-track>
         <div class="bm__grid" data-bm-grid>
@@ -193,12 +193,12 @@ const show = ROWS.filter((r) => fin.rows[r]).join(' ');
   .bm__omni { white-space: nowrap; }
   .bm__cell[data-read] .bm__num, .bm__cell[data-read] .bm__omni { color: var(--on-field); }
 
-  /* Rows off the shelf slide out along their row. */
+  /* Rows not yet on the shelf wait faintly, shifted back along their row; they slot in. */
   .bm__frame:not([data-show~='ja']) [data-row='ja'],
   .bm__frame:not([data-show~='zh']) [data-row='zh'],
   .bm__frame:not([data-show~='omni']) [data-row='omni'],
   .bm__frame:not([data-show~='en']) [data-row='en'] {
-    opacity: 0;
+    opacity: 0.22;
     translate: -14px 0;
   }
 

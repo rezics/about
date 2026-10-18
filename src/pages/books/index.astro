@@ -39,28 +39,32 @@ const next = pageBy('work');
       <h2 id="bm-title" class="t-l">{s.bookmark.headline}</h2>
       <p class="muted bms__intro">{s.bookmark.intro}</p>
     </header>
-    <div class="bms__stage">
-      <div class="bms__sticky"><Bookmark /></div>
+    <div class="bms__body">
+      <div class="bms__stage">
+        <div class="bms__sticky"><Bookmark /></div>
+      </div>
+      <ol class="bms__steps" role="list" data-bm-steps>
+        {s.bookmark.steps.map((step, i) => (
+          <li class="bms__step" data-bm-step>
+            <span class="bms__n mono">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="t-m">{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))}
+      </ol>
     </div>
-    <ol class="bms__steps" role="list" data-bm-steps>
-      {s.bookmark.steps.map((step, i) => (
-        <li class="bms__step" data-bm-step>
-          <span class="bms__n mono">{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="t-m">{step.title}</h3>
-          <p>{step.body}</p>
-        </li>
-      ))}
-    </ol>
   </Section>
 
   <!-- S3 Word band: poster -->
   <Section mood="tight" labelledby="shelf-title" class="shelf">
     <h2 id="shelf-title" class="col-full shelf__title mono">{s.shelf.headline}</h2>
-    <ul class="col-full shelf__words" role="list" data-reveal="slot">
-      {s.shelf.words.map((w) => (
-        <li class="shelf__word"><span>{w}</span></li>
+    <p class="col-full shelf__words">
+      {s.shelf.words.map((w, i) => (
+        <>
+          <span class="shelf__word">{w}</span>{i < s.shelf.words.length - 1 && <span class="shelf__sep" aria-hidden="true"></span>}
+        </>
       ))}
-    </ul>
+    </p>
     <p class="col-5-12 shelf__caption">{s.shelf.caption}</p>
   </Section>
 
@@ -140,11 +144,12 @@ const next = pageBy('work');
   }
 
   /* S2 */
-  .bms__head { grid-column: 1 / span 8; grid-row: 1; display: flex; flex-direction: column; gap: 16px; }
+  .bms__head { grid-column: 1 / span 8; display: flex; flex-direction: column; gap: 16px; }
   .bms__intro { max-width: var(--measure); }
-  .bms__stage { grid-column: 1 / span 8; grid-row: 2; align-self: stretch; }
+  .bms__body { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .bms__stage { grid-column: 1 / span 8; }
   .bms__sticky { position: sticky; top: calc(var(--header-h) + var(--bar-h) + 24px); }
-  .bms__steps { grid-column: 9 / span 4; grid-row: 2; display: flex; flex-direction: column; }
+  .bms__steps { grid-column: 9 / span 4; display: flex; flex-direction: column; }
   .bms__step {
     min-height: 62svh;
     padding-block: 8px 48px;
@@ -156,38 +161,34 @@ const next = pageBy('work');
   .bms__step:last-child { min-height: 48svh; }
   .bms__n { color: var(--c-muted); padding-top: 6px; }
   @media (max-width: 767px) {
-    .bms__head, .bms__stage, .bms__steps { grid-column: 1 / -1; grid-row: auto; }
-    .bms__sticky { top: calc(var(--header-h) + var(--bar-h) + 8px); z-index: 2; }
-    .bms__stage { margin-inline: calc(-1 * var(--gutter)); }
-    .bms__step { min-height: 46svh; }
-    .bms__step:last-child { min-height: 30svh; }
+    .bms__head { grid-column: 1 / -1; }
+    .bms__body { display: block; }
+    .bms__stage { position: sticky; top: calc(var(--header-h) + var(--bar-h)); z-index: 2; margin-inline: calc(-1 * var(--gutter)); }
+    .bms__sticky { position: static; }
+    .bms__step { min-height: 44svh; background: var(--c-bg); }
+    .bms__step:first-child { margin-top: 16px; }
+    .bms__step:last-child { min-height: 24svh; }
   }
   :global(html:not(.motion)) .bms__step { min-height: 0; }
+  @media (max-width: 767px) { :global(html:not(.motion)) .bms__stage { position: static; } }
 
   /* S3 */
   .shelf__title { color: var(--c-muted); }
-  .shelf__words { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(6px, 0.8vw, 12px); }
-  .shelf__word {
-    aspect-ratio: 1;
-    container-type: inline-size;
-    display: grid;
-    place-items: center;
-    background: var(--bk-t08);
-    border-top: 2px solid var(--field);
-  }
-  .shelf__word span {
+  .shelf__words {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.15em 0.4em;
     font-weight: 900;
-    font-size: min(30cqi, 4.5rem);
+    font-size: var(--t-xl);
+    line-height: 1.15;
     letter-spacing: var(--track-display);
-    line-height: 1.05;
-    text-align: center;
-    padding: 0 6cqi;
-    word-break: keep-all;
+    padding-block: 18px;
+    border-block: 2px solid var(--field);
   }
+  .shelf__word { white-space: nowrap; }
+  .shelf__sep { width: 0.28em; height: 0.28em; background: var(--field); flex: none; }
   .shelf__caption { max-width: var(--measure); }
-  @media (max-width: 767px) {
-    .shelf__words { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  }
 
   /* S4 */
   .bparts__text { display: flex; flex-direction: column; gap: 16px; align-self: start; position: sticky; top: calc(var(--header-h) + var(--bar-h) + 32px); }
