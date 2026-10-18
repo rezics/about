@@ -131,7 +131,7 @@ const css = [
 <GamesFinale />
 
 <style>
-  .ghero { min-height: calc(100svh - var(--header-h) - var(--bar-h)); display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: clamp(24px, 4vw, 56px) var(--gutter); }
+  .ghero { min-height: calc(76svh - var(--header-h) - var(--bar-h)); display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: clamp(24px, 4vw, 56px) var(--gutter); }
   .ghero__title { font-weight: 900; font-size: clamp(3.5rem, 0.5rem + 13.5vw, 15rem); line-height: 0.98; letter-spacing: -0.03em; margin-left: -0.04em; }
   .ghero__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
   .ghero__foot .lede { max-width: 30em; }
@@ -162,8 +162,8 @@ const css = [
     position: absolute;
     inset: 0 0 0 calc(6.5em + 14px);
     background:
-      repeating-linear-gradient(0deg, rgb(244 245 242 / 0.4) 0 1px, transparent 1px 7px),
-      color-mix(in srgb, var(--g-field) 72%, var(--c-ink));
+      repeating-linear-gradient(90deg, rgb(244 245 242 / 0.12) 0 1px, transparent 1px 16px),
+      color-mix(in srgb, var(--g-field) 55%, var(--c-ink));
     clip-path: inset(0 0 calc((1 - var(--covered)) * 100%) 0);
     transition: clip-path var(--d-m) var(--ease-snap);
   }

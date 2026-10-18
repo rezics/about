@@ -1,11 +1,12 @@
 ---
-// Display text set one sentence per line, so a statement never breaks inside a phrase across
-// two sentences. The text stays one string in the content file.
+// Display text set one sentence (or, with `clauses`, one clause) per line, so a statement never
+// breaks inside a phrase across two sentences. The text stays one string in the content file.
 interface Props {
   text: string;
+  clauses?: boolean;
 }
-const { text } = Astro.props;
-const lines = text.split(/(?<=。)/).map((s) => s.trim()).filter(Boolean);
+const { text, clauses = false } = Astro.props;
+const lines = text.split(clauses ? /(?<=[，。])/ : /(?<=。)/).map((s) => s.trim()).filter(Boolean);
 ---
 {lines.map((line) => <span class="g-line">{line}</span>)}
 <style>

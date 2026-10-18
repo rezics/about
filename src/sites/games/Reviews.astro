@@ -5,6 +5,7 @@ import Section from '../../kit/components/Section.astro';
 import site from '../../content/sites/games';
 import Blocks from './Blocks.astro';
 import GamesFinale from './GamesFinale.astro';
+import Lines from './Lines.astro';
 import './games.css';
 
 const s = site.strings.reviews;
@@ -28,7 +29,7 @@ const css = whoShapes
 ---
 <!-- 1 Hero: statement -->
 <section class="vhero grid" aria-labelledby="vhero-title">
-  <h1 id="vhero-title" class="vhero__title t-xl">{s.hero.headline}</h1>
+  <h1 id="vhero-title" class="vhero__title t-xl"><Lines text={s.hero.headline} clauses /></h1>
   <p class="vhero__lede lede">{s.hero.lede}</p>
 </section>
 
@@ -118,7 +119,7 @@ const css = whoShapes
 
 <style>
   .vhero { min-height: calc(82svh - var(--header-h) - var(--bar-h)); align-content: center; row-gap: 28px; padding-block: clamp(40px, 6vw, 96px); }
-  .vhero__title { grid-column: 1 / span 11; font-size: clamp(2.5rem, 1rem + 6vw, 7rem); line-height: 1.05; }
+  .vhero__title { grid-column: 1 / -1; font-size: clamp(1.875rem, 0.4rem + 6.4vw, 6.75rem); line-height: 1.08; }
   .vhero__lede { grid-column: 5 / span 6; }
 
   .versions__row { grid-column: 1 / -1; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gutter); }

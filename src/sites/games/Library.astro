@@ -136,12 +136,12 @@ const s = site.strings.library;
     --on-field: var(--c-paper);
     --field: var(--g-field);
   }
-  .status__layer { position: absolute; inset: 0; container-type: inline-size; transition: translate var(--d-m) var(--ease-snap); translate: 0 100%; }
+  .status__layer { position: absolute; inset: 0; container-type: inline-size; transition: translate var(--d-m) var(--ease-snap), visibility 0s linear var(--d-m); translate: 0 100%; visibility: hidden; }
   .status__stage[data-state='0'] [data-layer='0'],
   .status__stage[data-state='1'] [data-layer='1'],
   .status__stage[data-state='2'] [data-layer='2'],
   .status__stage[data-state='3'] [data-layer='3'],
-  .status__stage[data-state='4'] [data-layer='4'] { translate: 0 0; }
+  .status__stage[data-state='4'] [data-layer='4'] { translate: 0 0; visibility: visible; transition-delay: 0s; }
   .status__ticks { position: absolute; left: 6cqi; bottom: 6cqi; display: flex; gap: 6px; }
   .status__tick { width: 14px; height: 14px; border: 1.5px solid var(--c-paper); }
   .status__stage[data-state='0'] [data-tick='0'],

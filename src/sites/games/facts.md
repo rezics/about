@@ -164,5 +164,7 @@ is not a claim about REZICS.
    general.
 8. **Store platforms.** The permitted game platforms are an open blank in the agreement, so
    copy says 「適合你平台的檔案」 without naming platforms.
-9. **Library name.** The kinds card uses 「收藏」 on games; this site uses 「遊戲庫」 (see
-   SITE.md §4).
+9. **Live presentation.** Every capability is written as available (DESIGN.md "Claims");
+   commerce, playtime estimates and Wiki+ chapter positions for games are planned or gated in
+   the product documents (`product/capabilities.md` "Deferred rollouts", first-launch cut
+   lines).

@@ -137,3 +137,9 @@
   line-height: 1.3;
 }
 [data-site='games'] .g-part .mono { color: var(--c-muted); font-weight: 400; }
+
+/* Phones: the shared spacing moods, tightened for a 390 px screen. */
+@media (max-width: 767px) {
+  [data-site='games'] main .pad-airy { padding-block: 88px; }
+  [data-site='games'] main .pad-normal { padding-block: 64px; }
+}
