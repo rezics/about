@@ -45,6 +45,7 @@ const {
   ...rest
 } = Astro.props;
 const Tag = href ? 'a' : 'div';
+const escapeAttr = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const showPicture = mode !== 'plain' && image;
 ---
 <Tag
@@ -60,16 +61,9 @@ const showPicture = mode !== 'plain' && image;
     <picture class="sq__img">
       <source type="image/avif" srcset={`${image.base}-320.avif 320w, ${image.base}-960.avif 960w`} sizes={sizes} />
       <source type="image/webp" srcset={`${image.base}-320.webp 320w, ${image.base}-960.webp 960w`} sizes={sizes} />
-      <img
-        src={`${image.base}-960.webp`}
-        alt={href ? '' : image.alt}
-        width="960"
-        height="960"
-        loading={eager ? 'eager' : 'lazy'}
-        fetchpriority={eager ? 'high' : 'auto'}
-        decoding="async"
-        data-square-img
-      />
+      {/* A linked square's name is its link text, so its picture is decorative. Astro would print
+          an empty alt as a bare attribute, which some validators misread, so it is set via HTML. */}
+      <Fragment set:html={`<img src="${image.base}-960.webp" alt="${escapeAttr(href ? '' : image.alt)}" width="960" height="960" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'auto'}" decoding="async" data-square-img>`} />
     </picture>
   )}
   <SquareName name={name} roll={!!href} />
@@ -87,8 +81,8 @@ const showPicture = mode !== 'plain' && image;
     color: var(--on-field);
   }
   .sq__img { position: absolute; inset: 0; }
-  .sq__img img { width: 100%; height: 100%; object-fit: cover; }
-  .sq__img img.is-missing { visibility: hidden; }
+  .sq__img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .sq__img :global(img.is-missing) { visibility: hidden; }
   .sq--flood .sq__img { clip-path: inset(100% 0 0 0); transition: clip-path var(--d-m) var(--ease-snap); }
   @media (hover: hover) {
     a.sq--flood:hover .sq__img { clip-path: inset(0 0 0 0); }
