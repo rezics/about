@@ -18,9 +18,9 @@ const identity = partById('identity');
   <!-- 1 Hero: split frame, the composing square as the scene -->
   <section class="hero grid" aria-labelledby="hero-title" data-hero>
     <div class="hero__text">
-      <h1 id="hero-title" class="t-xl hero__title" data-split="lines" data-intro>{h.hero.headline}</h1>
-      <p class="lede hero__lede" data-reveal="fade" data-intro data-delay="0.3">{h.hero.lede}</p>
-      <div class="hero__actions" data-reveal="fade" data-intro data-delay="0.45">
+      <h1 id="hero-title" class="t-xl hero__title">{h.hero.headline}</h1>
+      <p class="lede hero__lede">{h.hero.lede}</p>
+      <div class="hero__actions">
         <NotifyCall label={h.hero.primary} />
         <a class="link-draw hero__secondary" href="#index">{h.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
       </div>

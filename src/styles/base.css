@@ -99,7 +99,7 @@
   clip-path: inset(0 calc(100% - var(--btn-sq)) 0 0);
   transition: clip-path var(--d-m) var(--ease-snap);
 }
-.btn__label { display: inline-grid; overflow: clip; margin-left: calc(var(--btn-sq) + 0.25em); }
+.btn__label { display: inline-grid; overflow: clip; margin-left: calc(var(--btn-sq) + 0.5em); }
 .btn__label > span { grid-area: 1 / 1; transition: translate var(--d-m) var(--ease-snap); }
 .btn__label > span + span { translate: 0 110%; }
 .btn:active, .btn.is-filled { color: var(--btn-ground); }
@@ -122,6 +122,9 @@
 
 /* Text links: the underline draws (standalone) or stays and thickens (inline in text). */
 .link-draw {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   background: linear-gradient(currentColor 0 0) left bottom / 0% 2px no-repeat;
   padding-bottom: 2px;
   transition: background-size var(--d-m) var(--ease-snap);

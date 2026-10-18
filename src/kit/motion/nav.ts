@@ -3,7 +3,7 @@
 // aria-expanded in step with each panel, Escape returning focus to the tab, the sliding red
 // marker, and the phone sheet's fallback for browsers without invoker commands.
 import { gsap } from 'gsap';
-import { dur, ease, isTouch, onPage, prefersReducedMotion } from '../../engine';
+import { dur, ease, isTouch, onPage, onScroll, prefersReducedMotion } from '../../engine';
 
 const OPEN_DELAY = 100;
 const CLOSE_DELAY = 280;
@@ -94,6 +94,19 @@ function wirePanels() {
     heading = { x: e.clientX - last.x, y: e.clientY - last.y };
     last = { x: e.clientX, y: e.clientY };
   }) as EventListener, { passive: true });
+
+  // Scrolling the page away from an open panel closes it.
+  let anchorY = scrollY;
+  for (const p of all)
+    listen(p.panel, 'toggle', ((e: ToggleEvent) => {
+      if (e.newState === 'open') anchorY = scrollY;
+    }) as EventListener);
+  off.push(
+    onScroll(({ y }) => {
+      const p = openOf();
+      if (p && Math.abs(y - anchorY) > 48) p.panel.hidePopover();
+    }),
+  );
 
   // Escape: close and return focus to the tab, wherever focus was.
   listen(document, 'keydown', ((e: KeyboardEvent) => {

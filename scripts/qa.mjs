@@ -5,7 +5,7 @@
 // Pass paths to shoot those pages instead of crawling: node scripts/qa.mjs /books/ /books/editions/
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync, spawnSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 // The vendored skill lives in the main checkout; a worktree may not carry it.
@@ -26,19 +26,27 @@ const base = `http://127.0.0.1:${server.address().port}`;
 const targets = process.argv.slice(2).filter((a) => a.startsWith('/'));
 const shots = path.join(root, '.shots');
 fs.mkdirSync(shots, { recursive: true });
-const run = (args, opts = {}) => spawnSync(process.execPath, args, { cwd: root, stdio: 'inherit', ...opts });
+// Children run asynchronously: this process serves the pages they load.
+const run = (args, capture = false) =>
+  new Promise((resolve) => {
+    const child = spawn(process.execPath, args, { cwd: root, stdio: capture ? ['ignore', 'pipe', 'pipe'] : 'inherit' });
+    let out = '';
+    child.stdout?.on('data', (d) => (out += d));
+    child.stderr?.on('data', (d) => (out += d));
+    child.on('close', (status) => resolve({ status: status ?? 1, out }));
+  });
 let status = 0;
 if (targets.length) {
   for (const target of targets) {
     const out = path.join(shots, target.replace(/^\/|\/$/g, '').replace(/\//g, '-') || 'home');
-    status ||= run([path.join(skill, 'shoot.mjs'), `${base}${target}`, '--out', out, '--nav']).status ?? 1;
+    status ||= (await run([path.join(skill, 'shoot.mjs'), `${base}${target}`, '--out', out, '--nav'])).status;
   }
 } else {
-  status ||= run([path.join(skill, 'shoot.mjs'), `${base}/`, '--crawl', '--nav', '--max', '12', '--out', shots]).status ?? 1;
-  const audit = spawnSync(process.execPath, [path.join(skill, 'audit.mjs'), `${base}/`], { cwd: root, encoding: 'utf8' });
-  fs.writeFileSync(path.join(shots, 'audit.txt'), audit.stdout + audit.stderr);
-  console.log(audit.stdout.split('\n').slice(-4).join('\n'));
-  status ||= audit.status ?? 1;
+  status ||= (await run([path.join(skill, 'shoot.mjs'), `${base}/`, '--crawl', '--nav', '--max', '12', '--out', shots])).status;
+  const audit = await run([path.join(skill, 'audit.mjs'), `${base}/`], true);
+  fs.writeFileSync(path.join(shots, 'audit.txt'), audit.out);
+  console.log(audit.out.trim().split('\n').slice(-3).join('\n'));
+  status ||= audit.status;
 }
 server.close();
 process.exit(status);

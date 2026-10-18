@@ -47,8 +47,10 @@ export function initHero() {
     const tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: document.querySelector('[data-hero]') ?? root,
-        start: 'top top',
+        // Starts when the square reaches the header, so on phones it can be seen composing (and
+        // paused) before it travels.
+        trigger: square,
+        start: () => `top ${(document.querySelector('[data-header]')?.getBoundingClientRect().height ?? 64) + 8}px`,
         endTrigger: tile,
         end: 'top 30%',
         scrub: 0.4,

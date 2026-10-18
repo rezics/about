@@ -413,3 +413,39 @@ Voice (zh-Hant):
   gain on a marketing site.
 - 2026-10-19: GSAP replaces Motion (one clock, as the skill requires). CSS-only scroll
   effects from the previous site are replaced by the engine's scroll system.
+- 2026-10-19 (builder): the site is a shared foundation plus mini-sites. `src/kit/` discovers
+  sites from `src/content/sites/<id>.ts` (`MiniSite` in the schema) and themes each page through
+  `--field` / `--on-field` on `<body>`; every mini-site page gets the sticky site bar under the
+  global header. Rules for site builders: `src/kit/README.md`.
+- 2026-10-19 (builder): the 產品 and 引擎 panels are native popovers opened by their tab
+  buttons (`popovertarget`), so they open, close on Escape and light-dismiss without script;
+  script adds `aria-expanded`, the 100 ms intent delay, the 280 ms grace, the safe area, and
+  closes a panel when the page scrolls. The phone sheet is a modal `<dialog>` opened by invoker
+  commands (script fallback), which traps focus natively.
+- 2026-10-19 (builder): a name over a picture keeps a trap of its field colour
+  (`paint-order: stroke fill`), so it stays legible over any part of the print; the generated
+  pictures share the field colour as their ground, so the trap is invisible over the field.
+- 2026-10-19 (builder): part layouts come from one rule (`src/kit/arrange.ts`): the first item
+  follows its own order; afterwards a shared part keeps its cell and new parts fill the freed
+  cells in reading order. The hero square uses it along the nine kinds, so only the
+  differences move; a static `PartsGrid` follows the content order unless given a layout.
+- 2026-10-19 (builder): a connective in the middle of an odd-length name (與, 和, 及, 之, 的)
+  is set small between two full lines, everywhere a name fills a square: 創作 / 與 / 發行.
+- 2026-10-19 (builder): no loader, and the hero text is not hidden for an intro: the throttled
+  phone LCP is the lede. The page intro is the composing square assembling (parts slide in from
+  their edges and lock); line masks are kept for display text below the fold.
+- 2026-10-19 (builder): the hero square idles through the kinds every 3.6 s while on screen
+  and pauses while the pointer or focus is inside it; a visible pause toggle and the row of
+  kind buttons sit under it (WCAG 2.2.2). On scroll it travels down, then across, into the
+  first index tile while its parts clear and its centre grows into the whole square.
+- 2026-10-19 (builder): primary buttons carry a small ink square at their start; on hover or
+  focus it floods across the button (clip-path) and the label rolls one line.
+- 2026-10-19 (builder): fonts are one variable Noto Sans TC (weights 400 to 900), sliced after
+  the build by actual use: slice 0 holds every character of the home page and the shared chrome,
+  the rest is grouped by how many pages use a character; each page links only its slices.
+  Archivo and Martian Mono ship committed Latin subsets. In `astro dev` the local Noto Sans CJK
+  TC stands in. Lenis runs on fine pointers only; touch keeps native scroll.
+- 2026-10-19 (builder): the notify form sits in the footer of every page (`#notify`, the square
+  you fill with your email); every 開放時通知我 action lands there and focuses the address.
+  Document titles read `頁面｜REZICS`. Open Graph images are rendered after the build from each
+  page's own metadata and field colour, so new pages get one without registration.
