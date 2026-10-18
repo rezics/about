@@ -1,5 +1,6 @@
 ---
 // A module's square: ink-tint field and name, no picture, so it reads as the engine underneath.
+// Its points are its facets: mono captions in the bottom row where the square is large enough.
 import type { ModuleId } from '../../content/schema';
 import { moduleById, moduleHref } from '../content';
 import { moduleFields } from '../theme';
@@ -8,10 +9,12 @@ import Square from './Square.astro';
 interface Props {
   module: ModuleId;
   link?: boolean;
+  /** Show the module's points as facets (default). */
+  facets?: boolean;
   class?: string;
   [key: `data-${string}`]: unknown;
 }
-const { module, link = true, ...rest } = Astro.props;
+const { module, link = true, facets = true, ...rest } = Astro.props;
 const m = moduleById(module);
 ---
-<Square name={m.name} field={moduleFields[module]} mode="plain" href={link ? moduleHref(module) : undefined} data-module={module} {...rest} />
+<Square name={m.name} field={moduleFields[module]} mode="plain" href={link ? moduleHref(module) : undefined} facets={facets ? m.points.map((p) => p.title) : []} data-module={module} {...rest} />

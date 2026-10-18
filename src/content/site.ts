@@ -3,20 +3,21 @@ import type { Site } from './schema';
 export const site: Site = {
   name: 'REZICS',
   url: 'https://about.rezics.com',
+  productUrl: 'https://rezics.com',
   meta: {
-    title: 'REZICS：開放的通用索引與社群',
+    title: 'REZICS｜開放的通用索引與社群',
     description:
       '書、動畫、漫畫、遊戲、軟體、視覺小說、MCP 伺服器、技能與 API，在 REZICS 各有一個身分，人們圍著它們討論、評分、整理清單、編寫 Wiki+。',
   },
   nav: {
     products: '產品',
-    engine: '引擎',
+    engine: '模組',
     developers: '開發者',
     roadmap: '路線圖',
     menu: '選單',
     close: '關閉',
     skip: '跳到主要內容',
-    action: '開放時通知我',
+    action: '前往 REZICS',
     productsIntro: {
       title: '九種東西，同一個索引',
       body: '每一種都有自己的頁面，底下是同一套部件與同一張圖。',
@@ -33,7 +34,7 @@ export const site: Site = {
     hero: {
       headline: '書、動畫、遊戲與軟體，同一個開放索引，同一個社群。',
       lede: '每部作品、每套軟體、每位創作者，在 REZICS 只有一個身分，不分語言，連在同一張圖上。評分、清單、討論與 Wiki+ 都掛在這個身分上，任何社群也能在這張圖上架起自己的網站。',
-      primary: '開放時通知我',
+      primary: '前往 REZICS',
       secondary: '看九種東西',
       caption: '九種東西，同一套部件。',
     },
@@ -77,7 +78,7 @@ export const site: Site = {
           body: '為一個故事、一種語言或一個想法成立的社群，有自己的成員、規則與管理。',
         },
         {
-          title: '人是一個品牌',
+          title: '同一個你，走進每個社群',
           body: '同一個身分帶著你的書庫、清單與聲譽，走進每個社群與每個 Zone。',
         },
         {
@@ -143,7 +144,7 @@ export const site: Site = {
     },
     finale: {
       headline: '最後一格，留給你。',
-      body: '填上電子郵件，REZICS 開放註冊時會通知你。',
+      body: '帶著你在乎的東西進來：建立帳號，書庫、清單與評分都放進同一張圖。',
     },
   },
   engine: {
@@ -268,31 +269,9 @@ export const site: Site = {
     ],
     statement: '每開放一個社群，圖上的連結就多一層，下一個社群一來就用得到。',
   },
-  notify: {
-    headline: '開放註冊那天，寫信給你。',
-    body: '留下電子郵件。REZICS 開放註冊時，我們只寄這一封通知。',
-    label: '電子郵件',
-    placeholder: 'name@example.com',
-    submit: '開放時通知我',
-    sending: '傳送中',
-    done: '收到了。開放註冊時，你會收到我們的信。',
-    privacy: '我們只保存你的電子郵件、語言與登記時間，用途只有一個：通知你註冊開放。',
-    errors: {
-      invalid_email: '請輸入有效的電子郵件，例如 name@example.com。',
-      invalid_request: '表單內容無法讀取。請重新整理頁面，再送出一次。',
-      cross_origin: '這個表單只接受從本站送出。',
-      unavailable: '目前無法儲存，請過一分鐘再試。',
-    },
-  },
-  notified: {
-    meta: {
-      title: '已加入通知名單',
-      description:
-        '我們記下了你的電子郵件。REZICS 開放註冊時，你會收到一封通知信。在那之前，可以先回首頁看看九種東西與五個模組。',
-    },
-    headline: '你在名單上了。',
-    body: '註冊開放的那天，信會寄到你留下的地址。',
-    back: '回到首頁',
+  product: {
+    headline: '九種東西，都在 REZICS 上。',
+    body: '用一個帳號追書、追番、記遊玩進度、寫評分與整理清單，也能在 Zone 為你的社群架起網站。',
   },
   notFound: {
     meta: {

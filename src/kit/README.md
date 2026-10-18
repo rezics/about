@@ -2,8 +2,8 @@
 
 Every product (the nine kinds), each engine module, `/engine/`, `/developers/` and `/roadmap/`
 is a mini-site built on this kit. The kit gives you the shared document (header, panels, phone
-sheet, footer with the notify form, SEO, fonts, page transitions), a themed site bar and a set
-of primitives. You build your own sections and your own signature on top. Read
+sheet, footer ending on the action square into REZICS, SEO, fonts, page transitions), a themed
+site bar and a set of primitives. You build your own sections and your own signature on top. Read
 [DESIGN.md](../../DESIGN.md) and the skill (`.agents/skills/awwwards/`) first.
 
 ## What you own
@@ -49,19 +49,51 @@ sitemap, Open Graph images, transitions and every test pick new pages up by them
 
 Each page has exactly one `<h1>`. Keep copy in your content file, never in the page.
 
-## Theming
+## Themes
 
-`MiniSiteLayout` puts `data-site="<id>"`, `data-kind` (kinds) and `--field` / `--on-field` on
-`<body>` from your `theme` (`{ kind }`, `{ module }`, or your own `{ field, on }`, e.g. developers
-`#2f63ad` with paper text). Text on a field must pass AA; `tests/unit/theme.test.ts` checks every
-site's field.
+Sites may look clearly different (DESIGN.md "One design language, different themes"). The kit,
+the header, the panels, the site bar, the footer and every primitive read only semantic tokens,
+so you restyle all of them by setting tokens on your site:
 
-- Colour roles (`--c-paper`, `--c-ink`, `--c-muted`, `--c-line`, `--c-link`, `--c-mark`) and the
-  type scale (`--t-mega` … `--t-xs`, classes `.t-xl`, `.t-l`, `.t-m`, `.lede`, `.mono`) are in
-  `src/styles/tokens.css` and `base.css`. Red (`--c-mark`) is never text.
-- `.band-ink` and `.band-field` (on `Section band="ink" | "field"`) flip the ground; every text
-  colour follows `--c-fg`, `--c-bg` and `--c-muted`, so use those in your CSS.
-- Your own variables and global rules go under `[data-site='<id>']` in your CSS. Radius is 0.
+| Token | Role |
+|---|---|
+| `--c-bg`, `--c-fg` | ground and ink |
+| `--c-muted` | secondary text (AA on `--c-bg`) |
+| `--c-line`, `--c-line-strong` | hairlines, grid lines |
+| `--c-link` | links and the focus ring |
+| `--c-band-bg`, `--c-band-fg`, `--c-band-muted`, `--c-band-line`, `--c-band-line-strong`, `--c-band-link` | the inverted band (`.band-ink`, the footer) |
+| `--field`, `--on-field` | your field and the text on it (from `theme` in your content file) |
+
+`MiniSiteLayout` puts `data-site="<id>"` (and `data-kind` for kinds) on `<html>` and `<body>`,
+and `--field` / `--on-field` from your `theme` (`{ kind }`, `{ module }`, or your own
+`{ field, on }`, e.g. developers `#2f63ad` with paper text). A dark site:
+
+```css
+/* src/sites/<id>/theme.css, imported by your pages */
+[data-site='<id>'] {
+  --c-bg: #0e1420;
+  --c-fg: #f4f5f2;
+  --c-muted: #a9b2c1;
+  --c-line: rgb(244 245 242 / 0.16);
+  --c-line-strong: rgb(244 245 242 / 0.34);
+  --c-link: #9ab8e6;
+  --c-band-bg: #f4f5f2;
+  --c-band-fg: #0e1420;
+  --c-band-muted: #566070;
+  --c-band-line: rgb(14 20 32 / 0.12);
+  --c-band-line-strong: rgb(14 20 32 / 0.28);
+  --c-band-link: #2f63ad;
+}
+```
+
+Every text pair must pass AA (4.5:1, 3:1 for large display text); `tests/e2e/theme.e2e.ts`
+renders a dark theme over the shared chrome and checks it with axe. Red (`--c-mark`) is a mark,
+never text. Keep the language: the three type families, the grid, squares, radius 0, the motion
+verb and the hover vocabulary.
+
+- Type scale: `--t-mega` … `--t-xs`, classes `.t-xl`, `.t-l`, `.t-m`, `.lede`, `.mono`
+  (`src/styles/tokens.css`, `base.css`).
+- `.band-ink` and `.band-field` (on `Section band="ink" | "field"`) flip the ground.
 - Grid: 12 columns, `.grid`, placement classes `.col-1-4`, `.col-5-12`, `.col-7-12` … on the
   strong lines 1, 5 and 9 (phones stack to full width).
 
@@ -74,16 +106,19 @@ Import from `src/kit/components/`:
 | `Square` | the module of the site: `name`, `field`, `mode` (`flood` picture on hover, `image` picture shown, `plain`), `href` (link squares are transition sources), `image={{ base, alt }}` (`${base}-960.avif|webp`, `${base}-320.avif|webp`), `flip="target"` for the one square per page a transition lands on |
 | `KindSquare`, `ModuleSquare` | a kind's or module's square from the shared content |
 | `SquareName` | a name that fills its box (`container-type: inline-size`): 2 characters on a line, 4 in a 2×2, Latin on two lines, `創作 / 與 / 發行` for a middle connective; explicit `\n` also works |
-| `PartsGrid` | a square's 3×3 at rest: `name`, `field`, `parts`, optional `notes` per part and `layout` |
-| `Composer` | the composing square: `items` (`{ id, name, field, parts }[]`), `start`, `interval`, `controls`. The driver idles through the items, pauses off screen, on pointer or focus and with its toggle; reach it with `getComposer(el)` from `src/kit/motion/composer.ts` (`show(i)`, `hold`/`release`, `onChange`, `assemble`) |
+| `PartsList` | a kind's eight parts as a compact list of labelled chips, one line each (`parts`, optional `notes` per part, `level` for headings): reads well on a phone. Use this for parts |
+| `PartsGrid` | (kept for compatibility; prefer `PartsList`, a large grid of text cells is mostly empty on a phone) a square's 3×3 at rest: `name`, `field`, `parts`, optional `notes` per part and `layout` |
+| `Composer` | (kept for compatibility; the home no longer uses it) the composing square: `items` (`{ id, name, field, parts }[]`), `start`, `interval`, `controls`. The driver idles through the items, pauses off screen, on pointer or focus and with its toggle; reach it with `getComposer(el)` from `src/kit/motion/composer.ts` (`show(i)`, `hold`/`release`, `onChange`, `assemble`) |
 | `EmptySquare` | an empty square with the red cursor |
 | `Section` | section shell: `mood` (`tight`, `normal`, `airy`, `full`), `band`, the grid |
-| `NotifyCall` | the primary button that lands on the footer's notify form (`#notify`) |
-| `Finale` | "next page / next site": a full-bleed band in the next thing's field; `nextSite(site)` from `src/kit/sites.ts` follows the navigation order (kinds, then developers) or your `next` |
+| `ProductCall` | the action into the live product, 「前往 REZICS」 to `site.productUrl` (`label`, `href`, `size="small"`, `class`); the arrow sits in its ink square. With your own `label` and `href` it is any primary button |
+| `Finale` | "next page / next site": a full-bleed band in the next thing's field, with its own hover (ink steps rise, the name slides, the label grows); `nextSite(site)` from `src/kit/sites.ts` follows the navigation order (kinds, then developers) or your `next`. The footer's action square follows it on every page: add no other action after it |
+| `CodeBlock` | a code sample (`code`, `language`, `caption`): indentation kept, scrolls sideways on phones, keyboard-scrollable |
 | `StubLanding` | the placeholder your landing page starts with; replace it |
 
 Buttons and links: `.btn` (primary: the square floods across, the label rolls; markup
-`<a class="btn"><span class="btn__label"><span>…</span><span aria-hidden="true">…</span></span></a>`),
+`<a class="btn"><span class="btn__label"><span>…</span></span></a>`; the roll is one face, so no
+copy of the label sits in the DOM; prefer `ProductCall` for the action into REZICS),
 `.link-draw` (standalone text links), `.link-inline` (links inside body text), `.link-utility`.
 
 ## Motion
@@ -121,3 +156,39 @@ task e2e                        # every route at desktop and 390 px, axe, no con
 ```
 
 `task qa` and `task e2e` wait for a free slot (3 machine-wide). Look at every screenshot.
+
+## Changes
+
+Breaking changes to the kit, newest first. Merge `main`, then fix what the build reports.
+
+### 2026-10-19: REZICS is live
+
+- The notify feature is gone: no footer form, no `/notified/`, no `/api/notify`, no Worker, no
+  D1. The site deploys as static assets only.
+- `site.notify` and `site.notified` are removed from the schema. Use `site.productUrl` (the live
+  product) and `site.nav.action` (「前往 REZICS」); the footer's action square reads
+  `site.product.headline` and `site.product.body`. Write no "when registration opens",
+  waiting-list or sign-up-later copy.
+- `NotifyCall` is deprecated: it still builds and now renders `ProductCall`. Replace
+  `import NotifyCall from '…/kit/components/NotifyCall.astro'` with
+  `import ProductCall from '…/kit/components/ProductCall.astro'`. Links to `#notify` lead
+  nowhere: link to `site.productUrl` (or use `ProductCall`).
+- The site bar no longer repeats the header's action. `MiniSite.action` still shows when it is
+  an action of your own (not the product link).
+- `Finale` keeps its props; it has its own hover and is capped at about 60svh on phones.
+- `.btn`: the label roll needs one inner span (the older two-span markup still works). The
+  button's square is drawn by the button itself; `ProductCall` adds the arrow inside it.
+- The header tab 引擎 reads 模組 (`site.nav.engine`); the route stays `/engine/`.
+- Square names: Latin names such as MCP Hub, Skill Hub and API Hub share one size; plain squares
+  take `facets` (ModuleSquare shows a module's points); the name rolls without a DOM copy.
+- Reveals (`data-split`, `data-reveal`) do nothing below 600 px: content is visible at once.
+- Display text keeps Latin runs whole (`<span class="nw">`, added by the build).
+- `<pre>` keeps its indentation and scrolls sideways; give it `tabindex="0"` (or use
+  `CodeBlock`) so keyboard users can scroll it.
+- Themes: the chrome reads only semantic tokens; `.band-ink` reads `--c-band-*` (see
+  "Themes"). If your CSS used `--c-paper` or `--c-ink` for text or grounds, switch to `--c-bg`
+  and `--c-fg` so your theme can change them.
+- `data-site` and `data-kind` are on `<html>` as well as `<body>`.
+- New: `PartsList` (prefer it to `PartsGrid`), `ProductCall`, `CodeBlock`, `Arrow`; Square's
+  `.is-lit` floods a flood square's picture from script.
+- Navigation: the current tab keeps its filled red square; hover and focus show an outlined one.

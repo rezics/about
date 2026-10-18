@@ -9,6 +9,10 @@
  *       'plain'  field and name only (modules, anything without a picture)
  * href  makes the square a link; linked squares are page-transition sources ([data-flip-src])
  * flip  'target' marks the square a transition lands on (one per page, the hero square)
+ * facets up to four short captions set in mono under the name (plain squares: a module's
+ *       points, a site's sections), so a square without a picture still fills its frame. They
+ *       show where the square is at least 260 px wide. A linked plain square floods with a
+ *       deeper shade of its field from the bottom on hover, as a picture floods a kind square.
  * image `${base}-960.avif|webp` and `${base}-320.avif|webp`; the field shows while it loads or
  *       when it is missing. Inside a link the picture is decorative (the name names the link).
  */
@@ -29,6 +33,8 @@ interface Props {
   class?: string;
   /** Hidden text appended to a linked square's name, e.g. its summary. */
   description?: string;
+  /** Short captions under the name (at most four are shown). */
+  facets?: string[];
   [key: `data-${string}`]: unknown;
 }
 const {
@@ -42,14 +48,16 @@ const {
   flip,
   class: className,
   description,
+  facets = [],
   ...rest
 } = Astro.props;
+const shownFacets = facets.slice(0, 4);
 const Tag = href ? 'a' : 'div';
 const escapeAttr = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const showPicture = mode !== 'plain' && image;
 ---
 <Tag
-  class:list={['sq', `sq--${mode}`, className]}
+  class:list={['sq', `sq--${mode}`, shownFacets.length > 0 && 'sq--facets', className]}
   href={href}
   style={fieldStyle(field)}
   data-flip-src={href ? '' : undefined}
@@ -66,7 +74,13 @@ const showPicture = mode !== 'plain' && image;
       <Fragment set:html={`<img src="${image.base}-960.webp" alt="${escapeAttr(href ? '' : image.alt)}" width="960" height="960" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'auto'}" decoding="async" data-square-img>`} />
     </picture>
   )}
-  <SquareName name={name} roll={!!href} />
+  <SquareName name={name} roll={!!href} height={shownFacets.length ? 56 : undefined} />
+  {href && mode === 'plain' && <span class="sq__shade" aria-hidden="true"></span>}
+  {shownFacets.length > 0 && (
+    <ul class="sq__facets mono" role="list" aria-hidden={href ? 'true' : undefined}>
+      {shownFacets.map((f) => <li><span class="sq__dot" aria-hidden="true"></span>{f}</li>)}
+    </ul>
+  )}
   {description && <span class="sr-only">{description}</span>}
   <slot />
 </Tag>
@@ -84,19 +98,48 @@ const showPicture = mode !== 'plain' && image;
   .sq__img :global(img) { width: 100%; height: 100%; object-fit: cover; }
   .sq__img :global(img.is-missing) { visibility: hidden; }
   .sq--flood .sq__img { clip-path: inset(100% 0 0 0); transition: clip-path var(--d-m) var(--ease-snap); }
+  /* Facets: mono captions in the bottom row of the square, where it is wide enough. */
+  .sq__facets {
+    position: absolute;
+    left: 6cqi;
+    right: 6cqi;
+    bottom: 5cqi;
+    z-index: 1;
+    display: none;
+    gap: 0.35em;
+    font-size: clamp(0.75rem, 3.2cqi, 1rem);
+    line-height: 1.3;
+    color: var(--on-field);
+  }
+  .sq__facets li { display: flex; gap: 0.6em; align-items: baseline; }
+  .sq__dot { flex: none; width: 0.5em; height: 0.5em; background: currentColor; }
+  @container (min-width: 260px) {
+    .sq--facets .sq__facets { display: grid; }
+    .sq--facets :global(.sqname) { font-size: calc(var(--fit-short) * 1cqi); }
+  }
+  /* A picture under the name: the name keeps a trap of the field colour. `.is-lit` floods a
+     flood square's picture from script (an idle sequence, a chosen item). */
+  .sq--image, a.sq--flood:hover, a.sq--flood:focus-visible, .sq--flood.is-lit { --sqname-trap: 0.08em; }
+  .sq--flood.is-lit .sq__img { clip-path: inset(0 0 0 0); }
+  /* A linked plain square floods with a deeper shade of its field from the bottom. */
+  .sq__shade {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--field) 76%, #0e1420);
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path var(--d-m) var(--ease-snap);
+  }
   @media (hover: hover) {
     a.sq--flood:hover .sq__img { clip-path: inset(0 0 0 0); }
-    a.sq:hover :global(.sqname__face) { translate: 0 -110%; }
-    a.sq:hover :global(.sqname__face + .sqname__face) { translate: 0 0; }
+    a.sq--plain:hover .sq__shade { clip-path: inset(0 0 0 0); }
+    a.sq:hover :global(.sqname__face--roll) { animation: rz-roll var(--d-m) var(--ease-snap); }
   }
   a.sq--flood:focus-visible .sq__img { clip-path: inset(0 0 0 0); }
-  a.sq:focus-visible :global(.sqname__face) { translate: 0 -110%; }
-  a.sq:focus-visible :global(.sqname__face + .sqname__face) { translate: 0 0; }
+  a.sq--plain:focus-visible .sq__shade { clip-path: inset(0 0 0 0); }
+  a.sq:focus-visible :global(.sqname__face--roll) { animation: rz-roll var(--d-m) var(--ease-snap); }
   a.sq:focus-visible { outline-offset: 4px; }
   a.sq:active { scale: 0.985; }
-  /* Reduced motion: no roll (its end state looks like rest); the flood stays as a state change. */
   @media (prefers-reduced-motion: reduce) {
-    .sq :global(.sqname__face) { translate: none !important; }
-    .sq :global(.sqname__face + .sqname__face) { visibility: hidden; }
+    .sq :global(.sqname__face) { animation: none !important; }
   }
 </style>

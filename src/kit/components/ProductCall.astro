@@ -1,0 +1,23 @@
+---
+/**
+ * The action into the live product: 「前往 REZICS」 to `site.productUrl`. The header, the footer's
+ * action square and any page that needs a primary action use this one component. The ink square
+ * at its start carries an arrow; on hover or focus it floods across and the label rolls.
+ */
+import { site } from '../content';
+
+interface Props {
+  label?: string;
+  href?: string;
+  /** `small` for bars; `light` on an ink or dark ground is automatic (it follows --c-fg). */
+  size?: 'normal' | 'small';
+  class?: string;
+}
+const { label = site.nav.action, href = site.productUrl, size = 'normal', class: className } = Astro.props;
+---
+<a class:list={['btn', 'btn--icon', size === 'small' && 'btn--small', className]} href={href}>
+  <svg class="btn__icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path d="M2 8h11M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+  </svg>
+  <span class="btn__label"><span>{label}</span></span>
+</a>

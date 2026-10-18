@@ -29,8 +29,8 @@ const metaContent = (html: string, key: string) => attr(html, new RegExp(`<meta[
 
 describe.skipIf(!built)('build output', () => {
   test('there are pages', () => {
-    expect(pages.length).toBeGreaterThanOrEqual(20);
-    expect(pages.map((p) => p.route)).toEqual(expect.arrayContaining(['/', '/404/', '/notified/', '/books/', '/engine/', '/engine/community/', '/developers/', '/roadmap/']));
+    expect(pages.length).toBeGreaterThanOrEqual(19);
+    expect(pages.map((p) => p.route)).toEqual(expect.arrayContaining(['/', '/404/', '/books/', '/engine/', '/engine/community/', '/developers/', '/roadmap/']));
   });
 
   test.each(pages.map((p) => [p.route, p] as const))('%s: one h1, lang, title, description, canonical, OG image, fonts', (route, p) => {
@@ -88,6 +88,13 @@ describe.skipIf(!built)('build output', () => {
     const indexable = pages.filter((p) => !/<meta name="robots" content="noindex"/.test(p.html)).map((p) => p.route);
     expect([...listed].sort()).toEqual([...indexable].sort());
     expect(readFileSync(join(dist, 'robots.txt'), 'utf8')).toContain(`Sitemap: ${ORIGIN}/sitemap-index.xml`);
+  });
+
+  test('no page asks to sign up: every primary action leads into the product', () => {
+    for (const p of pages) {
+      expect(p.html, p.route).not.toMatch(/\/api\/notify|id="notify"|開放時通知我/);
+      expect(p.html, p.route).toContain('href="https://rezics.com"');
+    }
   });
 
   test('every kind picture the pages reference exists with both formats and sizes', () => {

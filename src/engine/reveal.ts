@@ -4,7 +4,8 @@
 //                                    place one by one along the grid (squares in a grid)
 //   data-intro                        play with the page intro instead of on scroll
 //   data-delay="0.2"                  extra delay (seconds)
-// Every effect is skipped under reduced motion; CSS keeps content visible without JS.
+// Every effect is skipped under reduced motion and on phones (< 600 px); CSS keeps content
+// visible without JS.
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
@@ -83,10 +84,13 @@ function blockTween(el: HTMLElement, paused: boolean) {
   });
 }
 
+/** Below this width content shows at once: phones scroll fast and reveals lag behind the text. */
+const PHONE = '(max-width: 599px)';
+
 /** Wire every reveal inside `root`. Returns the intro timeline (paused) for the page entrance. */
 export function initReveals(root: ParentNode = document) {
   const intro = gsap.timeline({ paused: true });
-  if (prefersReducedMotion()) return intro;
+  if (prefersReducedMotion() || matchMedia(PHONE).matches) return intro;
   root.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
     const isIntro = el.hasAttribute('data-intro');
     const play = splitTween(el, isIntro);

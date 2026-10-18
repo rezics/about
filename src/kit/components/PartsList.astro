@@ -1,0 +1,58 @@
+---
+/**
+ * A kind's parts as a compact list of labelled chips, one line each: the part's name, its id in
+ * mono, and what it gives (the kind's own note when given, else what the part gives any kind).
+ * Reads well on a phone, where it wraps to one column. Prefer it to PartsGrid.
+ */
+import type { PartId } from '../../content/schema';
+import { partById } from '../content';
+
+interface Props {
+  parts: PartId[];
+  notes?: Partial<Record<PartId, string>>;
+  /** Heading level for the part names; omit for plain text. */
+  level?: 'h3' | 'h4';
+  class?: string;
+}
+const { parts, notes, level, class: className } = Astro.props;
+const Name = level ?? 'span';
+---
+<ul class:list={['partslist', className]} role="list">
+  {parts.map((id, i) => {
+    const part = partById(id);
+    return (
+      <li class="chip" style={`--i:${i}`} data-part={id}>
+        <span class="chip__head">
+          <span class="chip__mark" aria-hidden="true"></span>
+          <Name class="chip__name">{part.name}</Name>
+          <span class="chip__id mono">{id}</span>
+        </span>
+        <span class="chip__note">{notes?.[id] ?? part.gives}</span>
+      </li>
+    );
+  })}
+</ul>
+<style>
+  .partslist {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+    gap: 8px;
+  }
+  .chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border: 1px solid var(--c-line-strong);
+    background: var(--c-bg);
+    color: var(--c-fg);
+    min-width: 0;
+  }
+  .chip__head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .chip__mark { flex: none; width: 10px; height: 10px; background: var(--field); outline: 1px solid var(--c-line-strong); }
+  .chip__name { font-weight: 700; font-size: var(--t-body); line-height: 1.3; }
+  .chip__id { color: var(--c-muted); }
+  .chip__note { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
+</style>
