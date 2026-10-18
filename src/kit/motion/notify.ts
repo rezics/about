@@ -9,6 +9,8 @@ function wire(form: HTMLFormElement) {
   const status = form.querySelector<HTMLElement>('[role="status"]');
   const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
   const input = form.querySelector<HTMLInputElement>('input[name="email"]');
+  // With script the form explains a bad address in its own words; without, the browser does.
+  form.noValidate = true;
   const say = (text: string, state: 'busy' | 'done' | 'error') => {
     if (!status) return;
     status.textContent = text;
@@ -46,7 +48,10 @@ function wire(form: HTMLFormElement) {
     }
   };
   form.addEventListener('submit', submit);
-  return () => form.removeEventListener('submit', submit);
+  return () => {
+    form.removeEventListener('submit', submit);
+    form.noValidate = false;
+  };
 }
 
 export function startNotify() {
