@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// After `astro build`: slice the CJK font by actual use (scripts/fonts.mjs) and render one Open
+// After `astro build`: insert phrase breaks into CJK headings (scripts/phrase.mjs), slice the CJK font by actual use (scripts/fonts.mjs) and render one Open
 // Graph image per built page into dist/og/<slug>.png (the path BaseLayout puts in og:image).
 // Both read the build output, so new pages need no registration.
 //   node scripts/postbuild.mjs [dist]
@@ -9,6 +9,7 @@ import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import subsetFont from 'subset-font';
 import { cjk, pages, source } from './fonts.mjs';
+import { phraseHtml } from './phrase.mjs';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const dist = path.resolve(process.argv[2] ?? path.join(root, 'dist'));
@@ -113,5 +114,7 @@ async function og() {
   console.log(`OG: ${n} images in ${path.relative(root, path.join(dist, 'og'))}/`);
 }
 
+// Phrase breaks first: they add no glyphs, and the font slicing reads the final HTML.
+for (const [, file] of pages(dist)) fs.writeFileSync(file, phraseHtml(fs.readFileSync(file, 'utf8')));
 await cjk(dist);
 await og();

@@ -42,6 +42,10 @@
   color: var(--c-fg);
 }
 
+/* CJK display text breaks only between phrases: the build inserts <wbr> between BudouX phrases
+   in headings and display paragraphs (scripts/phrase.mjs); overflow-wrap is the safety net. */
+h1, h2, h3, h4, .t-mega, .t-xl, .t-l, .t-m, .lede { word-break: keep-all; overflow-wrap: anywhere; }
+
 /* Type roles. CJK display: tracking -0.02em, leading 1.05 to 1.15. */
 .t-mega, .t-xl, .t-l {
   font-family: var(--f-display);
