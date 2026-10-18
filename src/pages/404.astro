@@ -2,6 +2,7 @@
 // 404: one empty square in the grid, the cursor waiting in it, and a way home.
 import PageLayout from '../kit/layouts/PageLayout.astro';
 import EmptySquare from '../kit/components/EmptySquare.astro';
+import ProductCall from '../kit/components/ProductCall.astro';
 import Section from '../kit/components/Section.astro';
 import { kinds, site } from '../kit/content';
 import { kindFields } from '../kit/theme';
@@ -13,7 +14,7 @@ const nf = site.notFound;
     <div class="col-1-5 nf__text">
       <h1 class="t-xl">{nf.headline}</h1>
       <p class="lede">{nf.body}</p>
-      <p><a class="btn" href="/"><span class="btn__label"><span>{nf.back}</span></span></a></p>
+      <p><ProductCall href="/" label={nf.back} /></p>
     </div>
     <div class="col-7-12 nf__grid" aria-hidden="true">
       {kinds.slice(0, 4).map((k) => <span class="nf__cell" style={`background:${kindFields[k.id].field}`}></span>)}

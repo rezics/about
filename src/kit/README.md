@@ -111,7 +111,7 @@ Import from `src/kit/components/`:
 | `Composer` | (kept for compatibility; the home no longer uses it) the composing square: `items` (`{ id, name, field, parts }[]`), `start`, `interval`, `controls`. The driver idles through the items, pauses off screen, on pointer or focus and with its toggle; reach it with `getComposer(el)` from `src/kit/motion/composer.ts` (`show(i)`, `hold`/`release`, `onChange`, `assemble`) |
 | `EmptySquare` | an empty square with the red cursor |
 | `Section` | section shell: `mood` (`tight`, `normal`, `airy`, `full`), `band`, the grid |
-| `ProductCall` | the action into the live product, 「前往 REZICS」 to `site.productUrl` (`label`, `href`, `size="small"`, `class`); the arrow sits in its ink square |
+| `ProductCall` | the action into the live product, 「前往 REZICS」 to `site.productUrl` (`label`, `href`, `size="small"`, `class`); the arrow sits in its ink square. With your own `label` and `href` it is any primary button |
 | `Finale` | "next page / next site": a full-bleed band in the next thing's field, with its own hover (ink steps rise, the name slides, the label grows); `nextSite(site)` from `src/kit/sites.ts` follows the navigation order (kinds, then developers) or your `next`. The footer's action square follows it on every page: add no other action after it |
 | `CodeBlock` | a code sample (`code`, `language`, `caption`): indentation kept, scrolls sideways on phones, keyboard-scrollable |
 | `StubLanding` | the placeholder your landing page starts with; replace it |

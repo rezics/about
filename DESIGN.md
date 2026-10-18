@@ -470,3 +470,18 @@ Voice (zh-Hant):
   header tab 引擎 reads 模組 (route unchanged). The home hero's 3×3 composing square is
   dropped because it is not phone-friendly; large grids of text cells are not used as key
   visuals. Sites may take clearly different themes within one design language.
+- 2026-10-19 (builder): the home strip rests as nine field squares with their names; its idle
+  floods one square's picture at a time (2.2 s a step, a red mark under the lit square), so the
+  row reads as posters and each illustration gets its moment. The pointer or focus takes over
+  (the square under it floods); a visible toggle pauses it; reduced motion keeps it still.
+- 2026-10-19 (builder): the parts picker is a radio group of small kind squares with one panel
+  per kind (a CSS rule per kind shows the checked one), so it works without script and with the
+  arrow keys; the chosen square steps up and carries the red mark, and the chips slot in.
+- 2026-10-19 (builder): every page ends on the footer's action square (cursor, one line,
+  前往 REZICS); the home page ends on its own giant square and turns the footer's off. A finale
+  band needs no action of its own.
+- 2026-10-19 (builder): themes are semantic tokens (`--c-bg`, `--c-fg`, `--c-muted`,
+  `--c-line`, `--c-line-strong`, `--c-link`, the `--c-band-*` set for the inverted band, and
+  `--field` / `--on-field`) set on `[data-site]`, which sits on `<html>` and `<body>`; the chrome
+  reads nothing else. Buttons draw their square as an inset shadow and arrows are shapes, not
+  glyphs, so contrast checkers can judge every text.
