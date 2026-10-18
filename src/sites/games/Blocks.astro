@@ -1,0 +1,31 @@
+---
+// An illustrative distribution made of stacked square blocks (score bands low to high). No
+// figures: it shows that each version or population has its own shape, nothing more.
+interface Props {
+  shape: number[];
+  big?: boolean;
+}
+const { shape, big = false } = Astro.props;
+const max = 5;
+---
+<div class:list={['blocks', big && 'blocks--big']} aria-hidden="true" data-blocks>
+  {shape.map((h) => (
+    <span class="blocks__col">
+      {Array.from({ length: max }, (_, i) => <span class:list={['blocks__b', i < max - h && 'blocks__b--off']}></span>)}
+    </span>
+  ))}
+</div>
+<style>
+  .blocks { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 3px; width: 100%; align-items: end; }
+  .blocks__col { display: grid; grid-template-rows: repeat(5, auto); gap: 3px; }
+  .blocks__b { aspect-ratio: 1; background: currentColor; }
+  .blocks__b--off { background: none; }
+  .blocks--big { gap: 8px; align-self: end; }
+  .blocks--big .blocks__col { gap: 8px; }
+  .blocks--big .blocks__b { background: var(--g-field); }
+  .blocks--big .blocks__b--off { background: none; }
+</style>
+<script>
+  import { startBlocks } from './blocks';
+  startBlocks();
+</script>

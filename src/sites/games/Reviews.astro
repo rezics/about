@@ -1,0 +1,177 @@
+---
+// /games/reviews/ (SITE.md 6.5): statement hero, versions, who is rating, targets, ranking
+// rules, the three kinds of talk as a poster, finale.
+import Section from '../../kit/components/Section.astro';
+import site from '../../content/sites/games';
+import Blocks from './Blocks.astro';
+import GamesFinale from './GamesFinale.astro';
+import './games.css';
+
+const s = site.strings.reviews;
+// Illustrative block distributions (score bands 1 to 5, low to high); no figures are shown.
+const versionShapes = [
+  [3, 2, 2, 3, 2],
+  [2, 2, 3, 3, 2],
+  [1, 1, 2, 4, 3],
+  [1, 1, 2, 3, 5],
+  [1, 1, 1, 3, 4],
+];
+const whoShapes = [
+  [[1, 2, 3, 4, 3], [2, 2, 3, 3, 2]],
+  [[1, 1, 2, 3, 5], [1, 2, 2, 4, 4]],
+  [[2, 1, 2, 4, 4], [2, 2, 3, 4, 3]],
+];
+// One rule per (population, period): show that distribution (works without script).
+const css = whoShapes
+  .flatMap((row, p) => row.map((_, t) => `.who:has(input[value='p${p}']:checked):has(input[value='t${t}']:checked) .who__shape[data-shape='${p}-${t}']{display:flex}`))
+  .join('');
+---
+<!-- 1 Hero: statement -->
+<section class="vhero grid" aria-labelledby="vhero-title">
+  <h1 id="vhero-title" class="vhero__title t-xl">{s.hero.headline}</h1>
+  <p class="vhero__lede lede">{s.hero.lede}</p>
+</section>
+
+<!-- 2 Versions: filmstrip row of version squares -->
+<Section mood="normal" band="field" labelledby="versions-title" class="versions">
+  <div class="col-1-6 g-head">
+    <h2 id="versions-title" class="t-l" data-split="lines">{s.versions.headline}</h2>
+    <p>{s.versions.lede}</p>
+  </div>
+  <ol class="versions__row" role="list">
+    {s.versions.frames.map((f, i) => (
+      <li class="versions__item">
+        <div class="versions__sq g-slot">
+          <h3 class="versions__name">{f.title}</h3>
+          <Blocks shape={versionShapes[i]!} />
+        </div>
+        <p class="versions__body">{f.body}</p>
+      </li>
+    ))}
+  </ol>
+  <p class="versions__cap mono">{s.versions.caption}</p>
+</Section>
+
+<!-- 3 Who is rating: asymmetric pair with populations and periods -->
+<Section mood="airy" labelledby="who-title" class="who-sec">
+  <style is:inline set:html={css}></style>
+  <div class="who">
+    <div class="who__controls">
+      <fieldset class="who__group">
+        <legend class="mono who__legend">{s.who.tabsLabel}</legend>
+        {s.who.tabs.map((t, i) => <label class="g-chip"><input type="radio" name="who-pop" value={`p${i}`} checked={i === 0} />{t}</label>)}
+      </fieldset>
+      <fieldset class="who__group">
+        <legend class="mono who__legend">{s.who.periodLabel}</legend>
+        {s.who.toggle.map((t, i) => <label class="g-chip"><input type="radio" name="who-period" value={`t${i}`} checked={i === 0} />{t}</label>)}
+      </fieldset>
+    </div>
+    <div class="who__sq g-slot" aria-hidden="true">
+      {whoShapes.flatMap((row, p) => row.map((shape, t) => <div class="who__shape" data-shape={`${p}-${t}`}><Blocks shape={shape} big /></div>))}
+    </div>
+  </div>
+  <div class="who__text">
+    <h2 id="who-title" class="t-l">{s.who.headline}</h2>
+    <p class="g-body">{s.who.body}</p>
+    <ul class="who__items" role="list">
+      {s.who.items.map((it) => <li>{it}</li>)}
+    </ul>
+  </div>
+</Section>
+
+<!-- 4 Targets: gallery wall -->
+<Section mood="normal" labelledby="targets-title" class="targets">
+  <div class="col-1-4 g-head">
+    <h2 id="targets-title" class="t-l" data-split="lines">{s.targets.headline}</h2>
+    <p class="muted">{s.targets.lede}</p>
+  </div>
+  <ul class="targets__wall" role="list" data-reveal="slot">
+    {s.targets.tiles.map((t, i) => (
+      <li class:list={['targets__tile g-slot', `targets__tile--${i}`]}>
+        <h3 class="targets__name">{t.title}</h3>
+        <p class="targets__body">{t.body}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<!-- 5 Ranking rules: index list -->
+<Section mood="normal" labelledby="rules-title" class="rules g-light">
+  <h2 id="rules-title" class="col-1-4 t-l">{s.rules.headline}</h2>
+  <ul class="col-5-12 g-rows" role="list">
+    {s.rules.rows.map((r) => (
+      <li>
+        <h3>{r.title}</h3>
+        <p class="muted">{r.body}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<!-- 6 Three kinds of talk: poster -->
+<section class="talk" aria-labelledby="talk-title">
+  <h2 id="talk-title" class="talk__line" data-split="lines">{s.talk.poster}</h2>
+  <p class="talk__body">{s.talk.body}</p>
+</section>
+
+<GamesFinale />
+
+<style>
+  .vhero { min-height: calc(82svh - var(--header-h) - var(--bar-h)); align-content: center; row-gap: 28px; padding-block: clamp(40px, 6vw, 96px); }
+  .vhero__title { grid-column: 1 / span 11; font-size: clamp(2.5rem, 1rem + 6vw, 7rem); line-height: 1.05; }
+  .vhero__lede { grid-column: 5 / span 6; }
+
+  .versions__row { grid-column: 1 / -1; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gutter); }
+  .versions__item { display: flex; flex-direction: column; gap: 12px; }
+  .versions__sq { aspect-ratio: 1; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; --c-bg: var(--g-field); container-type: inline-size; }
+  .versions__name { font-weight: 900; font-size: clamp(1.25rem, 14cqi, 2.25rem); line-height: 1; }
+  .versions__body { font-size: var(--t-s); line-height: 1.6; }
+  .versions__cap { grid-column: 1 / -1; opacity: 0.9; }
+
+  .who { grid-column: 1 / span 7; display: flex; flex-direction: column; gap: 20px; }
+  .who__controls { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+  .who__group { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .who__legend { float: left; margin-right: 10px; color: var(--c-muted); }
+  .who__sq { aspect-ratio: 4 / 3; padding: clamp(16px, 3vw, 40px); display: flex; }
+  .who__shape { display: none; width: 100%; }
+  .who__text { grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 22px; align-self: center; }
+  .who__items { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .who__items li { border-top: 1px solid var(--c-line-strong); padding-top: 12px; line-height: 1.6; }
+
+  .targets__wall {
+    grid-column: 5 / span 8;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: minmax(150px, auto);
+    gap: var(--gutter);
+  }
+  .targets__tile { padding: 18px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+  .targets__tile--0 { grid-column: 1 / span 2; grid-row: span 2; background: var(--g-field); color: var(--c-paper); --c-bg: var(--g-field); --c-line: rgb(244 245 242 / 0.22); }
+  .targets__tile--0 .targets__name { font-size: var(--t-mega); }
+  .targets__tile--4 { grid-column: 3 / span 2; }
+  .targets__name { font-weight: 900; font-size: var(--t-l); line-height: 1.1; }
+  .targets__body { font-size: var(--t-s); line-height: 1.6; }
+  .targets__tile:not(.targets__tile--0) .targets__body { color: var(--c-muted); }
+
+  .talk { padding: var(--space-airy) var(--gutter); min-height: 80svh; display: flex; flex-direction: column; justify-content: center; gap: 32px; }
+  .talk__line { font-weight: 900; font-size: clamp(2.5rem, 0.5rem + 7.4vw, 9rem); line-height: 1.05; letter-spacing: var(--track-display); }
+  .talk__body { max-width: var(--measure); margin-left: auto; line-height: var(--lh-text); color: var(--c-muted); }
+
+  @media (max-width: 1023px) {
+    .versions__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .who, .who__text { grid-column: 1 / -1; }
+    .targets__wall { grid-column: 1 / -1; }
+  }
+  @media (max-width: 767px) {
+    .vhero { min-height: 0; }
+    .vhero__title, .vhero__lede { grid-column: 1 / -1; }
+    .versions__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+    .versions__item { flex: 0 0 62%; scroll-snap-align: start; }
+    .targets__wall { grid-template-columns: 1fr; gap: 10px; grid-auto-rows: auto; }
+    .targets__tile--0, .targets__tile--4 { grid-column: 1; grid-row: auto; }
+    .targets__tile--0 .targets__name { font-size: var(--t-xl); }
+    .talk { min-height: 0; padding-block: var(--space-normal); }
+  }
+</style>

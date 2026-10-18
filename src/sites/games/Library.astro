@@ -1,0 +1,232 @@
+---
+// /games/library/ (SITE.md 6.4): asymmetric hero, status chapters, save slots, one library,
+// playtime, takeout, finale.
+import Section from '../../kit/components/Section.astro';
+import Go from './Go.astro';
+import Square from '../../kit/components/Square.astro';
+import SquareName from '../../kit/components/SquareName.astro';
+import { kindFields } from '../../kit/theme';
+import site from '../../content/sites/games';
+import Pic from './Pic.astro';
+import GamesFinale from './GamesFinale.astro';
+import Lines from './Lines.astro';
+import './games.css';
+
+const s = site.strings.library;
+---
+<!-- 1 Hero: asymmetric pair, the picture leads -->
+<section class="lhero grid" aria-labelledby="lhero-title">
+  <div class="lhero__pic">
+    <Pic name="library" alt={s.hero.imageAlt} eager sizes="(max-width: 767px) 100vw, 55vw" />
+  </div>
+  <div class="lhero__text">
+    <h1 id="lhero-title" class="t-xl">{s.hero.headline}</h1>
+    <p class="lede">{s.hero.lede}</p>
+    <div><Go /></div>
+  </div>
+</section>
+
+<!-- 2 Status: sticky narrative, the square names the state -->
+<Section mood="normal" labelledby="status-title" class="status" data-chapters>
+  <div class="status__stage-wrap">
+    <div class="status__stage" data-stage data-state="0" aria-hidden="true">
+      {s.status.chapters.map((c, i) => (
+        <span class="status__layer" data-layer={i}><SquareName name={c.title} /></span>
+      ))}
+      <span class="status__ticks">{s.status.chapters.map((_, i) => <span class="status__tick" data-tick={i}></span>)}</span>
+    </div>
+  </div>
+  <div class="status__text">
+    <h2 id="status-title" class="t-l">{s.status.headline}</h2>
+    <ol class="status__chapters" role="list">
+      {s.status.chapters.map((c, i) => (
+        <li class="status__chapter" data-chapter data-active={i === 0 ? '' : undefined}>
+          <h3 class="t-l">{c.title}</h3>
+          <p class="status__body">{c.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Section>
+
+<!-- 3 Save slots: index list -->
+<Section mood="normal" band="field" labelledby="slots-title" class="slots">
+  <div class="col-1-4 g-head">
+    <h2 id="slots-title" class="t-l" data-split="lines">{s.slots.headline}</h2>
+    <p>{s.slots.lede}</p>
+  </div>
+  <div class="slots__list col-5-12">
+    <ol class="slots__rows" role="list" data-reveal="slot">
+      {s.slots.rows.map((r, i) => (
+        <li class="slots__row">
+          <span class="slots__sq" aria-hidden="true">{i + 1}</span>
+          <span class="slots__name t-m">{r.slot}</span>
+          <span class="slots__release">{r.release}</span>
+          <span class="slots__state">{r.state}</span>
+        </li>
+      ))}
+      <li class="slots__row slots__row--empty">
+        <span class="slots__sq slots__sq--empty" aria-hidden="true"><span class="slots__cursor" data-cursor></span></span>
+        <span class="slots__name t-m">{s.slots.empty}</span>
+      </li>
+    </ol>
+    <p class="slots__cap mono">{s.slots.caption}</p>
+  </div>
+</Section>
+
+<!-- 4 One library: gallery wall of kinds, each with its own unit -->
+<Section mood="airy" labelledby="together-title" class="together">
+  <div class="together__head g-head">
+    <h2 id="together-title" class="t-l" data-split="lines">{s.together.headline}</h2>
+    <p class="muted">{s.together.lede}</p>
+  </div>
+  <ul class="together__wall" role="list" data-reveal="slot">
+    {s.together.tiles.map((t, i) => (
+      <li class:list={['together__tile', `together__tile--${i}`]}>
+        <Square name={t.name} field={kindFields[t.to]} />
+        <p class="together__at t-m">{t.at}</p>
+      </li>
+    ))}
+  </ul>
+  <div class="together__note">
+    <p class="g-cap mono">{s.together.caption}</p>
+    <p class="g-body">{s.together.lists}</p>
+  </div>
+</Section>
+
+<!-- 5 Playtime: data/facts, four cohort rules -->
+<Section mood="normal" labelledby="time-title" class="time g-light">
+  <div class="col-1-6 g-head">
+    <h2 id="time-title" class="t-l">{s.playtime.headline}</h2>
+    <p class="muted">{s.playtime.lede}</p>
+  </div>
+  <ul class="time__facts" role="list" data-reveal="slot">
+    {s.playtime.facts.map((f) => (
+      <li class="time__fact g-slot">
+        <h3 class="time__title">{f.title}</h3>
+        <p class="time__body">{f.body}</p>
+      </li>
+    ))}
+  </ul>
+  <p class="time__note muted">{s.playtime.note}</p>
+</Section>
+
+<!-- 6 Take it with you: statement -->
+<Section mood="airy" labelledby="takeout-title" class="takeout">
+  <h2 id="takeout-title" class="col-1-10 g-statement" data-split="lines"><Lines text={s.takeout.statement} /></h2>
+  <p class="takeout__body g-body muted">{s.takeout.body}</p>
+</Section>
+
+<GamesFinale />
+
+<style>
+  .lhero { padding-block: clamp(24px, 4vw, 56px) var(--space-normal); align-items: end; row-gap: 28px; }
+  .lhero__pic { grid-column: 1 / span 7; }
+  .lhero__pic :global(.g-pic) { width: min(100%, calc(100svh - var(--header-h) - var(--bar-h) - 80px)); }
+  .lhero__text { grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 24px; padding-bottom: 12px; }
+
+  .status__stage-wrap { grid-column: 1 / span 5; }
+  .status__stage {
+    position: sticky;
+    top: calc(var(--header-h) + var(--bar-h) + 32px);
+    aspect-ratio: 1;
+    background: var(--g-field);
+    container-type: inline-size;
+    overflow: clip;
+    --on-field: var(--c-paper);
+    --field: var(--g-field);
+  }
+  .status__layer { position: absolute; inset: 0; container-type: inline-size; transition: translate var(--d-m) var(--ease-snap); translate: 0 100%; }
+  .status__stage[data-state='0'] [data-layer='0'],
+  .status__stage[data-state='1'] [data-layer='1'],
+  .status__stage[data-state='2'] [data-layer='2'],
+  .status__stage[data-state='3'] [data-layer='3'],
+  .status__stage[data-state='4'] [data-layer='4'] { translate: 0 0; }
+  .status__ticks { position: absolute; left: 6cqi; bottom: 6cqi; display: flex; gap: 6px; }
+  .status__tick { width: 14px; height: 14px; border: 1.5px solid var(--c-paper); }
+  .status__stage[data-state='0'] [data-tick='0'],
+  .status__stage[data-state='1'] [data-tick='1'],
+  .status__stage[data-state='2'] [data-tick='2'],
+  .status__stage[data-state='3'] [data-tick='3'],
+  .status__stage[data-state='4'] [data-tick='4'] { background: var(--c-paper); }
+  .status__text { grid-column: 7 / span 6; display: flex; flex-direction: column; gap: 24px; }
+  .status__chapters { list-style: none; padding: 0; }
+  .status__chapter { min-height: 52svh; padding-block: 24px; border-top: 1px solid var(--c-line-strong); display: flex; flex-direction: column; gap: 14px; transition: color var(--d-m); }
+  :global(.js) .status__chapter:not([data-active]) { color: var(--c-muted); }
+  .status__body { line-height: var(--lh-text); max-width: var(--measure); }
+
+  .slots__rows { list-style: none; padding: 0; border-top: 1px solid var(--c-line-strong); }
+  .slots__row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 2fr) minmax(0, 3fr) minmax(0, 3fr);
+    align-items: center;
+    gap: var(--gutter);
+    padding-block: 16px;
+    border-bottom: 1px solid var(--c-line-strong);
+  }
+  .slots__sq { display: grid; place-items: center; width: 56px; aspect-ratio: 1; background: var(--c-paper); color: var(--g-field); font-weight: 900; font-size: 1.5rem; font-family: var(--f-display); }
+  .slots__sq--empty { position: relative; background: none; border: 1px dashed var(--c-line-strong); }
+  .slots__cursor { position: absolute; left: 8px; top: 8px; width: 3px; height: 18px; background: var(--c-mark); box-shadow: 0 0 0 1px var(--c-paper); }
+  .slots__row--empty .slots__name { opacity: 0.85; }
+  .slots__cap { margin-top: 16px; }
+
+  .together__head { grid-column: 1 / span 4; }
+  .together__wall {
+    grid-column: 1 / -1;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    row-gap: 24px;
+    align-items: start;
+  }
+  .together__tile { display: flex; flex-direction: column; gap: 10px; }
+  .together__tile--0 { grid-column: 1 / span 3; }
+  .together__tile--1 { grid-column: 4 / span 2; margin-top: 40%; }
+  .together__tile--2 { grid-column: 6 / span 2; }
+  .together__tile--3 { grid-column: 8 / span 4; margin-top: 12%; }
+  .together__tile--4 { grid-column: 12 / span 1; margin-top: 60%; }
+  .together__at { color: var(--c-fg); }
+  .together__note { grid-column: 5 / span 5; display: flex; flex-direction: column; gap: 12px; }
+
+  .time__facts { grid-column: 1 / -1; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); }
+  .time__fact { aspect-ratio: 1; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; container-type: inline-size; }
+  .time__title { font-size: clamp(1.5rem, 18cqi, 3rem); font-weight: 900; line-height: 1.05; }
+  .time__body { line-height: 1.6; color: var(--c-muted); }
+  .time__note { grid-column: 5 / span 5; line-height: var(--lh-text); }
+
+  .takeout__body { grid-column: 5 / span 5; }
+
+  @media (max-width: 1023px) {
+    .lhero__pic { grid-column: 1 / span 7; }
+    .lhero__text { grid-column: 8 / span 5; }
+    .time__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .together__tile--4 { grid-column: 12 / span 1; }
+  }
+  @media (max-width: 767px) {
+    .lhero__pic, .lhero__text { grid-column: 1 / -1; }
+    .lhero__text { order: -1; }
+    .status__stage-wrap { position: sticky; top: calc(var(--header-h) + var(--bar-h)); z-index: 2; grid-column: 1 / -1; }
+    .status__stage { position: relative; top: 0; aspect-ratio: auto; height: 72px; }
+    .status__layer :global(.sqname) { font-size: 40px !important; inset: 14px 16px auto 16px; }
+    .status__ticks { left: auto; right: 16px; bottom: auto; top: 29px; }
+    .status__text { grid-column: 1 / -1; }
+    .status__chapter { min-height: 0; }
+    .slots__row { grid-template-columns: 44px minmax(0, 1fr); row-gap: 2px; }
+    .slots__sq { width: 44px; grid-row: span 3; font-size: 1.125rem; }
+    .slots__release, .slots__state { grid-column: 2; }
+    .slots__state { color: inherit; opacity: 0.85; }
+    .together__wall { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .together__tile--0 { grid-column: 1 / span 2; }
+    .together__tile--1 { grid-column: 3 / span 2; margin-top: 30%; }
+    .together__tile--2 { grid-column: 1 / span 2; }
+    .together__tile--3 { grid-column: 3 / span 2; margin-top: 0; }
+    .together__tile--4 { grid-column: 1 / span 2; margin-top: 0; }
+    .together__note { grid-column: 1 / -1; }
+    .time__facts { grid-template-columns: 1fr; gap: 10px; }
+    .time__fact { aspect-ratio: auto; padding: 14px 16px; gap: 6px; }
+    .time__title { font-size: var(--t-l); }
+    .time__note, .takeout__body { grid-column: 1 / -1; }
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+// /games/store/ (SITE.md 6.3): full-bleed field hero, the checkout square, the purchase pan,
+// what you keep, privacy statement, what the store does not do, finale.
+import Section from '../../kit/components/Section.astro';
+import Go from './Go.astro';
+import Square from '../../kit/components/Square.astro';
+import { kindFields } from '../../kit/theme';
+import site from '../../content/sites/games';
+import Pic from './Pic.astro';
+import GamesFinale from './GamesFinale.astro';
+import Lines from './Lines.astro';
+import './games.css';
+
+const s = site.strings.store;
+---
+<!-- 1 Hero: full-bleed field band -->
+<Section mood="none" band="field" labelledby="shero-title" class="shero">
+  <div class="shero__text">
+    <h1 id="shero-title" class="t-xl">{s.hero.headline}</h1>
+    <p class="lede">{s.hero.lede}</p>
+    <div class="shero__actions">
+      <Go />
+      <a class="link-draw" href="#purchase">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
+    </div>
+  </div>
+  <div class="shero__pic">
+    <Pic name="store" alt={s.hero.imageAlt} eager sizes="(max-width: 767px) 100vw, 40vw" />
+  </div>
+</Section>
+
+<!-- 2 Before you pay: data/facts, a checkout list beside its square -->
+<Section mood="normal" labelledby="checkout-title" class="checkout">
+  <div class="checkout__aside">
+    <h2 id="checkout-title" class="t-l" data-split="lines">{s.checkout.headline}</h2>
+    <div class="checkout__sq" aria-hidden="true"><Square name={s.checkout.centre} field={kindFields.games} /></div>
+    <p class="g-cap mono">{s.checkout.caption}</p>
+  </div>
+  <ol class="checkout__list" role="list" data-reveal="slot">
+    {s.checkout.cells.map((c) => (
+      <li class="checkout__row">
+        <span class="checkout__tick" aria-hidden="true"></span>
+        <h3 class="checkout__title">{c.title}</h3>
+        <p class="checkout__body">{c.body}</p>
+      </li>
+    ))}
+  </ol>
+</Section>
+
+<!-- 3 One purchase: filmstrip, pinned horizontal pan on desktop -->
+<section id="purchase" class="pan" aria-labelledby="purchase-title" data-pan>
+  <div class="pan__inner grid">
+    <div class="pan__head g-head">
+      <h2 id="purchase-title" class="t-l">{s.purchase.headline}</h2>
+      <p class="muted">{s.purchase.lede}</p>
+    </div>
+    <div class="pan__view" tabindex="0" role="region" aria-labelledby="purchase-title">
+      <ol class="pan__track" role="list" data-pan-track>
+        {s.purchase.steps.map((step, i) => (
+          <li class="pan__frame g-slot">
+            <span class="pan__n mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="pan__name">{step.title}</h3>
+            <p class="pan__body">{step.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 4 What you keep: asymmetric pair -->
+<Section mood="airy" labelledby="keep-title" class="keep">
+  <div class="col-1-5 g-head">
+    <h2 id="keep-title" class="t-l" data-split="lines">{s.keep.headline}</h2>
+    <p class="g-body">{s.keep.body}</p>
+  </div>
+  <ul class="keep__squares" role="list" data-reveal="slot">
+    {s.keep.squares.map((q) => (
+      <li class="keep__sq">
+        <h3 class="keep__name">{q.title}</h3>
+        <p class="keep__body">{q.body}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<!-- 5 Privacy: statement on ink -->
+<Section mood="airy" labelledby="privacy-title" class="privacy g-light">
+  <h2 id="privacy-title" class="col-2-11 g-statement" data-split="lines"><Lines text={s.privacy.statement} /></h2>
+  <p class="privacy__body muted">{s.privacy.body}</p>
+</Section>
+
+<!-- 6 What the store does not do: index list -->
+<Section mood="normal" labelledby="refuses-title" class="refuses">
+  <h2 id="refuses-title" class="col-1-4 t-l">{s.refuses.headline}</h2>
+  <ul class="col-5-12 g-rows" role="list">
+    {s.refuses.rows.map((r) => (
+      <li>
+        <h3>{r.title}</h3>
+        <p class="muted">{r.body}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<GamesFinale />
+
+<style>
+  .shero :global(.sec__grid) { min-height: calc(100svh - var(--header-h) - var(--bar-h)); align-items: center; padding-block: clamp(32px, 5vw, 72px); }
+  .shero__text { grid-column: 1 / span 6; display: flex; flex-direction: column; gap: 24px; }
+  .shero__actions { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; margin-top: 8px; }
+  .shero__pic { grid-column: 8 / span 5; }
+  .shero__pic :global(.g-pic) { width: min(100%, calc(100svh - var(--header-h) - var(--bar-h) - 120px)); margin-left: auto; }
+
+  .checkout__aside { grid-column: 1 / span 4; display: flex; flex-direction: column; gap: 24px; }
+  .checkout__sq { width: min(100%, 220px); }
+  .checkout__list { grid-column: 5 / span 8; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); border-top: 1px solid var(--c-line-strong); }
+  .checkout__row { display: grid; grid-template-columns: 22px minmax(0, 1fr); column-gap: 14px; row-gap: 4px; padding-block: 18px; border-bottom: 1px solid var(--c-line-strong); }
+  .checkout__tick { grid-row: span 2; width: 16px; height: 16px; margin-top: 5px; border: 1px solid var(--c-line-strong); box-shadow: inset 0 0 0 3px var(--c-bg), inset 0 0 0 8px var(--g-field); }
+  .checkout__title { font-weight: 700; font-size: var(--t-m); line-height: 1.35; }
+  .checkout__body { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
+
+  .pan { padding-block: var(--space-normal); overflow: clip; }
+  .pan__inner { row-gap: 32px; }
+  .pan__head { grid-column: 1 / span 4; }
+  .pan__view { grid-column: 5 / span 8; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+  .pan__track { list-style: none; padding: 0; display: flex; gap: var(--gutter); width: max-content; }
+  .pan__frame { flex: 0 0 auto; width: clamp(240px, 26vw, 400px); aspect-ratio: 1; padding: 24px; display: flex; flex-direction: column; gap: 12px; scroll-snap-align: start; }
+  .pan__frame:first-child { background: var(--g-field); color: var(--c-paper); --c-bg: var(--g-field); --c-line: rgb(244 245 242 / 0.22); --c-muted: var(--c-paper); }
+  .pan__n { color: var(--c-muted); }
+  .pan__name { font-size: var(--t-xl); font-weight: 900; line-height: 1.05; letter-spacing: var(--track-display); margin-top: auto; }
+  .pan__body { line-height: 1.6; }
+  /* Desktop pinned pan: the view clips and the track is moved by the scroll. */
+  .pan:global(.is-panning) { min-height: calc(100svh - var(--bar-h)); display: grid; align-content: center; padding-block: 48px; }
+  .pan:global(.is-panning) .pan__view { overflow: clip; scroll-snap-type: none; }
+
+  .keep__squares { grid-column: 7 / span 6; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: start; }
+  .keep__sq { aspect-ratio: 1; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--c-line-strong); box-shadow: var(--g-inset); container-type: inline-size; }
+  .keep__sq:nth-child(2) { margin-top: 50%; }
+  .keep__sq:nth-child(3) { margin-top: 100%; }
+  .keep__name { font-size: clamp(1.5rem, 26cqi, 3.25rem); font-weight: 900; line-height: 1; }
+  .keep__body { font-size: var(--t-s); line-height: 1.5; color: var(--c-muted); }
+
+  .privacy__body { grid-column: 5 / span 5; line-height: var(--lh-text); }
+
+  @media (max-width: 1023px) {
+    .shero__text { grid-column: 1 / span 7; }
+    .shero__pic { grid-column: 8 / span 5; }
+    .checkout__aside, .checkout__list { grid-column: 1 / -1; }
+    .pan__head { grid-column: 1 / -1; }
+    .pan__view { grid-column: 1 / -1; }
+    .keep__squares { grid-column: 1 / -1; }
+  }
+  @media (max-width: 767px) {
+    .shero :global(.sec__grid) { min-height: 0; row-gap: 28px; }
+    .shero__text, .shero__pic { grid-column: 1 / -1; }
+    .checkout__sq { width: 120px; }
+    .checkout__list { grid-template-columns: 1fr; }
+    .pan__view { margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+    .pan__frame { width: 72vw; }
+    .keep__squares { grid-template-columns: 1fr; gap: 10px; }
+    .keep__sq { aspect-ratio: auto; flex-direction: row; align-items: baseline; gap: 16px; justify-content: flex-start; padding: 14px 16px; }
+    .keep__sq:nth-child(n) { margin-top: 0; }
+    .keep__name { font-size: var(--t-l); flex: 0 0 3.2em; }
+    .privacy__body { grid-column: 1 / -1; }
+  }
+</style>
+
+<script>
+  import { startPan } from './pan';
+  startPan();
+</script>

@@ -1,0 +1,160 @@
+---
+// /games/creators/ (SITE.md 6.7): split hero with the picture first, rights, the statement
+// ledger, one name across kinds, a game's own home, listing rules, finale to the next site.
+import Section from '../../kit/components/Section.astro';
+import Go from './Go.astro';
+import Square from '../../kit/components/Square.astro';
+import { kindFields, neutralField } from '../../kit/theme';
+import site from '../../content/sites/games';
+import Pic from './Pic.astro';
+import GamesFinale from './GamesFinale.astro';
+import Lines from './Lines.astro';
+import './games.css';
+
+const s = site.strings.creators;
+---
+<!-- 1 Hero: split frame, picture first -->
+<section class="chero grid" aria-labelledby="chero-title">
+  <div class="chero__pic">
+    <Pic name="creators" alt={s.hero.imageAlt} eager sizes="(max-width: 767px) 100vw, 50vw" />
+  </div>
+  <div class="chero__text">
+    <h1 id="chero-title" class="t-xl">{s.hero.headline}</h1>
+    <p class="lede">{s.hero.lede}</p>
+    <div><Go /></div>
+  </div>
+</section>
+
+<!-- 2 Rights: index list -->
+<Section mood="normal" labelledby="rights-title" class="rights">
+  <h2 id="rights-title" class="col-1-4 t-l" data-split="lines">{s.rights.headline}</h2>
+  <ul class="col-5-12 g-rows" role="list">
+    {s.rights.rows.map((r) => (
+      <li>
+        <h3>{r.title}</h3>
+        <p class="muted">{r.body}</p>
+      </li>
+    ))}
+  </ul>
+</Section>
+
+<!-- 3 Ledger: data/facts, a statement line by line (labels only, no figures) -->
+<Section mood="airy" labelledby="ledger-title" class="ledger g-light">
+  <div class="col-1-4 g-head">
+    <h2 id="ledger-title" class="t-l">{s.ledger.headline}</h2>
+    <p class="muted">{s.ledger.note}</p>
+    <p class="muted">{s.ledger.reserve}</p>
+  </div>
+  <div class="ledger__sheet">
+    <ol class="ledger__rows" role="list" data-reveal="slot">
+      {s.ledger.rows.map((r) => (
+        <li class:list={['ledger__row', r.total && 'ledger__row--total']}>
+          <span class="ledger__op">{r.op ?? ''}</span>
+          <span class="ledger__label">{r.label}</span>
+          <span class="ledger__amount" aria-hidden="true"></span>
+        </li>
+      ))}
+    </ol>
+    <p class="g-cap mono">{s.ledger.caption}</p>
+  </div>
+</Section>
+
+<!-- 4 One name: gallery wall of a creator's works across kinds -->
+<Section mood="normal" labelledby="name-title" class="name">
+  <div class="col-1-5 g-head">
+    <h2 id="name-title" class="t-l" data-split="lines">{s.name.headline}</h2>
+    <p class="muted">{s.name.lede}</p>
+  </div>
+  <ul class="name__wall" role="list" data-reveal="slot">
+    {s.name.tiles.map((t, i) => (
+      <li class:list={['name__tile', `name__tile--${i}`]}>
+        <Square name={t.name} field={t.to ? kindFields[t.to] : neutralField} />
+        <p class="name__role t-m">{t.role}</p>
+      </li>
+    ))}
+  </ul>
+  <p class="name__cap g-cap mono">{s.name.caption}</p>
+</Section>
+
+<!-- 5 Your game's home: asymmetric pair -->
+<Section mood="normal" band="field" labelledby="home-title" class="home">
+  <div class="home__lead">
+    <h2 id="home-title" class="t-l" data-split="lines">{s.home.headline}</h2>
+    <p class="g-body">{s.home.body}</p>
+  </div>
+  <dl class="home__items">
+    {s.home.items.map((it) => (
+      <div class="home__item g-slot">
+        <dt class="t-m">{it.title}</dt>
+        <dd>{it.body}</dd>
+      </div>
+    ))}
+  </dl>
+</Section>
+
+<!-- 6 Rules: statement -->
+<Section mood="airy" labelledby="crules-title" class="crules">
+  <h2 id="crules-title" class="col-1-10 g-statement" data-split="lines"><Lines text={s.rules.statement} /></h2>
+  <p class="crules__body g-body muted">{s.rules.body}</p>
+</Section>
+
+<GamesFinale />
+
+<style>
+  .chero { min-height: calc(100svh - var(--header-h) - var(--bar-h)); align-items: center; padding-block: clamp(24px, 4vw, 56px); row-gap: 28px; }
+  .chero__pic { grid-column: 1 / span 6; }
+  .chero__pic :global(.g-pic) { width: min(100%, calc(100svh - var(--header-h) - var(--bar-h) - 80px)); }
+  .chero__text { grid-column: 8 / span 5; display: flex; flex-direction: column; gap: 24px; }
+
+  .ledger__sheet { grid-column: 6 / span 7; display: flex; flex-direction: column; gap: 16px; }
+  .ledger__rows { list-style: none; padding: 0; border-top: 1px solid var(--c-line-strong); }
+  .ledger__row {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) minmax(0, 0.6fr);
+    align-items: center;
+    gap: var(--gutter);
+    min-height: 64px;
+    border-bottom: 1px solid var(--c-line-strong);
+  }
+  .ledger__op { display: grid; place-items: center; height: 64px; border-right: 1px solid var(--c-line-strong); font-weight: 700; color: var(--c-muted); }
+  .ledger__label { font-size: var(--t-m); font-weight: 700; line-height: 1.4; padding-block: 12px; }
+  .ledger__amount { justify-self: stretch; height: 1px; background: repeating-linear-gradient(90deg, var(--c-line-strong) 0 6px, transparent 6px 12px); }
+  .ledger__row--total { border-top: 3px double var(--c-line-strong); }
+  .ledger__row:last-child { background: var(--g-field); color: var(--c-paper); --c-line-strong: rgb(244 245 242 / 0.5); }
+  .ledger__row:last-child .ledger__op { color: var(--c-paper); }
+
+  .name__wall { grid-column: 7 / span 6; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); align-items: start; }
+  .name__tile { display: flex; flex-direction: column; gap: 10px; }
+  .name__tile--1 { margin-top: 30%; }
+  .name__tile--2 { margin-top: 60%; }
+  .name__tile--3 { margin-top: 15%; }
+  .name__role { color: var(--c-muted); }
+  .name__cap { grid-column: 7 / span 6; }
+
+  .home__lead { grid-column: 1 / span 6; display: flex; flex-direction: column; gap: 20px; }
+  .home__items { grid-column: 8 / span 5; display: flex; flex-direction: column; gap: var(--gutter); --c-bg: var(--g-field); --c-line: rgb(244 245 242 / 0.22); --c-line-strong: rgb(244 245 242 / 0.5); }
+  .home__item { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .home__item dd { line-height: 1.6; }
+
+  .crules__body { grid-column: 5 / span 5; }
+
+  @media (max-width: 1023px) {
+    .chero__pic { grid-column: 1 / span 6; }
+    .chero__text { grid-column: 7 / span 6; }
+    .ledger__sheet, .name__wall, .name__cap { grid-column: 1 / -1; }
+    .home__lead, .home__items { grid-column: 1 / -1; }
+  }
+  @media (max-width: 767px) {
+    .chero { min-height: 0; }
+    .chero__pic, .chero__text { grid-column: 1 / -1; }
+    .chero__text { order: -1; }
+    .ledger__row { grid-template-columns: 44px minmax(0, 1fr); }
+    .ledger__op { height: 56px; }
+    .ledger__amount { display: none; }
+    .name__wall { grid-template-columns: 1fr 1fr; }
+    .name__tile--1 { margin-top: 20%; }
+    .name__tile--2 { margin-top: 0; }
+    .name__tile--3 { margin-top: 20%; }
+    .crules__body { grid-column: 1 / -1; }
+  }
+</style>
