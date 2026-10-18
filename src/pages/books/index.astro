@@ -4,10 +4,8 @@
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import Section from '../../kit/components/Section.astro';
 import KindSquare from '../../kit/components/KindSquare.astro';
-import PartsGrid from '../../kit/components/PartsGrid.astro';
-import NotifyCall from '../../kit/components/NotifyCall.astro';
 import Finale from '../../kit/components/Finale.astro';
-import { kindById } from '../../kit/content';
+import { kindById, partById } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
 import { pageHref } from '../../kit/sites';
 import Bookmark from '../../sites/books/Bookmark.astro';
@@ -30,7 +28,6 @@ const next = pageBy('work');
       <h1 id="bh-title" class="t-xl bh__title" data-split="lines" data-intro>{s.hero.headline}</h1>
       <p class="lede">{s.hero.lede}</p>
       <div class="bh__actions">
-        <NotifyCall />
         <a class="link-draw bh__secondary" href="#bookmark">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
       </div>
     </div>
@@ -67,15 +64,20 @@ const next = pageBy('work');
     <p class="col-5-12 shelf__caption">{s.shelf.caption}</p>
   </Section>
 
-  <!-- S4 Eight parts: the square's 3×3 with what each part gives books -->
+  <!-- S4 Eight parts: chips, one row each, with what each part gives books -->
   <Section mood="normal" labelledby="parts-title" class="bparts">
     <div class="col-1-4 bparts__text">
       <h2 id="parts-title" class="t-l">{s.parts.headline}</h2>
       <p class="muted">{s.parts.caption}</p>
     </div>
-    <div class="col-5-12">
-      <PartsGrid name={kind.name} field={kindFields.books} parts={kind.parts} notes={kind.partNotes} />
-    </div>
+    <ul class="col-5-12 bk-chips" role="list" data-reveal="slot">
+      {kind.parts.map((id) => (
+        <li class="bk-chip">
+          <span class="bk-chip__name">{partById(id).name}<span class="bk-chip__id">{id}</span></span>
+          <p class="bk-chip__note">{kind.partNotes[id]}</p>
+        </li>
+      ))}
+    </ul>
   </Section>
 
   <!-- S5 Pages: index list -->
@@ -170,7 +172,7 @@ const next = pageBy('work');
     container-type: inline-size;
     display: grid;
     place-items: center;
-    background: #e3e9e4;
+    background: var(--bk-t08);
     border-top: 2px solid var(--field);
   }
   .shelf__word span {

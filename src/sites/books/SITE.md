@@ -1,9 +1,11 @@
 # 書庫 `books`: site design record
 
-Site id `books`, routes `/books/` and `/books/<page>/`, field `#1d5a47`. Stage 1 record: brief,
-research, concept, pages, composition, signature, art accent, images. Copy is in `copy/`,
-sources in `facts.md`. DESIGN.md's system (方塊, palette, type, grid, 歸位, voice) is binding;
-this file only adds what is specific to books.
+Site id `books`, routes `/books/` and `/books/<page>/`, field `#1d5a47`. The design record:
+brief, research, concept, pages, composition, signature, theme, images, and at the end the build
+record (what changed from the stage 1 plan and why). Copy lives in
+`src/content/sites/books.ts`, sources in `facts.md`. DESIGN.md's system is binding; this file
+only adds what is specific to books. REZICS is live: no page carries a notify action or
+waiting-list wording; the action into the product comes from the kit.
 
 ## Brief
 
@@ -122,8 +124,8 @@ Three candidates inside the 方塊 system, from three territories of the book wo
 **Pick A.** It is the only one that carries the flagship (Wiki+ read up to your position), the
 library (where you are, what is next) and series continuity (progress carried across
 translations) with one variable, and it reuses the system's own red marker, so the books site
-reads as itself and as REZICS at once. **Steal from B** for the site's sub-navigation (a shelf
-of spines) and the omnibus as one wide square. **Steal from C** only as the serial page's hero
+reads as itself and as REZICS at once. **Steal from B** for the omnibus as one wide square (the
+spine-shelf sub-navigation was dropped in the build; see the build record). **Steal from C** only as the serial page's hero
 texture (vertical type in manuscript squares).
 
 ### Concept card
@@ -150,7 +152,7 @@ Screenshot:  The grid mid-story: four rows (日文, 繁中, 繁中合訂本, 英
 ```
 
 The concept survives everywhere on the site: the sub-navigation marks the current page with
-the same red square under a spine; the Work page's primary button changes with your position;
+the same red square under the current tab; the Work page's primary button changes with your position;
 the Wiki+ page has a chapter rail with the bookmark; the library page counts sessions against
 the exact edition; the serial page keeps comments pinned to the passage they were written on.
 
@@ -174,17 +176,12 @@ Light novels live on the landing signature, `editions` and `library`; serial fic
 
 ## Site-wide elements
 
-- **Shelf (sub-navigation), every page.** Under the global header, right-aligned from column
-  9: seven spines standing on a hairline rail, one per page. A spine is a vertical stack of
-  small character squares (Noto Sans TC 700, about 14 px, vertical writing; 「Wiki+」 set
-  sideways in Archivo). Current page: spine filled with the field colour, paper text, the red
-  square under it (the system's current-page marker). Pointer or focus: the spine lifts one
-  square step (`translate` on the y axis, 0.32 s, snap) like a book pulled from the shelf.
-  `<nav aria-label="書庫的頁面">`, real links, `aria-current="page"`. Phone: the same seven
-  spines fit 358 px at about 40 × 64 px each; no hover dependence.
-- **Finale, every page.** The next page's name and a one-line lead on a full-bleed field
-  band, plus the shared notify action. The last page leads into 動畫 on its own field colour
-  (continuous transition into the next site). Inner links use the system curtain.
+- **Sub-navigation, every page.** The kit's site bar (書庫 and its seven tabs: 總覽, 作品頁,
+  Wiki+, 版本與系列, 閱讀紀錄, 連載, 出版), with the system's red square under the current tab.
+  The stage 1 plan of a shelf of vertical spines was dropped: the kit gives every mini-site the
+  same bar, and a second navigation would compete with it.
+- **Finale, every page.** A full-bleed field band whose small label is the page's one-line lead
+  and whose large name is the next page. The last page leads into 動畫 on its own field colour.
 - **Examples.** Named works are public domain only: 《傲慢與偏見》 (the toolkit's own examples
   use Jane Austen) on `work` and `wiki`, 《紅樓夢》 for coverage on `editions`. Series and
   serial examples are generic ("a twelve-volume light novel"), never a modern franchise.
@@ -197,7 +194,7 @@ layout.md; REZICS-specific forms are named. Phone notes follow each page.
 ### 0. `/books/` landing
 
 ```
-S1 Hero: split frame + kind square (Flip target)                       [shelf: 7 spines]
+S1 Hero: split frame + kind square (Flip target)
 ┌─────────────── col 1–4 ──────────┐  col 5–12
 │                                  │  h1, t-xl, 2 lines
 │      image (books.png)           │  一部作品，所有版本，和你讀到的那一頁。
@@ -226,14 +223,11 @@ S3 Word band: poster
  caption col 5–9
 ```
 ```
-S4 Eight parts: square + legend (data/facts)
- h2 col 1–6, caption              ┌────┬────┬────┐ col 7–12
- legend: eight rows, two columns  │身分│版本│製作│  focusing a legend row lights
- (part name t-s mono id, note     ├────┼────┼────┤  its cell; tapping a cell
-  from kinds.ts partNotes)        │關聯│書庫│進度│  scrolls to its row
-                                  ├────┼────┼────┤
-                                  │評分│維基│上架│
-                                  └────┴────┴────┘
+S4 Eight parts: chips (data/facts), phones first
+ h2 col 1–4, caption (sticky)      col 5–12, one row per part:
+                                   ■ 身分 identity   note from kinds.ts partNotes
+                                   ■ 版本 editions   note
+                                   … eight rows, hairline rules
 ```
 ```
 S5 Pages: index list
@@ -254,10 +248,10 @@ S6 Connections: gallery wall
                               └─────┘└───┘
 ```
 ```
-S7 Finale: full-bleed field band → 作品頁, notify square
+S7 Finale: full-bleed field band → 作品頁
 ```
-Phone: S1 square full width then h1; S2 transposed (see Signature); S3 words in a 3 × 2
-grid; S4 square first, legend below; S5 glyph inline left of the name; S6 two columns.
+Phone: S1 square full width then h1; S2 panning track (see Signature); S3 words in a 3 × 2
+grid; S4 chips stack (part name over its note); S5 glyph inline left of the name; S6 two columns.
 
 ### 1. `/books/work/` 作品頁
 
@@ -504,8 +498,8 @@ S4 What is distributed: index list
  電子書 / 小型遊戲與視覺小說 / 試閱 / 重新下載   rows; policy lines col 5–12
 ```
 ```
-S5 Next to the community: asymmetric pair (text col 1–6, Work-square diagram col 8–12:
-   the 上架 cell lit beside 評分 and 維基)
+S5 Next to the community: asymmetric pair (text col 1–6; the eight parts as chips col 7–12,
+   上架 filled with the field, 評分 and 維基 tinted beside it)
 S6 Finale → next site 動畫 (field #b03a62, continuous transition)
 ```
 Phone: S2 stage square shrinks to a strip at the top; S3 rows stack label over text.
@@ -534,15 +528,16 @@ Phone: S2 stage square shrinks to a strip at the top; S3 rows stack label over t
 - **What moves.** Only the bookmark (translate on x or y, never both at once), cell fills
   (`clip-path` from the left, 0.32 s) and row entries (`translate` x). Bookmark moves are
   tweens to an integer column: snap ease, 0.56 s, settle at most 2 %.
-- **Idle.** While the stage is visible and the visitor is still for 2 s, a 2 px paper line
-  inside the cell above the bookmark grows across it over 5.4 s and resets: the page under
-  the bookmark is being read. Driven by `gsap.ticker` through the idle module; paused off
-  screen; zero under reduced motion. The bookmark itself never moves at rest.
-- **Continuity in.** As S2 enters, the hero square slides down along the column and shrinks
-  into the first cell of the Work row (the Work's square becomes volume 1).
-- **Phone (390 px).** The grid is transposed: volumes become twelve rows top to bottom,
-  languages four columns; the stage is sticky at the top (at most 56 svh) and captions scroll
-  beneath; the bookmark travels down a rail on the left; the idle line fills top to bottom.
+- **Idle.** While the stage is on screen, a 3 px field line grows across the square being read
+  now (the next readable square) over 5.4 s and starts again: the page under the bookmark is
+  being read. A GSAP tween on the one clock, paused off screen, absent under reduced motion.
+  The bookmark itself never moves at rest.
+- **Phone (390 px), first.** The row labels stay fixed and the twelve columns sit on a track
+  that shows about five volumes at a readable size (about 56 px squares). With motion the
+  track pans with the bookmark: the same `--mark` that moves the ribbon also translates the
+  track so about two volumes stay visible before the bookmark (CSS `clamp`, so it never pans
+  past the ends). Without script or under reduced motion the track is a horizontal
+  scroll-snap row. The stage is sticky under the site bar and the steps scroll beneath it.
 - **Reduced motion and no script.** The final state (step 6) as a static grid, with the six
   steps as an ordered list beside it (desktop) or under it (phone). Nothing hidden.
 - **Accessibility.** The grid is `aria-hidden`; the steps are the content. A short visually
@@ -566,25 +561,34 @@ Phone: S2 stage square shrinks to a strip at the top; S3 rows stack label over t
 - **Serial S1.** Intro only: the h1's characters slot into their manuscript squares in
   vertical reading order, top to bottom and right to left, 40 ms stagger, under 0.9 s.
 
-## Art accent
+## Theme
 
-- **Field and tints.** `#1d5a47` (library-cloth green) is the reading colour: it fills read
-  squares, the current spine and the finale band. Tints mixed with paper: t08 `#e3e9e4`,
-  t16 `#d2dcd7`, t32 `#afc3bb`; one shade mixed with ink: `#173e37` (the stage's column rule
-  and pressed states). Paper on field is about 7.4:1; field as large display text on paper is
-  allowed (same ratio). No new global colours.
-- **Red stays a mark.** The bookmark is the system's current-position square, drawn on paper
-  or t08 (about 3.9:1 and 3.5:1, above the 3:1 needed for graphics), never on the field
-  (too close in luminance to green and a red-green confusion pair). Read and unread differ by
-  fill versus outline, not by colour alone.
-- **Vertical type.** Book culture in Taiwan sets books vertically. The site uses vertical
-  Noto Sans TC (`writing-mode: vertical-rl`, real text) for spines, the serial hero and page
-  labels only. Running text stays horizontal.
-- **Material.** Hairline rules like a due-date card (library S2), a manuscript grid in `line`
-  (serial S1), the 田 grid (editions S2). Radius 0 everywhere.
-- **Type.** Noto Sans TC 900 for display, 700 headings, 400 text; Archivo for Latin
-  (Wiki+, Pride and Prejudice, EPUB) and tabular volume numbers; Martian Mono only for part
-  ids in the legend. No new fonts.
+One design language, a different room (DESIGN.md "One design language, different themes").
+The books site is a reading library: set under `[data-site='books']` in
+`src/sites/books/books.css` with the semantic tokens.
+
+| Token | Value | Use and contrast |
+|---|---|---|
+| `--c-bg` | `#edf1ec` | pale celadon ground: paper with a trace of the field |
+| `--c-fg`, `--c-ink` | `#10231d` | green-black text and dark bands (about 14:1 on the ground) |
+| `--c-muted` | `#4d5f58` | green-grey secondary text (about 5.9:1 on the ground) |
+| `--c-line`, `--c-line-strong` | `rgb(16 35 29 / .13)`, `/ .3` | hairlines, card rulings |
+| `--c-paper` | `#f6f8f5` | unread squares, quiet cards |
+| `--bk-t08`, `--bk-t16`, `--bk-t32` | `#e1e9e3`, `#d0ddd5`, `#acc2b7` | field tints: panels, next square, steps |
+| `--field` | `#1d5a47` | the reading colour: read squares, finale band, chips' marks (paper on it about 7.4:1) |
+
+- **Red stays a mark.** The bookmark is the system's current-position square, drawn on the
+  ground or t08 (about 3.8:1 and 3.5:1, above 3:1 for graphics), never on the field. Read and
+  unread differ by fill versus outline, not by colour alone.
+- **Vertical type.** Book culture in Taiwan sets books vertically: the serial hero sets its
+  headline vertically in manuscript squares (`writing-mode: vertical-rl`, real text).
+- **Material.** Hairline rules like a due-date card (library), a manuscript grid (serial), the
+  田 grid (editions), chips with a field mark for parts. Radius 0 everywhere.
+- **Type.** Noto Sans TC 900 display, 700 headings, 400 text; Archivo wide for numerals and
+  Latin; Martian Mono only for part ids and step numbers. No new fonts.
+- **Phones first.** No grid of text cells as a key visual: the eight parts are chips, one row
+  each; matrices become a panning track (landing), a stack (editions 田 grid, ledgers) or a
+  scroll-snap row (Wiki+ steps).
 
 ## Images
 
@@ -594,8 +598,8 @@ Five extra images, all in the shared style (`.temp/images/prompts/style.txt`, fi
 | File | Page | Object (appended to the style text) | Alt (zh-Hant, in copy) |
 |---|---|---|---|
 | `books-wiki` | wiki S1 | A single hardback book lying open flat, seen from slightly above; its two pages carry rows of short abstract ink bars instead of text. A long narrow vermilion ribbon bookmark runs from the top of the spine down across the right-hand page and hangs past the bottom edge. | 一本攤開的書，紅色書籤帶橫過右頁，垂到書外。 |
-| `books-editions` | editions S1 | Five books of different sizes standing upright in a row, spines facing the viewer: a tall hardback, a medium paperback, a small pocket edition, a thin special edition in a slipcase, and at the end one thick volume as wide as three of the others together. Spines are plain blocks of paper white, ink navy and one vermilion, with blank horizontal bands and no lettering. | 五本大小不同的書並排站著，最後一本特別厚，約有三本那麼寬。 |
-| `books-library` | library S1 | The inside back cover of an open hardback with a small paper pocket glued to it and a library due-date card tucked half into the pocket. The card is ruled into a grid of empty boxes; a few boxes hold round abstract ink stamps with no numbers or letters. | 書的封底內頁貼著紙袋，借書卡插了一半，卡上有幾個圓形印章。 |
+| `books-editions` | editions S1 | Five books of different sizes standing upright in a row, spines facing the viewer: a tall hardback, a medium paperback, a small pocket edition, a thin special edition in a slipcase, and at the end one thick volume as wide as three of the others together. Spines are plain blocks of paper white, ink navy and one vermilion, with blank horizontal bands and no lettering. | 五本大小不同的書並排站著，最後一本特別厚。 |
+| `books-library` | library S1 | The inside back cover of an open hardback with a small paper pocket glued to it and a library due-date card tucked half into the pocket. The card is ruled into a grid of empty boxes; a few boxes hold round abstract ink stamps with no numbers or letters. | 一本攤開的書，內頁貼著紙袋，借書卡插了一半，卡上有幾個圓形印章。 |
 | `books-serial` | serial S5 | A single sheet of square-grid manuscript paper lying flat, its small empty squares arranged in vertical columns with a narrow blank gutter down the middle; a fountain pen with a vermilion nib lies across the lower right corner. No characters or marks in the squares. | 一張空白的方格稿紙，右下角擱著一支鋼筆。 |
 | `books-publish` | publish S1 | A closed paperback lying flat with a narrow paper receipt slip resting on top, curled slightly at one end; the slip carries only rows of short abstract ink bars and one vermilion bar near the bottom, with no numbers, letters or symbols. | 一本平放的書，上面壓著一張捲起一角的收據。 |
 
@@ -620,3 +624,27 @@ statement; the core figure is a working model of edition continuity driven by th
 own position; library, wiki and store pages each show a mechanism (a session card, a chapter
 rail, an itemized statement) instead of feature cards; the shelf survives only as the
 sub-navigation, where it carries real information (which page you are on).
+
+## Build record (stage 2)
+
+What changed from the stage 1 plan, and why.
+
+- **REZICS is live (direction of 2026-10-19).** The landing hero lost its notify button; the
+  kit's action into REZICS (「前往 REZICS」) replaces it once the foundation lands it. No page
+  has waiting-list wording.
+- **Parts as chips.** The landing's eight parts and the publish page's Work square are compact
+  chip rows instead of a 3×3 of text cells (DESIGN.md "Phones first").
+- **Signature on phones.** A panning track of about five volumes instead of the transposed
+  grid of the stage 1 plan: the transposed grid would have needed most of a phone screen as a
+  sticky stage, while the track keeps the stage short and every square readable.
+- **No hero-to-grid continuity.** The stage 1 idea of the hero square sliding into the first
+  Work square was not built; the kit's page transition already lands on the hero square, and
+  a second travelling square would compete with it.
+- **Sub-navigation** is the kit's site bar, not a shelf of spines (see "Site-wide elements").
+- **Theme.** The books site sets its own ground, ink, muted, lines and tints (see "Theme").
+- **Pictures.** Five images generated with the shared pipeline (codex-2 image generation,
+  style reference `books-1.png`, field `#1d5a47`), encoded as AVIF and WebP at 960 px
+  (≤ 60 KB) and 320 px (≤ 12 KB) in `public/images/sites/books/`.
+- **Tests.** `bookmark-state.test.ts` covers the signature's state logic (omnibus counts once,
+  one-axis moves, the waiting square, progress across translations). The shared vitest include
+  does not pick up `src/sites/**`; it runs with a local config until the kit includes it.

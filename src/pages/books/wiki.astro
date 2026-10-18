@@ -18,7 +18,7 @@ const next = site.pages.find((pg) => pg.slug === 'editions')!;
 const total = p.positions[p.positions.length - 1]!.chapter;
 const chapters = Array.from({ length: total }, (_, i) => i + 1);
 const marks = new Set(p.positions.map((x) => x.chapter));
-const routeField = { field: '#e3e9e4', on: 'ink' } as const;
+const routeField = { field: '#e1e9e3', on: 'ink' } as const;
 ---
 <MiniSiteLayout>
   <!-- S1 Hero: full-bleed field band -->
@@ -268,7 +268,7 @@ const routeField = { field: '#e3e9e4', on: 'ink' } as const;
   }
 
   /* S6 */
-  .wir__states { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); border-top: 2px solid var(--c-ink); }
+  .wir__states { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gutter); border-top: 2px solid var(--c-fg); }
   .wir__state { padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
   .wir__word { font-weight: 900; font-size: var(--t-l); line-height: 1.1; letter-spacing: var(--track-display); color: var(--field); }
   .wir__def { margin: 0; }

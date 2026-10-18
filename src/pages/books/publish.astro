@@ -4,9 +4,8 @@
 // then the next site.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import Section from '../../kit/components/Section.astro';
-import PartsGrid from '../../kit/components/PartsGrid.astro';
 import Finale from '../../kit/components/Finale.astro';
-import { kindById } from '../../kit/content';
+import { kindById, partById } from '../../kit/content';
 import { kindFields, fieldOf } from '../../kit/theme';
 import { nextSite } from '../../kit/sites';
 import Picture from '../../sites/books/Picture.astro';
@@ -84,16 +83,20 @@ const after = nextSite(site);
     </ul>
   </Section>
 
-  <!-- S5 Next to the community: asymmetric pair with the Work square -->
+  <!-- S5 Next to the community: asymmetric pair with the Work's parts as chips -->
   <Section mood="normal" labelledby="pb-com" class="pbc">
     <div class="col-1-6 pbc__text">
       <h2 id="pb-com" class="t-l">{s.community.headline}</h2>
       <p>{s.community.body}</p>
       <p class="muted">{s.community.privacy}</p>
     </div>
-    <div class="col-7-12 pbc__square">
-      <PartsGrid name={kind.name} field={kindFields.books} parts={kind.parts} />
-    </div>
+    <ul class="col-7-12 pbc__chips" role="list" aria-label={kind.name}>
+      {kind.parts.map((id) => (
+        <li class:list={['pbc__chip', id === 'offers' && 'is-store', (id === 'ratings' || id === 'wiki') && 'is-near']}>
+          <span>{partById(id).name}</span><span class="pbc__id">{id}</span>
+        </li>
+      ))}
+    </ul>
   </Section>
 
   {after && (
@@ -156,7 +159,7 @@ const after = nextSite(site);
   :global(html:not(.motion)) .pbb__step { min-height: 0; }
 
   /* S3 */
-  .pbs__ledger { border-top: 2px solid var(--c-ink); }
+  .pbs__ledger { border-top: 2px solid var(--c-fg); }
   .pbs__row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gutter); padding: 16px 0; border-bottom: 1px solid var(--c-line-strong); align-items: baseline; }
   .pbs__name { font-weight: 900; font-size: var(--t-m); }
   .pbs__row--minus .pbs__name { padding-left: clamp(24px, 3vw, 48px); position: relative; }
@@ -165,7 +168,7 @@ const after = nextSite(site);
   @media (max-width: 767px) { .pbs__row { grid-template-columns: 1fr; gap: 4px; } }
 
   /* S4 */
-  .pbd__rows { border-top: 2px solid var(--c-ink); }
+  .pbd__rows { border-top: 2px solid var(--c-fg); }
   .pbd__row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: var(--gutter); padding: 16px 0; border-bottom: 1px solid var(--c-line-strong); }
   .pbd__name { font-weight: 900; font-size: var(--t-m); }
   .pbd__body { margin: 0; }
@@ -175,9 +178,9 @@ const after = nextSite(site);
 
   /* S5 */
   .pbc__text { display: flex; flex-direction: column; gap: 16px; align-self: center; }
-  .pbc__square :global(.parts__cell) { color: var(--c-muted); }
-  .pbc__square :global(.parts__cell[data-part='ratings']),
-  .pbc__square :global(.parts__cell[data-part='wiki']) { color: var(--c-ink); background: var(--bk-t16); }
-  .pbc__square :global(.parts__cell[data-part='offers']) { background: var(--field); color: var(--on-field); }
-  .pbc__square :global(.parts__cell[data-part='offers'] .parts__id) { color: var(--on-field); }
+  .pbc__chips { display: flex; flex-wrap: wrap; gap: 8px; align-self: center; align-content: center; }
+  .pbc__chip { display: inline-flex; align-items: baseline; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid var(--c-line-strong); color: var(--c-muted); font-weight: 700; }
+  .pbc__id { font-family: var(--f-mono); font-size: var(--t-xs); font-weight: 400; }
+  .pbc__chip.is-near { color: var(--c-fg); border-color: var(--field); background: var(--bk-t16); }
+  .pbc__chip.is-store { color: var(--on-field); border-color: var(--field); background: var(--field); font-size: var(--t-m); }
 </style>
