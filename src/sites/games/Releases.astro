@@ -183,7 +183,7 @@ const tile = (title: string) => s.bundles.tiles.find((t) => t.title === title)!;
   }
   @media (max-width: 767px) {
     .rhero__head { grid-column: 1 / -1; }
-    .states__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+    .states__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; scroll-padding-inline: var(--gutter); }
     .states__step { flex: 0 0 62%; scroll-snap-align: start; }
     .states__step::after { display: none; }
     .langs__pic, .langs__text { grid-column: 1 / -1; }

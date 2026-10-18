@@ -168,7 +168,7 @@ const css = whoShapes
   @media (max-width: 767px) {
     .vhero { min-height: 0; }
     .vhero__title, .vhero__lede { grid-column: 1 / -1; }
-    .versions__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; }
+    .versions__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; scroll-padding-inline: var(--gutter); }
     .versions__item { flex: 0 0 62%; scroll-snap-align: start; }
     .targets__wall { grid-template-columns: 1fr; gap: 10px; grid-auto-rows: auto; }
     .targets__tile--0, .targets__tile--4 { grid-column: 1; grid-row: auto; }

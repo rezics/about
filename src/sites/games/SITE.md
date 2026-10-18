@@ -236,6 +236,10 @@ differs. No page shares another's sequence; no large grid of text cells is a key
 - **No script.** A radio group: arrow keys move the selection, `:has(:checked)` shows the
   description and draws the red outline on the checked slot.
 
+Idle at rest: on the landing page the hero's red cursor blinks and the inventory steps; the
+inner pages stay still at rest on purpose (their moments answer the visitor's own choices:
+conditions, chapters, populations), and their hovers carry the life.
+
 Page moments (quiet, same verb):
 
 | Page | Moment | Variable | Phone / reduced motion |
