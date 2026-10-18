@@ -16,11 +16,10 @@ export function startPan() {
     wrap.classList.add('is-panning');
     const view = track.parentElement!;
     const dist = () => Math.max(0, track.scrollWidth - view.clientWidth);
-    const top = () => parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--bar-h')) || 52;
     gsap.to(track, {
       x: () => -dist(),
       ease: 'none',
-      scrollTrigger: { trigger: wrap, start: () => `top ${top()}px`, end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true },
+      scrollTrigger: { trigger: wrap, start: 'center center', end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true },
     });
   });
 }

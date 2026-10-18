@@ -2,7 +2,7 @@
 // /games/store/ (SITE.md 6.3): full-bleed field hero, the checkout square, the purchase pan,
 // what you keep, privacy statement, what the store does not do, finale.
 import Section from '../../kit/components/Section.astro';
-import Go from './Go.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
 import Square from '../../kit/components/Square.astro';
 import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
@@ -19,7 +19,7 @@ const s = site.strings.store;
     <h1 id="shero-title" class="t-xl">{s.hero.headline}</h1>
     <p class="lede">{s.hero.lede}</p>
     <div class="shero__actions">
-      <Go />
+      <ProductCall />
       <a class="link-draw" href="#purchase">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
     </div>
   </div>
@@ -89,14 +89,15 @@ const s = site.strings.store;
   <p class="privacy__body muted">{s.privacy.body}</p>
 </Section>
 
-<!-- 6 What the store does not do: index list -->
+<!-- 6 What the store does not do: empty slots, each a thing this store leaves out -->
 <Section mood="normal" labelledby="refuses-title" class="refuses">
   <h2 id="refuses-title" class="col-1-4 t-l">{s.refuses.headline}</h2>
-  <ul class="col-5-12 g-rows" role="list">
+  <ul class="refuses__slots" role="list" data-reveal="slot">
     {s.refuses.rows.map((r) => (
-      <li>
-        <h3>{r.title}</h3>
-        <p class="muted">{r.body}</p>
+      <li class="refuses__slot">
+        <span class="refuses__x" aria-hidden="true"></span>
+        <h3 class="refuses__title">{r.title}</h3>
+        <p class="refuses__body">{r.body}</p>
       </li>
     ))}
   </ul>
@@ -119,19 +120,18 @@ const s = site.strings.store;
   .checkout__title { font-weight: 700; font-size: var(--t-m); line-height: 1.35; }
   .checkout__body { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
 
-  .pan { padding-block: var(--space-normal); overflow: clip; }
+  .pan { padding-block: var(--space-tight); overflow: clip; }
   .pan__inner { row-gap: 32px; }
   .pan__head { grid-column: 1 / span 4; }
   .pan__view { grid-column: 5 / span 8; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
   .pan__track { list-style: none; padding: 0; display: flex; gap: var(--gutter); width: max-content; }
-  .pan__frame { flex: 0 0 auto; width: clamp(240px, 26vw, 400px); aspect-ratio: 1; padding: 24px; display: flex; flex-direction: column; gap: 12px; scroll-snap-align: start; }
+  .pan__frame { flex: 0 0 auto; width: clamp(240px, 24vw, 360px); padding: 22px; display: flex; flex-direction: column; gap: 12px; scroll-snap-align: start; container-type: inline-size; }
   .pan__frame:first-child { background: var(--g-field); color: var(--c-paper); --c-bg: var(--g-field); --c-line: rgb(244 245 242 / 0.22); --c-muted: var(--c-paper); }
   .pan__n { color: var(--c-muted); }
-  .pan__name { font-size: var(--t-xl); font-weight: 900; line-height: 1.05; letter-spacing: var(--track-display); margin-top: auto; }
+  .pan__name { font-size: 30cqi; font-weight: 900; line-height: 1; letter-spacing: 0; margin-top: 18px; }
   .pan__body { line-height: 1.6; }
   /* Desktop pinned pan: the view clips and the track is moved by the scroll. */
-  .pan:global(.is-panning) { min-height: calc(100svh - var(--bar-h)); display: grid; align-content: center; padding-block: 48px; }
-  .pan:global(.is-panning) .pan__view { overflow: clip; scroll-snap-type: none; }
+  .pan:global(.is-panning) .pan__view { overflow: clip; scroll-snap-type: none; mask-image: linear-gradient(to right, transparent 0, #000 40px); }
 
   .keep__squares { grid-column: 7 / span 6; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); align-items: start; }
   .keep__sq { aspect-ratio: 1; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--c-line-strong); box-shadow: var(--g-inset); container-type: inline-size; }
@@ -142,6 +142,14 @@ const s = site.strings.store;
 
   .privacy__body { grid-column: 5 / span 5; line-height: var(--lh-text); }
 
+  .refuses__slots { grid-column: 5 / span 8; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
+  .refuses__slot { position: relative; padding: 22px 22px 22px 64px; border: 1px dashed var(--c-line-strong); display: flex; flex-direction: column; gap: 8px; }
+  .refuses__x { position: absolute; left: 22px; top: 26px; width: 22px; height: 22px; border: 2px solid var(--c-mark); }
+  .refuses__x::before, .refuses__x::after { content: ''; position: absolute; left: 50%; top: 50%; width: 2px; height: 26px; margin: -13px 0 0 -1px; background: var(--c-mark); rotate: 45deg; }
+  .refuses__x::after { rotate: -45deg; }
+  .refuses__title { font-weight: 700; font-size: var(--t-m); line-height: 1.35; }
+  .refuses__body { color: var(--c-muted); line-height: 1.6; }
+
   @media (max-width: 1023px) {
     .shero__text { grid-column: 1 / span 7; }
     .shero__pic { grid-column: 8 / span 5; }
@@ -149,6 +157,7 @@ const s = site.strings.store;
     .pan__head { grid-column: 1 / -1; }
     .pan__view { grid-column: 1 / -1; }
     .keep__squares { grid-column: 1 / -1; }
+    .refuses__slots { grid-column: 1 / -1; }
   }
   @media (max-width: 767px) {
     .shero :global(.sec__grid) { min-height: 0; row-gap: 28px; }
@@ -162,6 +171,7 @@ const s = site.strings.store;
     .keep__sq:nth-child(n) { margin-top: 0; }
     .keep__name { font-size: var(--t-l); flex: 0 0 3.2em; }
     .privacy__body { grid-column: 1 / -1; }
+    .refuses__slots { grid-column: 1 / -1; grid-template-columns: 1fr; gap: 10px; }
   }
 </style>
 

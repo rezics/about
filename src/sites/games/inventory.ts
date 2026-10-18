@@ -99,7 +99,7 @@ export function startInventory() {
       });
       gsap.set(slots, { clipPath: `inset(0% ${100 - clamp(o / 0.5) * 100}% 0% 0%)` });
       const shown = clamp((o - 0.55) / 0.45);
-      gsap.set([cursor, desc], { autoAlpha: shown });
+      gsap.set(cursor, { autoAlpha: shown });
     }
 
     function moveCursor(i: number, instant: boolean) {

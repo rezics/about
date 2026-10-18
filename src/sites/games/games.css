@@ -13,21 +13,28 @@
   --c-link: #9ab8e6;
   --link-on: #9ab8e6;
   --focus: #9ab8e6;
+  /* The inverted band (statements, the footer): paper with ink. */
+  --c-band-bg: #f4f5f2;
+  --c-band-fg: #0e1420;
+  --c-band-muted: #566070;
+  --c-band-line: rgb(14 20 32 / 0.12);
+  --c-band-line-strong: rgb(14 20 32 / 0.28);
+  --c-band-link: #2f63ad;
   /* A slot: the shared hairline plus an inset frame 2 px inside it. */
   --g-inset: inset 0 0 0 2px var(--c-bg), inset 0 0 0 3px var(--c-line);
   background: var(--c-bg);
   color: var(--c-fg);
 }
-/* A light paper band on the night ground. */
+/* A light paper band on the night ground (the kit's inverted band tokens). */
 [data-site='games'] .g-light {
-  --c-bg: #f4f5f2;
-  --c-fg: #0e1420;
-  --c-muted: #566070;
-  --c-line: rgb(14 20 32 / 0.12);
-  --c-line-strong: rgb(14 20 32 / 0.28);
-  --c-link: #2f63ad;
-  --link-on: #2f63ad;
-  --focus: #2f63ad;
+  --c-bg: var(--c-band-bg);
+  --c-fg: var(--c-band-fg);
+  --c-muted: var(--c-band-muted);
+  --c-line: var(--c-band-line);
+  --c-line-strong: var(--c-band-line-strong);
+  --c-link: var(--c-band-link);
+  --link-on: var(--c-band-link);
+  --focus: var(--c-band-link);
   background: var(--c-bg);
   color: var(--c-fg);
 }
@@ -35,7 +42,7 @@
 /* Section heading block: h2 and its lede on the strong lines. */
 [data-site='games'] .g-head { display: flex; flex-direction: column; gap: 20px; }
 [data-site='games'] .g-head > p { max-width: var(--measure); }
-[data-site='games'] .g-cap { color: var(--c-muted); font-size: var(--t-xs); line-height: 1.6; }
+[data-site='games'] .g-cap { color: var(--c-muted); font-size: var(--t-s); line-height: 1.6; }
 [data-site='games'] .g-statement {
   font-weight: 900;
   font-size: var(--t-xl);
@@ -113,6 +120,7 @@
 [data-site='games'] .g-chip:has(:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
 @media (hover: hover) {
   [data-site='games'] .g-chip:hover::before { clip-path: inset(0 calc(100% - 6px) 0 0); }
+  [data-site='games'] .g-chip:hover { border-color: var(--c-fg); }
   [data-site='games'] .g-chip:has(input:checked):hover::before,
   [data-site='games'] .g-chip[aria-pressed='true']:hover::before { clip-path: inset(0 0 0 0); }
 }

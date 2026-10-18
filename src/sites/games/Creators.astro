@@ -2,7 +2,7 @@
 // /games/creators/ (SITE.md 6.7): split hero with the picture first, rights, the statement
 // ledger, one name across kinds, a game's own home, listing rules, finale to the next site.
 import Section from '../../kit/components/Section.astro';
-import Go from './Go.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
 import Square from '../../kit/components/Square.astro';
 import { kindFields, neutralField } from '../../kit/theme';
 import site from '../../content/sites/games';
@@ -21,7 +21,7 @@ const s = site.strings.creators;
   <div class="chero__text">
     <h1 id="chero-title" class="t-xl">{s.hero.headline}</h1>
     <p class="lede">{s.hero.lede}</p>
-    <div><Go /></div>
+    <div><ProductCall /></div>
   </div>
 </section>
 
@@ -41,7 +41,7 @@ const s = site.strings.creators;
 <!-- 3 Ledger: data/facts, a statement line by line (labels only, no figures) -->
 <Section mood="airy" labelledby="ledger-title" class="ledger g-light">
   <div class="col-1-4 g-head">
-    <h2 id="ledger-title" class="t-l">{s.ledger.headline}</h2>
+    <h2 id="ledger-title" class="t-l"><Lines text={s.ledger.headline} clauses /></h2>
     <p class="muted">{s.ledger.note}</p>
     <p class="muted">{s.ledger.reserve}</p>
   </div>

@@ -49,7 +49,7 @@ export type GamesStrings = {
       empty: string;
       items: InventoryItem[];
     };
-    pages: { headline: string; go: string; rows: { slug: string; body: string }[] };
+    pages: { headline: string; rows: { slug: string; body: string }[] };
     parts: { headline: string; lede: string; caption: string; notes: Partial<Record<PartId, string>> };
     specifics: { statement: string; body: string };
     connections: { headline: string; lede: string; squares: { to: KindId; body: string }[] };
@@ -128,8 +128,6 @@ export type GamesStrings = {
     rules: { statement: string; body: string };
   };
   finale: { nextPage: string; nextSite: string };
-  /** The action into the product (until the kit's shared action lands). */
-  go: { label: string; href: string };
 };
 
 const strings: GamesStrings = {
@@ -176,7 +174,6 @@ const strings: GamesStrings = {
     },
     pages: {
       headline: '六件事，各有一頁。',
-      go: '前往這一頁',
       rows: [
         { slug: 'releases', body: '語言、平台與版本綁在同一筆發行上篩選。' },
         { slug: 'store', body: '向獨立創作者買遊戲，付一次，檔案隨時重新下載。' },
@@ -522,7 +519,7 @@ const strings: GamesStrings = {
       ],
     },
     ledger: {
-      headline: '結算單一行一行算給你看。',
+      headline: '結算單上，一筆一筆算給你看。',
       rows: [
         { label: '玩家付的金額' },
         { label: '代收的稅金', op: '減' },
@@ -561,7 +558,6 @@ const strings: GamesStrings = {
   },
 
   finale: { nextPage: '下一頁', nextSite: '下一個網站' },
-  go: { label: '前往 REZICS', href: 'https://rezics.com' },
 };
 
 export default {

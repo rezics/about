@@ -2,7 +2,7 @@
 // /games/guides/ (SITE.md 6.6): poster hero, the fogged map, guides, Wiki+ rules, the adaptation
 // chain, a game's own Zone, finale.
 import Section from '../../kit/components/Section.astro';
-import Go from './Go.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
 import Square from '../../kit/components/Square.astro';
 import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
@@ -32,7 +32,7 @@ const css = [
   <h1 id="ghero-title" class="ghero__title">{s.hero.headline}</h1>
   <div class="ghero__foot">
     <p class="lede">{s.hero.lede}</p>
-    <div><Go /></div>
+    <div><ProductCall /></div>
   </div>
 </section>
 
@@ -131,7 +131,7 @@ const css = [
 <GamesFinale />
 
 <style>
-  .ghero { min-height: calc(76svh - var(--header-h) - var(--bar-h)); display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: clamp(24px, 4vw, 56px) var(--gutter); }
+  .ghero { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 56px); padding: clamp(32px, 5vw, 80px) var(--gutter) var(--space-normal); }
   .ghero__title { font-weight: 900; font-size: clamp(3.5rem, 0.5rem + 13.5vw, 15rem); line-height: 0.98; letter-spacing: -0.03em; margin-left: -0.04em; }
   .ghero__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
   .ghero__foot .lede { max-width: 30em; }

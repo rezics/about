@@ -2,10 +2,10 @@
 // /games/ (SITE.md 6.1): split hero, the 開箱 stage, six pages, eight parts, statement,
 // connections, finale.
 import Section from '../../kit/components/Section.astro';
-import { partById } from '../../kit/content';
+import PartsList from '../../kit/components/PartsList.astro';
 import Square from '../../kit/components/Square.astro';
 import KindSquare from '../../kit/components/KindSquare.astro';
-import Go from './Go.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
 import { kindById } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
 import { pageHref } from '../../kit/sites';
@@ -27,7 +27,7 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
     <h1 id="hero-title" class="t-xl">{s.hero.headline}</h1>
     <p class="lede">{s.hero.lede}</p>
     <div class="hero__actions">
-      <Go />
+      <ProductCall />
       <a class="link-draw" href="#inventory">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
     </div>
   </div>
@@ -35,7 +35,7 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
     <div class="hero__square">
       <KindSquare kind="games" mode="image" link={false} flip="target" eager sizes="(max-width: 767px) 100vw, 44vw" />
     </div>
-    <p class="hero__caption mono"><span class="hero__blink" aria-hidden="true" data-cursor></span>{s.hero.caption}</p>
+    <p class="hero__caption g-cap"><span class="hero__blink" aria-hidden="true" data-cursor></span>{s.hero.caption}</p>
   </div>
 </section>
 
@@ -75,14 +75,7 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
     <p class="muted">{s.parts.lede}</p>
     <p class="g-cap mono">{s.parts.caption}</p>
   </div>
-  <dl class="partlist" data-reveal="slot">
-    {kind.parts.map((id) => (
-      <div class="partlist__row">
-        <dt class="g-part">{partById(id).name}<span class="mono">{id}</span></dt>
-        <dd class="partlist__note">{s.parts.notes[id]}</dd>
-      </div>
-    ))}
-  </dl>
+  <div class="partlist"><PartsList parts={kind.parts} notes={s.parts.notes} level="h3" /></div>
 </Section>
 
 <!-- 5 Specifics: statement on a light band -->
@@ -137,20 +130,32 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
     padding-block: 22px;
     border-bottom: 1px solid var(--c-line-strong);
   }
+  .pages__row { isolation: isolate; transition: color var(--d-s) var(--ease-snap); }
+  .pages__row::before {
+    /* the row floods with the field in one grid step, like the primary button */
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--gutter) / 2);
+    z-index: -1;
+    background: var(--g-field);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path var(--d-m) var(--ease-snap);
+  }
   .pages__mark { width: 18px; height: 18px; border: 1px solid var(--c-line-strong); transition: border-color var(--d-s), background-color var(--d-s); }
   .pages__name { transition: translate var(--d-m) var(--ease-snap); }
   .pages__body { color: var(--c-muted); line-height: 1.6; }
   .pages__row[data-active] .pages__mark { border: 3px solid var(--c-mark); }
   @media (hover: hover) {
+    .pages__row:hover::before { clip-path: inset(0 0 0 0); }
     .pages__row:hover .pages__name { translate: 12px 0; }
+    .pages__row:hover .pages__body { color: var(--c-fg); }
     .pages__row:hover .pages__arrow { translate: 0.3em 0; }
   }
+  .pages__row:focus-visible::before { clip-path: inset(0 0 0 0); }
   .pages__row:focus-visible .pages__name { translate: 12px 0; }
+  .pages__row:focus-visible .pages__body { color: var(--c-fg); }
 
-  .partlist { grid-column: 5 / span 8; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); border-top: 1px solid var(--c-line-strong); }
-  .partlist__row { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); align-items: center; gap: 14px; padding-block: 14px; border-bottom: 1px solid var(--c-line-strong); }
-  .partlist__row dt { justify-self: start; }
-  .partlist__note { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
+  .partlist { grid-column: 5 / span 8; }
 
   .specifics__body { grid-column: 5 / span 5; line-height: var(--lh-text); }
 
@@ -182,8 +187,6 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
     .pages__arrow { grid-column: 3; grid-row: 1; }
     .specifics__body { grid-column: 1 / -1; }
     .pages__aside { position: static; }
-    .partlist { grid-template-columns: 1fr; }
-    .partlist__row { grid-template-columns: 8.5em minmax(0, 1fr); padding-block: 12px; }
     .connections__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .connections__item:nth-child(4) { grid-column: auto; }
   }

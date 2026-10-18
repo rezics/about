@@ -18,7 +18,7 @@ const drop = (el: Element, trigger = true) =>
 
 export function startBlocks() {
   onPage(() => {
-    if (prefersReducedMotion()) return;
+    if (prefersReducedMotion() || matchMedia('(max-width: 599px)').matches) return;
     document.querySelectorAll('[data-blocks]').forEach((el) => {
       if (!el.closest('.who__shape')) drop(el);
     });
