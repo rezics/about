@@ -25,4 +25,6 @@ About a dozen agents work at once, each in its own git worktree:
   "all slots busy" and starts by itself; do not bypass it. `REZICS_ABOUT_SLOTS` changes the
   count for everyone only if the maintainer says so.
 - Servers pick free ports (QA and e2e), so worktrees never collide. `task preview` defaults to
-  4400; pass `PORT=…` in a worktree.
+  4400; pass `PORT=…` in a worktree. `task dev -- --port <n>` in a worktree: run by an agent,
+  Astro starts its dev server in the background (one per checkout); `task dev:logs` shows it and
+  `task dev:stop` stops it. Stop it before `task worktree:remove`.

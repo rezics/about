@@ -30,6 +30,8 @@ case "$cmd" in
     echo "worktree: $dir (branch site/$id)"
     ;;
   remove)
+    # A background dev server would recreate files in the directory after removal.
+    if [ -d "$dir" ]; then (cd "$dir" && npx astro dev stop >/dev/null 2>&1 || true); fi
     git -C "$main" worktree remove "$dir"
     echo "removed $dir (branch site/$id kept)"
     ;;

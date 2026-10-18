@@ -12,9 +12,19 @@ tasks:
       - corepack yarn install
 
   dev:
-    desc: Astro dev server (system CJK font stands in; the notify form needs `task preview`)
+    desc: Astro dev server on 127.0.0.1 (run by an agent it starts in the background; system CJK font stands in; the notify form needs `task preview`)
     cmds:
       - npx astro dev {{.CLI_ARGS}}
+
+  dev:stop:
+    desc: Stop this checkout's background dev server
+    cmds:
+      - npx astro dev stop
+
+  dev:logs:
+    desc: Show this checkout's background dev server logs
+    cmds:
+      - npx astro dev logs {{.CLI_ARGS}}
 
   build:
     desc: Production build into dist/ (Astro, then CJK font slices and Open Graph images)
