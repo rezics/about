@@ -1,13 +1,12 @@
-// PLACEHOLDER CONTENT: the lead replaces this file with the final copy. Keep the export shape.
 import type { Site } from './schema';
 
 export const site: Site = {
   name: 'REZICS',
   url: 'https://about.rezics.com',
   meta: {
-    title: 'REZICS：書、動畫、遊戲與工具的通用索引',
+    title: 'REZICS：開放的通用索引與社群',
     description:
-      'REZICS 是開放的多語平台：書、動畫、漫畫、遊戲、軟體、視覺小說、MCP 伺服器、技能與 API 都在同一個索引裡，社群直接建在上面。',
+      '書、動畫、漫畫、遊戲、軟體、視覺小說、MCP 伺服器、技能與 API，在 REZICS 各有一個身分，人們圍著它們討論、評分、整理清單、編寫 Wiki+。',
   },
   nav: {
     products: '產品',
@@ -20,201 +19,301 @@ export const site: Site = {
     action: '開放時通知我',
     productsIntro: {
       title: '九種東西，同一個索引',
-      body: '每一種都有自己的頁面，底下是同一套部件。',
+      body: '每一種都有自己的頁面，底下是同一套部件與同一張圖。',
       all: '看全部',
     },
     engineIntro: {
-      title: '五個模組，一個引擎',
-      body: '所有種類都由這五個模組組成，社群也能用它們建站。',
-      all: '引擎總覽',
+      title: '五個模組，十五個部件',
+      body: '每一種東西都由這些模組組成，社群與開發者也用它們來建造。',
+      all: '看引擎全貌',
     },
-    groups: { works: '作品與軟體', agents: '智能體與開發者' },
+    groups: { works: '作品與軟體', agents: 'AI 代理與開發者' },
   },
   home: {
     hero: {
-      headline: '你在乎的每一種東西，都在同一個索引裡',
-      lede: 'REZICS 把書、動畫、遊戲、軟體與 MCP 伺服器放進同一張圖。每件東西一個身分，討論、評分與清單直接接在上面。',
+      headline: '書、動畫、遊戲與軟體，同一個開放索引，同一個社群。',
+      lede: '每部作品、每套軟體、每位創作者，在 REZICS 只有一個身分，不分語言，連在同一張圖上。評分、清單、討論與 Wiki+ 都掛在這個身分上，任何社群也能在這張圖上架起自己的網站。',
       primary: '開放時通知我',
       secondary: '看九種東西',
       caption: '九種東西，同一套部件。',
     },
     index: {
-      headline: '九種東西，一個格子',
-      body: '每一種東西都用同一個方塊表示。新的種類只是新的設定，格子永遠有空位。',
-      nextKind: '下一種',
+      headline: '一個平台，同時是書庫、商店、資料庫、論壇與 Wiki。',
+      body: '新增一種東西靠的是設定，不必另做一個應用程式。所以 REZICS 同時是書庫與書店、動畫漫畫與遊戲的目錄、遊戲與軟體商店、視覺小說資料庫、論壇、同好 Wiki，也是 MCP 伺服器、AI 代理技能與 API 的目錄。',
+      nextKind: '下一種東西',
     },
     identity: {
-      headline: '一部作品，走過四種形式',
-      body: '《西遊記》是書，也是漫畫、動畫與遊戲。在 REZICS 裡，它們都接在同一個身分上。',
+      headline: '一個故事走過四種形式，每種各有一頁，彼此相連。',
+      body: '《西遊記》是公有領域的古典小說。原著、它的版本與譯本，以及每一部改編，在 REZICS 都是有身分的項目，再用關係連起來。有人在任何語言更正一筆事實，所有讀到這筆事實的頁面都一起更新。',
       chapters: [
         {
           kind: 'books',
-          title: '先是一本書',
-          body: '原著的各種版本與譯本都歸在《西遊記》之下，誰校注、哪一年出版都查得到。',
+          title: '原著：一部作品，一百回',
+          body: '小說《西遊記》是一部作品，一百回是它結構裡的章節，每一回都能記進度。各種刊本與排印本各有一筆發行紀錄；英文、日文或任何語言的譯本仍屬於同一部作品，各自署名譯者、標明權利。作者歸屬的不同說法，各自附上出處。',
         },
         {
           kind: 'manga',
-          title: '再畫成漫畫',
-          body: '改編漫畫有自己的頁面與作者，同時連回原著，讀者一路就能找到源頭。',
+          title: '漫畫：另一部作品，一條關係',
+          body: '漫畫改編是自己的一部作品，有自己的作者、分冊與發行，再用「改編自」的關係連回原著。它的評分只屬於它，不會混進小說的分數。',
         },
         {
           kind: 'anime',
-          title: '拍成動畫',
-          body: '動畫的播出日程與製作陣容另外記錄，但角色與故事仍然屬於同一部作品。',
+          title: '動畫：季、集與配音',
+          body: '動畫改編也是獨立的作品，季與集分開記錄，進度一集一集記。每筆配音紀錄同時連到聲優、角色與這部動畫；孫悟空在每一部作品裡都是同一個角色。',
         },
         {
           kind: 'games',
-          title: '做成遊戲',
-          body: '有人用中文修正了一個角色名稱，日文與英文的頁面也一起變得正確。',
+          title: '遊戲：平台與進度',
+          body: '遊戲改編是另一部作品，每個平台的發行分開記錄。破關不會讓小說變成已讀：每部作品的進度各算各的，作品之間的對應只負責指路。',
         },
       ],
     },
     community: {
-      headline: '社群直接建在東西上',
-      body: '討論、評分與清單都屬於東西本身。人也有自己的頁面，在每個社群都是同一個人。',
+      headline: '社群就在作品旁邊。',
+      body: '討論、評分與清單連到作品本身，不是貼文裡提到的一個名字。',
       points: [
-        { title: 'Realm', body: '興趣相同的人在 Realm 聚在一起，自己訂規則。' },
-        { title: '人是品牌', body: '你寫的評論與整理的清單跟著你走。' },
-        { title: 'Zone', body: '社群可以在共用的圖上做出自己的完整網站。' },
+        {
+          title: 'Realm',
+          body: '為一個故事、一種語言或一個想法成立的社群，有自己的成員、規則與管理。',
+        },
+        {
+          title: '人是一個品牌',
+          body: '同一個身分帶著你的書庫、清單與聲譽，走進每個社群與每個 Zone。',
+        },
+        {
+          title: '評分有對象',
+          body: '評的是故事、譯本、旁白還是製作，是哪一個版本，評分時都會寫明。',
+        },
+        {
+          title: 'Zone',
+          body: '社群自己的完整網站，頁面、導覽與主題自己決定，資料仍來自同一張圖。',
+        },
       ],
     },
     engine: {
-      headline: '五個模組，組出每一種',
-      body: '每個種類都由同樣的模組組成。理解這五個，就理解整個平台。',
+      headline: '五個模組，撐起每一種東西。',
+      body: '每個模組只實作一次。書庫用的評分，和 MCP Hub 用的是同一套。',
     },
     agents: {
-      headline: '人做得到的，智能體也做得到',
-      body: '網站上的每個動作都經過同一套公開 API。智能體用 MCP 伺服器或 SDK，就能代你查詢與整理。',
+      headline: '你在 REZICS 能做的事，AI 代理透過同一套 API 也能做。',
+      body: '網頁與 MCP 走的是同一套操作與權限。代理代表人行事，能做的事不會超出授權給它的範圍。',
       facts: [
-        { title: '公開 API', body: '查詢、寫入與訂閱都用同一套 API。' },
-        { title: 'MCP 伺服器', body: '智能體透過 MCP 直接使用索引。' },
-        { title: 'SDK', body: '用熟悉的語言呼叫 API。' },
-        { title: '自帶智能體', body: '用你自己的智能體，權限由你授予。' },
+        {
+          title: 'MCP 伺服器',
+          body: '搜尋目錄、讀取項目與關係、比對 Wiki 候選、匯入與匯出書庫，都是現成的 MCP 工具。',
+        },
+        {
+          title: '自備代理',
+          body: '用你自己的模型與運算資源，從 API 或 MCP 連進來，預算由你設定。',
+        },
+        {
+          title: '提案由人審核',
+          body: '代理提出附證據的變更，經人審核才套用，每次套用都留下回執，也能撤回。',
+        },
+        {
+          title: '公開的 API',
+          body: '每條路徑與每種錯誤都寫在公開的 OpenAPI 文件裡，整合不必從網頁反推。',
+        },
       ],
     },
     principles: {
-      headline: '我們守住的幾件事',
+      headline: '我們的承諾',
       items: [
-        { title: '一件東西，一個身分', body: '不重複，不分裂，跨語言也一樣。' },
-        { title: '資料有來源', body: '每項事實都能追到出處。' },
-        { title: '人不被鎖住', body: '你的紀錄與作品可以匯出，也跟著你走。' },
+        {
+          title: '原始碼公開',
+          body: 'REZICS 以 AGPL-3.0 授權公開原始碼，任何人都能閱讀、架設與改進。',
+        },
+        {
+          title: '沒有廣告追蹤器',
+          body: '我們不使用廣告追蹤器，不出售個人資料，也不為跨網站的行為廣告分享個人資料。',
+        },
+        {
+          title: '私人資料不拿來訓練',
+          body: 'REZICS 預設不拿私人草稿與閱讀紀錄訓練 AI 模型。任何這類訓練，都需要你另外、明確地選擇加入。',
+        },
+        {
+          title: '資料帶得走',
+          body: '書庫、清單與草稿都能匯出；帳號無法登入時，也有管道取回資料。基本參與與匯出不收費。',
+        },
+        {
+          title: '自動化一定標明',
+          body: '官方與第三方的自動化操作都會公開自己是自動化，也會寫明負責的營運者。',
+        },
       ],
     },
     finale: {
-      headline: '格子裡還有你的位置',
-      body: '留下電子郵件，註冊開放時我們會寄一封信給你。',
+      headline: '最後一格，留給你。',
+      body: '填上電子郵件，REZICS 開放註冊時會通知你。',
     },
   },
   engine: {
     meta: {
-      title: '引擎',
+      title: 'REZICS 引擎：模組與部件',
       description:
-        'REZICS 的引擎由通用索引、社群、站點、創作與發行、信任五個模組組成，九種東西都用同一套部件與同一張圖建構出來。',
+        'REZICS 的九種東西都由同一套部件組成，部件來自五個模組。看每一種東西挑了哪八個部件，以及每個模組各自負責什麼。',
     },
     hero: {
-      headline: '一個引擎，九種東西',
-      lede: '每一種東西都是同一個引擎的設定。部件相同，排列不同。',
+      headline: '一套引擎，組出九種東西。',
+      lede: '新增一種東西，需要的是詞彙、對應、種子資料與一個 Zone，不是另一個應用程式。部件只實作一次，第十種東西和第一種用的是同一套。',
     },
     parts: {
-      headline: '十五個部件',
-      body: '選一個種類，看它用了哪八個部件。',
-      pick: '選擇種類',
+      headline: '十五個部件，每種東西挑八個。',
+      body: '每個方塊九格：中間是名稱，四周八格是部件。身分固定在左上角；換一種東西時，共用的部件留在原位，只有不同的部件移動。',
+      pick: '選一種東西',
     },
-    modules: { headline: '五個模組', body: '部件來自這五個模組。' },
+    modules: {
+      headline: '部件出自五個模組。',
+      body: '通用索引管身分，社群管人，站點管網站，創作與發行管作品的誕生與流通，信任管出處、權利與隱私。',
+    },
   },
   kindPage: {
-    featuresHeading: '你可以做什麼',
-    partsHeading: '用這些部件組成',
-    partsCaption: '和其他種類用的是同一套部件。',
+    featuresHeading: '在這裡能做的事',
+    partsHeading: '用這八個部件組成',
+    partsCaption: '每一種東西，都從同一套部件裡挑選。',
     connectionsHeading: '相鄰的種類',
     next: '下一種',
   },
-  modulePage: { usedByHeading: '用到這個模組的種類', next: '下一個模組' },
+  modulePage: { usedByHeading: '最常用到它的種類', next: '下一個模組' },
   developers: {
     meta: {
-      title: '開發者',
+      title: 'REZICS 開發者：API 與 MCP',
       description:
-        'REZICS 為開發者提供公開 API、MCP 伺服器、SDK、OAuth 應用程式與本機維基工具組，程式碼以開放原始碼授權公開。',
+        'REZICS 的每項功能先是一個 API 操作。這裡介紹 OpenAPI 文件、MCP 伺服器、OAuth 應用程式、本機 Wiki 工具組與開放原始碼。',
     },
     hero: {
-      headline: '同一套 API，給人也給程式',
-      lede: '網站用的就是公開 API。你的程式與智能體能做的事，和網站一樣多。',
+      headline: '網站做得到的，API 都做得到。',
+      lede: '每項功能先是一個 API 操作，網站只是其中一個用戶端。你的 App、腳本與 AI 代理使用同一套操作與權限，拿到一樣的結果。',
     },
     facts: [
-      { title: 'API', body: '查詢、寫入與訂閱的公開介面。' },
-      { title: 'MCP 伺服器', body: '讓智能體直接使用索引。' },
-      { title: 'SDK', body: '型別完整的用戶端程式庫。' },
-      { title: 'OAuth 應用程式', body: '使用者授權後代為操作。' },
-      { title: '本機維基工具組', body: '在本機編輯 Wiki+ 頁面再同步。' },
-      { title: '開放原始碼', body: '程式碼公開，歡迎一起改進。' },
+      {
+        title: 'HTTP API',
+        body: '路徑、參數與每一種回應都定義在公開的 OpenAPI 文件裡。錯誤採用 Problem Details 格式，代碼固定，程式能直接判斷下一步。',
+      },
+      {
+        title: 'MCP 伺服器',
+        body: '遠端 MCP 伺服器把 API 操作提供成工具，每次呼叫都經過同一個 HTTP 處理流程，權限、回執與速率預算一樣不少。AI 代理可以自行註冊成用戶端，註冊本身不給任何資源權限。',
+      },
+      {
+        title: 'TypeScript SDK',
+        body: '用戶端的型別直接來自 API 的定義，欄位、結果與錯誤都和伺服器對得上。',
+      },
+      {
+        title: 'OAuth 應用程式',
+        body: '外部應用程式以授權碼流程與 PKCE 取得授權，權限範圍逐項列明，使用者隨時可以撤銷。',
+      },
+      {
+        title: '本機 Wiki 工具組',
+        body: '持有文本的人在自己的機器上，用自己選的代理讀 TXT、EPUB 與 Ren\'Py 腳本，逐章萃取人物、地點與事件，附上出處位置送出提案。工具組以 Apache-2.0 授權，不需要 REZICS 帳號，也不傳送遙測資料。',
+      },
+      {
+        title: '開放原始碼',
+        body: '整個平台的原始碼以 AGPL-3.0 公開，可以研究、自行架設，也能送出修改。',
+      },
     ],
     sample: {
-      caption: '用 SDK 查詢一部作品的所有版本。',
-      language: 'ts',
-      code: "const work = await rezics.works.get('journey-to-the-west');\nconst editions = await work.editions.list({ language: 'zh-Hant' });",
+      caption: '公開搜尋不需要權杖。用《西遊記》找作品，回應附上排名結果、筆數的精確度與下一頁的游標。',
+      language: 'sh',
+      code: [
+        'curl -G "$REZICS_API/v1/search/catalogue" \\',
+        '  --data-urlencode "q=西遊記" \\',
+        '  -d language=zh-Hant \\',
+        '  -d limit=5',
+      ].join('\n'),
     },
-    statement: '沒有只給網站用的私有介面。',
+    statement: '點一下，或呼叫一次，都是同一個操作。',
   },
   roadmap: {
     meta: {
-      title: '路線圖',
+      title: 'REZICS 路線圖',
       description:
-        'REZICS 的路線圖說明平台接下來的方向：從通用索引與社群開始，一步步加入更多種類、更多語言與更多讓社群自己建站的能力。',
+        'REZICS 一次開放一個社群，引擎始終只有一套。從輕小說與視覺小說開始，接著是每部作品的 Wiki+、連載創作、更多種類、活動與地點，以及直接發行。',
     },
     hero: {
-      headline: 'REZICS 要去的地方',
-      lede: '方向依序排列，不寫日期。每一步都建立在前一步上。',
+      headline: '從輕小說開始，走向每一種東西。',
+      lede: 'REZICS 一個社群接一個社群地開放，每個社群都建在同一張圖與同一套部件上。前一步累積的身分與關係，下一步直接沿用。',
     },
     steps: [
-      { title: '索引與社群', body: '九種東西與社群功能一起開放。' },
-      { title: '更多語言', body: '介面與資料加入更多語言。' },
-      { title: '更多種類', body: '新的種類以設定加入，不必另寫程式。' },
-      { title: '社群的網站', body: '更多社群用 Zone 建立自己的網站。' },
+      {
+        title: '一張圖，一套引擎',
+        body: '每部作品、每個人、每個組織，在一張共用的圖裡各有一個身分。每項能力只實作一次，任何種類都能取用。',
+      },
+      {
+        title: '輕小說與視覺小說',
+        body: '最先開放給跨語言追系列的讀者，以及想找到可玩版本的玩家。兩者是同一份目錄與書庫的兩種檢視，各有作品的 Wiki，提供八種介面語言，手機與電腦都能用。',
+      },
+      {
+        title: '每部作品都有 Wiki+',
+        body: '同一套建置流程擴及每一部作品。持有文本的人用自己的 AI 代理逐章提案，審核通過的事實發布到作品的 Wiki Zone，讀者依自己的進度瀏覽。',
+      },
+      {
+        title: '連載與創作者',
+        body: '小型的連載小說社群與視覺小說創作者，帶著作品與發行日程加入。作者在稿件旁維護自己的世界設定，讀者在章節旁討論。',
+      },
+      {
+        title: '一種接一種',
+        body: '科幻與奇幻書目、互動小說、MCP 伺服器與代理技能、模型與評測依序加入。每一種都是詞彙、對應、種子資料與一個 Zone，後端不為它新增專屬的程式。',
+      },
+      {
+        title: '走進現實',
+        body: '與作品相連的展會、簽名會與發售活動，以及公開的聖地巡禮地點。巡禮地點會依你的進度避開劇透。',
+      },
+      {
+        title: '直接發行',
+        body: 'REZICS 為簽約創作者發行無 DRM 的電子書與小型遊戲。讀者買一次，檔案隨時重新下載；創作者看得到每一筆扣款。',
+      },
+      {
+        title: '每個社群的網站',
+        body: '社群營運者與小型出版者用 Zone 經營完整的網站，匯入資料、管理發行；開發者取用 API 與更新串流。',
+      },
     ],
-    statement: '格子會越來越滿，規則不變。',
+    statement: '每開放一個社群，圖上的連結就多一層，下一個社群一來就用得到。',
   },
   notify: {
-    headline: '開放時通知我',
-    body: '註冊開放時，我們只寄這一封信。',
+    headline: '開放註冊那天，寫信給你。',
+    body: '留下電子郵件。REZICS 開放註冊時，我們只寄這一封通知。',
     label: '電子郵件',
-    placeholder: 'you@example.org',
-    submit: '通知我',
+    placeholder: 'name@example.com',
+    submit: '開放時通知我',
     sending: '傳送中',
-    done: '收到了。註冊開放時會寄信給你。',
-    privacy: '我們只保存這個地址，用來寄開放通知，不會分享給任何人。',
+    done: '收到了。開放註冊時，你會收到我們的信。',
+    privacy: '我們只保存你的電子郵件、語言與登記時間，用途只有一個：通知你註冊開放。',
     errors: {
-      invalid_email: '這個電子郵件地址看起來不完整。',
-      invalid_request: '表單內容有誤，請再試一次。',
-      cross_origin: '這個表單只能從 REZICS 的網站送出。',
-      unavailable: '現在無法儲存，請稍後再試。',
+      invalid_email: '請輸入有效的電子郵件，例如 name@example.com。',
+      invalid_request: '表單內容無法讀取。請重新整理頁面，再送出一次。',
+      cross_origin: '這個表單只接受從本站送出。',
+      unavailable: '目前無法儲存，請過一分鐘再試。',
     },
   },
   notified: {
     meta: {
-      title: '已收到',
+      title: '已加入通知名單',
       description:
-        '你的電子郵件地址已經收到。REZICS 開放註冊時，我們會寄一封通知信到這個地址，除此之外不會寄其他信件。',
+        '我們記下了你的電子郵件。REZICS 開放註冊時，你會收到一封通知信。在那之前，可以先回首頁看看九種東西與五個模組。',
     },
-    headline: '收到了',
-    body: '註冊開放時，我們會寄一封信到你留下的地址。',
+    headline: '你在名單上了。',
+    body: '註冊開放的那天，信會寄到你留下的地址。',
     back: '回到首頁',
   },
   notFound: {
     meta: {
-      title: '找不到頁面',
+      title: '找不到這個頁面',
       description:
-        '這個網址在 REZICS 的網站上沒有對應的頁面。可能是連結打錯了，或頁面已經移動，回到首頁就能找到九種東西。',
+        '這個網址沒有對應的頁面，可能是網址打錯了字，或這個頁面已經移到別的地方。回到 REZICS 首頁，從九種東西與五個模組重新找起。',
     },
     headline: '這裡還沒有東西',
-    body: '這個格子是空的。回到首頁，看看已經放好的九種東西。',
+    body: '這一格是空的。網址可能有誤，或頁面已經搬走。',
     back: '回到首頁',
   },
-  ui: { pause: '暫停', play: '播放', pick: '選擇種類' },
+  ui: {
+    pause: '暫停動畫',
+    play: '播放動畫',
+    pick: '切換種類',
+  },
   footer: {
-    tagline: '一個索引，所有你在乎的東西。',
+    tagline: '每一種東西，都有自己的方塊。',
     source: '原始碼',
-    sourceUrl: 'https://github.com/rezics',
-    colophon: '字體：Noto Sans TC、Archivo、Martian Mono。',
-    copyright: '© REZICS',
+    sourceUrl: 'https://github.com/rezics/rezics-next',
+    colophon: '以 Noto Sans TC、Archivo 與 Martian Mono 排版。本站不做流量分析，也不載入第三方資源。',
+    copyright: '© 2026 REZICS Inc.',
   },
 };
