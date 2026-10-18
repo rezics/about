@@ -1,0 +1,174 @@
+---
+// 閱讀紀錄 (src/sites/books/SITE.md, page 4): statement with the due-date card, three reads as a
+// card table, moving in and out, the shelf as a gallery wall, Continue, privacy.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import Section from '../../kit/components/Section.astro';
+import Finale from '../../kit/components/Finale.astro';
+import { kindFields } from '../../kit/theme';
+import { pageHref } from '../../kit/sites';
+import Picture from '../../sites/books/Picture.astro';
+import site from '../../content/sites/books';
+import '../../sites/books/books.css';
+
+const s = site.strings.library;
+const next = site.pages.find((p) => p.slug === 'serial')!;
+---
+<MiniSiteLayout>
+  <!-- S1 Hero: statement with a slipped-in card -->
+  <Section mood="normal" labelledby="lb-title" class="lbh">
+    <h1 id="lb-title" class="col-1-8 t-xl lbh__title" data-split="lines" data-intro>{s.hero.headline}</h1>
+    <p class="col-5-8 lede lbh__lede">{s.hero.lede}</p>
+    <div class="lbh__pic">
+      <Picture name="books-library" alt={s.hero.alt} eager sizes="(max-width: 767px) 50vw, 28vw" />
+    </div>
+  </Section>
+
+  <!-- S2 Three reads: a due-date card -->
+  <Section mood="normal" labelledby="lb-reads" class="lbr">
+    <h2 id="lb-reads" class="col-1-8 t-l">{s.reads.headline}</h2>
+    <div class="col-1-8 lbr__card">
+      <table class="lbr__table">
+        <thead>
+          <tr>{s.reads.columns.map((c) => <th scope="col">{c}</th>)}</tr>
+        </thead>
+        <tbody data-reveal="slot">
+          {s.reads.rows.map(([n, how, result], i) => (
+            <tr class:list={[i === 1 && 'is-done']}>
+              <th scope="row">{n}</th>
+              <td>{how}</td>
+              <td><span class="lbr__stamp">{result}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="col-9-12 lbr__text">
+      <p>{s.reads.body}</p>
+      <p class="muted">{s.reads.caption}</p>
+    </div>
+  </Section>
+
+  <!-- S3 Move in, move out: asymmetric pair -->
+  <Section mood="normal" labelledby="lb-move" class="lbm">
+    <h2 id="lb-move" class="col-1-8 t-l">{s.move.headline}</h2>
+    <ol class="col-1-8 lbm__steps" role="list" data-reveal="slot">
+      {s.move.steps.map((st, i) => (
+        <li class="lbm__step">
+          <span class="lbm__sq" aria-hidden="true">{i + 1}</span>
+          <div>
+            <h3 class="t-m">{st.title}</h3>
+            <p>{st.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p class="col-9-12 lbm__statement">{s.move.statement}</p>
+  </Section>
+
+  <!-- S4 The shelf too: gallery wall of unequal squares -->
+  <Section mood="normal" labelledby="lb-shelf" class="lbs">
+    <h2 id="lb-shelf" class="col-full t-l">{s.shelf.headline}</h2>
+    <ul class="col-full lbs__wall" role="list" data-reveal="slot">
+      {s.shelf.squares.map((sq, i) => (
+        <li class={`lbs__item lbs__item--${i + 1}`}>
+          <h3 class="lbs__name">{sq.title}</h3>
+          <p class="lbs__body">{sq.body}</p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <!-- S5 Continue: poster -->
+  <Section mood="airy" labelledby="lb-cont" class="lbc">
+    <h2 id="lb-cont" class="col-1-10 t-xl lbc__poster" data-split="lines">{s.continue.poster}</h2>
+    <p class="col-5-8 lbc__body">{s.continue.body}</p>
+  </Section>
+
+  <!-- S6 Private: statement on the field -->
+  <Section mood="normal" band="field" labelledby="lb-priv" class="lbp">
+    <h2 id="lb-priv" class="col-1-4 t-l lbp__statement">{s.privacy.statement}</h2>
+    <ul class="col-5-12 lbp__facts" role="list">
+      {s.privacy.facts.map((f) => <li>{f}</li>)}
+    </ul>
+  </Section>
+
+  <Finale label={s.finaleLead} name={next.label} href={pageHref(site, next)} field={kindFields.books} />
+</MiniSiteLayout>
+
+<style>
+  /* S1 */
+  .lbh { padding-top: clamp(32px, 5vw, 72px); }
+  .lbh__title { max-width: 9em; }
+  .lbh__pic { grid-column: 10 / span 3; grid-row: 1 / span 2; align-self: end; translate: 0 18%; }
+  @media (max-width: 767px) {
+    .lbh__pic { grid-column: 1 / -1; grid-row: auto; translate: none; max-width: 240px; justify-self: end; }
+  }
+
+  /* S2 */
+  .lbr__card {
+    padding: clamp(16px, 2.4vw, 32px);
+    background: var(--c-paper);
+    border: 1px solid var(--c-line-strong);
+    border-top: 8px solid var(--field);
+    box-shadow: 8px 8px 0 var(--bk-t16);
+  }
+  .lbr__table { width: 100%; border-collapse: collapse; }
+  .lbr__table th, .lbr__table td { text-align: left; padding: 14px 12px 14px 0; border-bottom: 1px solid var(--c-line-strong); vertical-align: middle; }
+  .lbr__table thead th { font-size: var(--t-s); color: var(--c-muted); border-bottom: 2px solid var(--c-ink); }
+  .lbr__table tbody th { font-weight: 900; white-space: nowrap; }
+  .lbr__table td + td { border-left: 1px solid var(--c-line); padding-left: 12px; }
+  .lbr__stamp { display: inline-block; padding: 4px 10px; border: 2px solid var(--field); color: var(--field); font-weight: 700; }
+  .is-done .lbr__stamp { background: var(--field); color: var(--on-field); }
+  .lbr__text { display: flex; flex-direction: column; gap: 14px; align-self: center; }
+  @media (max-width: 767px) {
+    .lbr__table { font-size: var(--t-s); }
+  }
+
+  /* S3 */
+  .lbm__steps { display: flex; flex-direction: column; }
+  .lbm__step { display: grid; grid-template-columns: 3.5rem minmax(0, 1fr); gap: var(--gutter); padding-block: 18px; border-bottom: 1px solid var(--c-line-strong); align-items: start; }
+  .lbm__step div { display: flex; flex-direction: column; gap: 6px; }
+  .lbm__sq {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    background: var(--field);
+    color: var(--on-field);
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: var(--t-m);
+  }
+  .lbm__statement {
+    align-self: center;
+    padding: clamp(20px, 2.4vw, 32px);
+    background: var(--bk-t08);
+    border-left: 6px solid var(--field);
+    font-weight: 700;
+    font-size: var(--t-m);
+    line-height: 1.6;
+  }
+
+  /* S4 */
+  .lbs__wall { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(8px, 1vw, 16px); }
+  .lbs__item { container-type: inline-size; padding: clamp(18px, 6cqi, 32px); display: flex; flex-direction: column; justify-content: space-between; gap: 18px; min-height: 240px; }
+  .lbs__item--1 { grid-column: 1 / span 5; grid-row: 1 / span 2; background: var(--field); color: var(--on-field); }
+  .lbs__item--2 { grid-column: 6 / span 4; grid-row: 1; background: var(--bk-t16); }
+  .lbs__item--3 { grid-column: 10 / span 3; grid-row: 1; border: 2px solid var(--field); }
+  .lbs__item--4 { grid-column: 6 / span 3; grid-row: 2; background: var(--bk-t08); border-top: 4px solid var(--field); }
+  .lbs__item--5 { grid-column: 9 / span 4; grid-row: 2; background: var(--bk-t32); }
+  .lbs__name { font-weight: 900; font-size: clamp(1.25rem, 9cqi, 2.25rem); line-height: 1.15; }
+  .lbs__body { max-width: 26em; }
+  @media (max-width: 899px) {
+    .lbs__wall { grid-template-columns: 1fr 1fr; }
+    .lbs__item { grid-column: auto !important; grid-row: auto !important; min-height: 0; }
+    .lbs__item--1 { grid-column: 1 / -1 !important; }
+  }
+  @media (max-width: 540px) { .lbs__wall { grid-template-columns: 1fr; } }
+
+  /* S5 */
+  .lbc__poster { max-width: 13em; }
+
+  /* S6 */
+  .lbp__facts { display: flex; flex-direction: column; gap: 16px; }
+  .lbp__facts li { padding-top: 14px; border-top: 1px solid var(--c-line-strong); }
+</style>

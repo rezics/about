@@ -1,0 +1,251 @@
+---
+// 作品頁 (src/sites/books/SITE.md, page 1): statement + title page, the eight sections as an
+// ordered index, the one primary action, ratings that name their target, edit or propose, the
+// languages statement.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import Section from '../../kit/components/Section.astro';
+import Finale from '../../kit/components/Finale.astro';
+import { kindFields } from '../../kit/theme';
+import { pageHref } from '../../kit/sites';
+import site from '../../content/sites/books';
+import '../../sites/books/books.css';
+
+const s = site.strings.work;
+const next = site.pages.find((p) => p.slug === 'wiki')!;
+const start = s.action.states.length - 1;
+---
+<MiniSiteLayout>
+  <!-- S1 Hero: statement + title page -->
+  <Section mood="normal" labelledby="wk-title" class="wkh">
+    <h1 id="wk-title" class="col-1-10 t-xl wkh__title" data-split="lines" data-intro>{s.hero.headline}</h1>
+    <p class="col-5-8 lede wkh__lede">{s.hero.lede}</p>
+    <div class="col-9-12 wkh__page">
+      <p class="wkh__book" lang="zh-Hant">{s.hero.title}</p>
+      <p class="wkh__orig" lang="en">{s.hero.original}</p>
+      <p class="wkh__author">{s.hero.author}</p>
+      <p class="wkh__caption muted">{s.hero.caption}</p>
+    </div>
+  </Section>
+
+  <!-- S2 Eight sections: ordered index list -->
+  <Section mood="normal" labelledby="wk-sec" class="wks">
+    <h2 id="wk-sec" class="col-1-4 t-l">{s.sections.headline}</h2>
+    <p class="col-5-8 muted wks__intro">{s.sections.intro}</p>
+    <ol class="col-full wks__list" role="list">
+      {s.sections.rows.map((row, i) => (
+        <li class="wks__row" data-reveal="up">
+          <span class="wks__n" aria-hidden="true">{i + 1}</span>
+          <h3 class="wks__name">{row.title}</h3>
+          <p class="wks__body">{row.body}</p>
+          <p class="wks__example">{row.example}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <!-- S3 One primary action: kinetic poster -->
+  <Section mood="airy" labelledby="wk-act" class="wka">
+    <div class="col-1-4 wka__text">
+      <h2 id="wk-act" class="t-l">{s.action.headline}</h2>
+      <p>{s.action.body}</p>
+    </div>
+    <div class="col-5-12 wka__poster" data-action>
+      <div class="wka__tabs" role="group" aria-label={s.action.control}>
+        {s.action.states.map((st, i) => (
+          <button type="button" class="wka__tab" data-action-tab aria-pressed={i === start ? 'true' : 'false'}>
+            <span class="wka__tab-name">{st.tab}</span>
+            <span class="wka__tab-to"><span aria-hidden="true">→ </span>{st.button}</span>
+          </button>
+        ))}
+      </div>
+      <div class="wka__square" aria-hidden="true">
+        {s.action.states.map((st, i) => (
+          <span class="wka__face" data-action-face data-on={String(i === start)}>{st.button}</span>
+        ))}
+      </div>
+      <p class="sr-only" aria-live="polite" data-action-live></p>
+      <p class="wka__caption muted">{s.action.caption}</p>
+    </div>
+  </Section>
+
+  <!-- S4 Ratings name their target: asymmetric pair -->
+  <Section mood="normal" labelledby="wk-rate" class="wkr">
+    <div class="col-1-8 wkr__figure" aria-hidden="true">
+      <p class="wkr__targets">
+        {s.ratings.targets.map((t) => <span class="wkr__target">{t}</span>)}
+      </p>
+      <ul class="wkr__scopes" role="list">
+        {s.ratings.scopes.map((sc) => <li class="wkr__scope">{sc}</li>)}
+      </ul>
+    </div>
+    <div class="col-9-12 wkr__text">
+      <h2 id="wk-rate" class="t-l">{s.ratings.headline}</h2>
+      <p>{s.ratings.body}</p>
+      <p class="muted">{s.ratings.caption}</p>
+    </div>
+  </Section>
+
+  <!-- S5 Edit in place or propose: split compare -->
+  <Section mood="normal" labelledby="wk-edit" class="wke">
+    <h2 id="wk-edit" class="col-1-8 t-l">{s.edit.headline}</h2>
+    <div class="col-1-6 wke__box wke__box--direct">
+      <h3 class="t-m">{s.edit.direct.title}</h3>
+      <ul role="list" class="wke__items">{s.edit.direct.items.map((it) => <li>{it}</li>)}</ul>
+    </div>
+    <div class="col-7-12 wke__box wke__box--propose">
+      <h3 class="t-m">{s.edit.propose.title}</h3>
+      <ul role="list" class="wke__items">{s.edit.propose.items.map((it) => <li>{it}</li>)}</ul>
+    </div>
+    <p class="col-5-8 muted">{s.edit.caption}</p>
+  </Section>
+
+  <!-- S6 Languages stay apart: statement -->
+  <Section mood="airy" band="field" labelledby="wk-lang" class="wkl">
+    <h2 id="wk-lang" class="col-1-10 t-xl wkl__statement" data-split="lines">{s.languages.statement}</h2>
+    <p class="col-5-8 wkl__body">{s.languages.body}</p>
+  </Section>
+
+  <Finale label={s.finaleLead} name={next.label} href={pageHref(site, next)} field={kindFields.books} />
+</MiniSiteLayout>
+
+<script>
+  import { initAction } from '../../sites/books/action';
+  initAction();
+</script>
+
+<style>
+  /* S1 */
+  .wkh { padding-top: clamp(32px, 5vw, 72px); }
+  .wkh__title { max-width: 12em; }
+  .wkh__lede { align-self: start; }
+  .wkh__page {
+    align-self: end;
+    padding: clamp(18px, 2vw, 28px);
+    border: 1px solid var(--c-line-strong);
+    border-top: 6px solid var(--field);
+    background: var(--bk-t08);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .wkh__book { font-weight: 900; font-size: var(--t-l); line-height: 1.15; letter-spacing: var(--track-display); }
+  .wkh__orig { font-family: 'Archivo', sans-serif; font-stretch: 112%; color: var(--c-muted); font-size: var(--t-body); }
+  .wkh__author { font-weight: 700; margin-top: 10px; }
+  .wkh__caption { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--c-line); font-size: var(--t-s); }
+
+  /* S2 */
+  .wks__intro { align-self: end; max-width: var(--measure); }
+  .wks__list { border-top: 2px solid var(--c-ink); counter-reset: none; }
+  .wks__row {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 3fr) minmax(0, 4fr) minmax(0, 4fr);
+    gap: var(--gutter);
+    padding-block: clamp(18px, 2vw, 26px);
+    border-bottom: 1px solid var(--c-line-strong);
+    align-items: baseline;
+  }
+  .wks__n { font-family: 'Archivo', sans-serif; font-variant-numeric: tabular-nums; font-weight: 800; font-stretch: 125%; font-size: var(--t-l); color: var(--field); line-height: 1; }
+  .wks__name { font-weight: 900; font-size: var(--t-m); line-height: 1.3; }
+  .wks__body { max-width: var(--measure); }
+  .wks__example { color: var(--c-muted); padding-left: 14px; border-left: 3px solid var(--field); font-size: var(--t-s); line-height: 1.7; }
+  @media (max-width: 767px) {
+    .wks__row { grid-template-columns: 2.5rem minmax(0, 1fr); row-gap: 8px; }
+    .wks__n { grid-row: 1 / span 3; }
+    .wks__name, .wks__body, .wks__example { grid-column: 2; }
+  }
+
+  /* S3 */
+  .wka__text { display: flex; flex-direction: column; gap: 16px; align-self: center; }
+  .wka__poster { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: var(--gutter); align-items: stretch; }
+  .wka__tabs { display: flex; flex-direction: column; gap: 6px; }
+  .wka__tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-height: 64px;
+    padding: 12px 16px 12px 20px;
+    text-align: left;
+    border: 1px solid var(--c-line-strong);
+    background: var(--c-paper);
+    transition: background var(--d-s) var(--ease-snap), border-color var(--d-s);
+  }
+  .wka__tab::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    background: var(--field);
+    scale: 1 0;
+    transform-origin: 50% 0;
+    transition: scale var(--d-m) var(--ease-snap);
+  }
+  .wka__tab[aria-pressed='true'] { background: var(--bk-t08); border-color: var(--field); }
+  .wka__tab[aria-pressed='true']::before { scale: 1 1; }
+  .wka__tab-name { font-weight: 700; }
+  .wka__tab-to { font-size: var(--t-s); color: var(--c-muted); }
+  @media (hover: hover) { .wka__tab:hover::before { scale: 1 1; } .wka__tab:hover { border-color: var(--field); } }
+  .wka__tab:focus-visible::before { scale: 1 1; }
+  .wka__square {
+    position: relative;
+    aspect-ratio: 1;
+    container-type: inline-size;
+    background: var(--field);
+    color: var(--on-field);
+    overflow: clip;
+    display: grid;
+  }
+  .wka__face {
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: center;
+    font-weight: 900;
+    font-size: 21cqi;
+    line-height: 1;
+    letter-spacing: var(--track-display);
+    white-space: nowrap;
+  }
+  .wka__face[data-on='false'] { visibility: hidden; }
+  :global(.js) .wka__face { visibility: visible; }
+  .wka__square::after {
+    content: '';
+    position: absolute;
+    left: 6cqi;
+    bottom: 6cqi;
+    width: 9cqi;
+    height: 9cqi;
+    border: 2px solid currentColor;
+  }
+  .wka__caption { grid-column: 2; font-size: var(--t-s); }
+  @media (max-width: 767px) {
+    .wka__poster { grid-template-columns: 1fr; }
+    .wka__tabs { flex-direction: row; overflow-x: auto; }
+    .wka__tab { flex: 1 0 auto; min-height: 56px; padding: 10px 12px 10px 16px; }
+    .wka__caption { grid-column: 1; }
+  }
+
+  /* S4 */
+  .wkr__figure { display: flex; flex-direction: column; gap: clamp(20px, 3vw, 40px); align-self: center; }
+  .wkr__targets { display: flex; flex-wrap: wrap; gap: 0 0.6em; font-weight: 900; font-size: var(--t-mega); line-height: 1; letter-spacing: var(--track-display); }
+  .wkr__target { color: var(--c-muted); }
+  .wkr__target:first-child { color: var(--field); text-decoration: underline; text-decoration-thickness: 0.06em; text-underline-offset: 0.12em; }
+  .wkr__scopes { display: flex; gap: 8px; flex-wrap: wrap; }
+  .wkr__scope { padding: 10px 14px; border: 1.5px solid var(--field); font-weight: 700; font-size: var(--t-s); }
+  .wkr__scope:first-child { background: var(--field); color: var(--on-field); }
+  .wkr__text { display: flex; flex-direction: column; gap: 16px; align-self: center; }
+  @media (max-width: 767px) { .wkr__targets { font-size: clamp(3rem, 18vw, 5rem); } }
+
+  /* S5 */
+  .wke__box { padding: clamp(20px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 18px; }
+  .wke__box--direct { background: var(--field); color: var(--on-field); }
+  .wke__box--propose { border: 2px dashed var(--field); }
+  .wke__items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .wke__items li { padding: 8px 12px; font-weight: 700; border: 1px solid currentColor; }
+
+  /* S6 */
+  .wkl__statement { max-width: 16em; }
+  .wkl__body { max-width: var(--measure); }
+</style>

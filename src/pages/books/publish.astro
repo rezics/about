@@ -1,0 +1,183 @@
+---
+// 出版 (src/sites/books/SITE.md, page 6): poster with the receipt picture, buying one book as a
+// sticky narrative, the creator's statement, what is distributed, the store beside the community,
+// then the next site.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import Section from '../../kit/components/Section.astro';
+import PartsGrid from '../../kit/components/PartsGrid.astro';
+import Finale from '../../kit/components/Finale.astro';
+import { kindById } from '../../kit/content';
+import { kindFields, fieldOf } from '../../kit/theme';
+import { nextSite } from '../../kit/sites';
+import Picture from '../../sites/books/Picture.astro';
+import site from '../../content/sites/books';
+import '../../sites/books/books.css';
+
+const s = site.strings.publish;
+const kind = kindById('books');
+const after = nextSite(site);
+---
+<MiniSiteLayout>
+  <!-- S1 Hero: poster with picture -->
+  <Section mood="normal" labelledby="pb-title" class="pbh">
+    <div class="col-1-8 pbh__text">
+      <h1 id="pb-title" class="t-xl pbh__title" data-split="lines" data-intro>{s.hero.headline}</h1>
+      <p class="lede">{s.hero.lede}</p>
+    </div>
+    <div class="col-9-12 pbh__pic">
+      <Picture name="books-publish" alt={s.hero.alt} eager sizes="(max-width: 767px) 92vw, 30vw" />
+    </div>
+  </Section>
+
+  <!-- S2 Buying one book: sticky stage square beside four steps -->
+  <Section mood="normal" labelledby="pb-buy" class="pbb" data-chapters>
+    <h2 id="pb-buy" class="col-full t-l">{s.buy.headline}</h2>
+    <div class="col-1-5 pbb__stage-wrap">
+      <div class="pbb__stage" data-stage data-state="0" aria-hidden="true">
+        {s.buy.words.map((w, i) => (
+          <span class="pbb__word" data-word={i}>{w}</span>
+        ))}
+        <span class="pbb__steps">
+          {s.buy.words.map((_, i) => <span class="pbb__tick" data-tick={i}></span>)}
+        </span>
+      </div>
+    </div>
+    <ol class="col-7-12 pbb__list" role="list">
+      {s.buy.steps.map((st, i) => (
+        <li class="pbb__step" data-chapter data-active={i === 0 ? '' : undefined}>
+          <span class="pbb__n mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="t-l">{st.title}</h3>
+          <p>{st.body}</p>
+        </li>
+      ))}
+    </ol>
+    <p class="col-7-12 pbb__caption muted">{s.buy.caption}</p>
+  </Section>
+
+  <!-- S3 The statement: ledger -->
+  <Section mood="normal" labelledby="pb-st" class="pbs">
+    <h2 id="pb-st" class="col-1-8 t-l">{s.statement.headline}</h2>
+    <ol class="col-full pbs__ledger" role="list">
+      {s.statement.rows.map((r, i) => (
+        <li class:list={['pbs__row', i > 0 && i < s.statement.rows.length - 1 && 'pbs__row--minus', i === s.statement.rows.length - 1 && 'pbs__row--net']}>
+          <span class="pbs__name">{r.title}</span>
+          <span class="pbs__body">{r.body}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="col-5-8 muted">{s.statement.note}</p>
+  </Section>
+
+  <!-- S4 What is distributed: index list -->
+  <Section mood="normal" labelledby="pb-dist" class="pbd">
+    <h2 id="pb-dist" class="col-1-4 t-l">{s.distributed.headline}</h2>
+    <dl class="col-5-12 pbd__rows">
+      {s.distributed.rows.map((r) => (
+        <div class="pbd__row">
+          <dt class="pbd__name">{r.title}</dt>
+          <dd class="pbd__body">{r.body}</dd>
+        </div>
+      ))}
+    </dl>
+    <ul class="col-5-12 pbd__policy" role="list">
+      {s.distributed.policy.map((p) => <li>{p}</li>)}
+    </ul>
+  </Section>
+
+  <!-- S5 Next to the community: asymmetric pair with the Work square -->
+  <Section mood="normal" labelledby="pb-com" class="pbc">
+    <div class="col-1-6 pbc__text">
+      <h2 id="pb-com" class="t-l">{s.community.headline}</h2>
+      <p>{s.community.body}</p>
+      <p class="muted">{s.community.privacy}</p>
+    </div>
+    <div class="col-7-12 pbc__square">
+      <PartsGrid name={kind.name} field={kindFields.books} parts={kind.parts} />
+    </div>
+  </Section>
+
+  {after && (
+    <Finale label={s.finaleLead} name={after.name} href={after.base} field={fieldOf(after.theme)} />
+  )}
+</MiniSiteLayout>
+
+<style>
+  /* S1 */
+  .pbh { padding-top: clamp(32px, 5vw, 72px); align-items: center; }
+  .pbh__text { display: flex; flex-direction: column; gap: 24px; }
+  .pbh__title { max-width: 10em; }
+  @media (max-width: 767px) { .pbh__pic { max-width: 360px; } }
+
+  /* S2 */
+  .pbb__stage-wrap { align-self: stretch; }
+  .pbb__stage {
+    position: sticky;
+    top: calc(var(--header-h) + var(--bar-h) + 32px);
+    aspect-ratio: 1;
+    container-type: inline-size;
+    background: var(--field);
+    color: var(--on-field);
+    overflow: clip;
+    display: grid;
+  }
+  .pbb__word {
+    grid-area: 1 / 1;
+    align-self: center;
+    justify-self: center;
+    font-weight: 900;
+    font-size: 30cqi;
+    line-height: 1;
+    letter-spacing: var(--track-display);
+    clip-path: inset(0 0 100% 0);
+    translate: 0 12%;
+    transition: clip-path var(--d-m) var(--ease-snap), translate var(--d-m) var(--ease-snap);
+  }
+  .pbb__stage[data-state='0'] [data-word='0'],
+  .pbb__stage[data-state='1'] [data-word='1'],
+  .pbb__stage[data-state='2'] [data-word='2'],
+  .pbb__stage[data-state='3'] [data-word='3'] { clip-path: inset(0 0 0 0); translate: 0 0; }
+  .pbb__steps { position: absolute; left: 6cqi; right: 6cqi; bottom: 6cqi; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2cqi; }
+  .pbb__tick { height: 2.2cqi; border: 1.5px solid currentColor; }
+  .pbb__stage[data-state='0'] [data-tick='0'],
+  .pbb__stage[data-state='1'] [data-tick='0'], .pbb__stage[data-state='1'] [data-tick='1'],
+  .pbb__stage[data-state='2'] [data-tick='0'], .pbb__stage[data-state='2'] [data-tick='1'], .pbb__stage[data-state='2'] [data-tick='2'],
+  .pbb__stage[data-state='3'] .pbb__tick { background: currentColor; }
+  .pbb__list { display: flex; flex-direction: column; }
+  .pbb__step { min-height: 52svh; padding: 8px 0 40px; border-top: 1px solid var(--c-line-strong); display: flex; flex-direction: column; gap: 10px; transition: opacity var(--d-m); }
+  :global(.motion) .pbb__step:not([data-active]) { opacity: 0.45; }
+  .pbb__n { color: var(--c-muted); padding-top: 6px; }
+  .pbb__caption { grid-column: 7 / span 6; padding-top: 16px; border-top: 1px solid var(--c-line-strong); font-size: var(--t-s); }
+  @media (max-width: 767px) {
+    .pbb__stage-wrap { position: sticky; top: calc(var(--header-h) + var(--bar-h)); z-index: 2; background: var(--c-paper); padding-block: 8px; }
+    .pbb__stage { position: static; aspect-ratio: 3 / 1; }
+    .pbb__word { font-size: 14cqi; }
+    .pbb__step { min-height: 40svh; }
+  }
+  :global(html:not(.motion)) .pbb__step { min-height: 0; }
+
+  /* S3 */
+  .pbs__ledger { border-top: 2px solid var(--c-ink); }
+  .pbs__row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gutter); padding: 16px 0; border-bottom: 1px solid var(--c-line-strong); align-items: baseline; }
+  .pbs__name { font-weight: 900; font-size: var(--t-m); }
+  .pbs__row--minus .pbs__name { padding-left: clamp(24px, 3vw, 48px); position: relative; }
+  .pbs__row--minus .pbs__name::before { content: ''; position: absolute; left: 0; top: 0.75em; width: clamp(12px, 1.6vw, 24px); height: 3px; background: var(--field); }
+  .pbs__row--net { border-top: 2px solid var(--field); border-bottom: 2px solid var(--field); background: var(--bk-t08); padding-inline: 14px; }
+  @media (max-width: 767px) { .pbs__row { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* S4 */
+  .pbd__rows { border-top: 2px solid var(--c-ink); }
+  .pbd__row { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: var(--gutter); padding: 16px 0; border-bottom: 1px solid var(--c-line-strong); }
+  .pbd__name { font-weight: 900; font-size: var(--t-m); }
+  .pbd__body { margin: 0; }
+  .pbd__policy { display: flex; flex-direction: column; gap: 10px; }
+  .pbd__policy li { padding-left: 16px; border-left: 3px solid var(--field); font-weight: 700; }
+  @media (max-width: 767px) { .pbd__row { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* S5 */
+  .pbc__text { display: flex; flex-direction: column; gap: 16px; align-self: center; }
+  .pbc__square :global(.parts__cell) { color: var(--c-muted); }
+  .pbc__square :global(.parts__cell[data-part='ratings']),
+  .pbc__square :global(.parts__cell[data-part='wiki']) { color: var(--c-ink); background: var(--bk-t16); }
+  .pbc__square :global(.parts__cell[data-part='offers']) { background: var(--field); color: var(--on-field); }
+  .pbc__square :global(.parts__cell[data-part='offers'] .parts__id) { color: var(--on-field); }
+</style>

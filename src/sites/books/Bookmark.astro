@@ -1,0 +1,227 @@
+---
+/**
+ * 書籤歸位 (landing signature). A shelf of volume squares: the Work row on top, a row per
+ * language edition below, the omnibus as one wide square. The red bookmark stands in the gap
+ * after the last volume read; the reading-language row is marked; the next readable square is
+ * outlined and a square still waiting for the reader's language says so. The server renders the
+ * final state (no script, reduced motion); bookmark.ts drives it from the reading position.
+ * The figure is decorative (aria-hidden); the steps beside it carry the meaning.
+ */
+import site from '../../content/sites/books';
+import { PUBLISHED, ROWS, STEPS, VOLUMES, state, type Cell, type Row } from './bookmark-state';
+
+const s = site.strings.landing.bookmark;
+const fin = state(STEPS);
+const vols = Array.from({ length: VOLUMES }, (_, i) => i + 1);
+const rowIndex: Record<Row, number> = { ja: 2, zh: 3, omni: 4, en: 5 };
+const flags = (cell: Cell) => {
+  const [row, n] = cell.split(':') as [string, string];
+  const read = row === 'work' ? fin.volumes.includes(Number(n)) : fin.read.includes(cell);
+  return {
+    'data-read': read ? '' : undefined,
+    'data-next': fin.next === cell ? '' : undefined,
+    'data-wait': fin.wait === cell ? '' : undefined,
+  };
+};
+const [readingRow, readingVol] = (fin.reading ?? 'work:1').split(':') as [string, string];
+const lineRow = readingRow === 'work' ? 1 : rowIndex[readingRow as Row];
+---
+<div class="bm" data-bookmark data-captions={JSON.stringify(s.captions)}>
+  <figure class="bm__stage" data-bm-stage>
+    <figcaption class="sr-only">{s.figure}</figcaption>
+    <div
+      class="bm__grid"
+      aria-hidden="true"
+      data-bm-grid
+      data-show={ROWS.filter((r) => fin.rows[r]).join(' ')}
+      data-lang={fin.lang}
+      style={`--mark:${fin.mark}`}
+    >
+      <span class="bm__label bm__label--work" style="--r:1">{s.rows.work}</span>
+      {vols.map((v) => (
+        <span class="bm__cell bm__cell--work" data-cell={`work:${v}`} style={`--r:1;--v:${v}`} {...flags(`work:${v}` as Cell)}>
+          <span class="bm__num">{v}</span>
+        </span>
+      ))}
+      {ROWS.map((row) => (
+        <>
+          <span class="bm__label" data-row={row} data-label={row} style={`--r:${rowIndex[row]}`}>{s.rows[row]}</span>
+          {row === 'omni' ? (
+            <span class="bm__cell bm__cell--omni" data-row="omni" data-pub data-cell="omni:1" style={`--r:${rowIndex.omni};--v:1`} {...flags('omni:1')}>
+              <span class="bm__omni">{s.omnibusCell}</span>
+            </span>
+          ) : (
+            vols.map((v) => (
+              <span
+                class="bm__cell"
+                data-row={row}
+                data-pub={PUBLISHED[row].includes(v) ? '' : undefined}
+                data-cell={`${row}:${v}`}
+                style={`--r:${rowIndex[row]};--v:${v}`}
+                {...flags(`${row}:${v}` as Cell)}
+              >
+                <span class="bm__wait">{s.waiting}</span>
+              </span>
+            ))
+          )}
+        </>
+      ))}
+      <span class="bm__line" data-bm-line style={`--lr:${lineRow};--lv:${readingVol}`}></span>
+      <span class="bm__ribbon" data-bm-ribbon></span>
+    </div>
+    <p class="bm__caption" aria-hidden="true" data-bm-caption>{s.captions[fin.step]}</p>
+  </figure>
+</div>
+
+<script>
+  import { initBookmark } from './bookmark';
+  initBookmark();
+</script>
+
+<style>
+  .bm { --t08: #e3e9e4; --t16: #d2dcd7; }
+  .bm__stage {
+    container-type: inline-size;
+    padding: clamp(14px, 2.4cqi, 28px);
+    background: var(--t08);
+    border-top: 2px solid var(--field);
+  }
+  .bm__grid {
+    --gap: clamp(3px, 0.55cqi, 6px);
+    --label: clamp(3em, 11cqi, 5.5em);
+    --cell: calc((100cqi - var(--label) - 12 * var(--gap)) / 12);
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--label) repeat(12, var(--cell));
+    grid-auto-rows: var(--cell);
+    gap: var(--gap);
+    padding-bottom: calc(var(--gap) + 12px);
+  }
+  .bm__label {
+    grid-row: var(--r);
+    grid-column: 1;
+    align-self: center;
+    font-size: clamp(0.6875rem, 2.4cqi, 0.875rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--c-muted);
+    white-space: nowrap;
+    transition: color var(--d-s) var(--ease-snap), opacity var(--d-m) var(--ease-snap), translate var(--d-m) var(--ease-snap);
+  }
+  .bm__label--work { color: var(--c-ink); }
+  .bm__grid[data-lang='ja'] [data-label='ja'],
+  .bm__grid[data-lang='zh'] [data-label='zh'] { color: var(--c-ink); }
+  .bm__grid[data-lang='ja'] [data-label='ja']::before,
+  .bm__grid[data-lang='zh'] [data-label='zh']::before {
+    content: '';
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    margin-right: 0.35em;
+    background: var(--field);
+    vertical-align: 0.05em;
+  }
+
+  .bm__cell {
+    position: relative;
+    grid-row: var(--r);
+    grid-column: calc(var(--v) + 1);
+    border: 1px solid var(--c-line);
+    background: var(--c-paper);
+    transition: opacity var(--d-m) var(--ease-snap), translate var(--d-m) var(--ease-snap);
+    transition-delay: calc(var(--v) * 30ms);
+  }
+  .bm__cell--omni { grid-column: 2 / span 3; display: grid; place-items: center; }
+  .bm__cell[data-pub] { border: 1.5px solid var(--field); }
+  .bm__cell::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: var(--field);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path var(--d-s) var(--ease-snap);
+  }
+  .bm__cell[data-read]::before { clip-path: inset(0 0 0 0); }
+  .bm__cell[data-next] { outline: 2px solid var(--field); outline-offset: 2px; background: var(--t16); }
+  .bm__cell[data-wait] { border: 1.5px dashed var(--field); }
+  .bm__wait {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: clamp(0.5rem, 1.7cqi, 0.75rem);
+    font-weight: 700;
+    color: var(--field);
+    opacity: 0;
+    transition: opacity var(--d-s);
+  }
+  .bm__cell[data-wait] .bm__wait { opacity: 1; }
+  .bm__num, .bm__omni {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    height: 100%;
+    font-family: 'Archivo', var(--f-cjk);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: clamp(0.625rem, 2.3cqi, 1rem);
+    color: var(--field);
+    transition: color var(--d-s) var(--ease-snap);
+  }
+  .bm__omni { font-size: clamp(0.625rem, 2cqi, 0.9375rem); white-space: nowrap; }
+  .bm__cell[data-read] .bm__num, .bm__cell[data-read] .bm__omni { color: var(--c-paper); }
+
+  /* Rows off the shelf slide out along their row. */
+  .bm__grid:not([data-show~='ja']) [data-row='ja'],
+  .bm__grid:not([data-show~='zh']) [data-row='zh'],
+  .bm__grid:not([data-show~='omni']) [data-row='omni'],
+  .bm__grid:not([data-show~='en']) [data-row='en'] {
+    opacity: 0;
+    translate: -14px 0;
+  }
+
+  /* The bookmark: a red ribbon in the gap after the last volume read, its square on the rail. */
+  .bm__ribbon {
+    position: absolute;
+    top: calc(-1 * var(--gap));
+    left: 0;
+    width: 3px;
+    height: calc(5 * var(--cell) + 5 * var(--gap) + 12px);
+    background: var(--c-mark);
+    translate: calc(var(--label) + var(--gap) / 2 + var(--mark) * (var(--cell) + var(--gap)) - 1.5px) 0;
+    pointer-events: none;
+  }
+  .bm__ribbon::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    margin-left: -5px;
+    background: var(--c-mark);
+  }
+  /* The idle reading line: the page under the bookmark being read (motion only). */
+  .bm__line {
+    display: none;
+    grid-row: var(--lr);
+    grid-column: calc(var(--lv) + 1);
+    align-self: end;
+    z-index: 2;
+    height: 3px;
+    margin: 0 18% 18%;
+    background: var(--field);
+    transform-origin: 0 50%;
+    pointer-events: none;
+  }
+  :global(.motion) .bm__line { display: block; }
+
+  .bm__caption {
+    margin-top: clamp(10px, 1.6cqi, 18px);
+    font-size: var(--t-s);
+    font-weight: 700;
+    line-height: 1.5;
+    min-height: 3em;
+  }
+</style>

@@ -1,8 +1,243 @@
 ---
-// STUB: the books site's builder replaces this page (src/kit/README.md).
+// 書庫 landing (src/sites/books/SITE.md, page 0): kind square + statement, the bookmark
+// signature, the shelf of kinds of books, the eight parts, the six pages, neighbouring kinds.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import Section from '../../kit/components/Section.astro';
+import KindSquare from '../../kit/components/KindSquare.astro';
+import PartsGrid from '../../kit/components/PartsGrid.astro';
+import NotifyCall from '../../kit/components/NotifyCall.astro';
+import Finale from '../../kit/components/Finale.astro';
+import { kindById } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
+import { pageHref } from '../../kit/sites';
+import Bookmark from '../../sites/books/Bookmark.astro';
+import site from '../../content/sites/books';
+import '../../sites/books/books.css';
+
+const s = site.strings.landing;
+const kind = kindById('books');
+const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
+const next = pageBy('work');
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <!-- S1 Hero: split frame, the kind square is the transition target -->
+  <section class="bh grid" aria-labelledby="bh-title">
+    <div class="bh__square">
+      <KindSquare kind="books" mode="image" link={false} flip="target" eager sizes="(max-width: 767px) 92vw, 34vw" />
+      <p class="bh__caption mono">{s.hero.caption}</p>
+    </div>
+    <div class="bh__text">
+      <h1 id="bh-title" class="t-xl bh__title" data-split="lines" data-intro>{s.hero.headline}</h1>
+      <p class="lede">{s.hero.lede}</p>
+      <div class="bh__actions">
+        <NotifyCall />
+        <a class="link-draw bh__secondary" href="#bookmark">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2 書籤歸位: pinned stage beside six steps -->
+  <Section id="bookmark" mood="normal" labelledby="bm-title" class="bms">
+    <header class="bms__head">
+      <h2 id="bm-title" class="t-l">{s.bookmark.headline}</h2>
+      <p class="muted bms__intro">{s.bookmark.intro}</p>
+    </header>
+    <div class="bms__stage">
+      <div class="bms__sticky"><Bookmark /></div>
+    </div>
+    <ol class="bms__steps" role="list" data-bm-steps>
+      {s.bookmark.steps.map((step, i) => (
+        <li class="bms__step" data-bm-step>
+          <span class="bms__n mono">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="t-m">{step.title}</h3>
+          <p>{step.body}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <!-- S3 Word band: poster -->
+  <Section mood="tight" labelledby="shelf-title" class="shelf">
+    <h2 id="shelf-title" class="col-full shelf__title mono">{s.shelf.headline}</h2>
+    <ul class="col-full shelf__words" role="list" data-reveal="slot">
+      {s.shelf.words.map((w) => (
+        <li class="shelf__word"><span>{w}</span></li>
+      ))}
+    </ul>
+    <p class="col-5-12 shelf__caption">{s.shelf.caption}</p>
+  </Section>
+
+  <!-- S4 Eight parts: the square's 3×3 with what each part gives books -->
+  <Section mood="normal" labelledby="parts-title" class="bparts">
+    <div class="col-1-4 bparts__text">
+      <h2 id="parts-title" class="t-l">{s.parts.headline}</h2>
+      <p class="muted">{s.parts.caption}</p>
+    </div>
+    <div class="col-5-12">
+      <PartsGrid name={kind.name} field={kindFields.books} parts={kind.parts} notes={kind.partNotes} />
+    </div>
+  </Section>
+
+  <!-- S5 Pages: index list -->
+  <Section mood="normal" labelledby="pages-title" class="bpages">
+    <h2 id="pages-title" class="col-full t-l">{s.pages.headline}</h2>
+    <ol class="col-full bpages__list" role="list">
+      {s.pages.rows.map((row) => {
+        const p = pageBy(row.slug);
+        return (
+          <li>
+            <a class="bpages__row" href={pageHref(site, p)}>
+              <span class="bpages__name">{p.label}</span>
+              <span class="bpages__body">{row.body}</span>
+              <span class="bpages__go" aria-hidden="true"><span class="arrow">→</span></span>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+  </Section>
+
+  <!-- S6 Connections: gallery wall of neighbouring kinds -->
+  <Section mood="normal" labelledby="conn-title" class="bconn">
+    <div class="col-1-4 bconn__text">
+      <h2 id="conn-title" class="t-l">{s.connections.headline}</h2>
+      <p class="muted">{s.connections.line}</p>
+    </div>
+    <ul class="col-5-12 bconn__wall" role="list" data-reveal="slot">
+      {s.connections.squares.map((c, i) => (
+        <li class:list={['bconn__item', i === 0 && 'bconn__item--big']}>
+          <KindSquare kind={c.kind} mode="flood" sizes={i === 0 ? '(max-width: 767px) 92vw, 30vw' : '(max-width: 767px) 45vw, 16vw'} />
+          <p class="bconn__label">{c.label}</p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <!-- S7 Finale: the next page of the site -->
+  <Finale label={s.finaleLead} name={next.label} href={pageHref(site, next)} field={kindFields.books} />
 </MiniSiteLayout>
+
+<style>
+  /* S1 */
+  .bh {
+    min-height: calc(100svh - var(--header-h) - var(--bar-h));
+    padding-block: clamp(24px, 4vw, 56px);
+    align-items: center;
+    row-gap: 32px;
+  }
+  .bh__square { grid-column: 1 / span 4; }
+  .bh__caption { margin-top: 12px; color: var(--c-muted); }
+  .bh__text { grid-column: 5 / span 8; display: flex; flex-direction: column; gap: 28px; padding-left: clamp(0px, 2vw, 32px); }
+  .bh__title { max-width: 11em; }
+  .bh__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 20px 28px; }
+  .bh__secondary { font-weight: 700; }
+  @media (max-width: 899px) {
+    .bh { min-height: 0; }
+    .bh__square, .bh__text { grid-column: 1 / -1; padding-left: 0; }
+    .bh__square { max-width: 420px; }
+  }
+
+  /* S2 */
+  .bms__head { grid-column: 1 / span 8; grid-row: 1; display: flex; flex-direction: column; gap: 16px; }
+  .bms__intro { max-width: var(--measure); }
+  .bms__stage { grid-column: 1 / span 8; grid-row: 2; align-self: stretch; }
+  .bms__sticky { position: sticky; top: calc(var(--header-h) + var(--bar-h) + 24px); }
+  .bms__steps { grid-column: 9 / span 4; grid-row: 2; display: flex; flex-direction: column; }
+  .bms__step {
+    min-height: 62svh;
+    padding-block: 8px 48px;
+    border-top: 1px solid var(--c-line-strong);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bms__step:last-child { min-height: 48svh; }
+  .bms__n { color: var(--c-muted); padding-top: 6px; }
+  @media (max-width: 767px) {
+    .bms__head, .bms__stage, .bms__steps { grid-column: 1 / -1; grid-row: auto; }
+    .bms__sticky { top: calc(var(--header-h) + var(--bar-h) + 8px); z-index: 2; }
+    .bms__stage { margin-inline: calc(-1 * var(--gutter)); }
+    .bms__step { min-height: 46svh; }
+    .bms__step:last-child { min-height: 30svh; }
+  }
+  :global(html:not(.motion)) .bms__step { min-height: 0; }
+
+  /* S3 */
+  .shelf__title { color: var(--c-muted); }
+  .shelf__words { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(6px, 0.8vw, 12px); }
+  .shelf__word {
+    aspect-ratio: 1;
+    container-type: inline-size;
+    display: grid;
+    place-items: center;
+    background: #e3e9e4;
+    border-top: 2px solid var(--field);
+  }
+  .shelf__word span {
+    font-weight: 900;
+    font-size: min(30cqi, 4.5rem);
+    letter-spacing: var(--track-display);
+    line-height: 1.05;
+    text-align: center;
+    padding: 0 6cqi;
+    word-break: keep-all;
+  }
+  .shelf__caption { max-width: var(--measure); }
+  @media (max-width: 767px) {
+    .shelf__words { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  /* S4 */
+  .bparts__text { display: flex; flex-direction: column; gap: 16px; align-self: start; position: sticky; top: calc(var(--header-h) + var(--bar-h) + 32px); }
+  @media (max-width: 767px) { .bparts__text { position: static; } }
+
+  /* S5 */
+  .bpages__list { border-top: 1px solid var(--c-line-strong); }
+  .bpages__row {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) 3rem;
+    gap: var(--gutter);
+    align-items: center;
+    padding: clamp(18px, 2.2vw, 28px) 0;
+    border-bottom: 1px solid var(--c-line-strong);
+    min-height: 44px;
+  }
+  .bpages__row::before {
+    content: '';
+    position: absolute;
+    inset: 0 calc(-1 * var(--gutter));
+    z-index: -1;
+    background: var(--field);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path var(--d-m) var(--ease-snap);
+  }
+  .bpages__name { font-weight: 900; font-size: var(--t-l); line-height: 1.1; letter-spacing: var(--track-display); transition: color var(--d-s); }
+  .bpages__body { max-width: var(--measure); transition: color var(--d-s); }
+  .bpages__go { font-size: var(--t-m); justify-self: end; transition: color var(--d-s); }
+  @media (hover: hover) {
+    .bpages__row:hover::before { clip-path: inset(0 0 0 0); }
+    .bpages__row:hover > * { color: var(--on-field); }
+    .bpages__row:hover .arrow { translate: 0.4em 0; }
+  }
+  .bpages__row:focus-visible::before { clip-path: inset(0 0 0 0); }
+  .bpages__row:focus-visible > * { color: var(--on-field); }
+  .bpages__row:focus-visible { outline-color: var(--field); outline-offset: 0; }
+  @media (max-width: 767px) {
+    .bpages__row { grid-template-columns: minmax(0, 1fr) 2rem; row-gap: 6px; }
+    .bpages__name { grid-column: 1; }
+    .bpages__body { grid-column: 1; grid-row: 2; font-size: var(--t-s); }
+    .bpages__go { grid-column: 2; grid-row: 1 / span 2; }
+  }
+
+  /* S6 */
+  .bconn__text { display: flex; flex-direction: column; gap: 16px; }
+  .bconn__wall { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1vw, 16px); align-items: start; }
+  .bconn__item--big { grid-column: span 2; grid-row: span 2; }
+  .bconn__label { margin-top: 8px; font-size: var(--t-s); font-weight: 700; line-height: 1.5; }
+  @media (max-width: 767px) {
+    .bconn__wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bconn__item--big { grid-column: 1 / -1; grid-row: auto; }
+  }
+</style>

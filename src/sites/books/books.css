@@ -1,0 +1,17 @@
+/* 書庫 (books) site-wide accents (SITE.md "Art accent"): tints of the field mixed with paper,
+   one shade mixed with ink. Scoped to the books site; radius stays 0. */
+[data-site='books'] {
+  --bk-t08: #e3e9e4;
+  --bk-t16: #d2dcd7;
+  --bk-t32: #afc3bb;
+  --bk-shade: #173e37;
+}
+
+/* A section heading's small running label (real information only). */
+[data-site='books'] .bk-kicker {
+  display: block;
+  color: var(--c-muted);
+  font-size: var(--t-s);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
