@@ -1,0 +1,71 @@
+# Every project command runs through Task: `task --list`. Arguments after `--` reach the tool.
+version: '3'
+
+env:
+  WRANGLER_SEND_METRICS: 'false'
+  ASTRO_TELEMETRY_DISABLED: '1'
+
+tasks:
+  install:
+    desc: Install dependencies (Yarn Berry through corepack)
+    cmds:
+      - corepack yarn install
+
+  dev:
+    desc: Astro dev server (system CJK font stands in; the notify form needs `task preview`)
+    cmds:
+      - npx astro dev {{.CLI_ARGS}}
+
+  build:
+    desc: Production build into dist/ (Astro, then CJK font slices and Open Graph images)
+    cmds:
+      - npx astro build
+      - node scripts/postbuild.mjs
+
+  preview:
+    desc: Production build served with the Worker and a local D1 on 127.0.0.1:4400 (PORT=… to change)
+    deps: [build]
+    vars:
+      PORT: '{{.PORT | default "4400"}}'
+    cmds:
+      - CI=1 npx wrangler d1 migrations apply DB --local --persist-to .wrangler/state
+      - npx wrangler dev --ip 127.0.0.1 --port {{.PORT}} --persist-to .wrangler/state
+
+  check:
+    desc: Types (astro check), then a build and the unit and build tests
+    cmds:
+      - npx astro check
+      - task: build
+      - npx vitest run {{.CLI_ARGS}}
+
+  test:
+    desc: Unit tests only (no build needed)
+    cmds:
+      - npx vitest run tests/unit {{.CLI_ARGS}}
+
+  e2e:
+    desc: Playwright end-to-end tests on a production build with the Worker (queued on a shared slot)
+    deps: [build]
+    cmds:
+      - scripts/slot.sh npx playwright test {{.CLI_ARGS}}
+
+  qa:
+    desc: Skill Phase 4 into .shots/ (shoot --crawl --nav, audit). `task qa -- /books/` shoots given pages
+    deps: [build]
+    cmds:
+      - scripts/slot.sh node scripts/qa.mjs {{.CLI_ARGS}}
+
+  fonts:latin:
+    desc: Regenerate the committed Latin font subsets and Archivo advance widths
+    cmds:
+      - node scripts/fonts.mjs latin
+
+  worktree:new:
+    desc: 'Create .temp/worktrees/<id> on branch site/<id> from main, node_modules linked (task worktree:new -- <id>)'
+    cmds:
+      - scripts/worktree.sh new {{.CLI_ARGS}}
+
+  worktree:remove:
+    desc: 'Remove .temp/worktrees/<id>; the branch stays (task worktree:remove -- <id>)'
+    cmds:
+      - scripts/worktree.sh remove {{.CLI_ARGS}}

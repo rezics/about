@@ -1,0 +1,23 @@
+---
+// After the notify form posts without script.
+import PageLayout from '../kit/layouts/PageLayout.astro';
+import Section from '../kit/components/Section.astro';
+import { site } from '../kit/content';
+
+const n = site.notified;
+---
+<PageLayout meta={n.meta} noindex>
+  <Section mood="airy">
+    <div class="col-1-8 done">
+      <span class="done__mark" aria-hidden="true"></span>
+      <h1 class="t-xl">{n.headline}</h1>
+      <p class="lede">{n.body}</p>
+      <p><a class="link-draw done__back" href="/">{n.back}<span class="arrow" aria-hidden="true"> →</span></a></p>
+    </div>
+  </Section>
+</PageLayout>
+<style>
+  .done { display: flex; flex-direction: column; gap: 24px; }
+  .done__mark { width: 64px; height: 64px; background: var(--c-ink); }
+  .done__back { font-weight: 700; align-self: flex-start; }
+</style>

@@ -1,0 +1,287 @@
+---
+/**
+ * Global header (DESIGN.md "Navigation"): logo left, four tabs centred, one action right.
+ * 產品 and 引擎 are disclosure buttons for full-width panels. The panels are native popovers, so
+ * they open, close on Escape and light-dismiss without script; src/kit/motion/nav.ts adds the
+ * pointer intent delay, the grace period and the safe area, and keeps aria-expanded in step.
+ * Phones get a 選單 button that opens a modal sheet (native <dialog> through invoker commands,
+ * with a script fallback).
+ */
+import { kinds, modules, site, kindHref, moduleHref, kindImage } from '../content';
+import { kindFields, moduleFields } from '../theme';
+import Logo from './Logo.astro';
+import Square from './Square.astro';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+const nav = site.nav;
+const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
+  ? 'products'
+  : path.startsWith('/engine/')
+    ? 'engine'
+    : path.startsWith('/developers/')
+      ? 'developers'
+      : path.startsWith('/roadmap/')
+        ? 'roadmap'
+        : '';
+const works = kinds.filter((k) => k.group === 'works');
+const agents = kinds.filter((k) => k.group === 'agents');
+---
+<header class="header" data-header>
+  <div class="header__bar">
+    <div class="header__logo"><Logo label={site.name} /></div>
+    <nav class="header__tabs" data-tabs>
+      <ul role="list">
+        <li>
+          <button type="button" class="tab" popovertarget="panel-products" aria-controls="panel-products" data-panel-button="panel-products" aria-current={section === 'products' ? 'true' : undefined}>
+            <span>{nav.products}</span><span class="tab__caret" aria-hidden="true"></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="tab" popovertarget="panel-engine" aria-controls="panel-engine" data-panel-button="panel-engine" aria-current={section === 'engine' ? 'true' : undefined}>
+            <span>{nav.engine}</span><span class="tab__caret" aria-hidden="true"></span>
+          </button>
+        </li>
+        <li><a class="tab" href="/developers/" aria-current={section === 'developers' ? 'page' : undefined}>{nav.developers}</a></li>
+        <li><a class="tab" href="/roadmap/" aria-current={section === 'roadmap' ? 'page' : undefined}>{nav.roadmap}</a></li>
+      </ul>
+      <span class="tabs__marker" aria-hidden="true" data-tabs-marker></span>
+    </nav>
+    <div class="header__end">
+      <a class="btn btn--small header__action" href="#notify" data-notify-link>
+        <span class="btn__label"><span>{nav.action}</span><span aria-hidden="true">{nav.action}</span></span>
+      </a>
+      <button type="button" class="header__menu" command="show-modal" commandfor="menu" aria-haspopup="dialog" data-menu-open>
+        {nav.menu}
+      </button>
+    </div>
+  </div>
+
+  <div id="panel-products" class="panel" popover data-panel>
+    <div class="panel__inner grid">
+      <div class="panel__intro">
+        <p class="panel__title">{nav.productsIntro.title}</p>
+        <p class="panel__body">{nav.productsIntro.body}</p>
+        <a class="panel__all link-draw" href="/#index">{nav.productsIntro.all}<span class="arrow" aria-hidden="true"> →</span></a>
+      </div>
+      <div class="panel__group panel__group--works">
+        <p class="panel__label mono">{nav.groups.works}</p>
+        <ul class="panel__squares" role="list">
+          {works.map((k) => (
+            <li>
+              <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="160px" />
+              <span class="panel__summary">{k.summary}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="panel__group panel__group--agents">
+        <p class="panel__label mono">{nav.groups.agents}</p>
+        <ul class="panel__squares" role="list">
+          {agents.map((k) => (
+            <li>
+              <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="160px" />
+              <span class="panel__summary">{k.summary}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-engine" class="panel" popover data-panel>
+    <div class="panel__inner grid">
+      <div class="panel__intro">
+        <p class="panel__title">{nav.engineIntro.title}</p>
+        <p class="panel__body">{nav.engineIntro.body}</p>
+        <a class="panel__all link-draw" href="/engine/">{nav.engineIntro.all}<span class="arrow" aria-hidden="true"> →</span></a>
+      </div>
+      <ul class="panel__squares panel__modules" role="list">
+        {modules.map((m) => (
+          <li>
+            <Square name={m.name} field={moduleFields[m.id]} mode="plain" href={moduleHref(m.id)} />
+            <span class="panel__summary">{m.summary}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <dialog id="menu" class="sheet" aria-label={nav.menu} data-menu>
+    <div class="sheet__top">
+      <Logo label={site.name} />
+      <button type="button" class="header__menu" command="close" commandfor="menu" data-menu-close>{nav.close}</button>
+    </div>
+    <div class="sheet__body">
+      <p class="sheet__label mono">{nav.products}</p>
+      <ul class="sheet__squares" role="list">
+        {kinds.map((k) => (
+          <li>
+            <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="33vw" />
+          </li>
+        ))}
+      </ul>
+      <p class="sheet__label mono">{nav.engine}</p>
+      <ul class="sheet__list" role="list">
+        <li><a href="/engine/">{nav.engineIntro.all}</a></li>
+        {modules.map((m) => (
+          <li><a href={moduleHref(m.id)}>{m.name}</a></li>
+        ))}
+      </ul>
+      <ul class="sheet__list sheet__list--main" role="list">
+        <li><a href="/developers/">{nav.developers}</a></li>
+        <li><a href="/roadmap/">{nav.roadmap}</a></li>
+      </ul>
+    </div>
+  </dialog>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--c-paper);
+    color: var(--c-ink);
+    border-bottom: 1px solid var(--c-line);
+    transition: translate var(--d-m) var(--ease-snap);
+  }
+  :global(html.frame-away) .header { translate: 0 -100%; }
+  .header__bar {
+    height: var(--header-h);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--gutter);
+    padding-inline: var(--gutter);
+  }
+  .header__end { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+
+  /* Tabs, with the red square marker under the current tab; it slides to the tab under the
+     pointer (nav.ts). Without script each current tab draws its own marker. */
+  .header__tabs { position: relative; }
+  .header__tabs ul { display: flex; gap: clamp(8px, 2vw, 28px); }
+  .tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 6px;
+    font-size: var(--t-s);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--c-ink);
+  }
+  .tab__caret {
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    rotate: 45deg;
+    translate: 0 -2px;
+    transition: rotate var(--d-s) var(--ease-snap), translate var(--d-s) var(--ease-snap);
+  }
+  .tab[aria-expanded='true'] .tab__caret { rotate: 225deg; translate: 0 2px; }
+  .tab[aria-current]::after,
+  .tabs__marker {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    background: var(--c-mark);
+  }
+  :global(html.js) .tab[aria-current]::after { display: none; }
+  .tabs__marker { display: none; left: 0; margin-left: -4px; }
+  :global(html.js) .tabs__marker { display: block; opacity: 0; }
+
+  .header__menu {
+    display: none;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 2px solid var(--c-ink);
+    font-size: var(--t-s);
+    font-weight: 700;
+  }
+  @media (hover: hover) { .header__menu:hover { background: var(--c-ink); color: var(--c-paper); } }
+
+  @media (max-width: 899px) {
+    .header__bar { grid-template-columns: auto 1fr; }
+    .header__tabs { display: none; }
+    .header__menu { display: inline-flex; align-items: center; }
+  }
+  @media (max-width: 420px) {
+    .header__action { --btn-sq: 0px; padding-left: 12px; }
+    .header__action :global(.btn__label) { margin-left: 0; }
+  }
+
+  /* Panels: full width below the bar. */
+  .panel {
+    position: fixed;
+    inset: var(--header-h) 0 auto 0;
+    width: 100%;
+    max-width: none;
+    max-height: calc(100dvh - var(--header-h));
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--c-line-strong);
+    background: var(--c-paper);
+    color: var(--c-ink);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .panel::backdrop { background: rgb(14 20 32 / 0.18); }
+  .panel__inner { padding-block: clamp(24px, 3vw, 40px) clamp(32px, 4vw, 56px); row-gap: 24px; }
+  .panel__intro { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 12px; }
+  .panel__title { font-size: var(--t-m); font-weight: 900; line-height: 1.3; }
+  .panel__body { color: var(--c-muted); font-size: var(--t-s); }
+  .panel__all { align-self: flex-start; font-weight: 700; margin-top: 8px; min-height: 24px; }
+  .panel__label { color: var(--c-muted); margin-bottom: 12px; }
+  .panel__group--works { grid-column: 5 / span 5; }
+  .panel__group--agents { grid-column: 10 / span 3; }
+  .panel__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px; }
+  .panel__group--agents .panel__squares { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .panel__modules { grid-column: 5 / span 8; grid-template-columns: repeat(5, minmax(0, 1fr)); align-self: start; }
+  .panel__summary { display: block; margin-top: 8px; font-size: var(--t-xs); line-height: 1.5; color: var(--c-muted); }
+  @media (max-width: 1100px) {
+    .panel__intro { grid-column: 1 / span 4; }
+    .panel__group--works { grid-column: 5 / span 8; }
+    .panel__group--agents { grid-column: 5 / span 8; }
+  }
+
+  /* Phone sheet */
+  .sheet {
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0 var(--gutter) 32px;
+    border: 0;
+    background: var(--c-paper);
+    color: var(--c-ink);
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .sheet::backdrop { background: var(--c-ink); }
+  .sheet__top { display: flex; justify-content: space-between; align-items: center; height: var(--header-h); }
+  .sheet__top .header__menu { display: inline-flex; align-items: center; }
+  .sheet__label { color: var(--c-muted); margin: 24px 0 12px; }
+  .sheet__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sheet__list { border-top: 1px solid var(--c-line); }
+  .sheet__list a {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    border-bottom: 1px solid var(--c-line);
+    font-size: var(--t-m);
+    font-weight: 700;
+  }
+  .sheet__list--main { margin-top: 24px; }
+</style>

@@ -1,0 +1,45 @@
+---
+// A name set to fill its box (src/kit/fit.ts): the box must set `container-type: inline-size`.
+// `roll` adds an aria-hidden copy below for the one-line roll on hover.
+import { fitName, MINOR } from '../fit';
+
+interface Props {
+  name: string;
+  roll?: boolean;
+  class?: string;
+}
+const { name, roll = false, class: className } = Astro.props;
+const fit = fitName(name);
+---
+<span class:list={['sqname', fit.latin && 'sqname--latin', className]} style={`--fit:${fit.size};--minor:${MINOR}`}>
+  <span class="sqname__roll">
+    <span class="sqname__face">{fit.lines.map((line) => <span class:list={['sqname__line', line.minor && 'sqname__line--minor']}>{line.text}</span>)}</span>
+    {roll && (
+      <span class="sqname__face" aria-hidden="true">{fit.lines.map((line) => <span class:list={['sqname__line', line.minor && 'sqname__line--minor']}>{line.text}</span>)}</span>
+    )}
+  </span>
+</span>
+<style>
+  .sqname {
+    position: absolute;
+    inset: 6cqi 6cqi auto 6cqi;
+    display: block;
+    overflow: clip;
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-size: calc(var(--fit) * 1cqi);
+    line-height: 1;
+    letter-spacing: 0;
+    color: var(--on-field);
+    /* Over an image the glyphs keep a trap of the field colour, so they stay legible. */
+    -webkit-text-stroke: 0.08em var(--field);
+    paint-order: stroke fill;
+    pointer-events: none;
+  }
+  .sqname--latin { font-stretch: 125%; line-height: 0.92; letter-spacing: -0.01em; }
+  .sqname__roll { display: grid; }
+  .sqname__face { grid-area: 1 / 1; display: block; transition: translate var(--d-m) var(--ease-snap); }
+  .sqname__face + .sqname__face { translate: 0 110%; }
+  .sqname__line { display: block; white-space: nowrap; }
+  .sqname__line--minor { font-size: calc(var(--minor) * 1em); line-height: 1.2; padding-left: 0.08em; -webkit-text-stroke-width: 0.12em; }
+</style>

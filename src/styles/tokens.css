@@ -1,0 +1,97 @@
+/* Design tokens (DESIGN.md "Phase 2: art direction"). Colour values are repeated in
+   src/kit/theme.ts; tests/unit/theme.test.ts keeps them equal and checks AA contrast. */
+
+/* Latin: Archivo (variable width 100 to 125, weight 400 to 900), subset to Latin. */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo.woff2') format('woff2');
+  font-weight: 400 900;
+  font-stretch: 100% 125%;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2018-201D, U+2026, U+2190-2193;
+}
+/* Mono: Martian Mono, for part ids, real counts and code. */
+@font-face {
+  font-family: 'Martian Mono';
+  src: url('/fonts/martian-mono.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2018-201D, U+2026, U+2190-2193;
+}
+/* CJK: "REZICS Sans" is Noto Sans TC sliced to the characters each page uses; the build
+   (scripts/fonts.mjs cjk) writes its @font-face rules into every page. In `astro dev` it is
+   absent and the local Noto Sans CJK TC or the system face stands in. */
+
+:root {
+  /* Colour roles */
+  --c-paper: #f4f5f2;
+  --c-ink: #0e1420;
+  --c-muted: #566070;
+  --c-line: rgb(14 20 32 / 0.12);
+  --c-line-strong: rgb(14 20 32 / 0.28);
+  --c-link: #2f63ad;
+  --c-mark: #df3d35;
+
+  /* Engine contract names */
+  --c-bg: var(--c-paper);
+  --c-fg: var(--c-ink);
+  --c-accent: var(--c-link);
+  --c-curtain: var(--c-ink);
+  --focus: var(--c-link);
+
+  /* A field: set per element from src/kit/theme.ts (style="--field:…;--on-field:…"). */
+  --field: var(--c-ink);
+  --on-field: var(--c-paper);
+
+  /* Type families: Latin first so CJK falls through to the CJK face glyph by glyph. */
+  --f-cjk: 'REZICS Sans', 'Noto Sans TC', 'Noto Sans CJK TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --f-body: 'Archivo', var(--f-cjk);
+  --f-display: 'Archivo', var(--f-cjk);
+  --f-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Fluid scale (390 px → 1440 px) */
+  --t-mega: clamp(3.5rem, 0.9rem + 12vw, 14rem);
+  --t-xl: clamp(2.25rem, 1.2rem + 4.3vw, 5.25rem);
+  --t-l: clamp(1.625rem, 1.2rem + 1.75vw, 2.75rem);
+  --t-m: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
+  --t-body: clamp(1.0625rem, 1.02rem + 0.18vw, 1.125rem);
+  --t-s: 0.875rem;
+  --t-xs: 0.75rem;
+  --lh-display: 1.1;
+  --lh-text: 1.7;
+  --track-display: -0.02em;
+  --measure: 36em; /* 34 to 40 CJK characters */
+
+  /* Space and grid */
+  --gutter: clamp(16px, 2vw, 32px);
+  --cols: 12;
+  --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
+  --space-tight: 64px;
+  --space-normal: clamp(80px, 6rem + 2vw, 128px);
+  --space-airy: clamp(128px, 8rem + 6vw, 224px);
+  --header-h: 64px;
+  --bar-h: 52px;
+
+  /* Shape: squares only */
+  --radius: 0px;
+
+  /* Motion (DESIGN.md "Motion language") */
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
+  --d-s: 0.32s;
+  --d-m: 0.56s;
+  --d-l: 0.9s;
+
+  /* Layers */
+  --z-content: 1;
+  --z-bar: 40;
+  --z-header: 50;
+  --z-panel: 60;
+  --z-curtain: 90;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --header-h: 56px;
+    --bar-h: 48px;
+  }
+}

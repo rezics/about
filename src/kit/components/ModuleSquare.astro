@@ -1,0 +1,17 @@
+---
+// A module's square: ink-tint field and name, no picture, so it reads as the engine underneath.
+import type { ModuleId } from '../../content/schema';
+import { moduleById, moduleHref } from '../content';
+import { moduleFields } from '../theme';
+import Square from './Square.astro';
+
+interface Props {
+  module: ModuleId;
+  link?: boolean;
+  class?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { module, link = true, ...rest } = Astro.props;
+const m = moduleById(module);
+---
+<Square name={m.name} field={moduleFields[module]} mode="plain" href={link ? moduleHref(module) : undefined} data-module={module} {...rest} />

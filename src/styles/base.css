@@ -1,0 +1,165 @@
+/* Site foundation: grid, type roles, the three interactive roles (button, text link, utility
+   link) and bands. Components add their own scoped styles; mini-sites restyle through the
+   custom properties in tokens.css, never by editing this file. */
+
+/* Grid: 12 columns, gutter = outer margin. Strong lines at columns 1, 5 and 9. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--gutter);
+}
+.wrap { padding-inline: var(--gutter); }
+@media (max-width: 767px) {
+  .grid { --cols: 4; }
+}
+
+/* Section rhythm moods */
+.pad-tight { padding-block: var(--space-tight); }
+.pad-normal { padding-block: var(--space-normal); }
+.pad-airy { padding-block: var(--space-airy); }
+
+/* Bands: the ground flips; every text colour follows these variables. */
+.band-ink {
+  --c-bg: var(--c-ink);
+  --c-fg: var(--c-paper);
+  --c-muted: #a9b2c1;
+  --c-line: rgb(244 245 242 / 0.16);
+  --c-line-strong: rgb(244 245 242 / 0.34);
+  --focus: #9ab8e6;
+  --link-on: #9ab8e6;
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+.band-field {
+  --c-bg: var(--field);
+  --c-fg: var(--on-field);
+  --c-muted: var(--on-field);
+  --c-line: color-mix(in srgb, var(--on-field) 22%, transparent);
+  --c-line-strong: color-mix(in srgb, var(--on-field) 45%, transparent);
+  --focus: var(--on-field);
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+
+/* Type roles. CJK display: tracking -0.02em, leading 1.05 to 1.15. */
+.t-mega, .t-xl, .t-l {
+  font-family: var(--f-display);
+  font-weight: 900;
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-display);
+}
+.t-mega { font-size: var(--t-mega); line-height: 1; }
+.t-xl { font-size: var(--t-xl); line-height: 1.08; }
+.t-l { font-size: var(--t-l); font-weight: 700; line-height: 1.2; }
+.t-m { font-size: var(--t-m); font-weight: 700; line-height: 1.45; }
+.t-body { font-size: var(--t-body); line-height: var(--lh-text); }
+.t-s { font-size: var(--t-s); line-height: 1.6; }
+.lede { font-size: var(--t-m); line-height: 1.65; max-width: var(--measure); }
+.measure { max-width: var(--measure); }
+.muted { color: var(--c-muted); }
+/* Mono labels: part ids, counts that are real, code. */
+.mono {
+  font-family: var(--f-mono);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  font-weight: 400;
+}
+
+/* Primary button: an ink square at the start floods across the button in one step and the
+   label rolls one line (DESIGN.md "Hovers"). Touch and no-hover get the fill on press. */
+.btn {
+  --btn-ink: var(--c-fg);
+  --btn-ground: var(--c-bg);
+  --btn-sq: 44px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  min-height: 48px;
+  padding: 0 1.25em 0 0;
+  border: 2px solid var(--btn-ink);
+  color: var(--btn-ink);
+  font-weight: 700;
+  font-size: var(--t-body);
+  line-height: 1;
+  overflow: clip;
+  cursor: pointer;
+  transition: color var(--d-s) var(--ease-snap);
+}
+.btn::before {
+  /* The square the fill grows from: the button's own height. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--btn-ink);
+  z-index: -1;
+  clip-path: inset(0 calc(100% - var(--btn-sq)) 0 0);
+  transition: clip-path var(--d-m) var(--ease-snap);
+}
+.btn__label { display: inline-grid; overflow: clip; margin-left: calc(var(--btn-sq) + 0.25em); }
+.btn__label > span { grid-area: 1 / 1; transition: translate var(--d-m) var(--ease-snap); }
+.btn__label > span + span { translate: 0 110%; }
+.btn:active, .btn.is-filled { color: var(--btn-ground); }
+.btn:active::before, .btn.is-filled::before { clip-path: inset(0 0 0 0); }
+@media (hover: hover) {
+  .btn:hover { color: var(--btn-ground); }
+  .btn:hover::before { clip-path: inset(0 0 0 0); }
+  .btn:hover .btn__label > span { translate: 0 -110%; }
+  .btn:hover .btn__label > span + span { translate: 0 0; }
+}
+.btn:focus-visible { color: var(--btn-ground); }
+.btn:focus-visible::before { clip-path: inset(0 0 0 0); }
+.btn:focus-visible .btn__label > span { translate: 0 -110%; }
+.btn:focus-visible .btn__label > span + span { translate: 0 0; }
+@media (prefers-reduced-motion: reduce) {
+  .btn__label > span { translate: none !important; }
+  .btn__label > span + span { visibility: hidden; }
+}
+.btn--small { --btn-sq: 36px; min-height: 40px; font-size: var(--t-s); padding-right: 1em; gap: 0.5em; }
+
+/* Text links: the underline draws (standalone) or stays and thickens (inline in text). */
+.link-draw {
+  background: linear-gradient(currentColor 0 0) left bottom / 0% 2px no-repeat;
+  padding-bottom: 2px;
+  transition: background-size var(--d-m) var(--ease-snap);
+}
+@media (hover: hover) { .link-draw:hover { background-size: 100% 2px; } }
+.link-draw:focus-visible, .link-draw[aria-current='page'] { background-size: 100% 2px; }
+.link-inline {
+  color: var(--link-on, var(--c-link));
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-thickness var(--d-s) var(--ease-snap);
+}
+@media (hover: hover) { .link-inline:hover { text-decoration-thickness: 3px; } }
+.link-inline:focus-visible { text-decoration-thickness: 3px; }
+/* Utility links (footer small print): colour only. */
+.link-utility { color: var(--c-muted); transition: color var(--d-s); }
+@media (hover: hover) { .link-utility:hover { color: var(--c-fg); } }
+.link-utility:focus-visible { color: var(--c-fg); }
+
+/* Arrow that travels along its direction on hover of its link. */
+.arrow { display: inline-block; transition: translate var(--d-s) var(--ease-snap); }
+@media (hover: hover) { a:hover > .arrow, button:hover > .arrow { translate: 0.3em 0; } }
+a:focus-visible > .arrow { translate: 0.3em 0; }
+
+/* Grid placement on the strong lines (columns 1, 5, 9). Phones stack to the full width. */
+.col-full { grid-column: 1 / -1; }
+.col-1-3 { grid-column: 1 / span 3; }
+.col-1-4 { grid-column: 1 / span 4; }
+.col-1-5 { grid-column: 1 / span 5; }
+.col-1-6 { grid-column: 1 / span 6; }
+.col-1-8 { grid-column: 1 / span 8; }
+.col-1-10 { grid-column: 1 / span 10; }
+.col-5-8 { grid-column: 5 / span 4; }
+.col-5-12 { grid-column: 5 / span 8; }
+.col-7-12 { grid-column: 7 / span 6; }
+.col-9-12 { grid-column: 9 / span 4; }
+.col-2-11 { grid-column: 2 / span 10; }
+@media (max-width: 767px) {
+  [class*='col-'] { grid-column: 1 / -1; }
+}

@@ -1,0 +1,82 @@
+---
+/**
+ * Footer on every page: it ends on a square you fill with your email (#notify, the target of every
+ * "開放時通知我" link), then the small print.
+ */
+import { site } from '../content';
+import Logo from './Logo.astro';
+import NotifyForm from './NotifyForm.astro';
+
+const f = site.footer;
+---
+<footer class="footer band-ink">
+  <section id="notify" class="footer__notify grid" aria-labelledby="notify-heading" tabindex="-1">
+    <div class="footer__lead">
+      <h2 id="notify-heading" class="t-l">{site.notify.headline}</h2>
+      <p class="footer__body">{site.notify.body}</p>
+    </div>
+    <div class="footer__square">
+      <span class="footer__cursor" aria-hidden="true" data-cursor></span>
+      <NotifyForm />
+    </div>
+  </section>
+  <div class="footer__meta grid">
+    <div class="footer__brand">
+      <Logo label={site.name} />
+      <p class="footer__tagline">{f.tagline}</p>
+    </div>
+    <p class="footer__links"><a class="link-utility" href={f.sourceUrl} rel="noopener">{f.source}</a></p>
+    <p class="footer__colophon">{f.colophon}</p>
+    <p class="footer__copy">{f.copyright}</p>
+  </div>
+</footer>
+<style>
+  .footer { position: relative; z-index: var(--z-content); }
+  .footer__notify { padding-block: var(--space-normal); row-gap: 32px; align-items: end; }
+  .footer__notify:focus { outline: none; }
+  .footer__lead { grid-column: 1 / span 5; display: flex; flex-direction: column; gap: 16px; }
+  .footer__body { color: var(--c-muted); max-width: var(--measure); }
+  .footer__square {
+    grid-column: 7 / span 6;
+    position: relative;
+    aspect-ratio: 1;
+    max-height: 560px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(20px, 3vw, 40px);
+    border: 1px solid var(--c-line-strong);
+    background:
+      linear-gradient(var(--c-line) 0 0) calc(100% / 3) 0 / 1px 100% no-repeat,
+      linear-gradient(var(--c-line) 0 0) calc(200% / 3) 0 / 1px 100% no-repeat,
+      linear-gradient(var(--c-line) 0 0) 0 calc(100% / 3) / 100% 1px no-repeat,
+      linear-gradient(var(--c-line) 0 0) 0 calc(200% / 3) / 100% 1px no-repeat;
+  }
+  .footer__square :global(.btn) { --btn-ink: var(--c-paper); --btn-ground: var(--c-ink); }
+  .footer__cursor {
+    position: absolute;
+    left: clamp(20px, 3vw, 40px);
+    top: clamp(20px, 3vw, 40px);
+    width: 6px;
+    height: clamp(40px, 8vw, 96px);
+    background: var(--c-mark);
+  }
+  .footer__meta {
+    padding-block: 32px 40px;
+    border-top: 1px solid var(--c-line);
+    row-gap: 16px;
+    align-items: center;
+    font-size: var(--t-s);
+  }
+  .footer__brand { grid-column: 1 / span 4; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .footer__brand :global(.logo) { color: var(--c-paper); }
+  .footer__tagline { color: var(--c-muted); }
+  .footer__links { grid-column: 5 / span 2; }
+  .footer__links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .footer__colophon { grid-column: 7 / span 4; color: var(--c-muted); }
+  .footer__copy { grid-column: 11 / span 2; text-align: right; color: var(--c-muted); }
+  @media (max-width: 899px) {
+    .footer__lead, .footer__square, .footer__brand, .footer__links, .footer__colophon, .footer__copy { grid-column: 1 / -1; text-align: left; }
+    .footer__square { aspect-ratio: auto; min-height: 340px; }
+  }
+</style>

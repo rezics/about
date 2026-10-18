@@ -1,0 +1,31 @@
+---
+/**
+ * A mini-site page: `/<kind>/`, `/<kind>/<page>/`, `/engine/<module>/`, `/developers/…`.
+ * The site and page come from the URL (the site with the longest matching base in
+ * src/content/sites/), so a page needs no props. Title and description come from the page's
+ * meta; the theme sets --field and --on-field on <body>, and data-site="<id>" scopes the site's
+ * own CSS. The site bar shows unless the page passes bar={false}.
+ */
+import { siteFor } from '../sites';
+import { fieldOf } from '../theme';
+import SiteBar from '../components/SiteBar.astro';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  /** Show the site bar (default). A one-page bespoke site may turn it off. */
+  bar?: boolean;
+}
+const { bar = true } = Astro.props;
+const found = siteFor(Astro.url.pathname);
+if (!found)
+  throw new Error(
+    `${Astro.url.pathname}: no mini-site page owns this path. Add it to the pages list in src/content/sites/<id>.ts.`,
+  );
+const { site, page } = found;
+const field = fieldOf(site.theme);
+const kind = site.theme && 'kind' in site.theme ? site.theme.kind : undefined;
+---
+<BaseLayout title={page.meta.title} description={page.meta.description} field={field} siteId={site.id} kind={kind}>
+  {bar && <SiteBar slot="bar" site={site} page={page} />}
+  <slot />
+</BaseLayout>

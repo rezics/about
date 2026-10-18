@@ -1,0 +1,168 @@
+---
+/**
+ * The composing square (DESIGN.md signature). A 3×3 whose centre shows an item's name on its
+ * field and whose eight cells hold its parts. The driver (src/kit/motion/composer.ts) steps
+ * through `items`: parts that stay keep their cell, leaving parts slide out along the grid, new
+ * parts slide in and lock. It idles through the sequence every `interval` seconds while on screen
+ * (never under reduced motion) and pauses on pointer or focus inside, or with the toggle.
+ *
+ * Without script, or before it runs, the square shows `items[start]` at rest.
+ */
+import type { PartId } from '../../content/schema';
+import type { Field } from '../theme';
+import { fieldStyle } from '../theme';
+import { arrange, cellPosition } from '../arrange';
+import { parts as allParts, site } from '../content';
+import SquareName from './SquareName.astro';
+
+export interface ComposerItem {
+  id: string;
+  name: string;
+  field: Field;
+  parts: PartId[];
+}
+interface Props {
+  items: ComposerItem[];
+  start?: number;
+  interval?: number;
+  /** Show the row of item buttons and the pause toggle. */
+  controls?: boolean;
+  /** Accessible label for the item buttons' group. */
+  pickLabel?: string;
+  class?: string;
+  id?: string;
+  [key: `data-${string}`]: unknown;
+}
+const { items, start = 0, interval = 3.6, controls = true, pickLabel = site.ui.pick, class: className, id, ...rest } = Astro.props;
+const layouts = arrange(items.map((item) => item.parts));
+const used = allParts.filter((p) => items.some((item) => item.parts.includes(p.id)));
+const first = layouts[start]!;
+const data = { layouts, interval };
+---
+<div class:list={['composer', className]} data-composer id={id} {...rest}>
+  <div class="composer__square" data-composer-square>
+    <ul class="composer__parts" role="list">
+      {used.map((part) => {
+        const cell = first[part.id];
+        const pos = cellPosition(cell ?? 0);
+        return (
+          <li
+            class="composer__part"
+            data-part={part.id}
+            data-on={cell !== undefined ? 'true' : 'false'}
+            aria-hidden={cell !== undefined ? undefined : 'true'}
+            style={`--col:${pos.col};--row:${pos.row}`}
+          >
+            <span class="composer__part-name">{part.name}</span>
+            <span class="composer__part-id mono">{part.id}</span>
+          </li>
+        );
+      })}
+    </ul>
+    <div class="composer__centre" data-composer-centre>
+      {items.map((item, i) => (
+        <div class="composer__item" data-item={i} data-on={i === start ? 'true' : 'false'} aria-hidden={i === start ? undefined : 'true'} style={fieldStyle(item.field)}>
+          <SquareName name={item.name} />
+        </div>
+      ))}
+    </div>
+  </div>
+  {controls && items.length > 1 && (
+    <div class="composer__controls">
+      <div class="composer__pager" role="group" aria-label={pickLabel}>
+        {items.map((item, i) => (
+          <button type="button" class="composer__go" data-composer-go={i} aria-pressed={i === start ? 'true' : 'false'} style={fieldStyle(item.field)}>
+            <span class="sr-only">{item.name}</span>
+          </button>
+        ))}
+      </div>
+      <button type="button" class="composer__toggle mono" data-composer-toggle data-pause={site.ui.pause} data-play={site.ui.play} hidden>
+        {site.ui.pause}
+      </button>
+    </div>
+  )}
+  <script type="application/json" data-composer-data set:html={JSON.stringify(data)} />
+</div>
+<style>
+  .composer { --cell: calc(100% / 3); }
+  .composer__square {
+    position: relative;
+    aspect-ratio: 1;
+    container-type: inline-size;
+    overflow: clip;
+    background:
+      linear-gradient(var(--c-line-strong) 0 0) calc(100% / 3) 0 / 1px 100% no-repeat,
+      linear-gradient(var(--c-line-strong) 0 0) calc(200% / 3) 0 / 1px 100% no-repeat,
+      linear-gradient(var(--c-line-strong) 0 0) 0 calc(100% / 3) / 100% 1px no-repeat,
+      linear-gradient(var(--c-line-strong) 0 0) 0 calc(200% / 3) / 100% 1px no-repeat,
+      var(--c-bg);
+    outline: 1px solid var(--c-line-strong);
+    outline-offset: -1px;
+  }
+  .composer__parts { list-style: none; padding: 0; position: absolute; inset: 0; }
+  .composer__part {
+    position: absolute;
+    left: calc(var(--col) * var(--cell));
+    top: calc(var(--row) * var(--cell));
+    width: var(--cell);
+    height: var(--cell);
+    padding: 3.2cqi;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--c-bg);
+    box-shadow: inset 0 0 0 0.5px var(--c-line-strong);
+  }
+  .composer__part[data-on='false'] { visibility: hidden; }
+  .composer__part-name { font-weight: 700; font-size: clamp(0.875rem, 4.6cqi, 2rem); line-height: 1.15; }
+  .composer__part-id { color: var(--c-muted); font-size: clamp(0.5625rem, 1.55cqi, 0.75rem); }
+  .composer__centre {
+    position: absolute;
+    left: var(--cell);
+    top: var(--cell);
+    width: var(--cell);
+    height: var(--cell);
+    overflow: clip;
+  }
+  .composer__item {
+    position: absolute;
+    inset: 0;
+    container-type: inline-size;
+    background: var(--field);
+  }
+  .composer__item[data-on='false'] { visibility: hidden; }
+  .composer__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .composer__pager { display: flex; gap: 6px; flex-wrap: wrap; }
+  .composer__go {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    background: var(--field);
+    transition: scale var(--d-s) var(--ease-snap);
+  }
+  .composer__go[aria-pressed='true']::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 3px;
+    background: var(--c-mark);
+  }
+  @media (hover: hover) { .composer__go:hover { scale: 1.15; } }
+  .composer__toggle {
+    min-height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--c-line-strong);
+    color: var(--c-fg);
+    transition: background-color var(--d-s), color var(--d-s);
+  }
+  @media (hover: hover) { .composer__toggle:hover { background: var(--c-fg); color: var(--c-bg); } }
+  .composer__toggle:focus-visible { background: var(--c-fg); color: var(--c-bg); }
+</style>

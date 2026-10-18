@@ -1,0 +1,32 @@
+---
+// The REZICS Z mark in logo red (a non-text mark) and the wordmark.
+interface Props {
+  href?: string;
+  label: string;
+  wordmark?: boolean;
+}
+const { href = '/', label, wordmark = true } = Astro.props;
+---
+<a href={href} class="logo" aria-label={label}>
+  <svg viewBox="0 142.857 1000 714.286" aria-hidden="true" focusable="false">
+    <path d="M0 571.429 642.857 142.857 571.429 428.571 1000 142.857v285.714L357.143 857.143l71.428-285.714L0 857.143Z" />
+  </svg>
+  {wordmark && <span class="logo__word" aria-hidden="true">REZICS</span>}
+</a>
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    color: var(--c-fg);
+  }
+  .logo svg { width: 28px; height: 20px; fill: var(--c-mark); flex: none; }
+  .logo__word {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-stretch: 125%;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+/**
+ * The square: the module of the whole site (DESIGN.md "Grid, rhythm, shape"). A field colour,
+ * an optional picture and a name that fills it.
+ *
+ * mode  'flood'  picture hidden at rest; it floods up through the square on hover or focus while
+ *                the name rolls one line (index tiles)
+ *       'image'  picture visible, name over it (hero squares, navigation tiles)
+ *       'plain'  field and name only (modules, anything without a picture)
+ * href  makes the square a link; linked squares are page-transition sources ([data-flip-src])
+ * flip  'target' marks the square a transition lands on (one per page, the hero square)
+ * image `${base}-960.avif|webp` and `${base}-320.avif|webp`; the field shows while it loads or
+ *       when it is missing. Inside a link the picture is decorative (the name names the link).
+ */
+import type { Field } from '../theme';
+import { fieldStyle } from '../theme';
+import SquareName from './SquareName.astro';
+
+interface Props {
+  name: string;
+  field: Field;
+  mode?: 'flood' | 'image' | 'plain';
+  href?: string;
+  image?: { base: string; alt: string };
+  /** Width of the square in the layout, for the picture's `sizes`. */
+  sizes?: string;
+  eager?: boolean;
+  flip?: 'target';
+  class?: string;
+  /** Hidden text appended to a linked square's name, e.g. its summary. */
+  description?: string;
+  [key: `data-${string}`]: unknown;
+}
+const {
+  name,
+  field,
+  mode = 'plain',
+  href,
+  image,
+  sizes = '(max-width: 767px) 50vw, 25vw',
+  eager = false,
+  flip,
+  class: className,
+  description,
+  ...rest
+} = Astro.props;
+const Tag = href ? 'a' : 'div';
+const showPicture = mode !== 'plain' && image;
+---
+<Tag
+  class:list={['sq', `sq--${mode}`, className]}
+  href={href}
+  style={fieldStyle(field)}
+  data-flip-src={href ? '' : undefined}
+  data-flip-target={flip === 'target' ? '' : undefined}
+  data-square
+  {...rest}
+>
+  {showPicture && (
+    <picture class="sq__img">
+      <source type="image/avif" srcset={`${image.base}-320.avif 320w, ${image.base}-960.avif 960w`} sizes={sizes} />
+      <source type="image/webp" srcset={`${image.base}-320.webp 320w, ${image.base}-960.webp 960w`} sizes={sizes} />
+      <img
+        src={`${image.base}-960.webp`}
+        alt={href ? '' : image.alt}
+        width="960"
+        height="960"
+        loading={eager ? 'eager' : 'lazy'}
+        fetchpriority={eager ? 'high' : 'auto'}
+        decoding="async"
+        data-square-img
+      />
+    </picture>
+  )}
+  <SquareName name={name} roll={!!href} />
+  {description && <span class="sr-only">{description}</span>}
+  <slot />
+</Tag>
+<style>
+  .sq {
+    position: relative;
+    display: block;
+    aspect-ratio: 1;
+    container-type: inline-size;
+    overflow: clip;
+    background: var(--field);
+    color: var(--on-field);
+  }
+  .sq__img { position: absolute; inset: 0; }
+  .sq__img img { width: 100%; height: 100%; object-fit: cover; }
+  .sq__img img.is-missing { visibility: hidden; }
+  .sq--flood .sq__img { clip-path: inset(100% 0 0 0); transition: clip-path var(--d-m) var(--ease-snap); }
+  @media (hover: hover) {
+    a.sq--flood:hover .sq__img { clip-path: inset(0 0 0 0); }
+    a.sq:hover :global(.sqname__face) { translate: 0 -110%; }
+    a.sq:hover :global(.sqname__face + .sqname__face) { translate: 0 0; }
+  }
+  a.sq--flood:focus-visible .sq__img { clip-path: inset(0 0 0 0); }
+  a.sq:focus-visible :global(.sqname__face) { translate: 0 -110%; }
+  a.sq:focus-visible :global(.sqname__face + .sqname__face) { translate: 0 0; }
+  a.sq:focus-visible { outline-offset: 4px; }
+  a.sq:active { scale: 0.985; }
+  /* Reduced motion: no roll (its end state looks like rest); the flood stays as a state change. */
+  @media (prefers-reduced-motion: reduce) {
+    .sq :global(.sqname__face) { translate: none !important; }
+    .sq :global(.sqname__face + .sqname__face) { visibility: hidden; }
+  }
+</style>

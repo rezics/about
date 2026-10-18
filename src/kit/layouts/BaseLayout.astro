@@ -1,0 +1,106 @@
+---
+/**
+ * The document every page shares: head (SEO, Open Graph, JSON-LD, fonts), the skip link, the
+ * persistent transition curtain, the global header, an optional bar, <main> and the footer.
+ * Pages use PageLayout or MiniSiteLayout, which wrap this.
+ */
+import { ClientRouter } from 'astro:transitions';
+import { site } from '../content';
+import { ogPath } from '../seo';
+import type { Field } from '../theme';
+import { fieldStyle } from '../theme';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../../styles/tokens.css';
+import '../../styles/engine.css';
+import '../../styles/base.css';
+
+interface Props {
+  /** Page title without the site name; omit on the home page. */
+  title?: string;
+  description: string;
+  /** Colours for the page (a kind's or module's field), exposed as --field and --on-field. */
+  field?: Field;
+  /** data-site on <body>, for a mini-site's own CSS. */
+  siteId?: string;
+  kind?: string;
+  noindex?: boolean;
+}
+const { title, description, field, siteId, kind, noindex = false } = Astro.props;
+const path = Astro.url.pathname;
+const origin = Astro.site ?? new URL(site.url);
+const fullTitle = title ? `${title}｜${site.name}` : site.meta.title;
+const canonical = new URL(path, origin).href;
+const ogImage = new URL(ogPath(path === '/404.html' ? '/404/' : path), origin).href;
+const isHome = path === '/';
+const websiteId = new URL('/#website', origin).href;
+const jsonLd = isHome
+  ? {
+      '@context': 'https://schema.org',
+      '@graph': [
+        { '@type': 'Organization', '@id': new URL('/#organization', origin).href, name: site.name, url: origin.href, logo: new URL('/favicon.svg', origin).href },
+        { '@type': 'WebSite', '@id': websiteId, name: site.name, url: origin.href, inLanguage: 'zh-Hant', description },
+      ],
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      name: fullTitle,
+      url: canonical,
+      description,
+      inLanguage: 'zh-Hant',
+      isPartOf: { '@type': 'WebSite', '@id': websiteId, name: site.name, url: origin.href },
+    };
+---
+<!doctype html>
+<html lang="zh-Hant" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#f4f5f2" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+    <link rel="preload" href="/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="rezics:fonts" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+    </script>
+    <slot name="head" />
+    <ClientRouter fallback="swap" />
+  </head>
+  <body data-site={siteId} data-kind={kind} style={field ? fieldStyle(field) : undefined}>
+    <a class="skip-link" href="#main">{site.nav.skip}</a>
+    <div id="curtain" transition:persist="curtain" aria-hidden="true">
+      {Array.from({ length: 12 }, () => <div class="curtain__col"></div>)}
+    </div>
+    <Header path={path} />
+    <slot name="bar" />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import { start } from '../../engine/astro';
+      import { setupMotion } from '../motion/setup';
+      start(setupMotion);
+    </script>
+  </body>
+</html>

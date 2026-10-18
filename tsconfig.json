@@ -1,13 +1,11 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "types": ["astro/client", "node", "bun"],
-    "paths": { "@/*": ["./src/*"] }
+    "noUncheckedIndexedAccess": true,
+    "types": ["astro/client", "node"]
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.astro", ".astro/types.d.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": [".astro/types.d.ts", "src", "worker", "tests", "scripts", "*.ts"],
+  "exclude": ["node_modules", "dist", ".temp", ".agents"]
 }

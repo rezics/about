@@ -1,0 +1,43 @@
+---
+/**
+ * A placeholder landing page for a mini-site that has not been built yet: the site's square,
+ * its headline and lede (strings.headline, strings.lede), and the next site. Site builders
+ * replace the page that uses this; nothing else depends on it.
+ */
+import { siteFor, nextSite } from '../sites';
+import { fieldOf } from '../theme';
+import KindSquare from './KindSquare.astro';
+import ModuleSquare from './ModuleSquare.astro';
+import Square from './Square.astro';
+import Finale from './Finale.astro';
+import Section from './Section.astro';
+import NotifyCall from './NotifyCall.astro';
+
+const found = siteFor(Astro.url.pathname);
+if (!found) throw new Error(`${Astro.url.pathname}: no mini-site owns this path`);
+const { site } = found;
+const strings = site.strings as { headline?: string; lede?: string; next?: string };
+const theme = site.theme;
+const next = nextSite(site);
+---
+<Section mood="normal" class="stub">
+  <div class="col-1-6 stub__square">
+    {theme && 'kind' in theme ? (
+      <KindSquare kind={theme.kind} mode="image" link={false} flip="target" eager sizes="(max-width: 767px) 100vw, 50vw" />
+    ) : theme && 'module' in theme ? (
+      <ModuleSquare module={theme.module} link={false} data-flip-target />
+    ) : (
+      <Square name={site.name} field={fieldOf(theme)} flip="target" />
+    )}
+  </div>
+  <div class="col-7-12 stub__text">
+    <h1 class="t-xl">{strings.headline ?? site.name}</h1>
+    {strings.lede && <p class="lede">{strings.lede}</p>}
+    <div><NotifyCall /></div>
+  </div>
+</Section>
+{next && strings.next && <Finale label={strings.next} name={next.name} href={next.base} field={fieldOf(next.theme)} />}
+<style>
+  .stub__text { display: flex; flex-direction: column; gap: 24px; align-self: center; }
+  .stub__square { max-width: min(100%, calc(100svh - 220px)); }
+</style>

@@ -1,0 +1,63 @@
+---
+/**
+ * "Next page / next site": a full-bleed band in the next thing's field colour, its name set as
+ * large as the band allows. The whole band is the link; the name rolls on hover.
+ */
+import type { Field } from '../theme';
+import { fieldStyle } from '../theme';
+
+interface Props {
+  label: string;
+  name: string;
+  href: string;
+  field: Field;
+}
+const { label, name, href, field } = Astro.props;
+const size = Math.min(22, 92 / Math.max(2, [...name].length * (/^[\x20-\x7e]+$/.test(name) ? 0.62 : 1)));
+---
+<a class="finale" href={href} style={`${fieldStyle(field)};--size:${size}`}>
+  <span class="finale__label mono">{label}<span class="arrow" aria-hidden="true"> →</span></span>
+  <span class="finale__name">
+    <span class="finale__face">{name}</span>
+    <span class="finale__face" aria-hidden="true">{name}</span>
+  </span>
+</a>
+<style>
+  .finale {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: min(70svh, 640px);
+    padding: var(--gutter);
+    padding-top: clamp(24px, 4vw, 48px);
+    background: var(--field);
+    color: var(--on-field);
+    --focus: var(--on-field);
+  }
+  .finale:focus-visible { outline-offset: -8px; }
+  .finale__label { font-size: var(--t-s); }
+  .finale__name {
+    display: grid;
+    overflow: clip;
+    font-weight: 900;
+    font-size: calc(var(--size) * 1vw);
+    line-height: 1;
+    letter-spacing: var(--track-display);
+    font-stretch: 125%;
+  }
+  .finale__face { grid-area: 1 / 1; white-space: nowrap; transition: translate var(--d-m) var(--ease-snap); }
+  .finale__face + .finale__face { translate: 0 105%; }
+  @media (hover: hover) {
+    .finale:hover .finale__face { translate: 0 -105%; }
+    .finale:hover .finale__face + .finale__face { translate: 0 0; }
+    .finale:hover .arrow { translate: 0.4em 0; }
+  }
+  .finale:focus-visible .finale__face { translate: 0 -105%; }
+  .finale:focus-visible .finale__face + .finale__face { translate: 0 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .finale__face { translate: none !important; }
+    .finale__face + .finale__face { visibility: hidden; }
+    .finale:hover .finale__name, .finale:focus-visible .finale__name { text-decoration: underline; text-decoration-thickness: 0.04em; }
+  }
+</style>

@@ -1,0 +1,13 @@
+---
+/** A call to action that lands on the footer's notify form (#notify). */
+import { site } from '../content';
+
+interface Props {
+  label?: string;
+  class?: string;
+}
+const { label = site.nav.action, class: className } = Astro.props;
+---
+<a class:list={['btn', className]} href="#notify" data-notify-link>
+  <span class="btn__label"><span>{label}</span><span aria-hidden="true">{label}</span></span>
+</a>
