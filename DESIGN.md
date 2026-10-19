@@ -554,3 +554,16 @@ Voice (zh-Hant):
   system to a calm company-homepage manner on the product's own Aura design; square tiles stay
   only in the header dropdowns. A pilot (home and the games site) is reviewed before the other
   sites are rebuilt.
+- 2026-10-19 (builder, v2 pilot): the kit carries the v2 rhythm as section primitives
+  (`PageIntro`, `MediaRow`, `Statement`, `CardRow`, `ItemGrid`, `ItemList`, `Table`, `Pills`,
+  `ClosingPanel`, `SiteFinale`; src/kit/README.md). Page titles are set at 400, section headings
+  at 500: Noto Sans TC 500 at 48 px reads heavy beside the references. Manrope is self-hosted
+  from its package (Latin subset, preloaded); Archivo stays only for the square tiles' names. A
+  site's field becomes its accent through derived tints (`--tint` 8 %, `--tint-strong` 15 %),
+  never a flat block. The dropdown panels are floating sheets (the sheet radius, the float
+  shadow) holding the unchanged square tiles. Headings break between clauses when every clause
+  is 14 characters or fewer, as inline blocks with balancing off: Chromium crashes laying out
+  inline-block clauses in a balanced heading while the viewport resizes. Card art on the home
+  page is a soft gradient in each kind's field (no bytes); every row and intro image is
+  painted (Codex image generation), 640 and 1024 px squares or 640 to 1536 px at 16:9, AVIF
+  with WebP, ≤ 120 KB.

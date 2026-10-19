@@ -1,10 +1,13 @@
 # Mini-site kit
 
 Every product (the nine kinds), each engine module, `/engine/`, `/developers/` and `/roadmap/`
-is a mini-site built on this kit. The kit gives you the shared document (header, panels, phone
-sheet, footer ending on the action square into REZICS, SEO, fonts, page transitions), a themed
-site bar and a set of primitives. You build your own sections and your own signature on top. Read
-[DESIGN.md](../../DESIGN.md) and the skill (`.agents/skills/awwwards/`) first.
+is a mini-site built on this kit. The kit gives you the shared document (header with its two
+dropdown panels, phone sheet, footer with the closing panel into REZICS and link columns, SEO,
+fonts, page transitions), a site bar of pill tabs and a set of section primitives. Read
+[DESIGN.md](../../DESIGN.md) first, its section "Direction v2: a company homepage" above all:
+pages are calm, editorial and image-led, on the product's own Aura design. The home page and
+the books and games sites are the reference builds (`src/pages/index.astro`,
+`src/pages/books/`, `src/sites/games/`).
 
 ## What you own
 
@@ -14,7 +17,7 @@ For a site with id `<id>` (a kind id, a module id, `engine`, `developers` or `ro
 |---|---|
 | `src/content/sites/<id>.ts` | all your copy: the default export is a `MiniSite` (schema in `src/content/schema.ts`) |
 | `src/pages/<base>/**` | your pages; `<base>` is your site's base path (`books/`, `engine/community/`) |
-| `src/sites/<id>/**` | your components, visuals, CSS and driver module |
+| `src/sites/<id>/**` | your components, CSS and driver modules |
 | `public/images/sites/<id>/**` | your pictures |
 
 The engine overview owns only `src/pages/engine/index.astro` (and pages whose slug is not a
@@ -31,14 +34,16 @@ tooling. Do not edit them; if you need a kit change, say so in your report with 
 ```astro
 ---
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import Section from '../../kit/components/Section.astro';
+import PageIntro from '../../kit/components/PageIntro.astro';
+import ItemGrid from '../../kit/components/ItemGrid.astro';
+import SiteFinale from '../../kit/components/SiteFinale.astro';
 import site from '../../content/sites/books';
-const s = site.strings;
+const s = site.strings.editions;
 ---
 <MiniSiteLayout>
-  <Section mood="normal">
-    <h1 class="col-1-8 t-xl">{s.editions.headline}</h1>
-  </Section>
+  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/shelves', alt: s.hero.alt, ratio: 1 }} />
+  <ItemGrid items={s.releases.quarters} cols={4} look="cards" />
+  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} />
 </MiniSiteLayout>
 ```
 
@@ -47,55 +52,57 @@ const s = site.strings;
 site bar. A path that is not in your `pages` list fails the build with a message saying so. The
 sitemap, Open Graph images, transitions and every test pick new pages up by themselves.
 
-Each page has exactly one `<h1>`. Keep copy in your content file, never in the page.
+Each page has exactly one `<h1>` (PageIntro's title). Keep copy in your content file, never in
+the page.
+
+## The v2 rhythm
+
+A landing page: `PageIntro` (centred title, one sentence, the actions, a wide image), then
+alternating `MediaRow`s, one `Statement`, a `CardRow` linking deeper, more rows or lists, and
+`SiteFinale`; the footer adds the `ClosingPanel` and the link columns. Inner pages use the same
+parts in their own order with more text: `PageIntro` with a square image beside the text
+(`ratio: 1`) or none (`align="start"`), then `SectionHead` + `ItemGrid`, `ItemList`, `Table`,
+`Pills`, a `Statement`, and `SiteFinale`. Wrap your own sections in
+`<section class="…"><div class="container">…</div></section>` and pad them with
+`calc(var(--space-section) / 2)` so the gap between any two sections is `--space-section`.
+
+Never use squares in page bodies: flat square tiles live only in the header's dropdown panels
+(`Square`, `KindSquare`, `ModuleSquare`). No heavy display type (weights 400 and 500, 700 at
+most), no mono outside code, no saturated flat blocks of your field: use it in your art, in
+tints (`--tint`, `--tint-strong`) and as small marks (dots, the current tab).
 
 ## Themes
 
-Sites may look clearly different (DESIGN.md "One design language, different themes"). The kit,
-the header, the panels, the site bar, the footer and every primitive read only semantic tokens,
-so you restyle all of them by setting tokens on your site:
+Sites differ through their art and accent, not through different layout systems. Your accent is
+your field (`theme` in your content file), exposed as `--field` on `<body>`; the kit derives
+`--tint` (8 %) and `--tint-strong` (15 %) from it wherever a field is set. The kit reads only
+semantic tokens, so a site may still set its own on `[data-site='<id>']`:
 
 | Token | Role |
 |---|---|
-| `--c-bg`, `--c-fg` | ground and ink |
-| `--c-muted` | secondary text (AA on `--c-bg`) |
-| `--c-line`, `--c-line-strong` | hairlines, grid lines |
-| `--c-link` | links and the focus ring |
-| `--c-band-bg`, `--c-band-fg`, `--c-band-muted`, `--c-band-line`, `--c-band-line-strong`, `--c-band-link` | the inverted band (`.band-ink`, the footer) |
-| `--field`, `--on-field` | your field and the text on it (from `theme` in your content file) |
+| `--c-bg`, `--c-fg` | ground and ink (Aura `#f9f6f2`, `#2b343d`) |
+| `--c-muted` | secondary text (AA on the ground, the card and the panel) |
+| `--c-surface` | cards, tables, the dropdown sheets (Aura card `#fefcf9`) |
+| `--c-soft` | the muted panel: closing panel, secondary pills, hovered tabs (`#efece7`) |
+| `--c-line`, `--c-line-strong` | hairlines |
+| `--c-link`, `--c-on-link` | links, the primary pill and its text; the focus ring is `--focus` (default `--c-link`) |
+| `--field`, `--on-field` | your accent and text on it (from `theme`) |
+| `--tint`, `--tint-strong` | soft tints of the accent (derived; text on them stays `--c-fg`) |
+| `--c-band-*` | the inverted band (`.band-ink`), kept for older pages |
 
-`MiniSiteLayout` puts `data-site="<id>"` (and `data-kind` for kinds) on `<html>` and `<body>`,
-and `--field` / `--on-field` from your `theme` (`{ kind }`, `{ module }`, or your own
-`{ field, on }`, e.g. developers `#2f63ad` with paper text). A dark site:
+Every text pair must pass AA (4.5:1, 3:1 for large text); `tests/e2e/theme.e2e.ts` renders a
+dark theme over the shared chrome and checks it with axe. Red (`--c-mark`) is the logo and tiny
+marks only, never text.
 
-```css
-/* src/sites/<id>/theme.css, imported by your pages */
-[data-site='<id>'] {
-  --c-bg: #0e1420;
-  --c-fg: #f4f5f2;
-  --c-muted: #a9b2c1;
-  --c-line: rgb(244 245 242 / 0.16);
-  --c-line-strong: rgb(244 245 242 / 0.34);
-  --c-link: #9ab8e6;
-  --c-band-bg: #f4f5f2;
-  --c-band-fg: #0e1420;
-  --c-band-muted: #566070;
-  --c-band-line: rgb(14 20 32 / 0.12);
-  --c-band-line-strong: rgb(14 20 32 / 0.28);
-  --c-band-link: #2f63ad;
-}
-```
-
-Every text pair must pass AA (4.5:1, 3:1 for large display text); `tests/e2e/theme.e2e.ts`
-renders a dark theme over the shared chrome and checks it with axe. Red (`--c-mark`) is a mark,
-never text. Keep the language: the three type families, the grid, squares, radius 0, the motion
-verb and the hover vocabulary.
-
-- Type scale: `--t-mega` … `--t-xs`, classes `.t-xl`, `.t-l`, `.t-m`, `.lede`, `.mono`
-  (`src/styles/tokens.css`, `base.css`).
-- `.band-ink` and `.band-field` (on `Section band="ink" | "field"`) flip the ground.
-- Grid: 12 columns, `.grid`, placement classes `.col-1-4`, `.col-5-12`, `.col-7-12` … on the
-  strong lines 1, 5 and 9 (phones stack to full width).
+- Type: `.t-title` (page titles, 30 to 48 px, 400), `.t-h2` (24 to 32 px, 500), `.t-h3`,
+  `.t-statement`, `.lede`, `.t-body`, `.t-s`, `.label` (small labels; `.mono` is its old name).
+  The older `.t-mega`, `.t-xl`, `.t-l`, `.t-m` map onto the same quiet scale.
+- Shape: `--r-card` 24 px (images, cards), `--r-sheet` 30 px (closing panel, sheets), `--r-lg`
+  16 px (inner art, notes), `--r-pill` (buttons, tabs, pills). Shadows `--shadow-card`,
+  `--shadow-card-hover`, `--shadow-float`, on cards only.
+- Layout: `.container` (1120 px measure plus `--page-pad`), `.container--narrow` (760 px),
+  `.grid` (12 columns, 4 on phones) with `.col-*` placements, `.frame` (an image frame with the
+  card radius and the tint while it loads), grounds `.band-soft` and `.band-tint`.
 
 ## Primitives
 
@@ -103,54 +110,65 @@ Import from `src/kit/components/`:
 
 | Component | Use |
 |---|---|
-| `Square` | the module of the site: `name`, `field`, `mode` (`flood` picture on hover, `image` picture shown, `plain`), `href` (link squares are transition sources), `image={{ base, alt }}` (`${base}-960.avif|webp`, `${base}-320.avif|webp`), `flip="target"` for the one square per page a transition lands on |
-| `KindSquare`, `ModuleSquare` | a kind's or module's square from the shared content |
-| `SquareName` | a name that fills its box (`container-type: inline-size`): 2 characters on a line, 4 in a 2×2, Latin on two lines, `創作 / 與 / 發行` for a middle connective; explicit `\n` also works |
-| `PartsList` | a kind's eight parts as a compact list of labelled chips, one line each (`parts`, optional `notes` per part, `level` for headings): reads well on a phone. Use this for parts |
-| `PartsGrid` | (kept for compatibility; prefer `PartsList`, a large grid of text cells is mostly empty on a phone) a square's 3×3 at rest: `name`, `field`, `parts`, optional `notes` per part and `layout` |
-| `Composer` | (kept for compatibility; the home no longer uses it) the composing square: `items` (`{ id, name, field, parts }[]`), `start`, `interval`, `controls`. The driver idles through the items, pauses off screen, on pointer or focus and with its toggle; reach it with `getComposer(el)` from `src/kit/motion/composer.ts` (`show(i)`, `hold`/`release`, `onChange`, `assemble`) |
-| `EmptySquare` | an empty square with the red cursor |
-| `Section` | section shell: `mood` (`tight`, `normal`, `airy`, `full`), `band`, the grid |
-| `ProductCall` | the action into the live product, 「前往 REZICS」 to `site.productUrl` (`label`, `href`, `size="small"`, `class`); the arrow sits in its ink square. With your own `label` and `href` it is any primary button |
-| `Finale` | "next page / next site": a full-bleed band in the next thing's field, with its own hover (ink steps rise, the name slides, the label grows); `nextSite(site)` from `src/kit/sites.ts` follows the navigation order (kinds, then developers) or your `next`. The footer's action square follows it on every page: add no other action after it |
-| `CodeBlock` | a code sample (`code`, `language`, `caption`): indentation kept, scrolls sideways on phones, keyboard-scrollable |
-| `StubLanding` | the placeholder your landing page starts with; replace it |
+| `PageIntro` | the page's opening and its h1: `title`, `lede`, actions in the slot, `image` (`{ base, alt, widths?, ratio? }`: a wide image under the text, or with `ratio: 1` a square beside it), `align` (`center` default, `start`) |
+| `MediaRow` | a short text block beside a large rounded image: `title`, `body` (string or paragraphs), `image`, `reverse`, links in the slot. Phones: text, then image |
+| `Statement` | one centred statement set larger than body text, `sub` under it, a link in the slot; one per page at most |
+| `CardRow`, `Card` | a heading (`title`, `lede`, a link in slot `link`) and cards of art + name + one line linking deeper: `items` (`{ title, body, href, label, art }`, art `{ image: { base } }` or `{ field, variant }` for a soft gradient), `cols` (2 to 5), `ratio`, `phone` (`scroll` sideways row, or `stack`), `bare` inside your own section |
+| `ItemGrid` | titled items in 2 to 5 columns under hairlines (`look="lines"`) or on tinted cards (`look="cards"`); `numbered` for sequences; items may carry a `label` |
+| `ItemList` | a heading beside rows of title + text under hairlines (rules, rights, refusals); the slot follows the heading |
+| `SectionHead` | an h2 (or h3) with a line and links, `align` start or center |
+| `Table` | a calm data table on a card (`columns`, `rows`, `caption`, `label`); phones stack each row |
+| `Pills` | short labels as soft pills (`items`, `label`, `tone` soft or tint, `ordered`) |
+| `ClosingPanel` | the large soft panel with a line and 「前往 REZICS」; the footer shows one on every page (pass `action={false}` to the layout when the page renders its own) |
+| `SiteFinale`, `Finale` | the next page of the site, or the next site on the last page, as a calm tinted card (`SiteFinale` works it out from the URL; give it your labels and one line) |
+| `Picture` | a responsive picture: `${base}-${width}.avif|webp` at `widths` (default 640 and 1024) |
+| `ProductCall` | the action into the product, an ink-blue pill with an arrow (`label`, `href`, `size="small"`, `variant="secondary"`) |
+| `PartsList` | a kind's eight parts as soft cards, one line each (`parts`, `notes`, `level`) |
+| `CodeBlock` | a code sample (`code`, `language`, `caption`) |
+| `Square`, `KindSquare`, `ModuleSquare`, `SquareName` | the flat square tiles of the header panels; do not use them in page bodies |
+| `StubLanding` | the placeholder landing page: the centred intro, the action and the next site |
+| `Section` | a section shell around a `.grid.container` (`mood`, `band`: `soft`, `tint`, `ink`), for older pages |
+| `PartsGrid`, `Composer`, `EmptySquare`, `NotifyCall` | kept so older pages build; not part of v2 |
 
-Buttons and links: `.btn` (primary: the square floods across, the label rolls; markup
-`<a class="btn"><span class="btn__label"><span>…</span></span></a>`; the roll is one face, so no
-copy of the label sits in the DOM; prefer `ProductCall` for the action into REZICS),
-`.link-draw` (standalone text links), `.link-inline` (links inside body text), `.link-utility`.
+Buttons and links: `.btn` (the primary pill; `.btn--secondary`, `.btn--small`; markup
+`<a class="btn"><span class="btn__label"><span>…</span></span></a>`; prefer `ProductCall`),
+`.link-draw` (a standalone link in ink blue, underlined on hover and focus; put an `Arrow` after
+the label), `.link-inline` (links in running text), `.link-utility` (footer and small print).
+
+Headings in the primitives break between clauses (`src/kit/Clauses.astro`) when every clause is
+short; write headings as one or two short clauses.
 
 ## Motion
 
+- Quiet (DESIGN.md "Direction v2", Motion): content fades and rises a few pixels as it enters,
+  images settle from a slight scale, the dropdown panels fade open, pages cross-fade. No scrubbed
+  scenes, no idle cycling, no wipes. Reduced motion shows everything at once.
 - One clock: GSAP's ticker. No `requestAnimationFrame` loops, no scroll listeners, no other
   animation library. Animate `transform`, `opacity` and `clip-path`; never set a CSS `transform`
   on something GSAP moves (use the `translate`/`scale` properties or `gsap.set`).
 - Page code goes in a `<script>` that calls `onPage(fn)` from `src/engine`: `fn` runs on every
-  page load inside a GSAP context (tweens and ScrollTriggers are reverted on navigation); check
-  that your elements exist, return a cleanup for listeners you add to `window` or `document`.
-  `fn` receives `{ intro }`, the page's entrance timeline.
-- Declarative: `data-split="lines"` (line masks, display headings only), `data-reveal="up|fade|clip|slot"`
-  (`slot` slides a grid's children into place), `data-intro` (play with the page entrance),
-  `data-delay`. `data-chapters` + `data-stage` + `data-chapter` set `data-state` on a sticky
-  stage; `data-preview-list` + `data-preview-key` + `data-preview-item` drive an index preview.
-- Your signature is one driver module in `src/sites/<id>/` (skill `references/patterns.md`):
-  one variable mapped to every visual that carries the idea, with an idle input, paused off
-  screen, still under reduced motion.
-- Reduced motion and no script must show every piece of content. Hover styles go inside
-  `@media (hover: hover)` and are also reachable on `:focus-visible`.
+  page load inside a GSAP context (tweens and ScrollTriggers are reverted on navigation); return
+  a cleanup for listeners you add to `window` or `document`.
+- Declarative: `data-reveal="up|fade|image|slot"` (the primitives already set it),
+  `data-split="lines"`, `data-intro`, `data-delay`. Reveals do nothing below 600 px.
+- An interaction must earn its place: a filter that shows a real rule (the games release
+  table), a choice that folds content away (the books Wiki+ position). Prefer CSS-only
+  (`:has()` on radio pills) so it works without script.
 
 ## Copy
 
 zh-Hant with Taiwan usage, voice rules in DESIGN.md. `tests/unit/copy.test.ts` walks every
 content file, yours included, and fails on dashes (「——」, em, en), the banned hype words,
 「滑鼠」 or "hover", "即將", "敬請期待" or "coming soon", and on a sentence repeated anywhere.
+Rewrite square-metaphor lines (「一格」, 「方塊」) in plain words. Examples follow
+`.temp/sites/EXAMPLE-WORK.md`: no old classics; 《魔法禁書目錄》 as text only, or a generic
+example marked 示意.
 
 ## Check your work
 
 ```sh
 task build                      # dist/
-task qa -- /books/ /books/editions/   # screenshots, vitals, axe, hovers into .shots/<page>/
+task qa -- /books/ /books/work/ # screenshots, vitals, axe, hovers into .shots/<page>/
 task check                      # types, unit tests, build tests (one h1, unique titles…)
 task e2e                        # every route at desktop and 390 px, axe, no console errors
 ```
@@ -160,6 +178,38 @@ task e2e                        # every route at desktop and 390 px, axe, no con
 ## Changes
 
 Breaking changes to the kit, newest first. Merge `main`, then fix what the build reports.
+
+### 2026-10-19: Direction v2
+
+The page bodies move from the 方塊 poster system to a calm company-homepage manner on the
+product's Aura design (DESIGN.md "Direction v2"). The pilot (home, books, games) shows it.
+
+- Tokens: the Aura palette (`#f9f6f2` ground, `#2b343d` ink, `#5d646c` muted, `#fefcf9` card,
+  `#efece7` panel), radius scale and shadows; new semantic tokens `--c-surface`, `--c-soft`,
+  `--c-on-link`, and the derived tints `--tint` and `--tint-strong`. Radius is no longer 0.
+- Type: Manrope for Latin (self-hosted from `@fontsource-variable/manrope`, preloaded), Noto Sans
+  TC at 400 and 500. `--t-xl`, `--t-l`, `--t-m` and their classes are now 48, 32 and 21 px at
+  most, weight 400 or 500. `.mono` is a small label in the body face. Archivo remains only for
+  the square tiles' names; Martian Mono only for code.
+- Buttons are pills (ink blue, white text); `ProductCall` puts its arrow after the label. Text
+  links are ink blue with an underline on hover. Focus is the ink-blue ring; the red corner
+  square is gone.
+- Header: quiet pill tabs and a pill action; the two dropdown panels are floating sheets that
+  keep the square tiles. Site bar: the site's name with a dot in its accent and pill tabs, the
+  current page on the accent tint.
+- Footer: the closing panel (`ClosingPanel`, from `site.product`) and link columns; no ink band.
+  `Finale` is a calm tinted card; `SiteFinale` picks the next page or site for you.
+- Transitions: a short cross-fade; `data-flip-src` and `data-flip-target` do nothing now.
+  Reveals fade and rise a few pixels; `data-reveal="image"` settles a picture; blinking cursors
+  and idle cycles are gone.
+- `.band-field` is the accent tint, no longer a saturated field; `Section` puts its grid inside
+  the container and takes `band="soft" | "tint"`.
+- To migrate a site: replace a split hero with `PageIntro` (a wide image, or `ratio: 1` beside
+  the text), signature squares with `MediaRow`s, cards and lists, finales with `SiteFinale`;
+  drop `KindSquare`, `Square` and `SquareName` from page bodies; take the dark or field ground
+  out of your theme and use your field as the accent; regenerate your art in the v2 direction
+  (DESIGN.md Imagery) at 640 and 1024 px (squares) or 640, 1024 and 1536 px (16:9), ≤ 120 KB;
+  rewrite square-metaphor copy; replace old classics per `.temp/sites/EXAMPLE-WORK.md`.
 
 ### 2026-10-19: focus, links and transitions
 

@@ -1,11 +1,11 @@
-// A site may take a dark theme: the shared chrome (header, panels, site bar, footer, finales and
-// primitives) reads only semantic tokens, so it follows and keeps AA contrast.
+// A site may take a dark theme: the shared chrome (header, panels, site bar, footer, closing panel,
+// finales and primitives) reads only semantic tokens, so it follows and keeps AA contrast.
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const DARK = `[data-site] {
-  --c-bg: #0e1420; --c-fg: #f4f5f2; --c-muted: #a9b2c1;
-  --c-line: rgb(244 245 242 / 0.16); --c-line-strong: rgb(244 245 242 / 0.34); --c-link: #9ab8e6;
+  --c-bg: #0e1420; --c-fg: #f4f5f2; --c-muted: #a9b2c1; --c-surface: #161e2c; --c-soft: #1f2838;
+  --c-line: rgb(244 245 242 / 0.16); --c-line-strong: rgb(244 245 242 / 0.34); --c-link: #9ab8e6; --c-on-link: #0e1420;
   --c-band-bg: #f4f5f2; --c-band-fg: #0e1420; --c-band-muted: #566070;
   --c-band-line: rgb(14 20 32 / 0.12); --c-band-line-strong: rgb(14 20 32 / 0.28); --c-band-link: #2f63ad;
 }`;
@@ -18,13 +18,17 @@ for (const route of ['/books/', '/developers/', '/engine/community/']) {
     await page.addStyleTag({ content: DARK });
     await page.waitForTimeout(200);
     const grounds = await page.evaluate(() => ({
-      header: getComputedStyle(document.querySelector('[data-header]')!).backgroundColor,
+      header: getComputedStyle(document.querySelector('[data-header]')!).getPropertyValue('--c-bg').trim(),
       body: getComputedStyle(document.body).backgroundColor,
-      footer: getComputedStyle(document.querySelector('footer')!).backgroundColor,
+      footer: getComputedStyle(document.querySelector('footer')!).color,
+      closing: getComputedStyle(document.querySelector('.closing__panel')!).backgroundColor,
     }));
-    expect(grounds.header).toBe('rgb(14, 20, 32)');
+    // The header is a translucent veil of the theme's ground; the footer and its closing panel
+    // follow the theme's ink and muted panel (v2 has no inverted footer band).
+    expect(grounds.header).toBe('#0e1420');
     expect(grounds.body).toBe('rgb(14, 20, 32)');
     expect(grounds.footer).toBe('rgb(244, 245, 242)');
+    expect(grounds.closing).toBe('rgb(31, 40, 56)');
     await page.locator('[data-panel-button="panel-products"]').click();
     await expect(page.locator('#panel-products')).toBeVisible();
     const results = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();

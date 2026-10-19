@@ -56,6 +56,8 @@
   --c-line: rgb(43 52 61 / 0.1);
   --c-line-strong: rgb(43 52 61 / 0.18);
   --c-accent: var(--c-link);
+  /* Text on a link-coloured fill (the primary pill); a dark theme with a light link sets it dark. */
+  --c-on-link: #ffffff;
   --c-curtain: var(--c-bg);
   --focus: var(--c-link);
   /* The inverted band (.band-ink), kept for sites that still use one. */

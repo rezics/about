@@ -93,7 +93,7 @@ p, dd, li, .lede { text-wrap: pretty; }
    (the older two-span markup still works: the copy is hidden). */
 .btn {
   --btn-bg: var(--c-link);
-  --btn-fg: #ffffff;
+  --btn-fg: var(--c-on-link);
   --btn-h: 48px;
   position: relative;
   display: inline-flex;

@@ -20,9 +20,9 @@ const decode = (s) =>
     .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
 const meta = (html, key) => decode(html.match(new RegExp(`<meta[^>]+(?:name|property)="${key}"[^>]*content="([^"]*)"`, 'i'))?.[1] ?? '');
 
-const PAPER = '#f4f5f2';
-const INK = '#0e1420';
-const MUTED = '#566070';
+const PAPER = '#f9f6f2';
+const INK = '#2b343d';
+const MUTED = '#5d646c';
 const MARK = '#df3d35';
 const KIND_FIELDS = ['#1d5a47', '#b03a62', '#181b22', '#2a49c9', '#0d6873', '#5a3d9e', '#efb53f', '#c7d35a', '#93c4ef'];
 
