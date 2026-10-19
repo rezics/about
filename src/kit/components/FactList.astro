@@ -1,0 +1,36 @@
+---
+/**
+ * Facts (v3): a hairline list, the title on the left in the serif and the text on the right,
+ * for principles, specifications and steps. Place it in a Section's default slot (columns 4 to
+ * 12) or anywhere on the grid. `numbered` sets 01, 02 … before the titles (steps). Phones: the
+ * title above its text.
+ */
+interface Row {
+  title: string;
+  body: string;
+}
+interface Props {
+  items: Row[];
+  numbered?: boolean;
+  level?: 'h3' | 'h4' | 'p';
+  class?: string;
+}
+const { items, numbered = false, level: Tag = 'h3', class: className } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<ul class:list={['facts', className]} role="list">
+  {items.map((r, i) => (
+    <li class="facts__row">
+      <Tag class="facts__title serif">{numbered && <span class="facts__n sans" aria-hidden="true">{pad(i + 1)}</span>}{r.title}</Tag>
+      <p class="facts__body">{r.body}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .facts { border-top: 1px solid var(--c-line); }
+  .facts__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
+  .facts__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .facts__n { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 400; color: var(--c-muted); }
+  .facts__body { font-size: 16px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
+  @media (max-width: 767px) { .facts__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; } }
+</style>

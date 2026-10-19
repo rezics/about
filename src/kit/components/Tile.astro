@@ -1,55 +1,70 @@
 ---
 /**
- * A flat tile (DESIGN.md "Direction v2"; the mock's `.tile`): a solid field with the text set on
- * it: a Latin id or a relation at the top, the name large at the foot with one short line under
- * it, and an arrow when it is a link. Radius 0, no shadow; tiles sit 3 px apart in walls and rows.
- * As a link: on hover and focus the field deepens (or lightens under ink text), the name lifts
- * and the arrow steps forward; a click presses it. `on` is the text colour that passes AA on `bg`.
+ * A flat tile (v3; the mock's `.t`): a muted paper colour with its text set on it, the name in
+ * the serif (Latin names such as MCP Hub in Manrope) and one short line under it at the foot, an
+ * arrow at the top right when it is a link. Square corners, no shadow; tiles sit 3 px apart in a
+ * masonry, a row or a panel. As a link: on hover and focus the tone shifts away from the text
+ * (a tile with light text deepens, one with dark text lightens, so contrast only grows), the
+ * name rises a few pixels and the arrow slides in; a click presses it. `on` says light or dark
+ * text; the exact shade that passes AA on `bg` comes from `inkOn` (src/kit/theme.ts).
  */
-import { palette } from '../theme';
+import { inkOn, type OnField } from '../theme';
 
 interface Props {
   name: string;
   bg: string;
-  on: 'paper' | 'ink';
+  on: OnField;
   href?: string;
-  /** Latin id, set 12 px uppercase and tracked. */
-  tag?: string;
-  /** A relation or note at the top in the body face (改編自 小說). */
-  rel?: string;
   /** One short line under the name. */
   line?: string;
-  /** Hide the line on wide screens or on phones (small tiles in a wall). */
+  /** Hide the line on wide screens or on phones (small tiles). */
   lineOn?: 'both' | 'wide' | 'phone' | 'none';
+  /** A relation or note at the top (改編自 小說). */
+  rel?: string;
+  /** Latin id at the top (v2; v3 tiles carry none). */
+  tag?: string;
+  /** The paper grain over the colour (the header panels use it). */
+  grain?: boolean;
+  /** Name size: `l` (masonry, 24 → 30 px), `m` (rows and panels, 20 → 24 px). */
+  size?: 'l' | 'm';
   level?: 'h2' | 'h3' | 'p';
   class?: string;
   style?: string;
 }
-const { name, bg, on, href, tag, rel, line, lineOn = 'both', level: Tag = 'p', class: className, style } = Astro.props;
+const { name, bg, on, href, line, lineOn = 'both', rel, tag, grain = false, size = 'l', level: Tag = 'p', class: className, style } = Astro.props;
 const El = href ? 'a' : 'div';
+const latin = !/[⺀-鿿豈-﫿]/.test(name);
+const fg = inkOn(bg, on);
 ---
-<El class:list={['tile', on === 'ink' && 'tile--ink', href && 'tile--link', className]} href={href} style={`--c:${bg};--on:${palette[on]};${style ?? ''}`}>
-  {tag && <span class="tag tile__tag">{tag}</span>}
-  {rel && <span class="tile__rel">{rel}</span>}
+<El
+  class:list={['tile', `tile--${size}`, on === 'ink' && 'tile--ink', href && 'tile--link', grain && 'grain', className]}
+  href={href}
+  style={`--c:${bg};--on:${fg};${style ?? ''}`}
+>
+  {(tag || rel) && (
+    <span class="tile__top">
+      {tag && <span class="tile__tag">{tag}</span>}
+      {rel && <span class="tile__rel">{rel}</span>}
+    </span>
+  )}
   <span class="tile__foot">
-    <Tag class="tile__name">{name}</Tag>
+    <Tag class:list={['tile__name', latin ? 'tile__name--latin' : 'serif']}>{name}</Tag>
     {line && lineOn !== 'none' && <span class:list={['tile__line', `tile__line--${lineOn}`]}>{line}</span>}
   </span>
   {href && (
     <svg class="tile__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   )}
 </El>
 <style>
   .tile {
-    --pad: clamp(14px, 1.4vw, 22px);
+    --pad: clamp(16px, 1.6vw, 22px);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: flex-end;
     min-width: 0;
     min-height: 0;
     padding: var(--pad);
@@ -57,29 +72,40 @@ const El = href ? 'a' : 'div';
     color: var(--on);
     transition: background-color 0.4s var(--ease-snap), scale 0.14s var(--ease-soft);
   }
-  .tile__rel { font-size: 14px; line-height: 1.5; }
+  .tile__top { position: absolute; top: var(--pad); left: var(--pad); right: calc(var(--pad) + 28px); display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.5; }
+  .tile__tag { font-family: var(--f-latin), var(--f-cjk); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
   .tile__foot { display: flex; flex-direction: column; min-width: 0; }
   .tile__name {
-    font-size: var(--tile-name, clamp(1.625rem, 2.6vw, 2.5rem));
+    font-size: var(--tile-name, var(--t-tile));
     font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: 0.01em;
-    transition: translate 0.45s var(--ease-snap);
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    transition: translate 0.5s var(--ease-snap);
   }
-  .tile__line { margin-top: 8px; max-width: 18em; font-size: 14px; line-height: 1.6; }
-  .tile--link .tile__line { padding-right: 28px; }
-  .tile__arrow { position: absolute; right: var(--pad); bottom: var(--pad); width: 20px; height: 20px; transition: translate 0.45s var(--ease-snap); }
+  .tile--m .tile__name { --t-tile: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
+  .tile__name--latin { font-family: var(--f-body); letter-spacing: 0.01em; font-weight: 500; }
+  .tile__line { margin-top: 8px; max-width: 20em; font-size: 13.5px; line-height: 1.6; transition: translate 0.5s var(--ease-snap); }
+  .tile__arrow {
+    position: absolute;
+    top: var(--pad);
+    right: var(--pad);
+    width: 18px;
+    height: 18px;
+    opacity: 0;
+    translate: -6px 0;
+    transition: opacity 0.45s var(--ease-snap), translate 0.45s var(--ease-snap);
+  }
   @media (max-width: 767px) { .tile__line--wide { display: none; } }
   @media (min-width: 768px) { .tile__line--phone { display: none; } }
   @media (hover: hover) {
     .tile--link:hover { background: color-mix(in oklab, var(--c) 88%, #000); }
-    .tile--ink.tile--link:hover { background: color-mix(in oklab, var(--c) 90%, #fff); }
-    .tile--link:hover .tile__name { translate: 0 -4px; }
-    .tile--link:hover .tile__arrow { translate: 6px 0; }
+    .tile--ink.tile--link:hover { background: color-mix(in oklab, var(--c) 86%, #fff); }
+    .tile--link:hover .tile__name, .tile--link:hover .tile__line { translate: 0 -4px; }
+    .tile--link:hover .tile__arrow { opacity: 1; translate: 0 0; }
   }
   .tile--link:focus-visible { outline: 2px solid var(--on); outline-offset: -6px; background: color-mix(in oklab, var(--c) 88%, #000); }
-  .tile--ink.tile--link:focus-visible { background: color-mix(in oklab, var(--c) 90%, #fff); }
-  .tile--link:focus-visible .tile__name { translate: 0 -4px; }
-  .tile--link:focus-visible .tile__arrow { translate: 6px 0; }
+  .tile--ink.tile--link:focus-visible { background: color-mix(in oklab, var(--c) 86%, #fff); }
+  .tile--link:focus-visible .tile__name, .tile--link:focus-visible .tile__line { translate: 0 -4px; }
+  .tile--link:focus-visible .tile__arrow { opacity: 1; translate: 0 0; }
   .tile--link:active { scale: 0.985; }
 </style>

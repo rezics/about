@@ -1,41 +1,35 @@
 ---
 /**
- * The closing block (the mock's blue close): a flat field across the page, a large line, one
- * sentence and the white pill into REZICS. The home page and the shared pages take ink blue; a
- * mini-site takes its accent (`bg`). Text is paper or ink, whichever passes AA on the field.
+ * The closing (v3): a final statement in the large serif on paper, one optional sentence under it
+ * and the ink pill 「前往 REZICS」 (or the page's own action through `label` and `href`). Every page
+ * ends on it, before the footer. `bg` (v2's coloured block) is accepted and ignored.
  */
 import { site } from '../content';
-import { textOn } from '../color';
-import { palette } from '../theme';
 import ProductCall from './ProductCall.astro';
-import Clauses from '../Clauses.astro';
 import { idFor } from '../ids';
 
 interface Props {
   title?: string;
   body?: string;
-  bg?: string;
   label?: string;
   href?: string;
+  /** Deprecated (v2): the closing is on paper in v3. */
+  bg?: string;
 }
-const { title = site.product.headline, body = site.product.body, bg = palette.link, label, href } = Astro.props;
-const on = bg === palette.link ? 'paper' : textOn(bg);
-const fg = on === 'paper' ? '#ffffff' : palette.ink;
+const { title = site.product.headline, body = site.product.body, label, href } = Astro.props;
 const id = idFor('close', title);
 ---
-<section class:list={['close', on === 'ink' && 'close--ink']} aria-labelledby={id} style={`--close-bg:${bg};--close-fg:${fg}`}>
+<section class="close" aria-labelledby={id}>
   <div class="grid">
-    <h2 id={id} class="close__title"><Clauses text={title} /></h2>
+    <h2 id={id} class="close__title t-statement">{title}</h2>
     {body && <p class="close__body">{body}</p>}
-    <div class="close__cta"><ProductCall label={label} href={href} class={on === 'ink' ? 'close__pill--ink' : 'btn--white'} /></div>
+    <div class="close__cta"><ProductCall label={label} href={href} /></div>
   </div>
 </section>
 <style>
-  .close { margin-top: var(--space-section); padding-block: clamp(72px, 9vw, 128px); background: var(--close-bg); color: var(--close-fg); --focus: var(--close-fg); }
-  .close__title { grid-column: 1 / 9; font-size: var(--t-close); font-weight: 600; line-height: 1.18; letter-spacing: 0.01em; }
-  .close__body { grid-column: 1 / 7; margin-top: 24px; font-size: 18px; line-height: 1.8; }
-  .close__cta { grid-column: 1 / 4; margin-top: 36px; }
-  .close :global(.close__pill--ink) { --btn-bg: var(--c-ink); --btn-fg: var(--c-paper); }
-  /* The white pill's label takes the block's own field, whatever the theme's link colour. */
-  .close :global(.btn--white) { --btn-fg: var(--close-bg); }
+  .close { padding-block: var(--space-section) clamp(120px, 12vw, 200px); }
+  .close__title { grid-column: 2 / 11; font-weight: var(--w-head); }
+  .close__body { grid-column: 2 / 8; margin-top: 28px; font-size: 17px; line-height: 1.9; color: var(--c-text); }
+  .close__cta { grid-column: 2 / 8; margin-top: 40px; }
+  @media (max-width: 767px) { .close { padding-bottom: 104px; } .close__body { font-size: 16px; margin-top: 20px; } .close__cta { margin-top: 32px; } }
 </style>

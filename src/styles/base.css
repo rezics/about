@@ -1,7 +1,7 @@
-/* Site foundation (DESIGN.md "Direction v2": the Swiss grid and flat seamless tiles; the
-   reference is .temp/mocks/home.html): the full-bleed 12-column grid, type roles, the
-   interactive roles (pill button, underlined link, utility link) and labels with the small red
-   square. Components add their own scoped styles; mini-sites restyle through the custom
+/* Site foundation (v3, .temp/sites/V3-SPEC.md; the reference is .temp/sites/v3-home-mock.html):
+   the full-bleed 12-column grid, type roles (serif headings and statements, sans text), the
+   interactive roles (ink pill, underlined link, utility link), eyebrow labels and the paper
+   grain. Components add their own scoped styles; mini-sites restyle through the custom
    properties in tokens.css, never by editing this file. */
 
 /* Grid: 12 columns, full bleed: the gutter is also the outer margin (one column on phones). */
@@ -27,8 +27,8 @@
 .pad-normal { padding-block: var(--space-normal); }
 .pad-airy { padding-block: var(--space-airy); }
 
-/* Grounds: flat fields, radius 0. `band-ink` is the ink band (once per page at most);
-   `band-soft` the muted panel, `band-tint` (and `band-field`) a tint of the site's accent. */
+/* Grounds (deprecated in v3: pages stay on paper; kept so older pages build). `band-ink` is the
+   ink band; `band-soft` the deeper paper, `band-tint` (and `band-field`) a tint of the accent. */
 .band-soft { background: var(--c-soft); }
 .band-tint, .band-field { background: var(--tint); }
 .band-ink {
@@ -47,87 +47,108 @@
 
 /* CJK display text breaks only between phrases: the build inserts <wbr> between BudouX phrases
    in headings and display paragraphs (scripts/phrase.mjs); overflow-wrap is the safety net. */
-h1, h2, h3, h4, .t-title, .t-h2, .t-h3, .t-big, .t-statement, .t-mega, .t-xl, .t-l, .t-m, .lede { word-break: keep-all; overflow-wrap: anywhere; }
+h1, h2, h3, h4, .serif, .t-title, .t-h2, .t-h3, .t-big, .t-statement, .t-mega, .t-xl, .t-l, .t-m, .lede, .lead { word-break: keep-all; overflow-wrap: anywhere; }
 p, dd, li, .lede { text-wrap: pretty; }
 /* Phones: running text breaks between any characters again. */
 @media (max-width: 767px) {
-  .lede { word-break: normal; }
+  .lede, .lead { word-break: normal; }
 }
 
-/* Type roles (the mock): headings in Noto Sans TC 600; text 17 to 18 px at 1.85. */
+/* Type roles (V3-SPEC "Tokens"). Headings h1 to h3 and `.serif` are Noto Serif TC 600; a
+   statement (`.t-statement`) is the serif at 500 with its second half muted; text is Noto Sans
+   TC 400 at 1.9. The build subsets the serif to the text of h1 to h3 and of `.serif` elements
+   (scripts/fonts.mjs), so serif text outside them falls back to the system serif: mark it. */
+h1, h2, h3, .serif { font-family: var(--f-serif); font-weight: var(--w-head); letter-spacing: var(--track-display); }
+.sans { font-family: var(--f-body); letter-spacing: normal; }
 .t-title, .t-mega, .t-xl {
-  font-family: var(--f-display);
+  font-family: var(--f-serif);
   font-weight: var(--w-head);
   font-size: var(--t-title);
   line-height: var(--lh-title);
   letter-spacing: var(--track-display);
 }
-.t-mega { font-size: var(--t-mega); }
-.t-h2, .t-l { font-size: var(--t-h2); font-weight: var(--w-head); line-height: 1.28; letter-spacing: var(--track-display); }
-.t-big, .t-statement { font-size: var(--t-big); font-weight: var(--w-head); line-height: 1.22; letter-spacing: var(--track-display); }
-.t-h3, .t-m { font-size: var(--t-h3); font-weight: var(--w-head); line-height: 1.45; }
+.t-h2, .t-l { font-family: var(--f-serif); font-size: var(--t-h2); font-weight: var(--w-head); line-height: var(--lh-h2); letter-spacing: var(--track-display); }
+.t-big, .t-statement { font-family: var(--f-serif); font-size: var(--t-statement); font-weight: var(--w-statement); line-height: var(--lh-statement); letter-spacing: 0.03em; }
+.t-h3, .t-m { font-family: var(--f-serif); font-size: var(--t-h3); font-weight: var(--w-head); line-height: 1.5; }
 .t-body { font-size: var(--t-body); line-height: var(--lh-text); }
-.t-s { font-size: var(--t-s); line-height: 1.75; }
-.lede { font-size: var(--t-lede); line-height: var(--lh-text); max-width: 27em; color: var(--c-text); }
+.t-s { font-size: var(--t-s); line-height: 1.8; }
+.lede, .lead { font-size: var(--t-lede); line-height: 1.95; max-width: var(--measure); color: var(--c-text); }
 .text { font-size: var(--t-body); line-height: var(--lh-text); color: var(--c-text); }
 .measure { max-width: var(--measure); }
 .muted { color: var(--c-muted); }
-/* Labels: 13 px, 600, muted. `.mlabel` leads with the small red square (a mark, never text).
-   `.mono` is the older name of `.label`: no mono outside code samples. */
-.label, .mono {
+/* The muted half of a statement: the spec's muted ink, large text only (4.2:1 on paper). */
+.quiet { color: var(--c-quiet); }
+/* Eyebrow labels: 13 px sans, muted (V3-SPEC). `.label`, `.mlabel` and `.mono` are older names:
+   v3 has no red square before labels and no mono outside code. */
+.eyebrow, .label, .mono, .mlabel {
+  display: block;
   font-family: var(--f-body);
   font-size: var(--t-xs);
   line-height: 1.5;
-  letter-spacing: 0.02em;
-  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-weight: 400;
   color: var(--c-muted);
 }
-.mlabel { display: block; font-size: var(--t-xs); font-weight: 600; letter-spacing: 0.02em; line-height: 1.5; color: var(--c-muted); }
-.mlabel::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 10px; vertical-align: 0.05em; background: var(--c-mark); }
+
+/* Paper grain on a flat tile: a fixed fractal noise multiplied over the colour, barely there. */
+.grain { position: relative; isolation: isolate; }
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+  mix-blend-mode: multiply;
+  opacity: 0.16;
+  pointer-events: none;
+}
 /* Latin ids on tiles: 12 px, uppercase, tracked. */
 .tag { font-family: var(--f-latin), var(--f-cjk); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.4; }
 
-/* Buttons: flat pills (the one rounded shape). Primary is ink blue with white text (6.1:1);
-   `.btn--white` is the white pill on a coloured closing block. Markup:
-   <a class="btn"><span class="btn__label"><span>Label</span></span></a>. */
+/* Buttons: the ink pill (V3-SPEC "Shape"): ink with paper text, 46 px high; hover takes the
+   link accent. `.btn--secondary` is an outlined pill; `.btn--white` (older) a paper pill.
+   Markup: <a class="btn"><span class="btn__label"><span>Label</span></span></a>. */
 .btn {
-  --btn-bg: var(--c-link);
-  --btn-fg: var(--c-on-link);
-  --btn-h: 48px;
+  --btn-bg: var(--c-pill);
+  --btn-fg: var(--c-on-pill);
+  --btn-hover: var(--c-link);
+  --btn-h: 46px;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   min-height: var(--btn-h);
-  padding: 0 24px;
+  padding: 0 22px;
   border: 0;
   border-radius: var(--r-pill);
   background: var(--btn-bg);
   color: var(--btn-fg);
+  font-family: var(--f-body);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color var(--d-s) var(--ease-soft), scale var(--d-s) var(--ease-soft);
+  transition: background-color 0.3s var(--ease-snap), scale var(--d-s) var(--ease-soft);
 }
 .btn__label { display: inline-flex; }
 .btn__label > span + span { display: none; }
 .btn__icon { order: 2; width: 16px; height: 16px; flex: none; transition: translate var(--d-s) var(--ease-snap); }
 @media (hover: hover) {
-  .btn:hover { background: color-mix(in oklab, var(--btn-bg) 88%, #000); }
-  .btn:hover .btn__icon { translate: 4px 0; }
+  .btn:hover { background: var(--btn-hover); }
+  .btn:hover .btn__icon { translate: 3px 0; }
 }
-.btn:focus-visible .btn__icon { translate: 4px 0; }
+.btn:focus-visible { background: var(--btn-hover); }
+.btn:focus-visible .btn__icon { translate: 3px 0; }
 .btn:active { scale: 0.98; }
-.btn--small { --btn-h: 40px; font-size: 15px; padding: 0 18px; }
+.btn--small { --btn-h: 40px; font-size: 14px; padding: 0 18px; }
 .btn--small .btn__icon { width: 14px; height: 14px; }
-.btn--secondary { --btn-bg: transparent; --btn-fg: var(--c-fg); box-shadow: inset 0 0 0 1px var(--c-line-strong); }
-@media (hover: hover) { .btn--secondary:hover { background: var(--c-soft); } }
-.btn--white { --btn-bg: #ffffff; --btn-fg: var(--c-link); }
-@media (hover: hover) { .btn--white:hover { background: #eef2f8; } }
-.band-ink .btn:not(.btn--secondary):not(.btn--white) { --btn-bg: var(--c-band-fg); --btn-fg: var(--c-band-bg); }
+.btn--secondary { --btn-bg: transparent; --btn-fg: var(--c-fg); --btn-hover: transparent; box-shadow: inset 0 0 0 1px var(--c-line-strong); }
+@media (hover: hover) { .btn--secondary:hover { box-shadow: inset 0 0 0 1px var(--c-fg); } }
+.btn--white { --btn-bg: var(--c-paper); --btn-fg: var(--c-ink); --btn-hover: #ffffff; }
+.band-ink .btn:not(.btn--secondary):not(.btn--white) { --btn-bg: var(--c-band-fg); --btn-fg: var(--c-band-bg); --btn-hover: #ffffff; }
 
 /* The panel tiles keep their verbs: a name rolls one line, a block slots into place. */
 @keyframes rz-slot {
@@ -161,8 +182,8 @@ pre code { white-space: inherit; font: inherit; }
    resizes, so a heading set in clauses wraps plainly. */
 :has(> .clause) { text-wrap: wrap; }
 
-/* Text links. Standalone (`link-draw`, the mock's link): ink, 600, a 1 px rule under it; ink
-   blue on hover and focus. Inline in running text (`link-inline`): underlined. Utility: colour
+/* Text links. Standalone (`link-draw`, the header's 「前往 REZICS」): ink, 600, a 1 px rule
+   under it; the link accent on hover and focus. Inline in running text (`link-inline`): underlined. Utility: colour
    only. */
 .link-draw {
   display: inline-flex;
@@ -172,6 +193,7 @@ pre code { white-space: inherit; font: inherit; }
   padding-bottom: 2px;
   border-bottom: 1px solid currentColor;
   color: var(--c-fg);
+  font-family: var(--f-body);
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
@@ -197,8 +219,8 @@ pre code { white-space: inherit; font: inherit; }
 @media (hover: hover) { a:hover > .arrow, button:hover > .arrow, a:hover .arrow-svg { translate: 0.2em 0; } }
 a:focus-visible > .arrow { translate: 0.2em 0; }
 
-/* An image frame (the header panels' tiles keep their prints; no scene images in bodies). */
-.frame { position: relative; overflow: clip; isolation: isolate; background: var(--tint); }
+/* An image frame: square corners, the paper's own tone while the picture loads. */
+.frame { position: relative; overflow: clip; isolation: isolate; background: var(--c-panel); }
 .frame img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Grid placement (12 columns; phones stack to the full width). */
