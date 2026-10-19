@@ -146,9 +146,9 @@ page).
 | 漫畫 `/manga/` | Hero (panel sheet) → Facts: the eight parts → Tiles: the six pages → Statement → Tiles: four neighbouring kinds → Closing |
 | 系列 `/manga/series/` | Intro → Photo row (volume stack) with the five levels as facts → Facts: catalogue data → Section: names and editions → Closing |
 | 進度 `/manga/progress/` | Intro → Photo row (folded strip): switching language → Facts: kinds of "caught up" → Statement: owning is not reading → Facts: what travels with you → Closing |
-| 作者 `/manga/creators/` | Intro → Facts: credits by role → Section: one person across kinds → Statement: people, not accounts → Closing |
+| 作者 `/manga/creators/` | Intro → Facts: credits by role → Section: one person across kinds, with the person's other kinds as tiles → Statement: people, not accounts → Closing |
 | 改編 `/manga/adaptations/` | Intro → Photo row (three sheets): 《魔法禁書目錄》 as the example chain → Facts: kinds of relation → Section: kept apart → Statement: two continuities in Wiki+ → Closing |
-| 討論 `/manga/community/` | Intro → Facts: spoilers at your chapter → Section: ratings name their target → Facts: where people gather → Closing |
+| 討論 `/manga/community/` | Intro → Facts: spoilers at your chapter → Section: ratings name their target → Facts: where people gather, with the two modules as ink tiles → Closing |
 | 發表 `/manga/publish/` | Intro → Photo row (standing folded sheet) with the five steps as facts → Facts: what the author decides → Section: already serialized elsewhere → Closing (next site 遊戲) |
 
 Phones: every section is copy first; photo rows put the picture under the text at full width;
@@ -165,6 +165,31 @@ sheet's rose window.
 | `adaptations` | 改編 photo row | Three separate sheets (green, near-black, rose) touching corner to corner: separate Works joined by relations. | `#3f5a45`, `#26282b`, `#b77d77` |
 | `publish` | 發表 photo row | A near-black sheet folded into a small standing structure with panel windows, a few loose pages beside it: a manga that stands on its own. | `#26282b` |
 
-Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus a phone crop;
-section pictures 1200 and 640 wide (≤ 110 KB / ≤ 45 KB). Prompts in
+Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus a phone crop at
+960, 800 and 640 (≤ 70 / 38 / 45 KB); section pictures 1200, 800 and 640 wide (≤ 110 / 40 /
+45 KB). Prompts in
 `about:.temp/sites/manga/v3/prompts/`.
+
+### Build (v3)
+
+| File | What |
+|---|---|
+| `src/pages/manga/*.astro` | the seven pages, built only from kit parts and the three pieces below |
+| `pictures.ts` | the Picture props of the five pictures (widths 640, 800, 1200; hero 960, 1920 and its phone crop 640, 800, 960) |
+| `RowList.astro` | the fact list that belongs to the photo row above it, across columns 4 to 12 |
+| `Notes.astro` | small muted notes under a list (sources, limits, privacy) |
+| `NextChapter.astro`, `next.ts` | the next page (or, after 發表, the next site) as one IndexRows row under its chapter label |
+
+- **Inner pages end on the next chapter, then the closing.** The kit retired the finale band;
+  the site keeps its reading order with one calm index row (the kit's IndexRows hover) labelled
+  「下一話　第 N 話」. The landing has none: its page tiles already lead to 第 1 話.
+- **Closings carry only the statement and the pill** (`body=""`), so the kit's default product
+  sentence does not repeat on every page.
+- **Pictures.** Accepted attempts: `hero-2` (the sheet runs off the right edge, the copy takes
+  the empty left half; `hero-1` kept the whole page but left less paper for copy), `series-1`,
+  `progress-2` (diagonal and more photographic than `progress-1`), `adapt-1`, `publish-1`. The
+  800 wide files exist because a 390 px phone at two device pixels otherwise fetches the 1200
+  (or 960) file; the extra size keeps phone LCP down.
+- **Page tiles.** `accentRamp('#26282b')`: deep sheets and pale greys alternate across the three
+  columns; phone rows are 176 px so the chapter label never meets the name.
+
