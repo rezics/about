@@ -1,6 +1,6 @@
 # 書庫 `books`: facts and sources
 
-Every substantive claim in `copy/*.md`, with its owner document. Paths are relative to
+Every substantive claim in `src/content/sites/books.ts`, with its owner document. Paths are relative to
 `/home/edge/projects/rezics/rezics-next/` unless they start with `about:`. Section anchors are
 the documents' headings. Legal documents are drafts ("not reviewed by counsel"); claims from
 them are stated only as they say.

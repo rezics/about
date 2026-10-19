@@ -4,47 +4,22 @@
    design language as every site: the semantic tokens below are the levers. */
 [data-site='books'] {
   --c-bg: #edf1ec;
-  --c-ink: #10231d;
   --c-fg: #10231d;
   --c-muted: #4d5f58;
   --c-line: rgb(16 35 29 / 0.13);
   --c-line-strong: rgb(16 35 29 / 0.3);
-  --c-paper: #f6f8f5;
+  --bk-paper: #f6f8f5;
   --bk-t08: #e1e9e3;
   --bk-t16: #d0ddd5;
   --bk-t32: #acc2b7;
   --bk-shade: #173e37;
+  /* The inverted band (.band-ink, the footer): the green-black of the ink, paper text. */
+  --c-band-bg: #10231d;
+  --c-band-fg: #f6f8f5;
+  --c-band-muted: #a9bcb3;
+  --c-band-line: rgb(246 248 245 / 0.16);
+  --c-band-line-strong: rgb(246 248 245 / 0.34);
+  --c-band-link: #9ab8e6;
   background: var(--c-bg);
   color: var(--c-fg);
-}
-
-/* Parts as chips (DESIGN.md "Phones first"): one row each, the part's name on a field mark. */
-[data-site='books'] .bk-chips { display: flex; flex-direction: column; border-top: 1px solid var(--c-line-strong); }
-[data-site='books'] .bk-chip {
-  display: grid;
-  grid-template-columns: 9.5em minmax(0, 1fr);
-  gap: 4px 16px;
-  align-items: baseline;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--c-line-strong);
-}
-[data-site='books'] .bk-chip__name {
-  display: inline-flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 2px 8px;
-  font-weight: 900;
-}
-[data-site='books'] .bk-chip__name::before {
-  content: '';
-  align-self: center;
-  width: 0.7em;
-  height: 0.7em;
-  background: var(--field);
-  flex: none;
-}
-[data-site='books'] .bk-chip__id { color: var(--c-muted); font-family: var(--f-mono); font-size: var(--t-xs); font-weight: 400; }
-[data-site='books'] .bk-chip__note { margin: 0; }
-@media (max-width: 599px) {
-  [data-site='books'] .bk-chip { grid-template-columns: minmax(0, 1fr); }
 }

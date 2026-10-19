@@ -5,7 +5,9 @@ import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import Section from '../../kit/components/Section.astro';
 import KindSquare from '../../kit/components/KindSquare.astro';
 import Finale from '../../kit/components/Finale.astro';
-import { kindById, partById } from '../../kit/content';
+import { kindById } from '../../kit/content';
+import PartsList from '../../kit/components/PartsList.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
 import { kindFields } from '../../kit/theme';
 import { pageHref } from '../../kit/sites';
 import Bookmark from '../../sites/books/Bookmark.astro';
@@ -28,6 +30,7 @@ const next = pageBy('work');
       <h1 id="bh-title" class="t-xl bh__title" data-split="lines" data-intro>{s.hero.headline}</h1>
       <p class="lede">{s.hero.lede}</p>
       <div class="bh__actions">
+        <ProductCall />
         <a class="link-draw bh__secondary" href="#bookmark">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
       </div>
     </div>
@@ -74,14 +77,9 @@ const next = pageBy('work');
       <h2 id="parts-title" class="t-l">{s.parts.headline}</h2>
       <p class="muted">{s.parts.caption}</p>
     </div>
-    <ul class="col-5-12 bk-chips" role="list" data-reveal="slot">
-      {kind.parts.map((id) => (
-        <li class="bk-chip">
-          <span class="bk-chip__name">{partById(id).name}<span class="bk-chip__id">{id}</span></span>
-          <p class="bk-chip__note">{kind.partNotes[id]}</p>
-        </li>
-      ))}
-    </ul>
+    <div class="col-5-12">
+      <PartsList parts={kind.parts} notes={kind.partNotes} level="h3" />
+    </div>
   </Section>
 
   <!-- S5 Pages: index list -->

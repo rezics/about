@@ -570,10 +570,11 @@ The books site is a reading library: set under `[data-site='books']` in
 | Token | Value | Use and contrast |
 |---|---|---|
 | `--c-bg` | `#edf1ec` | pale celadon ground: paper with a trace of the field |
-| `--c-fg`, `--c-ink` | `#10231d` | green-black text and dark bands (about 14:1 on the ground) |
+| `--c-fg` | `#10231d` | green-black text and dark bands (about 14:1 on the ground) |
 | `--c-muted` | `#4d5f58` | green-grey secondary text (about 5.9:1 on the ground) |
 | `--c-line`, `--c-line-strong` | `rgb(16 35 29 / .13)`, `/ .3` | hairlines, card rulings |
-| `--c-paper` | `#f6f8f5` | unread squares, quiet cards |
+| `--bk-paper` | `#f6f8f5` | unread squares, quiet cards |
+| `--c-band-*` | bg `#10231d`, fg `#f6f8f5`, muted `#a9bcb3`, link `#9ab8e6` | the inverted band and the footer (muted about 8:1) |
 | `--bk-t08`, `--bk-t16`, `--bk-t32` | `#e1e9e3`, `#d0ddd5`, `#acc2b7` | field tints: panels, next square, steps |
 | `--field` | `#1d5a47` | the reading colour: read squares, finale band, chips' marks (paper on it about 7.4:1) |
 
@@ -641,6 +642,12 @@ What changed from the stage 1 plan, and why.
   Work square was not built; the kit's page transition already lands on the hero square, and
   a second travelling square would compete with it.
 - **Sub-navigation** is the kit's site bar, not a shelf of spines (see "Site-wide elements").
+- **Idle motion lives in the signature.** The landing hero is still at rest by decision: the
+  kind square is the transition target and the reading line in the bookmark figure carries the
+  idle state; the Work page's action poster cycles at rest. Other inner pages are quiet reading
+  pages; their life is in hovers and their one interactive figure each.
+- **Text-cell grids removed.** The word band is one poster line; the Wiki+ routes and the
+  World's entry types are chips; the editions 田 grid is sized by its text and stacks on phones.
 - **Theme.** The books site sets its own ground, ink, muted, lines and tints (see "Theme").
 - **Pictures.** Five images generated with the shared pipeline (codex-2 image generation,
   style reference `books-1.png`, field `#1d5a47`), encoded as AVIF and WebP at 960 px
