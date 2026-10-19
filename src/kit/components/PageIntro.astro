@@ -19,7 +19,8 @@ interface Props {
   /** Heading level: the page's h1 (default). */
   level?: 'h1' | 'h2';
   id?: string;
-  image?: { base: string; alt: string; widths?: number[]; ratio?: number };
+  /** `phone`: base of a 4:3 crop at 720 px for phones (`${phone}-720.avif|webp`). */
+  image?: { base: string; alt: string; widths?: number[]; ratio?: number; phone?: string };
   class?: string;
 }
 const { title, lede, align = 'center', level: Tag = 'h1', id = 'intro-title', image, class: className } = Astro.props;
@@ -35,7 +36,7 @@ const split = !!image && (image.ratio ?? 16 / 9) === 1;
         {hasActions && <div class="intro__actions"><slot /></div>}
       </div>
       <div class="frame intro__square">
-        <Picture base={image.base} alt={image.alt} widths={image.widths ?? [640, 1024]} ratio={1} sizes="(max-width: 767px) 100vw, 520px" eager />
+        <Picture base={image.base} alt={image.alt} widths={image.widths ?? [640, 1024]} ratio={1} sizes="(max-width: 767px) 82vw, 520px" eager />
       </div>
     </div>
   ) : (
@@ -48,7 +49,7 @@ const split = !!image && (image.ratio ?? 16 / 9) === 1;
   {image && !split && (
     <div class="container intro__media">
       <div class="frame intro__frame">
-        <Picture base={image.base} alt={image.alt} widths={image.widths ?? [640, 1024, 1536]} ratio={image.ratio ?? 16 / 9} sizes="(max-width: 767px) 100vw, min(1120px, 92vw)" eager />
+        <Picture base={image.base} alt={image.alt} widths={image.widths ?? [640, 1024, 1536]} ratio={image.ratio ?? 16 / 9} sizes="(max-width: 767px) 100vw, min(1120px, 92vw)" phone={image.phone} eager />
       </div>
     </div>
   )}

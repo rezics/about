@@ -20,7 +20,10 @@ const { href = '/', label, wordmark = true } = Astro.props;
     gap: 10px;
     min-height: 44px;
     color: var(--c-fg);
+    transition: opacity var(--d-s) var(--ease-soft);
   }
+  /* Quiet: the logo eases back a little under the pointer. */
+  @media (hover: hover) { .logo:hover { opacity: 0.72; } }
   .logo svg { width: 25px; height: 18px; fill: var(--c-mark); flex: none; }
   /* The wordmark in the interface face, as in the product. */
   .logo__word {

@@ -3,6 +3,8 @@
  * A responsive picture from `public/` (DESIGN.md "Direction v2", Imagery): AVIF with a WebP
  * fallback at the widths given, files `${base}-${width}.avif|webp`. Set inside a `.frame` for the
  * card radius and the accent tint while it loads. `ratio` is width / height of the files.
+ * `phone` art-directs phones (≤ 599 px) to their own crop, `${phone}-720.avif|webp`, so a phone
+ * never downloads the wide file only to crop it away.
  */
 interface Props {
   base: string;
@@ -11,14 +13,18 @@ interface Props {
   ratio?: number;
   sizes?: string;
   eager?: boolean;
+  /** Base path of a phone crop at 720 px (e.g. `/images/home/hero-m`). */
+  phone?: string;
   class?: string;
 }
-const { base, alt, widths = [640, 1024], ratio = 1, sizes = '(max-width: 767px) 100vw, 50vw', eager = false, class: className } = Astro.props;
+const { base, alt, widths = [640, 1024], ratio = 1, sizes = '(max-width: 767px) 100vw, 50vw', eager = false, phone, class: className } = Astro.props;
 const sorted = [...widths].sort((a, b) => a - b);
 const largest = sorted.at(-1)!;
 const set = (ext: string) => sorted.map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
 ---
 <picture class:list={['pic', className]}>
+  {phone && <source media="(max-width: 599px)" type="image/avif" srcset={`${phone}-720.avif`} />}
+  {phone && <source media="(max-width: 599px)" type="image/webp" srcset={`${phone}-720.webp`} />}
   <source type="image/avif" srcset={set('avif')} sizes={sizes} />
   <source type="image/webp" srcset={set('webp')} sizes={sizes} />
   <img

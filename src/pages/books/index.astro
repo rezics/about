@@ -37,7 +37,7 @@ const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
 }));
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/hero', alt: s.hero.alt }}>
+  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/hero', alt: s.hero.alt, phone: '/images/sites/books/hero-m' }}>
     <ProductCall />
     <a class="link-draw" href="#bookmark">{s.hero.secondary}<Arrow dir="down" /></a>
   </PageIntro>

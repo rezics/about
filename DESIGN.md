@@ -567,3 +567,8 @@ Voice (zh-Hant):
   page is a soft gradient in each kind's field (no bytes); every row and intro image is
   painted (Codex image generation), 640 and 1024 px squares or 640 to 1536 px at 16:9, AVIF
   with WebP, ≤ 120 KB.
+- 2026-10-19 (builder, v2 pilot): v2 pages lead with a large picture, so on the throttled phone
+  the picture, not the text, is the largest paint. To keep it under 2.5 s, a page preloads only
+  its two most used CJK slices (the rest load as their text is laid out; CLS measured 0), the
+  header's panels and phone sheet render at the end of the document, and wide intro images have
+  a 4:3 phone crop at 720 px (art direction in `<picture>`).

@@ -25,7 +25,7 @@ const card = (group: 'works' | 'agents'): CardItem[] =>
   <PageIntro
     title={h.hero.headline}
     lede={h.hero.lede}
-    image={{ base: '/images/home/hero', alt: h.hero.imageAlt, widths: [640, 1024, 1536], ratio: 16 / 9 }}
+    image={{ base: '/images/home/hero', alt: h.hero.imageAlt, widths: [640, 1024, 1536], ratio: 16 / 9, phone: '/images/home/hero-m' }}
   >
     <ProductCall label={h.hero.primary} />
     <a class="link-draw" href="#products">{h.hero.secondary}<Arrow dir="down" /></a>

@@ -11,6 +11,7 @@ import type { Field } from '../theme';
 import { fieldStyle } from '../theme';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import HeaderPanels from '../components/HeaderPanels.astro';
 import '../../styles/tokens.css';
 import '../../styles/engine.css';
 import '../../styles/base.css';
@@ -100,6 +101,7 @@ const jsonLd = isHome
       <slot />
     </main>
     <Footer action={action} />
+    <HeaderPanels />
     <script>
       import { start } from '../../engine/astro';
       import { setupMotion } from '../motion/setup';

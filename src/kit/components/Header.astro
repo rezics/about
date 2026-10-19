@@ -2,18 +2,18 @@
 /**
  * Global header (DESIGN.md "Navigation", restyled for "Direction v2"): logo left, four pill tabs
  * centred, one pill action right. 產品 and 模組 are disclosure buttons for the two dropdown
- * panels: floating sheets that hold the flat square tiles, the one place squares stay. The panels are native popovers, so
+ * panels: floating sheets that hold the flat square tiles, the one place squares stay. The
+ * panels and the phone sheet are rendered at the end of the document (HeaderPanels.astro), so
+ * a page's own content comes first in the HTML; the browser keeps a popover after its invoker
+ * in the focus order. The panels are native popovers, so
  * they open, close on Escape and light-dismiss without script; src/kit/motion/nav.ts adds the
  * pointer intent delay, the grace period and the safe area, and keeps aria-expanded in step.
  * Phones get a 選單 button that opens a modal sheet (native <dialog> through invoker commands,
  * with a script fallback).
  */
-import { kinds, modules, site, kindHref, moduleHref, kindImage } from '../content';
-import { kindFields, moduleFields } from '../theme';
+import { kinds, site, kindHref } from '../content';
 import Logo from './Logo.astro';
 import ProductCall from './ProductCall.astro';
-import Arrow from './Arrow.astro';
-import Square from './Square.astro';
 
 interface Props {
   path: string;
@@ -29,8 +29,6 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
       : path.startsWith('/roadmap/')
         ? 'roadmap'
         : '';
-const works = kinds.filter((k) => k.group === 'works');
-const agents = kinds.filter((k) => k.group === 'agents');
 ---
 <header class="header" data-header>
   <div class="header__bar">
@@ -59,83 +57,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
     </div>
   </div>
 
-  <div id="panel-products" class="panel" popover data-panel>
-    <div class="panel__inner grid">
-      <div class="panel__intro">
-        <p class="panel__title">{nav.productsIntro.title}</p>
-        <p class="panel__body">{nav.productsIntro.body}</p>
-        <a class="panel__all link-draw" href="/#kinds">{nav.productsIntro.all}<Arrow /></a>
-      </div>
-      <div class="panel__group panel__group--works">
-        <p class="panel__label label">{nav.groups.works}</p>
-        <ul class="panel__squares" role="list">
-          {works.map((k) => (
-            <li>
-              <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="160px" />
-              <span class="panel__summary">{k.summary}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div class="panel__group panel__group--agents">
-        <p class="panel__label label">{nav.groups.agents}</p>
-        <ul class="panel__squares" role="list">
-          {agents.map((k) => (
-            <li>
-              <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="160px" />
-              <span class="panel__summary">{k.summary}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  </div>
 
-  <div id="panel-engine" class="panel" popover data-panel>
-    <div class="panel__inner grid">
-      <div class="panel__intro">
-        <p class="panel__title">{nav.engineIntro.title}</p>
-        <p class="panel__body">{nav.engineIntro.body}</p>
-        <a class="panel__all link-draw" href="/engine/">{nav.engineIntro.all}<Arrow /></a>
-      </div>
-      <ul class="panel__squares panel__modules" role="list">
-        {modules.map((m) => (
-          <li>
-            <Square name={m.name} field={moduleFields[m.id]} mode="plain" href={moduleHref(m.id)} />
-            <span class="panel__summary">{m.summary}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-
-  <dialog id="menu" class="sheet" aria-label={nav.menu} data-menu>
-    <div class="sheet__top">
-      <Logo label={site.name} />
-      <button type="button" class="header__menu" command="close" commandfor="menu" data-menu-close>{nav.close}</button>
-    </div>
-    <div class="sheet__body">
-      <p class="sheet__label label">{nav.products}</p>
-      <ul class="sheet__squares" role="list">
-        {kinds.map((k) => (
-          <li>
-            <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="33vw" />
-          </li>
-        ))}
-      </ul>
-      <p class="sheet__label label">{nav.engine}</p>
-      <ul class="sheet__list" role="list">
-        <li><a href="/engine/">{nav.engineIntro.all}</a></li>
-        {modules.map((m) => (
-          <li><a href={moduleHref(m.id)}>{m.name}</a></li>
-        ))}
-      </ul>
-      <ul class="sheet__list sheet__list--main" role="list">
-        <li><a href="/developers/">{nav.developers}</a></li>
-        <li><a href="/roadmap/">{nav.roadmap}</a></li>
-      </ul>
-    </div>
-  </dialog>
 </header>
 
 <style>
@@ -211,77 +133,4 @@ const agents = kinds.filter((k) => k.group === 'agents');
     .header__end :global(.header__action .btn__icon) { display: none; }
   }
 
-  /* Panels: floating sheets under the bar (the sheet radius and the float shadow), opening
-     with a short fade. Inside, the flat square tiles keep their kind pictures. */
-  .panel {
-    position: fixed;
-    inset: calc(var(--header-h) + 6px) auto auto 50%;
-    width: min(calc(100vw - 2 * var(--page-pad)), calc(var(--container) + 2 * var(--page-pad)));
-    max-width: none;
-    max-height: calc(100dvh - var(--header-h) - 18px);
-    margin: 0;
-    padding: 0;
-    border: 1px solid var(--c-line);
-    border-radius: var(--r-sheet);
-    background: var(--c-surface);
-    color: var(--c-fg);
-    box-shadow: var(--shadow-float);
-    overflow: auto;
-    overscroll-behavior: contain;
-    translate: -50% 0;
-    opacity: 1;
-    transition: opacity 0.2s var(--ease-soft), translate 0.28s var(--ease-snap), overlay 0.28s allow-discrete, display 0.28s allow-discrete;
-  }
-  .panel:not(:popover-open) { opacity: 0; translate: -50% -8px; }
-  @starting-style {
-    .panel:popover-open { opacity: 0; translate: -50% -8px; }
-  }
-  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 8%, transparent); }
-  .panel__inner { padding: clamp(24px, 3vw, 36px); row-gap: 24px; }
-  .panel__intro { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 10px; }
-  .panel__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.4; }
-  .panel__body { color: var(--c-muted); font-size: var(--t-s); line-height: 1.7; }
-  .panel__all { align-self: flex-start; margin-top: 6px; font-size: var(--t-s); }
-  .panel__label { color: var(--c-muted); margin-bottom: 12px; }
-  .panel__group--works { grid-column: 5 / span 5; }
-  .panel__group--agents { grid-column: 10 / span 3; }
-  .panel__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px; }
-  .panel__group--agents .panel__squares { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .panel__modules { grid-column: 5 / span 8; grid-template-columns: repeat(5, minmax(0, 1fr)); align-self: start; }
-  .panel__summary { display: block; margin-top: 8px; font-size: var(--t-xs); line-height: 1.5; color: var(--c-muted); }
-  @media (max-width: 1100px) {
-    .panel__intro { grid-column: 1 / span 4; }
-    .panel__group--works { grid-column: 5 / span 8; }
-    .panel__group--agents { grid-column: 5 / span 8; }
-  }
-
-  /* Phone sheet */
-  .sheet {
-    width: 100%;
-    max-width: none;
-    height: 100dvh;
-    max-height: none;
-    margin: 0;
-    padding: 0 var(--page-pad) 32px;
-    border: 0;
-    background: var(--c-bg);
-    color: var(--c-fg);
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-  .sheet::backdrop { background: var(--c-bg); }
-  .sheet__top { display: flex; justify-content: space-between; align-items: center; height: var(--header-h); }
-  .sheet__top .header__menu { display: inline-flex; align-items: center; }
-  .sheet__label { color: var(--c-muted); margin: 24px 0 12px; }
-  .sheet__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .sheet__list { border-top: 1px solid var(--c-line); }
-  .sheet__list a {
-    display: flex;
-    align-items: center;
-    min-height: 52px;
-    border-bottom: 1px solid var(--c-line);
-    font-size: var(--t-h3);
-    font-weight: 500;
-  }
-  .sheet__list--main { margin-top: 24px; }
 </style>

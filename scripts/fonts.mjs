@@ -183,9 +183,10 @@ export async function cjk(dist = path.join(root, 'dist')) {
     const css = needed
       .map((f) => `@font-face{font-family:"REZICS Sans";src:url(/fonts/${f.name}) format("woff2");font-weight:400 900;font-display:swap;unicode-range:${f.range}}`)
       .join('');
-    // Every slice the page uses is preloaded (a page uses a few), so the face swaps in before or
-    // near the first paint rather than after it.
-    const preload = needed.slice(0, 4).map((f) => `<link rel="preload" href="/fonts/${f.name}" as="font" type="font/woff2" crossorigin>`).join('');
+    // The two most used slices a page needs are preloaded, so most of its text swaps in near the
+    // first paint; the rest load as the text that needs them is laid out, so on a slow phone they
+    // do not take the bandwidth the page's large picture (its largest paint) needs.
+    const preload = needed.slice(0, 2).map((f) => `<link rel="preload" href="/fonts/${f.name}" as="font" type="font/woff2" crossorigin>`).join('');
     const tag = /<meta name="rezics:fonts"[^>]*>/;
     if (!tag.test(page.html)) throw new Error(`${page.route}: missing <meta name="rezics:fonts"> in the head`);
     fs.writeFileSync(page.file, page.html.replace(tag, `${preload}<style>${css}</style>`));

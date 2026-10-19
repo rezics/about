@@ -110,7 +110,7 @@ Import from `src/kit/components/`:
 
 | Component | Use |
 |---|---|
-| `PageIntro` | the page's opening and its h1: `title`, `lede`, actions in the slot, `image` (`{ base, alt, widths?, ratio? }`: a wide image under the text, or with `ratio: 1` a square beside it), `align` (`center` default, `start`) |
+| `PageIntro` | the page's opening and its h1: `title`, `lede`, actions in the slot, `image` (`{ base, alt, widths?, ratio?, phone? }`: a wide image under the text with its 4:3 phone crop, or with `ratio: 1` a square beside it), `align` (`center` default, `start`) |
 | `MediaRow` | a short text block beside a large rounded image: `title`, `body` (string or paragraphs), `image`, `reverse`, links in the slot. Phones: text, then image |
 | `Statement` | one centred statement set larger than body text, `sub` under it, a link in the slot; one per page at most |
 | `CardRow`, `Card` | a heading (`title`, `lede`, a link in slot `link`) and cards of art + name + one line linking deeper: `items` (`{ title, body, href, label, art }`, art `{ image: { base } }` or `{ field, variant }` for a soft gradient), `cols` (2 to 5), `ratio`, `phone` (`scroll` sideways row, or `stack`), `bare` inside your own section |
@@ -199,6 +199,12 @@ product's Aura design (DESIGN.md "Direction v2"). The pilot (home, books, games)
   current page on the accent tint.
 - Footer: the closing panel (`ClosingPanel`, from `site.product`) and link columns; no ink band.
   `Finale` is a calm tinted card; `SiteFinale` picks the next page or site for you.
+- Fonts: a page preloads its two most used CJK slices (it used to preload all it used); the
+  rest load as their text is laid out, so the page's large picture is not starved on a slow
+  phone. The header's panels and phone sheet render at the end of the document
+  (`HeaderPanels.astro`) so a page's content comes first in the HTML.
+- `PageIntro` takes `image.phone`, a 4:3 crop at 720 px (`${phone}-720.avif|webp`) that phones
+  get instead of the wide file; give every wide intro image one.
 - Transitions: a short cross-fade; `data-flip-src` and `data-flip-target` do nothing now.
   Reveals fade and rise a few pixels; `data-reveal="image"` settles a picture; blinking cursors
   and idle cycles are gone.

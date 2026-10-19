@@ -35,7 +35,7 @@ const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
 }));
 const releases = s.releases.items.map((it) => ({ label: it.label[0], title: it.label[1], body: it.body }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/hero', alt: s.hero.alt }}>
+<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/hero', alt: s.hero.alt, phone: '/images/sites/games/hero-m' }}>
   <ProductCall />
   <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.hero.secondary}<Arrow /></a>
 </PageIntro>
