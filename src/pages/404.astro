@@ -4,33 +4,38 @@
 import PageLayout from '../kit/layouts/PageLayout.astro';
 import PhotoHero from '../kit/components/PhotoHero.astro';
 import Section from '../kit/components/Section.astro';
-import TileMasonry, { type MasonryItem } from '../kit/components/TileMasonry.astro';
+import TileMasonry from '../kit/components/TileMasonry.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
-import { kinds, site, kindHref } from '../kit/content';
-import { kindFields } from '../kit/theme';
+import Closing from '../kit/components/Closing.astro';
+import { kinds, site } from '../kit/content';
+import { kindTiles, oneRow } from '../kit/tiles';
 
 const nf = site.notFound;
-const tiles: MasonryItem[] = kinds.map((k) => ({ id: k.id, name: k.name, href: kindHref(k.id), bg: kindFields[k.id].field, on: kindFields[k.id].on }));
-const columns = tiles.map((t) => [{ id: t.id, h: 1 }]);
-const phone = [0, 3, 6].map((i) => tiles.slice(i, i + 3).map((t) => ({ id: t.id })));
+const tiles = kindTiles(kinds.map((k) => k.id)).map((t) => ({ ...t, line: undefined }));
+const columns = oneRow(tiles);
+const phone = [0, 2, 4, 6, 8].map((i) => tiles.slice(i, i + 2).map((t) => ({ id: t.id })));
 ---
 <PageLayout meta={nf.meta} noindex>
   <PhotoHero
+    eyebrow={nf.eyebrow}
     title={nf.headline}
     lede={nf.body}
     class="nf"
-    image={{ src: '/images/home/missing', widths: [960, 1920], width: 1920, height: 1280, alt: nf.imageAlt, position: '100% 50%' }}
+    image={{
+      src: '/images/home/missing', widths: [960, 1920], width: 1920, height: 1280,
+      alt: nf.imageAlt, position: '0% 50%',
+      phone: { src: '/images/home/missing', widths: [640, 960], width: 960, height: 640 },
+    }}
   >
     <ProductCall href="/" label={nf.back} />
   </PhotoHero>
   <Section title={nf.restart} class="nf-kinds">
-    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={168} phoneRow={92} size="m" label={nf.restart} />
+    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={168} phoneRow={104} size="m" label={nf.restart} />
   </Section>
-  <div class="nf-end" aria-hidden="true"></div>
+  <Closing body="" />
 </PageLayout>
 <style>
   :global(section.phero.nf) { --hero-h: min(calc(100svh - var(--header-h)), 720px); }
   :global(.nf-kinds .section__title) { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem); }
   :global(.nf-kinds .section__wide) { margin-top: 48px; }
-  .nf-end { height: clamp(96px, 10vw, 160px); }
 </style>

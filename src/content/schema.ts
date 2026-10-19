@@ -136,7 +136,7 @@ export interface Site {
    */
   home: {
     hero: { headline: string; lede: string; primary: string; imageAlt: string };
-    kinds: { eyebrow: string; headline: [string, string] };
+    kinds: { eyebrow: string; headline: [string, string]; lines?: Partial<Record<KindId, string>> };
     statement: { text: string; sub: string };
     identity: { eyebrow: string; headline: string; body: [string, string]; link: string; imageAlt: string };
     community: { eyebrow: string; headline: string; body: [string, string]; link: string; imageAlt: string };
@@ -175,7 +175,7 @@ export interface Site {
   };
   /** The closing panel that ends every page and leads into the product. */
   product: { headline: string; body: string };
-  notFound: { meta: Meta; headline: string; body: string; back: string; imageAlt: string; restart: string };
+  notFound: { meta: Meta; eyebrow?: string; headline: string; body: string; back: string; imageAlt: string; restart: string };
   /** Shared control labels (kit primitives such as the composing square). */
   ui: {
     /** Pause and resume a moving element (WCAG 2.2.2). */
