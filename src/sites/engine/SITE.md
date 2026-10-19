@@ -74,20 +74,21 @@ One idea per section; sections are the kit's v3 section (eyebrow in columns 1 to
 **`/engine/`** (hero picture: five grey sheets stepped like layers of one foundation, five
 small kind squares on the top sheet)
 
-1. Hero: 「九種東西，拆開來是同一套部件。」
+1. Hero (no eyebrow: the site bar already reads 模組): 「九種東西，同一套部件。」
 2. 九種東西 (the one interaction): a picker of nine kind tiles in their V3 colours (serif name on
-   the tile, near-seamless, one row on desktop, three columns on phones); below it, the chosen
-   kind's eight parts as a hairline facts list (part name left, what it does for this kind
-   right, from `kinds.ts` `partNotes`) and 「前往書庫」 to the kind's site. CSS-only: radio inputs
-   before the tiles, `:checked ~` selectors show one list; without CSS every list shows. Books
-   is chosen at first. No idle cycling.
+   the tile, 3 px apart; one row of nine from 1200 px, five and four below, three columns on
+   phones); below it, the chosen kind's eight parts as a hairline facts list (part name left,
+   what it does for this kind right, from `kinds.ts` `partNotes`) and 「前往書庫」 to the kind's
+   site. CSS only: each radio lies over its tile (so its own focus ring is the tile's) and
+   `.pick:has(#pick-<kind>:checked)` shows one list; the chosen tile carries an inner ring and an
+   arrow down. Books is chosen at first. No idle cycling.
 3. Statement: 「部件只做一次，換一種東西，換的只是排法。」
 4. 十五個部件: facts list of the fifteen parts (name left; what it does, then a muted 例 line).
-5. 五個模組: tile row of the five modules in ink tints (name, the question it answers, its body),
-   each linking to its page. This is the family ring without a current module.
+5. 五個模組: a masonry of the five modules in ink tints (通用索引 full height, the other four two
+   by two; name and the question it answers), each linking to its page.
 6. 新的一種: 「多一種東西，是設定的工作。」 facts list of the five settings, and the note that new
    behaviour is built once as a new part.
-7. Closing: 「九種東西，同一套部件，同一個帳號。」
+7. Closing: 「從你在乎的那一種開始，其他八種已經接在同一個帳號上。」
 
 **`/engine/universal-index/`** (picture: a precise grid of grey and coloured chips on one
 charcoal sheet, one chip lifting)
@@ -98,8 +99,9 @@ charcoal sheet, one chip lifting)
 3. 署名: credits as facts list (鎌池和馬, 灰村清孝, 近木野中哉 with their roles), a line on
    characters.
 4. 三層: facts list 作品 / 文本 / 發行 and the rewrite aside.
-5. 關聯: facts list of relations seen from the main series (《新約》, 《創約》, manga, anime,
-   spin-offs, the visual novel) and the evidence note.
+5. 關聯: a tile masonry of the six related works seen from the main series' page, each in its
+   kind's colour with the relation label at the top (《新約》 and 《創約》 續作; manga, anime and
+   the visual novel 改編作品; 《科學超電磁砲》 外傳), then the evidence note.
 6. 篩選: facts list of three rules.
 7. 合併與拆分: facts list of five rules.
 8. Family closing; closing line 「到 REZICS 找一部你熟悉的作品，看看它所有的名字。」
@@ -121,7 +123,7 @@ rooms with a doorway; a rose and a blue square inside)
 **`/roadmap/`** (picture: a long graphite strip unrolling from its roll with six kind squares
 along it)
 
-1. Hero: 「引擎橫著蓋，社群一個一個開。」
+1. Hero (no eyebrow: the site bar reads 路線圖): 「引擎橫著蓋，社群一個一個開。」
 2. 順序: numbered facts list of five steps (先有部件, 九種東西, 一次一個社群, 更多種類, 新的能力).
 3. 更多種類: facts list of six further kinds.
 4. Statement: 「部件很少增加，種類一直在增加；每多一種，用的還是同一套引擎。」

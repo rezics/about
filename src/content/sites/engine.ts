@@ -50,8 +50,8 @@ export default {
       ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
     },
     hero: {
-      headline: '九種東西，拆開來是同一套部件。',
-      lede: '書、動畫、遊戲、軟體，連 MCP 伺服器也一樣，每一種都從十五個共用部件裡取八個組成。',
+      headline: '九種東西，同一套部件。',
+      lede: '書、動畫、遊戲、軟體，連 MCP 伺服器也一樣：每一種都從十五個共用部件裡取八個組成。',
       alt: '五張深淺不同的灰紙疊成階梯，最上面一張排著五小張彩色紙片',
     },
     picker: {
@@ -112,6 +112,6 @@ export default {
       ],
       note: '需要新的行為時，它只做一次，成為新的部件，每一種東西都能接上。',
     },
-    closing: '九種東西，同一套部件，同一個帳號。',
+    closing: '從你在乎的那一種開始，其他八種已經接在同一個帳號上。',
   },
 } satisfies MiniSite<EngineStrings>;
