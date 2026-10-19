@@ -13,6 +13,7 @@ import Closing from '../../kit/components/Closing.astro';
 import Next from '../../sites/mcp/Next.astro';
 import Note from '../../sites/mcp/Note.astro';
 import Words from '../../sites/mcp/Words.astro';
+import EagerPhoto from '../../sites/mcp/EagerPhoto.astro';
 import site from '../../content/sites/mcp';
 import { nextPages } from '../../sites/mcp/tiles';
 
@@ -24,13 +25,13 @@ const rows = v.diff.rows.map((r) => [r.tool, r.before, r.after]);
   <Words>
     <PageHead label={site.name} title={v.hero.headline} lede={v.hero.lede} />
 
-    <PhotoRow
+    <EagerPhoto><PhotoRow
       side="right"
       eyebrow={v.start.label}
       title={v.start.headline}
       body={[v.start.body, v.start.note]}
-      image={{ src: '/images/sites/mcp/versions', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.versions }}
-    />
+      image={{ src: '/images/sites/mcp/versions', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.versions, phone: { src: '/images/sites/mcp/versions', widths: [640], width: 640, height: 427 } }}
+    /></EagerPhoto>
 
     <Section eyebrow={v.diff.label} title={v.diff.headline} lead={[v.diff.body, v.diff.consequence]}>
       <Table class="mcp-diff" columns={v.diff.columns} rows={rows} caption={v.diff.caption} label={v.diff.headline} />

@@ -152,7 +152,7 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
 
 **`/mcp/evidence/`**
 
-1. Page head: 「一筆紀錄，寫的是哪一天、哪個組合。」
+1. Page head: 「一筆紀錄，寫明日期與組合。」
 2. Photo row `records` beside the specimen record as a facts list (field left, value and
    note right; 示意).
 3. Section 範圍: 「它說明了什麼，沒說明什麼。」 two hairline lists side by side (stacked on
@@ -217,6 +217,10 @@ All six routes use the shared v3 parts. No shared kit files were edited by this 
 comparison in three columns on phones. The landing aligns the hero photograph to the left
 and uses six columns for its copy at 768 to 1279 px, preserving the empty paper beside it.
 The developers tile links to the existing `/developers/` landing.
+`EagerPhoto.astro` lets the first photo row on 目錄、證據、版本 load eagerly and use the
+existing 640 px phone source. The shared PhotoRow has no priority option, so this wrapper
+adjusts only its rendered image attributes. MCP-scoped CSS makes the site-bar tab strip the
+positioning origin, correcting the shared current-tab centring calculation on phones.
 
 Validation so far: `task check` passes (195 tests, no type diagnostics); its production build
 passes. The static audit has zero FAILs and no MCP warnings. Browser QA is queued.

@@ -1,0 +1,9 @@
+---
+// PhotoRow does not expose Picture's priority prop. Preserve its shared markup and styling,
+// while letting the first inner-page photograph load before lazy-image layout discovery.
+const html = await Astro.slots.render('default');
+const eager = html.replace(/<img\b[^>]*>/g, (tag) =>
+  tag.replace(/\sloading="lazy"/, ' loading="eager" fetchpriority="high"'),
+);
+---
+<Fragment set:html={eager} />

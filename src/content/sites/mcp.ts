@@ -220,7 +220,7 @@ const strings: McpStrings = {
 
   evidence: {
     hero: {
-      headline: '一筆紀錄，寫的是哪一天、哪個組合。',
+      headline: '一筆紀錄，寫明日期與組合。',
       lede: '一個人或一個 AI 代理，用某個用戶端的某一版，以某種語言，請伺服器的某一版做一件事。結果和日期一起寫下來，就是一筆紀錄。MCP Hub 的證據，由一筆筆這樣的紀錄組成。',
     },
     specimen: {

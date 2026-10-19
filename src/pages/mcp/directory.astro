@@ -12,6 +12,7 @@ import Closing from '../../kit/components/Closing.astro';
 import Next from '../../sites/mcp/Next.astro';
 import Note from '../../sites/mcp/Note.astro';
 import Words from '../../sites/mcp/Words.astro';
+import EagerPhoto from '../../sites/mcp/EagerPhoto.astro';
 import site from '../../content/sites/mcp';
 import { kindById } from '../../kit/content';
 import { nextPages } from '../../sites/mcp/tiles';
@@ -24,13 +25,13 @@ const kind = kindById('mcp');
   <Words>
     <PageHead label={site.name} title={d.hero.headline} lede={d.hero.lede} />
 
-    <PhotoRow
+    <EagerPhoto><PhotoRow
       side="right"
       eyebrow={d.records.label}
       title={d.records.headline}
       body={d.records.body}
-      image={{ src: '/images/sites/mcp/identity', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.identity }}
-    />
+      image={{ src: '/images/sites/mcp/identity', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.identity, phone: { src: '/images/sites/mcp/identity', widths: [640], width: 640, height: 427 } }}
+    /></EagerPhoto>
     <div class="grid mcp-follow">
       <FactList class="mcp-follow__list" items={d.records.items} />
     </div>
