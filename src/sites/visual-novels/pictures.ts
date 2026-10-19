@@ -1,14 +1,16 @@
 // The site's paper still-life pictures (SITE.md "Pictures"), in the shape the kit's Picture,
-// PhotoHero and PhotoRow take. Decorative: the copy beside each one carries the meaning, so
-// every alt is empty. Files: public/images/sites/visual-novels/<name>-<width>.avif|webp.
+// PhotoHero and PhotoRow take. Descriptions live in the site's content file.
+// Files: public/images/sites/visual-novels/<name>-<width>.avif|webp.
+import site from '../../content/sites/visual-novels';
+
 const dir = '/images/sites/visual-novels';
 
-const section = (name: string) => ({
+const section = (name: keyof typeof site.strings.images) => ({
   src: `${dir}/${name}`,
   widths: [640, 1200],
   width: 1200,
   height: 800,
-  alt: '',
+  alt: site.strings.images[name],
 });
 
 export const pictures = {
@@ -18,7 +20,7 @@ export const pictures = {
     widths: [960, 1920],
     width: 1920,
     height: 1280,
-    alt: '',
+    alt: site.strings.images.routes,
     position: '100% 50%',
     phone: { src: `${dir}/routes-phone`, widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
   },

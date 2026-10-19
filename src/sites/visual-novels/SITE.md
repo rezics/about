@@ -65,9 +65,10 @@ the paper ground (4.0:1).
 
 ### Pictures (paper still-life series)
 
-Generated with codex-2 against `.temp/sites/v3-reference-paper.png`; violet with ink blue and
-dusty rose as the only neighbours. Decorative (`alt=""`): the copy beside each one carries the
-meaning.
+Generated with codex-2 against the approved reference; violet with ink blue and dusty rose as
+the only neighbours. All five inherited pictures were inspected against the worktree's copy
+at `.temp/ref/v3-reference-paper.png` and retained. Descriptive alt text lives with the site's
+copy in `strings.images`; no text is baked into the photographs.
 
 | Picture | Idea | Used on |
 |---|---|---|
@@ -179,6 +180,25 @@ one colour from `accentRamp` wherever its tile appears.
 Copy first on every screen: the hero's photograph follows the copy as a ~260 px band; photo
 rows put the text first and the picture below; tables become stacked rows; the page tiles go
 two columns.
+
+### Completion review
+
+- Merged the current `site/v3` before continuing and retained the inherited v3 work.
+- Standardised Taiwan usage to 「修補檔」 and 「路線條件」; the two-language-site example is
+  explained entirely in zh-Hant.
+- Clearing every release filter returns all six illustrative records, consistently in the
+  pure query and in the browser. The Chinese title on the Japanese-content phone release
+  still cannot satisfy a Chinese-content query.
+- Local kit workarounds in `vn.css`: position the site-bar scroll container so the kit's
+  current-tab centring uses its own coordinates, and give text navigation a quiet 2 px hover
+  and focus response. Shared files are untouched.
+- The next-site tile uses its own line from content instead of repeating the dropdown's
+  summary. Photographs have descriptions in content, so their alt attributes survive static
+  serialisation and pass the static audit.
+- The page stays still at rest by V3-SPEC. Reduced motion keeps every section visible.
+
+The final screenshots, performance measurements and remaining limitations are recorded in
+`.temp/codex-report.md`.
 
 ## Decisions
 

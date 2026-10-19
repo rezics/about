@@ -48,7 +48,7 @@ export function verdictText(release: VnRelease, selection: Selection, labels: Ve
 }
 
 export const matches = (releases: VnRelease[], selection: Selection) =>
-  releases.filter((r) => judge(r, selection).state === 'match');
+  releases.filter((r) => judge(r, selection).state !== 'fail');
 
 /** The filter's state on first paint and without script. */
 export const initialSelection: Selection = { language: 'zh', platform: 'pc', coverage: 'full' };

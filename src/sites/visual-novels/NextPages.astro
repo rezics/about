@@ -10,7 +10,6 @@ import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace 
 import { fieldOf } from '../../kit/theme';
 import { pageTiles } from './tiles';
 import { nextSite, pageHref, siteFor } from '../../kit/sites';
-import { kinds } from '../../kit/content';
 import site from '../../content/sites/visual-novels';
 
 interface Props {
@@ -31,10 +30,9 @@ const here = inner.findIndex((p) => p.slug === found.page.slug);
 const nextPage = inner[here + 1];
 const other = nextPage ? undefined : nextSite(site);
 if (!nextPage && !other) throw new Error('NextPages: no next page or site');
-const otherKind = other ? kinds.find((k) => k.id === other.id) : undefined;
 const lead: MasonryItem = nextPage
   ? tileOf(nextPage.slug, rows[nextPage.slug]!)
-  : { id: other!.id, name: other!.name, line: otherKind?.summary, href: other!.base, bg: fieldOf(other!.theme).field, on: fieldOf(other!.theme).on };
+  : { id: other!.id, name: other!.name, line: sh.nextSiteLine, href: other!.base, bg: fieldOf(other!.theme).field, on: fieldOf(other!.theme).on };
 const rest = inner.filter((p) => p.slug !== found.page.slug && p.slug !== nextPage?.slug).slice(0, 4).map((p) => tileOf(p.slug, rows[p.slug]!));
 const items = [lead, ...rest];
 const columns: MasonryPlace[][] = [

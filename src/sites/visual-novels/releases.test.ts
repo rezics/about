@@ -9,6 +9,7 @@ const byId = (id: string) => releases.find((r) => r.id === id)!;
 describe('usable release', () => {
   test('nothing chosen leaves every release neutral', () => {
     expect(releases.every((r) => judge(r, {}).state === 'neutral')).toBe(true);
+    expect(matches(releases, {})).toEqual(releases);
   });
 
   test('the first selection keeps exactly the complete Chinese patch for computers', () => {

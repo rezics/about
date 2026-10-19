@@ -26,8 +26,8 @@ const meta = (title: string, description: string): Meta => ({ title, description
 const releases: VnRelease[] = [
   { id: 'r1', name: '原版（1.02）', values: { language: 'ja', platform: 'pc', region: 'jp', coverage: 'full' }, translator: '無', source: '無', status: '官方' },
   { id: 'r2', name: '官方中文版', values: { language: 'zh', platform: 'console', region: 'tw', coverage: 'full' }, translator: '發行商', source: '原版', status: '官方' },
-  { id: 'r3', name: '同好中文化補丁 第一版', values: { language: 'zh', platform: 'pc', region: 'any', coverage: 'partial' }, coverageNote: '共通線與兩條路線', translator: '同好翻譯團隊', source: '原版 1.02', status: '非官方' },
-  { id: 'r4', name: '同好中文化補丁 第二版', values: { language: 'zh', platform: 'pc', region: 'any', coverage: 'full' }, translator: '同好翻譯團隊', source: '原版 1.02', status: '非官方' },
+  { id: 'r3', name: '同好中文化修補檔 第一版', values: { language: 'zh', platform: 'pc', region: 'any', coverage: 'partial' }, coverageNote: '共通線與兩條路線', translator: '同好翻譯團隊', source: '原版 1.02', status: '非官方' },
+  { id: 'r4', name: '同好中文化修補檔 第二版', values: { language: 'zh', platform: 'pc', region: 'any', coverage: 'full' }, translator: '同好翻譯團隊', source: '原版 1.02', status: '非官方' },
   { id: 'r5', name: '英文試玩版', values: { language: 'en', platform: 'pc', region: 'any', coverage: 'trial' }, translator: '發行商', source: '原版', status: '官方' },
   { id: 'r6', name: '手機版', values: { language: 'ja', platform: 'mobile', region: 'tw', coverage: 'full' }, titleLanguage: 'zh', translator: '無', source: '無', status: '官方' },
 ];
@@ -51,9 +51,18 @@ const strings = {
     closed: '尚未讀到',
     nextPage: '下一頁',
     nextSite: '下一站',
+    nextSiteLine: '依版本與相容紀錄，挑選合適的 MCP 伺服器。',
     /** The closing statement on every page of the site. */
     closing: '下一部視覺小說，從能玩的那一版開始。',
     releases,
+  },
+
+  images: {
+    routes: '紫色紙條在暖白紙面上分岔，一條藍色分支延伸向右。',
+    window: '紫色、藍色與粉色紙張層層交疊，同一個開口貫穿每一層。',
+    thread: '深淺兩張紫色紙由穿孔相連，對應翻譯與它的來源。',
+    fold: '一條紫色紙帶逐段攤開，末端仍摺著。',
+    sites: '同一張紫色紙折出兩個獨立的小結構，共用相連的底面。',
   },
 
   landing: {
@@ -77,7 +86,7 @@ const strings = {
       headline: '同一套部件，在視覺小說裡各有分工。',
       body: '每一種東西都由同一套部件組成，視覺小說用的是這八個。',
       notes: {
-        identity: '一部作品一個身分，原版、移植、譯本與補丁都掛在它底下。',
+        identity: '一部作品一個身分，原版、移植、譯本與修補檔都掛在它底下。',
         editions: '每個發行版本各自記下語言、平台、地區，以及內容涵蓋多少。',
         names: '日文原名、中文譯名、拼音與別名並存，各自標明語言。',
         credits: '劇本、原畫、音樂、配音與翻譯，每筆署名都連到一個人的頁面。',
@@ -115,7 +124,7 @@ const strings = {
   releases: {
     hero: {
       headline: '一個版本一列，條件都寫在那一列。',
-      lede: '同一部視覺小說，可能有原版、移植版、官方譯本、同好補丁與試玩版。REZICS 替每一個版本各記一筆，寫清楚它收錄的語言、能玩的平台、發行的地區，以及內容涵蓋多少。',
+      lede: '同一部視覺小說，可能有原版、移植版、官方譯本、同好修補檔與試玩版。REZICS 替每一個版本各記一筆，寫清楚它收錄的語言、能玩的平台、發行的地區，以及內容涵蓋多少。',
     },
     matrix: {
       label: '篩選',
@@ -178,7 +187,7 @@ const strings = {
         { title: '譯者', body: '翻譯團隊與每一位譯者都有自己的身分頁。同一個人翻過哪些作品，在他的頁面一次看完。' },
         { title: '依據', body: '翻譯指向它依據的那一版，例如原版 1.02，而不是籠統的「原作」。來源還沒確認，就標為未確認，不會隨便填一個。' },
         { title: '範圍', body: '共通線、哪幾條路線、有沒有附錄，範圍寫在發行上。開始玩之前，就知道會不會玩到一半變回日文。' },
-        { title: '更新', body: '補丁推出新版，就新增一筆發行。舊版保留當時的範圍，誰玩的是哪一版，都對得上。' },
+        { title: '更新', body: '修補檔推出新版，就新增一筆發行。舊版保留當時的範圍，誰玩的是哪一版，都對得上。' },
       ] as Item[],
     },
     reviews: {
@@ -193,11 +202,11 @@ const strings = {
     },
     teams: {
       label: '給翻譯團隊',
-      headline: '補丁的每一版，都有自己的頁面。',
+      headline: '修補檔的每一版，都有自己的頁面。',
       items: [
         { title: '團隊頁', body: '團隊與成員各有身分，翻過的作品與每一筆發行列在一起。' },
-        { title: '發行頁', body: '補丁的每個版本都有自己的頁面與討論串，玩家的回饋集中在同一處。' },
-        { title: '追蹤', body: '玩家可以追蹤你的團隊，新補丁推出時收到通知。' },
+        { title: '發行頁', body: '修補檔的每個版本都有自己的頁面與討論串，玩家的回饋集中在同一處。' },
+        { title: '追蹤', body: '玩家可以追蹤你的團隊，新修補檔推出時收到通知。' },
         { title: '更正', body: '發行資料寫錯了，可以直接提出更正，審核通過才會生效。' },
       ] as Item[],
     },
@@ -339,7 +348,7 @@ const strings = {
     locator: {
       label: '位置',
       headline: '每一條資訊，都指得回一句台詞。',
-      body: '位置由三項組成：腳本的雜湊值、標籤，以及台詞的順序。路線守衛記下這句台詞屬於哪一條路線。持有同一版本的審核者，在自己的電腦上就能核對原文。',
+      body: '位置由三項組成：腳本的雜湊值、標籤，以及台詞的順序。路線條件記下這句台詞屬於哪一條路線。持有同一版本的審核者，在自己的電腦上就能核對原文。',
       fields: [
         { label: '腳本雜湊', value: 'sha256 9f2c04b7', code: true },
         { label: '標籤', value: 'route_two_day3', code: true },
@@ -379,7 +388,7 @@ const strings = {
       body: '名稱、介紹與排序由各站自己決定；作品、角色與製作人員的身分，兩站共用同一份。',
       columns: { field: '', zh: '中文站', ja: '日文站' },
       rows: [
-        { field: '名稱', zh: '一部視覺小說', ja: 'あるビジュアルノベル' },
+        { field: '名稱', zh: '中文名稱（示意）', ja: '日文名稱（示意）' },
         { field: '介紹', zh: '中文社群自己寫', ja: '日文社群自己寫' },
         { field: '排序', zh: '依中文版推出日期', ja: '依日文版推出日期' },
       ],
@@ -462,7 +471,7 @@ export default {
       label: '翻譯與譯者',
       meta: meta(
         '翻譯與譯者：寫明出處',
-        '每份視覺小說翻譯都寫明譯者、依據的確切版本與涵蓋範圍。同好翻譯不會被標成官方，補丁更新另記一筆，翻譯也能和故事分開評價。',
+        '每份視覺小說翻譯都寫明譯者、依據的確切版本與涵蓋範圍。同好翻譯不會被標成官方，修補檔更新另記一筆，翻譯也能和故事分開評價。',
       ),
     },
     {
