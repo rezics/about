@@ -288,4 +288,4 @@ Continues the previous build and its uncommitted layout refinements. Merged `sit
 
 ### Intermediate-width hero correction
 
-The first extra screenshot pass found that `position: 100% 50%` cropped away empty paper at 768 px, placing ink text on dark paper. Use `0% 50%` for the desktop photograph; the explicit phone crop keeps its own position. At 768–1199 px, `src/sites/community/module-hero.css` sets the two-clause headline to 32–44 px so it fits the kit’s copy columns. Opening and closing markup remain the shared family parts. This is a local workaround, with no kit or shared style edits.
+The first extra screenshot pass found that `position: 100% 50%` cropped away empty paper at 768 px, placing ink text on dark paper. Use `0% 50%` for the desktop photograph; the explicit phone crop keeps its own position. At 768–1399 px, `src/sites/community/module-hero.css` sets the two-clause headline to 32–52 px so it fits the kit’s copy columns. Opening and closing markup remain the shared family parts. This is a local workaround, with no kit or shared style edits.

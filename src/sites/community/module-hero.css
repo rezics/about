@@ -1,6 +1,6 @@
 /* Keep the kit hero opening and its five-column copy area. At intermediate widths,
    the two headline clauses need a smaller scale; the photographs retain their left
    paper margin through image.position. Phone art direction stays in PhotoHero. */
-@media (min-width: 768px) and (max-width: 1199px) {
-  .module-hero .phero__title { font-size: clamp(32px, 3.6vw, 44px); }
+@media (min-width: 768px) and (max-width: 1399px) {
+  .module-hero .phero__title { font-size: clamp(32px, 4vw, 52px); }
 }
