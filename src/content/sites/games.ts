@@ -25,11 +25,19 @@ export interface ExampleRelease {
   state?: string;
 }
 
-export interface InventoryItem {
+export interface ExampleItem {
   id: string;
-  /** Two short lines, the way an inventory names an item: platform, then edition. */
+  /** Platform, then edition or state. */
   label: [string, string];
   body: string;
+}
+
+/** A text-and-image row on the landing page (DESIGN.md "Direction v2"). */
+export interface Row {
+  headline: string;
+  body: string[];
+  links: string[];
+  alt: string;
 }
 
 export type GamesStrings = {
@@ -40,15 +48,16 @@ export type GamesStrings = {
     releases: ExampleRelease[];
   };
   landing: {
-    hero: { headline: string; lede: string; secondary: string; caption: string };
-    inventory: {
+    hero: { headline: string; lede: string; secondary: string; alt: string };
+    releases: {
       headline: string;
       lede: string;
-      descHeading: string;
+      link: string;
+      alt: string;
       caption: string;
-      empty: string;
-      items: InventoryItem[];
+      items: ExampleItem[];
     };
+    store: Row;
     pages: { headline: string; rows: { slug: string; body: string }[] };
     parts: { headline: string; lede: string; caption: string; notes: Partial<Record<PartId, string>> };
     specifics: { statement: string; body: string };
@@ -74,7 +83,7 @@ export type GamesStrings = {
   };
   store: {
     hero: { headline: string; lede: string; secondary: string; imageAlt: string };
-    checkout: { headline: string; centre: string; caption: string; cells: Titled[] };
+    checkout: { headline: string; caption: string; cells: Titled[] };
     purchase: { headline: string; lede: string; steps: Titled[] };
     keep: { headline: string; body: string; squares: Titled[] };
     privacy: { statement: string; body: string };
@@ -83,7 +92,7 @@ export type GamesStrings = {
   library: {
     hero: { headline: string; lede: string; imageAlt: string };
     status: { headline: string; chapters: Titled[] };
-    slots: { headline: string; lede: string; rows: { slot: string; release: string; state: string }[]; empty: string; caption: string };
+    slots: { headline: string; lede: string; columns: [string, string, string]; rows: { slot: string; release: string; state: string }[]; caption: string };
     together: { headline: string; lede: string; tiles: { to: KindId; name: string; at: string }[]; caption: string; lists: string };
     playtime: { headline: string; lede: string; facts: Titled[]; note: string };
     takeout: { statement: string; body: string };
@@ -101,10 +110,8 @@ export type GamesStrings = {
     fog: {
       headline: string;
       lede: string;
-      chapter: string;
-      all: string;
-      covered: string;
-      position: string;
+      /** "From chapter {n}". */
+      from: string;
       groups: { title: string; cells: { name: string; from: number }[] }[];
       caption: string;
     };
@@ -149,17 +156,17 @@ const strings: GamesStrings = {
 
   landing: {
     hero: {
-      headline: '一款遊戲的一切，各有一格。',
+      headline: '每一款遊戲，每一個版本，都記得清楚。',
       lede: 'REZICS 為每款遊戲建立一個身分。各平台的發行、版本、語言與需求分開記錄，評分寫明針對哪一版，攻略與 Wiki+ 掛在同一款遊戲上。獨立創作者也在這裡直接賣出能留著的遊戲檔案。',
-      secondary: '打開道具欄',
-      caption: '往下捲，「版本」這個部件會打開成一整個道具欄。',
+      secondary: '看平台與版本',
+      alt: '油畫風格的插圖：傍晚的客廳一角，矮桌上放著遊戲手把與幾個素面的遊戲盒，窗外是鈷藍色的天空。',
     },
-    inventory: {
-      headline: '同一款遊戲的每一種發行，各占一格。',
-      lede: '電腦、家用主機、掌機與手機各有發行，地區版、豪華版與完整版也各算一筆。選一格，旁邊的說明框列出它的語言、需求與上架紀錄。',
-      descHeading: '說明',
-      caption: '示意：一款虛構的冒險遊戲。用方向鍵或點按換一格。',
-      empty: '空格',
+    releases: {
+      headline: '同一款遊戲的每一種發行，分開記錄。',
+      lede: '電腦、家用主機、掌機與手機各有發行，地區版、豪華版與完整版也各算一筆。每一筆都寫明自己的語言、需求與上架紀錄。',
+      link: '看怎麼找出能玩的那一版',
+      alt: '油畫風格的插圖：晨光裡的木桌上，幾排素面的遊戲卡匣、光碟與盒子正在整理。',
+      caption: '示意：一款虛構冒險遊戲的九筆發行。',
       items: [
         { id: 'pc-std', label: ['電腦版', '標準版'], body: '文字與字幕有繁中、日文和英文，配音只有日文。三種語言分開記，不會混成一句「支援中文」。' },
         { id: 'pc-deluxe', label: ['電腦版', '豪華版'], body: '多收一張原聲帶。原聲帶有自己的頁面與評分，分數不會和遊戲加在一起。' },
@@ -171,6 +178,15 @@ const strings: GamesStrings = {
         { id: 'demo', label: ['試玩版', '獨立發行'], body: '試玩版是一筆獨立的發行，寫明內容涵蓋到哪裡。' },
         { id: 'fan-zh', label: ['玩家', '中文化'], body: '署名中文化團隊，寫明依據哪個版本、翻了多少。它不會被標成官方中文。' },
       ],
+    },
+    store: {
+      headline: '買下的遊戲，檔案留在你手上。',
+      body: [
+        'REZICS 的商店販售簽約獨立創作者的遊戲與視覺小說，沒有 DRM，也不需要啟動器。',
+        '創作者保有著作權，結算單逐項列出每一筆扣除；玩家在同一頁看得到評分、討論與 Wiki+。',
+      ],
+      links: ['看商店', '給創作者'],
+      alt: '油畫風格的插圖：黃昏的街邊，一家小店的櫥窗裡亮著暖光，木架上擺著素面的盒子。',
     },
     pages: {
       headline: '六件事，各有一頁。',
@@ -246,7 +262,7 @@ const strings: GamesStrings = {
         { title: '玩家中文化', body: '署名團隊，寫明依據的版本與涵蓋範圍，永遠不標成官方。' },
         { title: '後來加入的語言', body: '更新才加入的語言是新的語言版本，指回它的來源，不改寫原本的發行紀錄。' },
       ],
-      imageAlt: '平面印刷風格的插圖：三個厚薄不同的遊戲盒疊在一起，最上面一盒打開，露出一張沒有圖案的光碟。',
+      imageAlt: '油畫風格的插圖：明亮的木桌上排著幾排素面的卡匣與光碟，像一份正在分類的收藏。',
     },
     requirements: {
       headline: '需求，要寫明是誰說的。',
@@ -280,12 +296,11 @@ const strings: GamesStrings = {
       headline: '買一次，檔案留在你手上。',
       lede: '這裡的遊戲與視覺小說，來自與 REZICS 簽約的獨立創作者。沒有 DRM，不需要啟動器，買過的遊戲登入後隨時能重新下載。',
       secondary: '看一次購買的流程',
-      imageAlt: '平面印刷風格的插圖：一個打開的方形紙箱，裡面立著一個素面的方形卡匣，旁邊靠著一張摺起來的收據。',
+      imageAlt: '油畫風格的插圖：傍晚的小店櫥窗透出暖光，玻璃上映著鈷藍色的天空。',
     },
     checkout: {
       headline: '結帳之前，這八件事都寫在頁面上。',
-      centre: '結帳前',
-      caption: '中間是結帳，四周是付錢之前一定看得到的東西。',
+      caption: '每一款遊戲的頁面都列出這些，付款之前就看得到。',
       cells: [
         { title: '版本與語言', body: '你買的是哪一個版本，裡面有哪些語言。' },
         { title: '相容需求', body: '支援哪些平台，執行需要什麼條件。' },
@@ -337,10 +352,10 @@ const strings: GamesStrings = {
     hero: {
       headline: '你的遊戲庫，跨平台，也跨種類。',
       lede: '電腦、主機、掌機與手機上的遊戲，記在同一個地方。每一輪遊玩記得用的是哪個平台的哪一版，你讀的書、追的動畫也在旁邊。',
-      imageAlt: '平面印刷風格的插圖：一排方形卡匣整齊立在淺托盤裡，每個卡匣只有一條色帶，托盤最後留著一個空位。',
+      imageAlt: '油畫風格的插圖：午後的窗邊，一座木架上整齊排著藍白色書背的遊戲盒，架上留著一個空位。',
     },
     status: {
-      headline: '從想玩到破關，狀態寫在方塊上。',
+      headline: '從想玩到破關，每個狀態分開記。',
       chapters: [
         { title: '想玩', body: '放進想玩，就會追蹤這款遊戲。你讀得懂的語言出了新版本，會收到通知。' },
         { title: '在玩', body: '記下現在玩到哪一章、用的是哪一版。討論與 Wiki+ 會依這個進度收起劇透。' },
@@ -352,12 +367,12 @@ const strings: GamesStrings = {
     slots: {
       headline: '每一輪遊玩，是一個存檔。',
       lede: '同一款遊戲玩第二次，是新的一輪，不會蓋掉第一輪。每一輪記下平台、版本與進度。',
+      columns: ['存檔', '平台與版本', '狀態'],
       rows: [
         { slot: '存檔一', release: '掌機版，亞洲版', state: '破關' },
         { slot: '存檔二', release: '電腦版，1.2 版', state: '在玩，第五章' },
         { slot: '存檔三', release: '家用主機版，完整版', state: '暫停，在擴充內容' },
       ],
-      empty: '新的一輪',
       caption: '示意。擁有哪個版本另外記錄：買了，不等於玩過。',
     },
     together: {
@@ -405,7 +420,7 @@ const strings: GamesStrings = {
         { title: '2.0 版', body: '大幅改版。' },
         { title: '完整版', body: '收錄全部擴充內容的發行。' },
       ],
-      caption: '示意：方塊堆成的分布，沒有真實數字。',
+      caption: '示意：一款虛構遊戲的版本。',
     },
     who: {
       headline: '分數背後是哪一群人',
@@ -453,11 +468,8 @@ const strings: GamesStrings = {
     },
     fog: {
       headline: '還沒玩到的地方，先蓋起來。',
-      lede: 'Wiki+ 像一張地圖。你記下的進度之前，角色、地點與事件全都看得到；之後的格子先蓋起來，想看也能一次全部打開。',
-      chapter: '第 {n} 章',
-      all: '全部顯示',
-      covered: '還沒玩到，先蓋起來',
-      position: '顯示到',
+      lede: 'Wiki+ 像一張地圖。你記下的進度之前，角色、地點與事件全都看得到；之後的先蓋起來，想看也能一次全部打開。',
+      from: '第 {n} 章起',
       groups: [
         { title: '人物', cells: [{ name: '主角', from: 1 }, { name: '旅伴', from: 2 }, { name: '守門人', from: 4 }] },
         { title: '地點', cells: [{ name: '出發的村子', from: 1 }, { name: '北方的塔', from: 3 }, { name: '地下水道', from: 5 }] },
@@ -472,7 +484,7 @@ const strings: GamesStrings = {
         { title: '模組合集寫明目標', body: '社群整理的模組合集，寫明對應的遊戲版本，以及有沒有檢查過相容性。' },
         { title: '每一筆修改都有紀錄', body: '看得到誰改了什麼，可以比對兩個版本，也可以還原。' },
       ],
-      imageAlt: '平面印刷風格的插圖：一張攤開的紙本地圖畫滿方格，一條紅色虛線路線穿過幾個圖釘。',
+      imageAlt: '油畫風格的插圖：木桌上攤開一張手繪的奇幻地圖，旁邊有黃銅指南針、幾根圖釘和一盞小燈。',
     },
     rules: {
       headline: 'Wiki+ 的五條規則',
@@ -486,9 +498,9 @@ const strings: GamesStrings = {
     },
     adaptations: {
       headline: '從原作到遊戲，一條關係接一條。',
-      lede: '以公有領域的《三國演義》為例。小說、漫畫、動畫與遊戲各是一部作品，用「改編自」連起來，同一個人物在每一部裡都是同一個身分。',
+      lede: '以一個虛構的故事為例（示意）。小說、漫畫、動畫與遊戲各是一部作品，用「改編自」連起來，同一個人物在每一部裡都是同一個身分。',
       chain: [
-        { to: 'books', name: '小說', body: '《三國演義》原著，一百二十回。' },
+        { to: 'books', name: '小說', body: '原著小說，有自己的作者與章節。' },
         { to: 'manga', name: '漫畫', body: '改編自小說，有自己的作者與分冊。', relation: '改編自' },
         { to: 'anime', name: '動畫', body: '改編自漫畫，也找得到原著小說。', relation: '改編自' },
         { to: 'games', name: '戰略遊戲', body: '改編自小說，每個平台各有發行。', relation: '改編自' },
@@ -507,7 +519,7 @@ const strings: GamesStrings = {
     hero: {
       headline: '發行你的遊戲，著作權留在你身上。',
       lede: 'REZICS 與獨立創作者簽約，代為發行遊戲與視覺小說。玩家買到沒有 DRM 的檔案與後續更新；你拿到逐項列明的結算單，以及一個連起所有作品的身分。',
-      imageAlt: '平面印刷風格的插圖：一張活頁方格紙上畫著幾個方塊組成的圖案，一支鉛筆斜放在紙上，旁邊有一塊橡皮擦。',
+      imageAlt: '油畫風格的插圖：傍晚窗邊的工作桌，素描本上畫著關卡草圖，旁邊是彩色鉛筆、繪圖板與半打包的紙箱。',
     },
     rights: {
       headline: '你保留的，和你授權的',

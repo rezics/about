@@ -1,195 +1,73 @@
 ---
-// /games/ (SITE.md 6.1): split hero, the 開箱 stage, six pages, eight parts, statement,
-// connections, finale.
-import Section from '../../kit/components/Section.astro';
+// /games/ (DESIGN.md "Direction v2"): the centred intro over the games corner, the releases row
+// and the nine example releases (示意), a statement, the six pages as cards, the store row, the
+// eight parts, the neighbouring kinds, and the next page.
+import PageIntro from '../../kit/components/PageIntro.astro';
+import MediaRow from '../../kit/components/MediaRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import SectionHead from '../../kit/components/SectionHead.astro';
+import CardRow, { type CardItem } from '../../kit/components/CardRow.astro';
+import ItemGrid from '../../kit/components/ItemGrid.astro';
 import PartsList from '../../kit/components/PartsList.astro';
-import Square from '../../kit/components/Square.astro';
-import KindSquare from '../../kit/components/KindSquare.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
-import { kindById } from '../../kit/content';
+import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Arrow from '../../kit/components/Arrow.astro';
+import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/games';
-import Inventory from './Inventory.astro';
-import GamesFinale from './GamesFinale.astro';
-import Lines from './Lines.astro';
 import './games.css';
 
 const s = site.strings.landing;
 const kind = kindById('games');
 const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-// Names set inside the preview squares: one that fills a square for every page label.
-const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
+const pages: CardItem[] = s.pages.rows.map((r, i) => ({
+  title: pageBy(r.slug).label,
+  body: r.body,
+  href: pageHref(site, pageBy(r.slug)),
+  art: { field: kindFields.games.field, variant: i },
+}));
+const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
+  title: kindById(c.to).name,
+  body: c.body,
+  href: kindHref(c.to),
+  art: { field: kindFields[c.to].field, variant: i },
+}));
+const releases = s.releases.items.map((it) => ({ label: it.label[0], title: it.label[1], body: it.body }));
 ---
-<!-- 1 Hero: split frame, the game's square as the transition target -->
-<section class="hero grid" aria-labelledby="hero-title">
-  <div class="hero__text">
-    <h1 id="hero-title" class="t-xl">{s.hero.headline}</h1>
-    <p class="lede">{s.hero.lede}</p>
-    <div class="hero__actions">
-      <ProductCall />
-      <a class="link-draw" href="#inventory">{s.hero.secondary}<span class="arrow" aria-hidden="true"> ↓</span></a>
-    </div>
-  </div>
-  <div class="hero__scene">
-    <div class="hero__square">
-      <KindSquare kind="games" mode="image" link={false} flip="target" eager sizes="(max-width: 767px) 100vw, 44vw" />
-      <span class="g-cursor hero__select" aria-hidden="true" data-cursor></span>
-    </div>
-    <p class="hero__caption g-cap">{s.hero.caption}</p>
+<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/hero', alt: s.hero.alt }}>
+  <ProductCall />
+  <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.hero.secondary}<Arrow /></a>
+</PageIntro>
+
+<MediaRow title={s.releases.headline} body={s.releases.lede} image={{ base: '/images/sites/games/releases', alt: s.releases.alt }}>
+  <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.releases.link}<Arrow /></a>
+</MediaRow>
+
+<section class="g-sec" aria-label={s.releases.caption}>
+  <div class="container g-stack">
+    <ItemGrid items={releases} cols={3} />
+    <p class="g-cap">{s.releases.caption}</p>
   </div>
 </section>
 
-<!-- 2 開箱: the signature, a pinned stage -->
-<div id="inventory"><Inventory copy={s.inventory} parts={kind.parts} /></div>
+<Statement text={s.specifics.statement} sub={s.specifics.body} />
 
-<!-- 3 Six pages: index list with a square preview -->
-<Section mood="normal" labelledby="pages-title" class="pages" data-preview-list>
-  <div class="col-1-4 pages__aside">
-    <h2 id="pages-title" class="t-l">{s.pages.headline}</h2>
-    <div class="pages__preview" aria-hidden="true">
-      {s.pages.rows.map((r, i) => (
-        <div class="pages__preview-item" data-preview-item={r.slug} data-active={i === 0 ? '' : undefined}>
-          <Square name={squareName[r.slug] ?? pageBy(r.slug).label} field={kindFields.games} />
-        </div>
-      ))}
-    </div>
+<CardRow title={s.pages.headline} items={pages} cols={3} ratio={16 / 9} />
+
+<MediaRow title={s.store.headline} body={s.store.body} image={{ base: '/images/sites/games/store', alt: s.store.alt }} reverse>
+  <a class="link-draw" href={pageHref(site, pageBy('store'))}>{s.store.links[0]}<Arrow /></a>
+  <a class="link-draw" href={pageHref(site, pageBy('creators'))}>{s.store.links[1]}<Arrow /></a>
+</MediaRow>
+
+<section class="g-sec" aria-labelledby="parts-title">
+  <div class="container g-stack">
+    <SectionHead id="parts-title" title={s.parts.headline} lede={s.parts.lede} />
+    <PartsList parts={kind.parts} notes={s.parts.notes} level="h3" />
+    <p class="g-cap">{s.parts.caption}</p>
   </div>
-  <ol class="col-5-12 pages__list" role="list">
-    {s.pages.rows.map((r, i) => (
-      <li>
-        <a class="pages__row" href={pageHref(site, pageBy(r.slug))} data-preview-key={r.slug} data-active={i === 0 ? '' : undefined}>
-          <span class="pages__mark" aria-hidden="true"></span>
-          <span class="pages__name t-l">{pageBy(r.slug).label}</span>
-          <span class="pages__body">{r.body}</span>
-          <span class="arrow pages__arrow" aria-hidden="true">→</span>
-        </a>
-      </li>
-    ))}
-  </ol>
-</Section>
+</section>
 
-<!-- 4 Eight parts: labelled chips, one line each -->
-<Section mood="normal" labelledby="parts-title" class="parts-sec">
-  <div class="col-1-4 g-head">
-    <h2 id="parts-title" class="t-l" data-split="lines">{s.parts.headline}</h2>
-    <p class="muted">{s.parts.lede}</p>
-    <p class="g-cap mono">{s.parts.caption}</p>
-  </div>
-  <div class="partlist"><PartsList parts={kind.parts} notes={s.parts.notes} level="h3" /></div>
-</Section>
+<CardRow title={s.connections.headline} lede={s.connections.lede} items={neighbours} cols={5} ratio={4 / 3} />
 
-<!-- 5 Specifics: statement on a light band -->
-<Section mood="airy" labelledby="specifics-title" class="specifics g-light">
-  <h2 id="specifics-title" class="col-2-11 g-statement" data-split="lines"><Lines text={s.specifics.statement} /></h2>
-  <p class="specifics__body muted">{s.specifics.body}</p>
-</Section>
-
-<!-- 6 Connections: asymmetric pair, five neighbouring kinds -->
-<Section mood="normal" labelledby="connections-title" class="connections">
-  <div class="col-1-4 g-head">
-    <h2 id="connections-title" class="t-l">{s.connections.headline}</h2>
-    <p class="muted">{s.connections.lede}</p>
-  </div>
-  <ul class="connections__grid" role="list" data-reveal="slot">
-    {s.connections.squares.map((c) => (
-      <li class="connections__item">
-        <KindSquare kind={c.to} mode="flood" sizes="(max-width: 767px) 45vw, 16vw" />
-        <p class="connections__body">{c.body}</p>
-      </li>
-    ))}
-  </ul>
-</Section>
-
-<GamesFinale />
-
-<style>
-  .hero {
-    min-height: calc(100svh - var(--header-h) - var(--bar-h));
-    align-items: center;
-    padding-block: clamp(32px, 5vw, 72px);
-    row-gap: 32px;
-  }
-  .hero__text { grid-column: 1 / span 5; display: flex; flex-direction: column; gap: 24px; }
-  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: 8px; }
-  .hero__scene { grid-column: 7 / span 6; display: flex; flex-direction: column; gap: 12px; }
-  .hero__square { position: relative; width: min(100%, calc(100svh - var(--header-h) - var(--bar-h) - 120px)); justify-self: end; margin-left: auto; }
-  .hero__caption { color: var(--c-muted); align-self: flex-end; text-align: right; max-width: 34em; display: flex; align-items: center; gap: 10px; }
-  /* The square is the selected slot: the red cursor waits around it (blinks at rest). */
-  .hero__square .hero__select { left: -10px; top: -10px; right: -10px; bottom: -10px; }
-
-  .pages__aside { display: flex; flex-direction: column; gap: 32px; align-self: start; position: sticky; top: calc(var(--header-h) + var(--bar-h) + 32px); }
-  .pages__preview { position: relative; width: min(100%, 260px); aspect-ratio: 1; }
-  .pages__preview-item { position: absolute; inset: 0; clip-path: inset(0 0 100% 0); transition: clip-path var(--d-m) var(--ease-snap); }
-  .pages__preview-item[data-active] { clip-path: inset(0 0 0 0); }
-  .pages__list { list-style: none; padding: 0; border-top: 1px solid var(--c-line-strong); }
-  .pages__row {
-    position: relative;
-    display: grid;
-    grid-template-columns: 28px minmax(0, 5fr) minmax(0, 6fr) 24px;
-    align-items: center;
-    gap: var(--gutter);
-    padding-block: 22px;
-    border-bottom: 1px solid var(--c-line-strong);
-  }
-  .pages__row { isolation: isolate; transition: color var(--d-s) var(--ease-snap); }
-  .pages__row::before {
-    /* the row floods with the field in one grid step, like the primary button */
-    content: '';
-    position: absolute;
-    inset: 0 calc(-1 * var(--gutter) / 2);
-    z-index: -1;
-    background: var(--g-field);
-    clip-path: inset(0 100% 0 0);
-    transition: clip-path var(--d-m) var(--ease-snap);
-  }
-  .pages__mark { width: 18px; height: 18px; border: 1px solid var(--c-line-strong); transition: border-color var(--d-s), background-color var(--d-s); }
-  .pages__name { transition: translate var(--d-m) var(--ease-snap); }
-  .pages__body { color: var(--c-muted); line-height: 1.6; }
-  .pages__row[data-active] .pages__mark { border: 3px solid var(--c-mark); }
-  @media (hover: hover) {
-    .pages__row:hover::before { clip-path: inset(0 0 0 0); }
-    .pages__row:hover .pages__name { translate: 12px 0; }
-    .pages__row:hover .pages__body { color: var(--c-fg); }
-    .pages__row:hover .pages__arrow { translate: 0.3em 0; }
-  }
-  .pages__row:focus-visible::before { clip-path: inset(0 0 0 0); }
-  .pages__row:focus-visible .pages__name { translate: 12px 0; }
-  .pages__row:focus-visible .pages__body { color: var(--c-fg); }
-
-  .partlist { grid-column: 5 / span 8; }
-
-  .specifics__body { grid-column: 5 / span 5; line-height: var(--lh-text); }
-
-  .connections__grid {
-    grid-column: 6 / span 7;
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--gutter);
-  }
-  .connections__item:nth-child(4) { grid-column: 2; }
-  .connections__body { margin-top: 12px; font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
-
-  @media (max-width: 1023px) {
-    .partlist { grid-column: 1 / -1; }
-    .hero__text { grid-column: 1 / span 6; }
-    .hero__scene { grid-column: 7 / span 6; }
-    .connections__grid { grid-column: 1 / -1; margin-top: 16px; }
-  }
-  @media (max-width: 767px) {
-    .hero { min-height: 0; }
-    .hero__text, .hero__scene { grid-column: 1 / -1; }
-    .hero__square { width: 100%; }
-    .hero__caption { text-align: left; align-self: flex-start; }
-    .pages__preview { display: none; }
-    .pages__row { grid-template-columns: 20px minmax(0, 1fr) 20px; row-gap: 4px; }
-    .pages__body { grid-column: 2; grid-row: 2; }
-    .pages__arrow { grid-column: 3; grid-row: 1; }
-    .specifics__body { grid-column: 1 / -1; }
-    .pages__aside { position: static; }
-    .connections__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .connections__item:nth-child(4) { grid-column: auto; }
-  }
-</style>
+<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />

@@ -1,5 +1,15 @@
 # 遊戲 `games`: site design record
 
+> **Direction v2 (2026-10-19).** The page bodies were rebuilt on the kit's v2 primitives (DESIGN.md
+> "Direction v2: a company homepage"): the night-blue theme is gone; Aura ground and ink with the
+> games field `#2a49c9` as the accent in art, tints and the site bar's marker; painterly art (hero
+> `hero`, rows `releases`, `store`, inner pages `library`, `guides`, `creators`, all in
+> `public/images/sites/games/`). The 開箱 inventory, the selection cursor, the purchase pan, the
+> block distributions and the fogged map grid became calm sections: the nine example releases as
+> a titled list, numbered steps, cards, tables and lists. The release table stays as a filter
+> (pills, soft cells, no cursor). The adaptation example is a fictional story (示意). Where this
+> record describes the 格位 concept, squares or the dark theme, it is history.
+
 Built in stage 2. Routes `/games/` and `/games/<page>/`. All copy lives in
 `src/content/sites/games.ts`, claims and sources in `facts.md`. DESIGN.md's system (方塊, palette, type, grid, 歸位, voice,
 claims) is binding; this file only adds what is specific to the games site.

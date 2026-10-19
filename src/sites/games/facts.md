@@ -118,7 +118,7 @@ is not a claim about REZICS.
 | One character, one page; voice credit binds performer, character and work | `contracts/catalog.md` ("A contextual credit must bind performer, character and Work in one occurrence"); character pages in the wiki section |
 | Local toolkit reads visual-novel scripts on the holder's machine; proposals; REZICS never receives the full text | `product/goal.md#wiki-the-flagship`; `contracts/information-verification.md#a-big-franchise-wiki-for-every-work` (reads literal visual-novel scripts) |
 | Adaptation chains traversable; publication order and recommended order distinct | `contracts/work-and-release.md#catalogue-acceptance-fixtures` (queries 8 and 11); `plan/frontend.md#work-page` item 4 |
-| 《三國演義》 has 120 chapters (回) | general knowledge (the standard 120-回 text); public domain |
+| Adaptation chain example: a fictional story (示意) as novel, manga, anime and game | illustrative, no real work (old classics removed per DESIGN.md decision of 2026-10-19 on examples) |
 | Realm is the community; Zone is its routed site with routes, navigation, theme, documents | `contracts/space.md#surfaces-and-routers`; `product/platform-thesis.md#zones-are-routed-sites` |
 
 ## `/games/creators/`

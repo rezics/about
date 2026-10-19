@@ -1,198 +1,54 @@
 ---
-// /games/releases/ (SITE.md 6.2): work-first table hero, release states, languages, requirements,
-// one release with many works, offers, finale.
-import Section from '../../kit/components/Section.astro';
+// /games/releases/ (DESIGN.md "Direction v2"): the intro beside the sorted releases, the table
+// that binds language and platform to one release (示意), release states, languages,
+// requirements, bundles, the offers statement, and the next page.
+import PageIntro from '../../kit/components/PageIntro.astro';
+import SectionHead from '../../kit/components/SectionHead.astro';
+import ItemGrid from '../../kit/components/ItemGrid.astro';
+import Statement from '../../kit/components/Statement.astro';
+import SiteFinale from '../../kit/components/SiteFinale.astro';
 import site from '../../content/sites/games';
 import ReleaseTable from './ReleaseTable.astro';
-import Pic from './Pic.astro';
-import GamesFinale from './GamesFinale.astro';
-import Lines from './Lines.astro';
 import './games.css';
 
 const s = site.strings.releases;
-const tile = (title: string) => s.bundles.tiles.find((t) => t.title === title)!;
 ---
-<!-- 1 Hero: work-first, the table is the hero -->
-<section class="rhero grid" aria-labelledby="rhero-title">
-  <div class="rhero__head">
-    <h1 id="rhero-title" class="t-xl">{s.hero.headline}</h1>
-    <p class="lede">{s.hero.lede}</p>
-  </div>
-  <div class="rhero__table">
+<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/releases', alt: s.languages.imageAlt, ratio: 1 }} />
+
+<section class="g-sec" aria-label={s.hero.caption}>
+  <div class="container">
     <ReleaseTable copy={s.hero} example={site.strings.example} />
   </div>
 </section>
 
-<!-- 2 Release states: filmstrip row, a real sequence -->
-<Section mood="tight" labelledby="states-title" class="states">
-  <div class="col-1-6 g-head">
-    <h2 id="states-title" class="t-l" data-split="lines">{s.states.headline}</h2>
-    <p class="muted">{s.states.lede}</p>
+<section class="g-sec" aria-labelledby="states-title">
+  <div class="container g-stack">
+    <SectionHead id="states-title" title={s.states.headline} lede={s.states.lede} />
+    <ItemGrid items={s.states.steps} cols={5} numbered />
   </div>
-  <ol class="states__row" role="list" data-reveal="slot">
-    {s.states.steps.map((step, i) => (
-      <li class="states__step">
-        <div class="states__sq g-slot">
-          <h3 class="states__name">{step.title}</h3>
-          <span class="states__n mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-        </div>
-        <p class="states__body">{step.body}</p>
-      </li>
-    ))}
-  </ol>
-</Section>
+</section>
 
-<!-- 3 Languages: asymmetric pair -->
-<Section mood="airy" labelledby="lang-title" class="langs">
-  <div class="langs__pic" data-reveal="clip">
-    <Pic name="releases" alt={s.languages.imageAlt} sizes="(max-width: 767px) 100vw, 55vw" />
+<section class="g-sec" aria-labelledby="lang-title">
+  <div class="container g-stack">
+    <SectionHead id="lang-title" title={s.languages.headline} lede={s.languages.body} />
+    <ItemGrid items={s.languages.items} cols={3} look="cards" />
   </div>
-  <div class="langs__text">
-    <h2 id="lang-title" class="t-l" data-split="lines">{s.languages.headline}</h2>
-    <p class="g-body">{s.languages.body}</p>
-    <dl class="langs__items">
-      {s.languages.items.map((it) => (
-        <div class="langs__item">
-          <dt class="t-m">{it.title}</dt>
-          <dd class="muted">{it.body}</dd>
-        </div>
-      ))}
-    </dl>
+</section>
+
+<section class="g-sec" aria-labelledby="req-title">
+  <div class="container g-stack">
+    <SectionHead id="req-title" title={s.requirements.headline} lede={s.requirements.lede} />
+    <ItemGrid items={s.requirements.columns} cols={3} />
   </div>
-</Section>
+</section>
 
-<!-- 4 Requirements: data/facts, three columns of claims -->
-<Section mood="normal" band="field" labelledby="req-title" class="req">
-  <div class="col-1-8 g-head">
-    <h2 id="req-title" class="t-l">{s.requirements.headline}</h2>
-    <p class="muted">{s.requirements.lede}</p>
+<section class="g-sec" aria-labelledby="bundle-title">
+  <div class="container g-stack">
+    <SectionHead id="bundle-title" title={s.bundles.headline} lede={s.bundles.lede} />
+    <ItemGrid items={s.bundles.tiles} cols={3} look="cards" />
   </div>
-  <ul class="req__cols" role="list" data-reveal="slot">
-    {s.requirements.columns.map((c, i) => (
-      <li class:list={['req__col g-slot', i === 2 && 'g-slot--empty']}>
-        <h3 class="t-l">{c.title}</h3>
-        <p>{c.body}</p>
-      </li>
-    ))}
-  </ul>
-</Section>
+</section>
 
-<!-- 5 One release, many works: gallery wall -->
-<Section mood="airy" labelledby="bundle-title" class="bundle">
-  <div class="col-1-4 g-head">
-    <h2 id="bundle-title" class="t-l" data-split="lines">{s.bundles.headline}</h2>
-    <p class="muted">{s.bundles.lede}</p>
-  </div>
-  <div class="bundle__wall" data-reveal="slot">
-    <div class="bundle__box">
-      <h3 class="bundle__title">{tile('完整版').title}</h3>
-      <p class="bundle__body">{tile('完整版').body}</p>
-      <div class="bundle__inner">
-        {[tile('本體'), tile('擴充內容')].map((t) => (
-          <div class="bundle__tile g-slot">
-            <h3 class="bundle__title">{t.title}</h3>
-            <p class="bundle__body">{t.body}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-    {[tile('原聲帶'), tile('重製版'), tile('模組')].map((t, i) => (
-      <div class:list={['bundle__tile g-slot', `bundle__tile--${i}`]}>
-        <h3 class="bundle__title">{t.title}</h3>
-        <p class="bundle__body">{t.body}</p>
-      </div>
-    ))}
-    <span class="bundle__empty g-slot--empty" aria-hidden="true"></span>
-  </div>
-</Section>
+<Statement text={s.offers.statement} sub={s.offers.body} />
 
-<!-- 6 Offers: statement -->
-<Section mood="airy" labelledby="offers-title" class="offers g-light">
-  <h2 id="offers-title" class="col-1-10 g-statement" data-split="lines"><Lines text={s.offers.statement} /></h2>
-  <p class="offers__body g-body muted">{s.offers.body}</p>
-</Section>
-
-<GamesFinale />
-
-<style>
-  .rhero { padding-block: clamp(32px, 4vw, 64px) var(--space-normal); row-gap: 36px; }
-  .rhero__head { grid-column: 1 / span 8; display: flex; flex-direction: column; gap: 18px; }
-  .rhero__table { grid-column: 1 / -1; }
-
-  .states__row {
-    grid-column: 1 / -1;
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: var(--gutter);
-    counter-reset: step;
-  }
-  .states__step { display: flex; flex-direction: column; gap: 14px; position: relative; }
-  .states__step:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: calc(50% - 30px);
-    right: calc(-1 * var(--gutter));
-    width: var(--gutter);
-    height: 1px;
-    background: var(--c-line-strong);
-  }
-  .states__sq { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; }
-  .states__name { font-size: clamp(2.5rem, 1rem + 4vw, 5rem); font-weight: 900; line-height: 1; letter-spacing: 0; }
-  .states__step:nth-child(3) .states__sq { background: var(--g-field); --c-bg: var(--g-field); --c-muted: var(--c-paper); }
-  .states__n { color: var(--c-muted); }
-  .states__body { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
-
-  .langs__pic { grid-column: 1 / span 7; }
-  .langs__text { grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 24px; align-self: end; }
-  .langs__items { display: flex; flex-direction: column; gap: 18px; }
-  .langs__item { border-top: 1px solid var(--c-line-strong); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-  .langs__item dd { line-height: 1.6; }
-
-  .req__cols { grid-column: 1 / -1; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
-  .req__col { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-  .req__col p { line-height: var(--lh-text); }
-  .req { --c-bg: var(--field); }
-
-  .bundle__wall {
-    grid-column: 5 / span 8;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: minmax(120px, auto);
-    gap: var(--gutter);
-  }
-  .bundle__box { grid-column: 1 / span 2; grid-row: 1 / span 2; background: var(--g-field); color: var(--c-paper); padding: 20px; display: flex; flex-direction: column; gap: 10px; --c-line-strong: rgb(244 245 242 / 0.5); --c-line: rgb(244 245 242 / 0.22); --c-bg: var(--g-field); }
-  .bundle__inner { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .bundle__inner .bundle__tile { min-height: 120px; }
-  .bundle__tile { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-  .bundle__title { font-weight: 700; font-size: var(--t-m); line-height: 1.3; }
-  .bundle__body { font-size: var(--t-s); line-height: 1.6; }
-  .bundle__tile--0 { grid-column: 3 / span 2; }
-  .bundle__tile--1 { grid-column: 3 / span 2; }
-  .bundle__tile--2 { grid-column: 2 / span 2; }
-  .bundle__empty { grid-column: 4; border: 1px dashed var(--c-line-strong); }
-
-  .offers__body { grid-column: 5 / span 5; }
-
-  @media (max-width: 1023px) {
-    .states__row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .states__step:nth-child(3)::after { display: none; }
-    .langs__pic { grid-column: 1 / span 6; }
-    .langs__text { grid-column: 7 / span 6; }
-    .bundle__wall { grid-column: 1 / -1; }
-  }
-  @media (max-width: 767px) {
-    .rhero__head { grid-column: 1 / -1; }
-    .states__row { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scrollbar-width: none; scroll-padding-inline: var(--gutter); }
-    .states__step { flex: 0 0 62%; scroll-snap-align: start; }
-    .states__step::after { display: none; }
-    .langs__pic, .langs__text { grid-column: 1 / -1; }
-    .req__cols { grid-template-columns: 1fr; }
-    .bundle__wall { grid-template-columns: 1fr; gap: 10px; grid-auto-rows: auto; }
-    .bundle__box { grid-column: 1; grid-row: auto; }
-    .bundle__tile--0, .bundle__tile--1, .bundle__tile--2 { grid-column: 1; }
-    .bundle__empty { display: none; }
-    .offers__body { grid-column: 1 / -1; }
-  }
-</style>
+<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
