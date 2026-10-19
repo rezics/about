@@ -1,0 +1,75 @@
+---
+/**
+ * Facts with code (the kit's FactList, for a developer page): hairline rows, the title on the
+ * left and the text on the right. A row may carry the field name, path or command it is about
+ * (`code`, small mono under a serif title, or the title itself in mono with `mono`), a paragraph,
+ * a small code block (the kit's CodeTile) and a muted note. `numbered` sets 01, 02 … before the
+ * titles. Phones: the title above its text.
+ */
+import CodeTile from '../../kit/components/CodeTile.astro';
+import type { CodeSample } from '../../content/sites/developers';
+
+export interface CodeFact {
+  title: string;
+  /** The field name, path or command the row is about, under the title. */
+  code?: string;
+  body?: string;
+  sample?: CodeSample;
+  caption?: string;
+  /** A short muted line of code after the text (an operation and its scopes). */
+  note?: string;
+}
+interface Props {
+  items: CodeFact[];
+  numbered?: boolean;
+  /** Set the titles in mono: they are field names, paths or tool names. */
+  mono?: boolean;
+  level?: 'h3' | 'h4' | 'p';
+  /** The accessible name of the list. */
+  label?: string;
+  class?: string;
+}
+const { items, numbered = false, mono = false, level: Tag = 'h3', label, class: className } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<ul class:list={['cfacts', mono && 'cfacts--mono', className]} role="list" aria-label={label}>
+  {items.map((r, i) => (
+    <li class="cfacts__row">
+      <div class="cfacts__head">
+        <Tag class:list={['cfacts__title', mono ? 'cfacts__title--mono' : 'serif']}>
+          {numbered && <span class="cfacts__n" aria-hidden="true">{pad(i + 1)}</span>}
+          {r.title}
+        </Tag>
+        {r.code && <code class="cfacts__code">{r.code}</code>}
+      </div>
+      <div class="cfacts__main">
+        {r.body && <p class="cfacts__body">{r.body}</p>}
+        {r.sample && <CodeTile code={r.sample.code} caption={r.caption} label={`${r.title}：${r.sample.language === 'text' ? '程式碼' : r.sample.language.toUpperCase()}`} class="cfacts__sample" />}
+        {r.note && <p class="cfacts__note"><code>{r.note}</code></p>}
+      </div>
+    </li>
+  ))}
+</ul>
+<style>
+  .cfacts { border-top: 1px solid var(--c-line); }
+  .cfacts__row {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+    gap: 10px var(--gutter);
+    padding: 30px 0 32px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .cfacts__head { min-width: 0; }
+  .cfacts__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .cfacts__title--mono { font: 500 14px/1.7 var(--f-mono); letter-spacing: 0; overflow-wrap: anywhere; padding-top: 3px; }
+  .cfacts__n { display: block; margin-bottom: 6px; font: 400 13px/1.5 var(--f-body); color: var(--c-muted); }
+  .cfacts__code { display: block; margin-top: 6px; font: 12.5px/1.7 var(--f-mono); color: var(--c-muted); overflow-wrap: anywhere; }
+  .cfacts__main { min-width: 0; display: grid; gap: 18px; align-content: start; }
+  .cfacts__body { font-size: 16px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
+  .cfacts__note { font: 12.5px/1.8 var(--f-mono); color: var(--c-muted); overflow-wrap: anywhere; }
+  .cfacts--mono .cfacts__row { padding: 22px 0 24px; }
+  @media (max-width: 767px) {
+    .cfacts__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; }
+    .cfacts--mono .cfacts__row { gap: 6px; padding: 18px 0 20px; }
+  }
+</style>

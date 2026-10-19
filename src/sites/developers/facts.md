@@ -1,8 +1,12 @@
 # 開發者 `developers`: facts, sources and doubts
 
-Stage 2 note: the copy lives in `src/content/sites/developers.ts`; sample ids below match its
-`code` values. Lead decisions of 2026-10-19 (field `#2f63ad`, last finale to `books`, no images)
-change no claim.
+The copy lives in `src/content/sites/developers.ts`; sample ids below match its `code` values.
+The v3 rebuild (2026-10-19: slate `#3b4a5a`, paper still-lifes, small code blocks) changes no
+claim. Rechecked on 2026-10-19 at rezics-next `main` HEAD `a8e44a3372`: the 17 MCP tool
+declarations with their operations and scopes, the `PUT /v1/works/{id}/reader-status` parameters
+and required body fields, the `GET /v1/search/catalogue` query parameters, the 「下載藏書庫」
+label, the zone-sdk `ZoneTokens` fields, the anime Zone package entry point, the toolkit's
+`verify` form and the README's three start commands are as below.
 
 All paths are in `/home/edge/projects/rezics/rezics-next` unless they start with `about:`.
 Read on 2026-10-19 at the working tree of `main` (HEAD `2795c35090`).
@@ -15,16 +19,16 @@ idempotency key) are illustrative and match the schema patterns.
 
 | Id | Where shown | Source | Kind |
 |---|---|---|---|
-| S1a | index, pane 人 | Button label `backupStart: "下載藏書庫"` in `apps/web/features/library/messages/zh-Hant.ts:219`; the button (`apps/web/features/library-backup/library-export.tsx`) calls `main().v1.me['library-export'].get(…)` in `apps/web/features/library-backup/export-api.ts:23` | quoted label |
-| S1b | index, pane 程式 | `GET /v1/me/library-export`, query `actingSubject` (required), `limit` (1 to 20), `cursor`, `snapshot`; `security: bearerAuth`; operationId `getV1MeLibrary-export`; 200 body `{ profile: "rezics-library-export-v1", rows, nextCursor, snapshot }` (`generated/openapi/main/public.json`) | assembled from schema |
-| S1c | index, pane 代理 | MCP tool `library_export` on that operation (`x-rezics-capability.mcp`, scopes `work:read rating:read`); MCP arguments are grouped as `path`, `query`, `headers`, `body` (`services/main/src/modules/mcp/capabilities.ts` `operationTools`) | assembled from schema |
-| S2 | api, anatomy | `PUT /v1/works/{id}/reader-status`: path `id` (UUID), header `Idempotency-Key` (required, `^[A-Za-z0-9:_./-]{1,128}$`), body `actingSubject`, `expectedVersion`, `status` (`want-to-read`/`reading`/`read`/null), optional `startedOn`, `finishedOn`; 200 body `work, status, startedOn, finishedOn, version, changedAt, replayed` (`public.json`; `services/main/src/routes/library.ts:209–236`). Replay with the same key and intent returns the stored result with `replayed: true`; same key, different intent: 409 `reader_status_conflict`; wrong `expectedVersion`: 409 `stale_reader_status`; version increments by one (`services/main/src/modules/library/status.ts:440–510`; `routes/library.ts:138–145`). Problem shape `{ type: "https://rezics.com/problems/<code>", title, status, code }`, `application/problem+json` (`services/main/src/routes/problems.ts:163–166`) | assembled from schema and handler |
+| S1a | landing 三種方式, row 人 | Button label `backupStart: "下載藏書庫"` in `apps/web/features/library/messages/zh-Hant.ts:219`; the button (`apps/web/features/library-backup/library-export.tsx`) calls `main().v1.me['library-export'].get(…)` in `apps/web/features/library-backup/export-api.ts:23` | quoted label |
+| S1b | landing 三種方式, row 程式 | `GET /v1/me/library-export`, query `actingSubject` (required), `limit` (1 to 20), `cursor`, `snapshot`; `security: bearerAuth`; operationId `getV1MeLibrary-export`; 200 body `{ profile: "rezics-library-export-v1", rows, nextCursor, snapshot }` (`generated/openapi/main/public.json`) | assembled from schema |
+| S1c | landing 三種方式, row 代理 (and the shared row: operationId and profile) | MCP tool `library_export` on that operation (`x-rezics-capability.mcp`, scopes `work:read rating:read`); MCP arguments are grouped as `path`, `query`, `headers`, `body` (`services/main/src/modules/mcp/capabilities.ts` `operationTools`) | assembled from schema |
+| S2 | api, 寫入 and 重送 (the three answers show `status`, `version`, `replayed` or the problem `status` and `code` only: excerpts) | `PUT /v1/works/{id}/reader-status`: path `id` (UUID), header `Idempotency-Key` (required, `^[A-Za-z0-9:_./-]{1,128}$`), body `actingSubject`, `expectedVersion`, `status` (`want-to-read`/`reading`/`read`/null), optional `startedOn`, `finishedOn`; 200 body `work, status, startedOn, finishedOn, version, changedAt, replayed` (`public.json`; `services/main/src/routes/library.ts:209–236`). Replay with the same key and intent returns the stored result with `replayed: true`; same key, different intent: 409 `reader_status_conflict`; wrong `expectedVersion`: 409 `stale_reader_status`; version increments by one (`services/main/src/modules/library/status.ts:440–510`; `routes/library.ts:138–145`). Problem shape `{ type: "https://rezics.com/problems/<code>", title, status, code }`, `application/problem+json` (`services/main/src/routes/problems.ts:163–166`) | assembled from schema and handler |
 | S3 | api, sdk | The tokens of `apps/web/features/library/api.ts:69–70` without the wrapping `settle(() => …)`, line breaks re-set to fit the pane | excerpt |
-| S5 | mcp-server, sample | Request: JSON-RPC `tools/call` with tool `search_catalogue` and grouped `query` (`q` 2 to 80 chars, `language` BCP 47 pattern, `limit` 1 to 64) (`services/main/src/routes/search.ts:55–57, 224–230`; `public.json`). Result: `{ content, structuredContent: { status, headers, body }, isError: status >= 400 }` (`services/main/src/modules/mcp/dispatch.ts:60–66`); body fields `profile: "public-catalogue-ranked-v1"`, `count { value, precision }`, `results`, `next` (`routes/search.ts:230–236`) | assembled; excerpt (`content`, `headers`, the optional `language` query and other required body fields omitted) |
-| S6 | apps, hero | Path `/api/auth/oauth2/authorize` (`services/account/src/app.ts:322`); authorization code, PKCE and exact redirects (`docs/contracts/connected-apps.md` para 2); scope tokens `work:read`, `library:write` (`services/account/src/oauth-scopes.ts`, `oauth-scopes/library.ts`); other parameter names are standard OAuth 2.0/PKCE | assembled |
-| S7 | wiki-toolkit, hero | CLI usage `rezics-wiki units <file>` and `rezics-wiki verify <file> - < locator.json` (the README's form for a locator read from stdin; `packages/wiki-toolkit/src/cli.ts:20–22`, `README.md`) | assembled; file name is a public-domain example |
-| S8 | zones, pane 1 | Every required field of `ZoneTokens` with values from its unions (`packages/zone-sdk/src/index.ts:28–47`) | assembled from type |
-| S9 | zones, pane 2 | Verbatim: `apps/web/zones/official/anime/index.tsx` (the `export default` call) | excerpt |
+| S5 | mcp-server, 同一個操作 | Request: JSON-RPC `tools/call` with tool `search_catalogue` and grouped `query` (`q` 2 to 80 chars; the sample's `旅行` is a neutral illustrative query, captioned 示意, `language` BCP 47 pattern, `limit` 1 to 64) (`services/main/src/routes/search.ts:55–57, 224–230`; `public.json`). Result: `{ content, structuredContent: { status, headers, body }, isError: status >= 400 }` (`services/main/src/modules/mcp/dispatch.ts:60–66`); body fields `profile: "public-catalogue-ranked-v1"`, `count { value, precision }`, `results`, `next` (`routes/search.ts:230–236`) | assembled; excerpt (`content`, `headers`, the optional `language` query and other required body fields omitted) |
+| S6 | apps, 授權 | Path `/api/auth/oauth2/authorize` (`services/account/src/app.ts:322`); authorization code, PKCE and exact redirects (`docs/contracts/connected-apps.md` para 2); scope tokens `work:read`, `library:write` (`services/account/src/oauth-scopes.ts`, `oauth-scopes/library.ts`); other parameter names are standard OAuth 2.0/PKCE | assembled |
+| S7 | wiki-toolkit, 步驟 | CLI usage `rezics-wiki units <file>` and `rezics-wiki verify novel.epub - < locator.json` (the README's form for a locator read from stdin, file name as in the README; `packages/wiki-toolkit/src/cli.ts:20–22`, `README.md`) | assembled |
+| S8 | zones, 設定 | Every required field of `ZoneTokens` with values from its unions (`accent` is the site's slate, any `#rrggbb` is valid) (`packages/zone-sdk/src/index.ts:28–47`) | assembled from type |
+| S9 | zones, 插槽 (the `catalogue` line broken in two to fit the block) | Verbatim: `apps/web/zones/official/anime/index.tsx` (the `export default` call) | excerpt |
 | S10 | open-source | Verbatim: `README.md` "Start locally" | excerpt |
 | S11 | open-source | `packages/document/README.md` first code block; the import line is broken in two to fit the pane | excerpt |
 
@@ -210,8 +214,10 @@ idempotency key) are illustrative and match the schema patterns.
     key 「冪等鍵」, digest 「雜湊值」. Skill is 「Skill」 on every page of this site.
 11. **The 「讀過」 label** for `status: "read"` is the web's zh-Hant shelf label
     (`apps/web/features/library/messages/zh-Hant.ts:9`).
-12. **Example data.** 《西遊記》 is public domain. Version 3/4, the key `7f3c2a9e-read` and the date
-    are illustrative values in samples, not facts.
+12. **Example data.** No work is named anywhere on the site (`.temp/sites/EXAMPLE-WORK.md`): the
+    catalogue search uses the neutral query 「旅行」 marked 示意, the toolkit commands use the
+    README's `novel.epub`, and the read rules name their fields without values. Version 3/4, the key
+    `7f3c2a9e-read` and the date are illustrative values, captioned as such on the API page.
 
 ## Stage 2 additions
 
@@ -221,7 +227,7 @@ idempotency key) are illustrative and match the schema patterns.
 14. **Latin words in display text.** The kit's phrase breaking split Latin words (`REZIC<wbr>S`,
     `A<wbr>PI`); the kit now keeps Latin runs whole (main `9bd4139`), so this site's own
     workaround was removed.
-15. **Hands squares on inner pages.** API: the web's shelf write is `PUT /v1/works/{id}/reader-status`
+15. **Two ways into one operation (formerly the hands squares; v3 shows them as plain code blocks).** API: the web's shelf write is `PUT /v1/works/{id}/reader-status`
     (`apps/web/features/library/api.ts:69`; `apps/web/features/tracking/anime-collection-recorded-page.ts:55`)
     and the zh-Hant shelf label for `read` is 「讀過」; the shared answer fields are `version`,
     `replayed` and the 409 code `stale_reader_status` (S2). MCP: `GET /v1/search/catalogue` is public

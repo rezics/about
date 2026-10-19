@@ -1,0 +1,20 @@
+---
+/**
+ * The end of an inner page before the closing: the site's other pages as a calm index (the last
+ * page adds the next site, 書庫).
+ */
+import Section from '../../kit/components/Section.astro';
+import IndexRows from '../../kit/components/IndexRows.astro';
+import { otherPages } from './pages';
+import site from '../../content/sites/developers';
+
+interface Props {
+  /** The current page's slug. */
+  slug: string;
+}
+const { slug } = Astro.props;
+const more = site.strings.common.more;
+---
+<Section eyebrow={more.label} title={more.headline}>
+  <IndexRows rows={otherPages(slug)} />
+</Section>

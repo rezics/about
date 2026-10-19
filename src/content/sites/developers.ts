@@ -43,9 +43,15 @@ export interface Shown {
   label: string;
   sample: CodeSample;
 }
+/** A photo row's text: eyebrow, heading and one paragraph or several. */
+export interface Photo {
+  label: string;
+  headline: string;
+  body: string[];
+}
 
 export type DevelopersStrings = {
-  common: { next: string; nextSite: string };
+  common: { nextSite: string; more: Head };
   landing: {
     hero: Hero;
     ways: Head & {
@@ -67,9 +73,9 @@ export type DevelopersStrings = {
   };
   mcp: {
     hero: Hero;
+    adapter: Photo;
     connect: Head & { rows: NamedRow[] };
     same: Head & { calls: Shown[]; shared: Shown; caption: string };
-    statement: Said;
     tools: Head & {
       scopes: string;
       groups: { name: string; tools: { title: string; code: { tool: string; op: string; scopes: string[] } }[] }[];
@@ -78,22 +84,24 @@ export type DevelopersStrings = {
   };
   apps: {
     hero: Hero;
-    layers: Head & { rows: Row[] };
+    layers: Photo;
+    each: Head & { rows: Row[] };
     authorize: Head & { sample: CodeSample; caption: string };
     consent: Head & { rows: { text: string; code: string }[]; note: string };
     revoke: Head & { rows: Row[] };
   };
   wiki: {
     hero: Hero;
-    boundary: Head & { stays: { label: string; items: string[] }; goes: { label: string; items: string[] }; note: string };
+    boundary: Photo;
     steps: Head & { sample: CodeSample; caption: string; rows: NamedRow[] };
     limits: Head & { rows: Row[] };
     statement: Said & { licence: string };
   };
   zones: {
     hero: Hero;
+    theme: Photo;
     settings: Head & { tokens: CodeSample; caption: string };
-    slots: Head & { slots: { name: string; code: string }[]; pkg: CodeSample; caption: string };
+    slots: Head & { pkg: CodeSample; caption: string };
     rules: Head & { rows: Row[] };
     review: Head & { rows: Row[] };
     statement: Said;
@@ -110,7 +118,7 @@ export type DevelopersStrings = {
 const lines = (...l: string[]) => l.join('\n');
 
 const strings: DevelopersStrings = {
-  common: { next: '下一頁', nextSite: '下一個站點' },
+  common: { nextSite: '下一個站點', more: { label: '開發者', headline: '其他頁面' } },
 
   landing: {
     hero: {
@@ -262,6 +270,14 @@ const strings: DevelopersStrings = {
       headline: '你的 AI 代理，從 /mcp 進來。',
       lede: 'REZICS 在 /mcp 提供遠端 MCP 伺服器。代理帶著你授權的權杖連線，看到的工具依它目前的權限列出，每個工具都對應一個 HTTP 操作。',
     },
+    adapter: {
+      label: '轉接',
+      headline: 'MCP 只負責轉接，不是另一條寫入的路。',
+      body: [
+        '每次工具呼叫只轉送一次到對應的 HTTP 操作，帶著同一個權杖與冪等鍵。誰在行動、能做什麼、用掉多少請求額度，都由那個操作決定。',
+        '工具讀到的作品內文與網頁文字一律當成資料，不會當成指令。',
+      ],
+    },
     connect: {
       label: '連線',
       headline: '連線的四個步驟',
@@ -284,10 +300,6 @@ const strings: DevelopersStrings = {
         sample: { language: 'text', code: lines('operationId  getV1SearchCatalogue', 'profile      public-catalogue-ranked-v1') },
       },
       caption: '以「旅行」搜尋目錄（示意）。代理拿到同一份回應，外面多包一層 HTTP 狀態碼與標頭；參數照 HTTP 操作分組成 path、query、headers 與 body。',
-    },
-    statement: {
-      text: 'MCP 只負責轉接，不是另一條寫入的路；',
-      sub: '每次工具呼叫只轉送一次到對應的 HTTP 操作，帶著同一個權杖與冪等鍵。誰在行動、能做什麼、用掉多少請求額度，都由那個操作決定。',
     },
     tools: {
       label: '工具',
@@ -336,7 +348,6 @@ const strings: DevelopersStrings = {
         { title: '30 秒', body: '每次工具呼叫的期限。' },
         { title: '1 MiB', body: '一般工具請求的大小上限，上傳藏書庫檔案另計。' },
         { title: '無狀態', body: '每個請求各自驗證權杖，伺服器不保留工作階段。' },
-        { title: '內文是資料', body: '工具讀到的作品內文與網頁文字一律當成資料，不會當成指令。' },
       ],
     },
   },
@@ -349,7 +360,11 @@ const strings: DevelopersStrings = {
     layers: {
       label: '四層',
       headline: '一層比一層窄',
-      lead: '內層永遠落在外層裡面。',
+      body: ['帳號、身分、安裝與同意、權杖範圍，四層分開記錄，內層永遠落在外層裡面。應用拿到的，只會是最裡面那一層。'],
+    },
+    each: {
+      label: '逐層',
+      headline: '每一層管的事',
       rows: [
         { title: '帳號', body: '帳號服務確認你是誰。光是登入，不代表能動任何資源。' },
         { title: '身分', body: '你以個人或組織的身分行動。資源權限給的是身分，不是帳號。' },
@@ -407,12 +422,10 @@ const strings: DevelopersStrings = {
     boundary: {
       label: '界線',
       headline: '什麼留下，什麼送出',
-      stays: { label: '留在你的電腦', items: ['原始檔案', '完整的章節文字', '轉換與定位，由工具組離線完成'] },
-      goes: {
-        label: '送到 REZICS',
-        items: ['角色、別名、關係、事件與地點', '每一項的定位與短引文，每段最多 200 個字元', '抽取時用的 AI 代理與模型，以及推論在本機還是雲端'],
-      },
-      note: '用雲端模型時，代理讀到的文字會送到那家模型供應者，這由你決定。要完全留在本機，就用本機模型，並關掉能讀取檔案的雲端工具。',
+      body: [
+        '原始檔案與完整的章節文字留在你的電腦，轉換與定位由工具組離線完成。送到 REZICS 的是角色、別名、關係、事件與地點，每一項附上定位與短引文，再加上抽取時用的 AI 代理與模型，以及推論在本機還是雲端。',
+        '用雲端模型時，代理讀到的文字會送到那家模型供應者，這由你決定。要完全留在本機，就用本機模型，並關掉能讀取檔案的雲端工具。',
+      ],
     },
     steps: {
       label: '步驟',
@@ -451,10 +464,14 @@ const strings: DevelopersStrings = {
       headline: '版面歸 Zone，資料與規則歸平台。',
       lede: 'Zone 是社群自己的站點，可以帶自己的展示程式碼。程式碼只負責排版，資料由平台讀好再交給它，權限與審查也都留在平台。',
     },
+    theme: {
+      label: '主題',
+      headline: '先用設定，再寫程式',
+      body: ['每個 Zone 都從一組預設主題開始，調整密度、頁面底色與封面比例，需要時換上自己的強調色，再排列主視覺輪播、書架、排行與編輯清單等模組。設定排不出來的版面，才需要展示程式碼。'],
+    },
     settings: {
       label: '設定',
-      headline: '先用設定，再寫程式',
-      lead: '每個 Zone 都從一組預設主題開始，調整密度、頁面底色與封面比例，需要時換上自己的強調色，再排列主視覺輪播、書架、排行與編輯清單等模組。設定排不出來的版面，才需要展示程式碼。',
+      headline: '一組主題設定',
       tokens: {
         language: 'ts',
         code: lines(
@@ -476,16 +493,7 @@ const strings: DevelopersStrings = {
     slots: {
       label: '插槽',
       headline: '程式碼填進具名插槽',
-      lead: '展示程式碼是一個套件，在具名的插槽裡換上自己的元件。每個插槽都會收到平台自己的版本，套件可以包住它，也可以取代它。',
-      slots: [
-        { name: '頁首', code: 'header' },
-        { name: '主視覺', code: 'hero' },
-        { name: '搜尋列', code: 'browseBar' },
-        { name: '資料面板', code: 'cataloguePanel' },
-        { name: '作品卡', code: 'workCard' },
-        { name: '模組', code: 'modules' },
-        { name: '頁尾', code: 'footer' },
-      ],
+      lead: '展示程式碼是一個套件，在頁首、主視覺、搜尋列、資料面板、作品卡、模組與頁尾這些具名插槽裡，換上自己的元件。每個插槽都會收到平台自己的版本，套件可以包住它，也可以取代它。',
       pkg: {
         language: 'ts',
         code: lines(

@@ -1,0 +1,17 @@
+/* Developers (SITE.md "Theme"): the shared paper and type; only the code blocks take the site's
+   slate for strings and paths (6.9:1 on the code ground). */
+html[data-site='developers'] .codetile .s { color: #3b4a5a; }
+
+/* A code block keeps a reading measure inside the section body (columns 4 to 12). */
+html[data-site='developers'] .dv-narrow,
+html[data-site='developers'] .dv-pair__code { max-width: 640px; }
+html[data-site='developers'] .dv-pair { display: grid; gap: 56px; }
+html[data-site='developers'] .dv-path { margin-top: 16px; font: 12.5px/1.8 var(--f-mono); color: var(--c-muted); overflow-wrap: anywhere; }
+@media (max-width: 767px) {
+  html[data-site='developers'] .dv-pair { gap: 36px; }
+}
+
+/* The tool list: one hairline list per group under a small label. */
+html[data-site='developers'] .dv-groups { display: grid; gap: 56px; }
+html[data-site='developers'] .dv-group__name { margin-bottom: 14px; font-weight: 400; }
+html[data-site='developers'] .dv-stack { display: grid; gap: 28px; }

@@ -1,0 +1,40 @@
+---
+// 開放原始碼 (SITE.md "v3"): the opening with the source link, the two licences, the repository
+// map, running it locally, the statement, the other pages and the next site.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import CodeTile from '../../kit/components/CodeTile.astro';
+import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import More from '../../sites/developers/More.astro';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.open;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
+    <a class="link-draw" href={s.hero.href}>{s.hero.link}</a>
+  </PageHead>
+
+  <Section eyebrow={s.licences.label} title={s.licences.headline}>
+    <CodeFacts items={s.licences.rows.map((r) => ({ title: r.code.name, body: r.line, note: r.code.paths }))} />
+  </Section>
+
+  <Section eyebrow={s.map.label} title={s.map.headline}>
+    <CodeFacts items={s.map.rows.map((r) => ({ title: r.code, body: r.body, note: r.licence }))} mono />
+  </Section>
+
+  <Section eyebrow={s.run.label} title={s.run.headline} lead={s.run.lead}>
+    <div class="dv-stack">
+      {s.run.blocks.map((b) => <CodeTile code={b.sample.code} caption={b.caption} label={b.caption} class="dv-narrow" />)}
+    </div>
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <More slug="open-source" />
+  <Closing />
+</MiniSiteLayout>

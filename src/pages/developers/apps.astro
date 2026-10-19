@@ -1,0 +1,42 @@
+---
+// 連結應用 (SITE.md "v3"): the opening, the four nested layers beside their picture and in
+// detail, the authorization request, what consent shows, revoking, the other pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import CodeTile from '../../kit/components/CodeTile.astro';
+import Closing from '../../kit/components/Closing.astro';
+import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import More from '../../sites/developers/More.astro';
+import { picture } from '../../sites/developers/pictures';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.apps;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="left" eyebrow={s.layers.label} title={s.layers.headline} body={s.layers.body} image={picture('apps')} />
+
+  <Section eyebrow={s.each.label} title={s.each.headline}>
+    <FactList items={s.each.rows} numbered />
+  </Section>
+
+  <Section eyebrow={s.authorize.label} title={s.authorize.headline}>
+    <CodeTile code={s.authorize.sample.code} caption={s.authorize.caption} label={s.authorize.headline} class="dv-narrow" />
+  </Section>
+
+  <Section eyebrow={s.consent.label} title={s.consent.headline} lead={s.consent.note}>
+    <CodeFacts items={s.consent.rows.map((r) => ({ title: r.text, code: r.code }))} class="dv-consent" />
+  </Section>
+
+  <Section eyebrow={s.revoke.label} title={s.revoke.headline}>
+    <FactList items={s.revoke.rows} />
+  </Section>
+
+  <More slug="apps" />
+  <Closing />
+</MiniSiteLayout>

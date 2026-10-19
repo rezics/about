@@ -1,0 +1,54 @@
+---
+// MCP 伺服器 (SITE.md "v3"): the opening, the adapter beside its picture, the four connection
+// steps, one search sent two ways, the tool list, the limits, the other pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import CodeSet from '../../sites/developers/CodeSet.astro';
+import More from '../../sites/developers/More.astro';
+import { picture } from '../../sites/developers/pictures';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.mcp;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="right" eyebrow={s.adapter.label} title={s.adapter.headline} body={s.adapter.body} image={picture('mcp')} />
+
+  <Section eyebrow={s.connect.label} title={s.connect.headline}>
+    <CodeFacts items={s.connect.rows} numbered />
+  </Section>
+
+  <Section eyebrow={s.same.label} title={s.same.headline}>
+    <CodeSet items={s.same.calls} shared={s.same.shared} caption={s.same.caption} />
+  </Section>
+
+  <Section eyebrow={s.tools.label} title={s.tools.headline} lead={s.tools.lead}>
+    <div class="dv-groups">
+      {s.tools.groups.map((g) => (
+        <div class="dv-group">
+          <h3 class="eyebrow dv-group__name">{g.name}</h3>
+          <CodeFacts
+            mono
+            level="h4"
+            label={g.name}
+            items={g.tools.map((t) => ({ title: t.code.tool, body: t.title, note: `${t.code.op} · ${t.code.scopes.join(' ')}` }))}
+          />
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section eyebrow={s.limits.label} title={s.limits.headline}>
+    <FactList items={s.limits.rows} />
+  </Section>
+
+  <More slug="mcp-server" />
+  <Closing />
+</MiniSiteLayout>

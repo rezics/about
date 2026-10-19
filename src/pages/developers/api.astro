@@ -1,0 +1,42 @@
+---
+// API 與 SDK (SITE.md "v3"): one write line by line, its three answers, the types from the same
+// definition, the read rules, the other pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import CodeTile from '../../kit/components/CodeTile.astro';
+import Closing from '../../kit/components/Closing.astro';
+import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import CodeSet from '../../sites/developers/CodeSet.astro';
+import More from '../../sites/developers/More.astro';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.api;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.anatomy.label} title={s.anatomy.headline}>
+    <div class="dv-pair">
+      <CodeTile code={s.anatomy.request.code} caption={s.anatomy.caption} label={s.anatomy.headline} class="dv-pair__code" />
+      <CodeFacts items={s.anatomy.rows} level="h3" class="dv-pair__facts" />
+    </div>
+  </Section>
+
+  <Section eyebrow={s.replay.label} title={s.replay.headline} lead={s.replay.lead}>
+    <CodeSet items={s.replay.responses} />
+  </Section>
+
+  <Section eyebrow={s.sdk.label} title={s.sdk.headline} lead={[s.sdk.lead!, s.sdk.openapi]}>
+    <CodeTile code={s.sdk.sample.code} caption={s.sdk.caption} label={s.sdk.headline} class="dv-narrow" />
+    <p class="dv-path"><code>{s.sdk.code.path}</code></p>
+  </Section>
+
+  <Section eyebrow={s.reads.label} title={s.reads.headline}>
+    <CodeFacts items={s.reads.rows.map((r) => ({ title: r.code, body: r.body }))} mono />
+  </Section>
+
+  <More slug="api" />
+  <Closing />
+</MiniSiteLayout>

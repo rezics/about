@@ -1,8 +1,61 @@
 ---
-// STUB: the developers site's builder replaces this page (src/kit/README.md).
+// 開發者 (SITE.md "v3"): the photograph hero, the three ways into one operation, the six pages as
+// tiles, the statement, the rules every way in shares, the neighbouring hubs, the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import TileMasonry from '../../kit/components/TileMasonry.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import { pageTiles, pageColumns, pagePhone, hubTiles, hubColumns, hubPhone } from '../../sites/developers/pages';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.landing;
+const ways = [
+  { title: s.ways.person.label, body: s.ways.person.body },
+  ...s.ways.calls.map((c) => ({ title: c.label, sample: c.sample })),
+  { title: s.ways.shared.label, sample: s.ways.shared.sample },
+];
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    bar
+    eyebrow={site.name}
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/developers/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: '',
+      position: '100% 50%',
+      phone: { src: '/images/sites/developers/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.ways.label} title={s.ways.headline} lead={s.ways.lead}>
+    <CodeFacts items={ways} label={s.ways.label} class="dv-ways" />
+  </Section>
+
+  <Section eyebrow={s.pages.label} title={s.pages.headline} lead={s.pages.lead}>
+    <TileMasonry slot="wide" items={pageTiles} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.label} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <Section eyebrow={s.rules.label} title={s.rules.headline}>
+    <CodeFacts items={s.rules.rows} />
+  </Section>
+
+  <Section eyebrow={s.hubs.label} title={s.hubs.headline} lead={s.hubs.lead}>
+    <TileMasonry slot="wide" items={hubTiles} columns={hubColumns} phone={hubPhone} height={220} label={s.hubs.label} />
+  </Section>
+
+  <Closing />
 </MiniSiteLayout>
