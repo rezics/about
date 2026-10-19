@@ -7,25 +7,17 @@ body[data-site='visual-novels'] {
 /* Keep the kit's active-tab centring relative to its scroll container on phones. */
 body[data-site='visual-novels'] .sitebar__tabs { position: relative; }
 
-/* Local kit workaround: text navigation answers with the same small movement as the tiles. */
-body[data-site='visual-novels'] .header__tabs a.tab > span,
-body[data-site='visual-novels'] .sitebar__name {
-  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-snap);
-}
-body[data-site='visual-novels'] .header__go,
+/* Site tabs answer with the kit's quiet label movement. Header feedback comes from the kit. */
+body[data-site='visual-novels'] .sitebar__name,
 body[data-site='visual-novels'] .sitebar__tab {
   transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-snap);
 }
 @media (hover: hover) {
-  body[data-site='visual-novels'] .header__tabs a.tab:hover > span,
-  body[data-site='visual-novels'] .sitebar__home:hover .sitebar__name { translate: 0 -2px; }
-  body[data-site='visual-novels'] .header__go:hover { translate: 2px 0; }
+  body[data-site='visual-novels'] .sitebar__home:hover .sitebar__name,
   body[data-site='visual-novels'] .sitebar__tab:hover { translate: 0 -2px; }
 }
-body[data-site='visual-novels'] .header__tabs a.tab:focus-visible > span,
 body[data-site='visual-novels'] .sitebar__home:focus-visible .sitebar__name,
 body[data-site='visual-novels'] .sitebar__tab:focus-visible { translate: 0 -2px; }
-body[data-site='visual-novels'] .header__go:focus-visible { translate: 2px 0; }
 
 /* A block that continues the section above it (the landing's three queries after the photo row). */
 .vn-after { padding-top: 72px; }

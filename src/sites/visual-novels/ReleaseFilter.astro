@@ -113,12 +113,12 @@ const data = {
     .vrf__group { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .vrf__legend { float: none; margin-bottom: 8px; }
     .vrf__table thead { display: none; }
-    /* Each release as two lines: its name and verdict, then its four values in a row. */
-    .vrf__table tbody tr { display: grid; grid-template-columns: auto auto auto minmax(0, 1fr) auto; align-items: baseline; gap: 6px 0; padding: 16px 0; }
+    /* The verdict cannot take width away from the metadata below it. Values wrap as units. */
+    .vrf__table tbody tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 0; padding: 16px 0; }
     .vrf__table tbody th, .vrf__table td { display: block; padding: 0; }
-    .vrf__table tbody th { grid-column: 1 / 5; grid-row: 1; }
-    .vrf__table .vrf__verdict { grid-column: 5; grid-row: 1; text-align: right; white-space: normal; padding-left: 12px; }
-    .vrf__table td[data-dim] { grid-row: 2; font-size: 15px; }
+    .vrf__table tbody th { flex: 1 1 60%; min-width: 0; }
+    .vrf__table .vrf__verdict { order: 1; flex: 0 1 40%; min-width: 0; text-align: right; white-space: normal; padding-left: 12px; }
+    .vrf__table td[data-dim] { order: 2; flex: 0 0 auto; max-width: 100%; font-size: 15px; }
     .vrf__table td[data-dim] + td[data-dim]::before { content: '・'; display: inline-block; color: var(--c-muted); text-decoration: none; }
     .vrf__table tbody tr[data-state='match'] { padding-inline: 14px; box-shadow: inset 3px 0 0 var(--field); }
     .vrf__table tbody tr[data-state='match'] th { padding-left: 0; box-shadow: none; }

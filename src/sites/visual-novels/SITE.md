@@ -190,11 +190,17 @@ two columns.
   pure query and in the browser. The Chinese title on the Japanese-content phone release
   still cannot satisfy a Chinese-content query.
 - Local kit workarounds in `vn.css`: position the site-bar scroll container so the kit's
-  current-tab centring uses its own coordinates, and give text navigation a quiet 2 px hover
-  and focus response. Shared files are untouched.
+  current-tab centring uses its own coordinates, and give site tabs a quiet 2 px hover and
+  focus response. The second shared-kit merge supplies header feedback, so the earlier
+  local header workaround was removed. Shared files are untouched.
 - The next-site tile uses its own line from content instead of repeating the dropdown's
   summary. Photographs have descriptions in content, so their alt attributes survive static
   serialisation and pass the static audit.
+- The mobile release rows wrap metadata as complete values, independent of the width of the
+  verdict. A long title-only explanation cannot squeeze 「完整」 into a vertical column.
+- The hero phone crop was re-encoded after the first fresh QA measured a 2.892 s LCP:
+  AVIF quality 44 at 960/640 px (14.6/6.9 KiB), WebP quality 70 (22.5/11.0 KiB). All
+  candidates were visually compared with the inherited photograph before selection.
 - The page stays still at rest by V3-SPEC. Reduced motion keeps every section visible.
 
 The final screenshots, performance measurements and remaining limitations are recorded in
