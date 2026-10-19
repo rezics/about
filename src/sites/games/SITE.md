@@ -200,7 +200,14 @@ tabs. Standalone text actions (the header action, section/photo-row links and re
 reset) reveal a small directional arrow on hover/focus, making the response visible alongside
 the shared underline. The second merge of `site/v3` supplies the header-label rise, text-link
 underline and serif preload fixes, so the redundant local header and text-link rules are
-removed. No shared paths are edited locally.
+removed. The final merge includes the kit's 44 px header/menu targets and text contrast over
+paper grain. No shared paths are edited locally.
+
+`PhotoRow` does not forward `Picture.priority`. The guides photograph is visible at the foot
+of a phone's first screen; lazy discovery waited for font layout and repeatedly made LCP
+exceed 2.5 s. `Guides.astro` supplies a media-scoped AVIF preload for the same 640 px source,
+keeping the shared photo row intact. The preload link is
+[body-allowed by the HTML standard](https://html.spec.whatwg.org/multipage/links.html#link-type-preload).
 
 ### Copy changes for v3
 
