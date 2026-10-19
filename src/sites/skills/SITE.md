@@ -173,6 +173,12 @@ compete with them).
 - The site-bar home link and tabs lift 2 px on hover/focus and press down 1 px. The first QA
   pass identified the home link's colour-only response. Shared files are unchanged locally;
   these two fixes can be promoted to the kit by its owner.
+- The evidence page uses plain text wrapping within its own wrapper. A controlled Chromium
+  comparison reproduced a renderer crash with and without JavaScript; disabling pretty
+  wrapping alone restored the page. Removing code or record lists did not fix it.
+- At 768 to 1279 px the hero puts copy before a 320 px photograph band. At 768 px the shared
+  overlaid layout placed the headline on the fold; at 1024 px it broke the two clauses into
+  four lines. The wide desktop composition and 260 px phone band retain their kit layouts.
 
 ### Pictures
 

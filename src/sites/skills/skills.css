@@ -1,14 +1,44 @@
 /* The shared tab centring uses item.offsetLeft. Give the scrollport its own
    positioning context so the Skill Hub badge is not included in that offset. */
-[data-site='skills'] .sitebar__tabs {
+body[data-site='skills'] .sitebar__tabs {
   position: relative;
   /* Keep the final tab clear of the shared 24px edge fade. */
   padding-right: 32px;
 }
 
-[data-site='skills'] .sitebar__name,
-[data-site='skills'] .sitebar__tab {
+body[data-site='skills'] .sitebar__name,
+body[data-site='skills'] .sitebar__tab {
   transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-soft);
+}
+
+/* Chromium's pretty wrapping crashes on this page, including with JavaScript off.
+   Plain wrapping preserves the evidence page's type and all its content. */
+[data-site='skills'] .sk-evidence * {
+  text-wrap: wrap;
+}
+
+/* The fold leaves room for the title only on wide screens. Tablets use the same
+   copy-first sequence as phones, with a wider photograph band below the action. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  body[data-site='skills'] .phero {
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+  body[data-site='skills'] .phero__copy {
+    padding: 48px var(--gutter) 44px;
+  }
+  body[data-site='skills'] .phero__title {
+    max-width: 12em;
+    font-size: clamp(36px, 4vw, 48px);
+  }
+  body[data-site='skills'] .phero__pic {
+    position: relative;
+    inset: auto;
+    height: 320px;
+  }
 }
 
 [data-site='skills'] .sitebar__home {

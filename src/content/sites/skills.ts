@@ -401,7 +401,7 @@ const skills = {
       },
       end: {
         next: '讀過內容，再看誰用過。',
-        closing: '代理會讀到的每一個字，你都先讀得到。',
+        closing: '每份技能，讀過再交給 AI 代理。',
       },
     },
     evidence: {
