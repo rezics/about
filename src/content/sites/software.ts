@@ -454,7 +454,7 @@ const site = {
           { title: '日期', body: '2026-08-25' },
           { title: '平台', body: '甲系統・64 位元、乙系統・64 位元、丙系統・手機' },
           { title: '檔案大小', body: '48.2 MB' },
-          { title: '雜湊值', body: 'sha256 9f2c41d7e41a' },
+          { title: '雜湊值（節錄）', body: 'sha256 9f2c41d7e41a' },
           { title: '授權', body: '某開放原始碼條款 2.0 版' },
           { title: '取得方式', body: '開發者網站（外部連結）' },
           { title: '更新說明', body: '新增工作區，並移除舊的外掛格式。' },

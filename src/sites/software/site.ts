@@ -33,7 +33,8 @@ export const heroPicture = {
   width: 1920,
   height: 1280,
   alt: s.pictures.hero.alt,
-  position: '100% 40%',
+  // Preserve the empty paper behind the headline when a tall tablet crops the photograph.
+  position: '0% 40%',
   phone: { src: `${IMG}${s.pictures.hero.name}-phone`, widths: [640, 800, 960], width: 960, height: 640, position: '50% 50%' },
 };
 
