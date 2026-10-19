@@ -58,12 +58,12 @@ const strings = {
 
   landing: {
     hero: {
-      headline: '有沒有中文、能不能玩，一版一版說清楚。',
+      headline: '有沒有中文，一版一版說清楚。',
       lede: 'REZICS 為每部視覺小說的每一個版本，標明語言、平台、地區與完整度。同好翻譯署名譯者，也寫明依據哪一版。',
     },
     match: {
       label: '同一個版本',
-      headline: '三個條件，要落在同一個版本上。',
+      headline: '三個條件，落在同一版上。',
       body: '挑視覺小說，很像走一張路線圖：每多一個條件，就剪掉一條走不通的分支。語言、平台與完整度必須同時寫在同一筆發行上，才算找到；一版有中文、另一版在電腦上、第三版才完整，不會被湊成一個答案。',
       queriesLabel: '三組條件，各自的答案',
       /** A match: the release's name, then its translator and source. */
@@ -260,13 +260,13 @@ const strings = {
       lede: '視覺小說的重頭戲常在後面的路線。REZICS 依你讀到的位置決定顯示多少：標籤、角色資料與 Wiki+ 頁面，都停在你目前的進度。',
     },
     fold: {
-      label: '進度',
-      headline: '讀到哪裡，頁面就打開到哪裡。',
-      body: '讀過的部分攤開，後面的部分摺起來。等你讀到那裡，它才打開；想先看全部，也可以自己打開。',
+      label: '摺起來的部分',
+      headline: '後面的事，先摺著。',
+      body: '讀過的部分攤開，還沒讀到的部分摺起來，連一個名稱也不先說。等你讀到那裡，它才打開。',
     },
     route: {
-      label: '一條路線',
-      headline: '你讀到路線一，後面的事先摺著。',
+      label: '進度',
+      headline: '讀到哪裡，頁面就打開到哪裡。',
       here: '你讀到這裡',
       nodes: [
         { name: '序章', fact: '' },
@@ -382,8 +382,9 @@ const strings = {
         { field: '名稱', zh: '一部視覺小說', ja: 'あるビジュアルノベル' },
         { field: '介紹', zh: '中文社群自己寫', ja: '日文社群自己寫' },
         { field: '排序', zh: '依中文版推出日期', ja: '依日文版推出日期' },
-        { field: '身分', zh: '同一個作品身分', ja: '同一個作品身分' },
       ],
+      /** The row both sites share, set across both columns. */
+      shared: { field: '身分', value: '兩站共用同一個作品身分' },
       caption: '示意資料。',
     },
     zone: {

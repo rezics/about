@@ -102,10 +102,10 @@ const data = {
   .vrf__name { font-weight: 600; }
   .vrf__note { color: var(--c-muted); font-size: 14px; }
   .vrf__verdict { font-size: 14px; color: var(--c-muted); white-space: nowrap; }
-  .vrf__table tr[data-state='match'] { background: var(--vn-tint); }
-  .vrf__table tr[data-state='match'] th { padding-left: 14px; box-shadow: inset 3px 0 0 var(--field); }
-  .vrf__table tr[data-state='match'] .vrf__verdict { color: var(--c-fg); font-weight: 600; }
-  .vrf__table tr[data-state='fail'] th, .vrf__table tr[data-state='fail'] td:not([data-verdict]) { color: var(--c-muted); }
+  .vrf__table tbody tr[data-state='match'] { background: var(--vn-tint); }
+  .vrf__table tbody tr[data-state='match'] th { padding-left: 14px; box-shadow: inset 3px 0 0 var(--field); }
+  .vrf__table tbody tr[data-state='match'] .vrf__verdict { color: var(--c-fg); font-weight: 600; }
+  .vrf__table tbody tr[data-state='fail'] th, .vrf__table tbody tr[data-state='fail'] td:not([data-verdict]) { color: var(--c-muted); }
   .vrf__table td[data-out] { text-decoration: line-through; text-decoration-thickness: 1px; }
   .vrf__foot { margin-top: 28px; font-size: 15px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
 
@@ -113,13 +113,14 @@ const data = {
     .vrf__group { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .vrf__legend { float: none; margin-bottom: 8px; }
     .vrf__table thead { display: none; }
-    .vrf__table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 16px 0; }
+    /* Each release as two lines: its name and verdict, then its four values in a row. */
+    .vrf__table tbody tr { display: grid; grid-template-columns: auto auto auto minmax(0, 1fr) auto; align-items: baseline; gap: 6px 0; padding: 16px 0; }
     .vrf__table tbody th, .vrf__table td { display: block; padding: 0; }
-    .vrf__table tbody th { grid-column: 1; }
-    .vrf__verdict { grid-column: 2; grid-row: 1; text-align: right; white-space: normal; }
-    .vrf__table td[data-dim] { grid-column: 1 / -1; font-size: 15px; }
-    .vrf__table td[data-dim]::before { content: attr(data-col) '　'; color: var(--c-muted); font-size: 13px; text-decoration: none; display: inline-block; min-width: 4em; }
-    .vrf__table tr[data-state='match'] { padding-inline: 14px; box-shadow: inset 3px 0 0 var(--field); }
-    .vrf__table tr[data-state='match'] th { padding-left: 0; box-shadow: none; }
+    .vrf__table tbody th { grid-column: 1 / 5; grid-row: 1; }
+    .vrf__table .vrf__verdict { grid-column: 5; grid-row: 1; text-align: right; white-space: normal; padding-left: 12px; }
+    .vrf__table td[data-dim] { grid-row: 2; font-size: 15px; }
+    .vrf__table td[data-dim] + td[data-dim]::before { content: '・'; display: inline-block; color: var(--c-muted); text-decoration: none; }
+    .vrf__table tbody tr[data-state='match'] { padding-inline: 14px; box-shadow: inset 3px 0 0 var(--field); }
+    .vrf__table tbody tr[data-state='match'] th { padding-left: 0; box-shadow: none; }
   }
 </style>

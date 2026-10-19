@@ -55,6 +55,7 @@ describe('verdict text', () => {
     expect(verdictText(byId('r2'), initialSelection, labels)).toBe('不符：平台');
     expect(verdictText(byId('r5'), initialSelection, labels)).toBe('不符：語言、完整度');
     expect(verdictText(byId('r6'), { language: 'zh' }, labels)).toBe('只有標題是中文');
+    expect(verdictText(byId('r6'), initialSelection, labels)).toBe('只有標題是中文；不符：平台');
     expect(verdictText(byId('r6'), {}, labels)).toBe('');
   });
 });

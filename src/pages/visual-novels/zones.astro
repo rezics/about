@@ -37,6 +37,10 @@ const m = s.mirror;
                 <td data-col={m.columns.ja} lang={r.field === '名稱' ? 'ja' : undefined}>{r.ja}</td>
               </tr>
             ))}
+            <tr>
+              <th scope="row">{m.shared.field}</th>
+              <td colspan="2" data-col="">{m.shared.value}</td>
+            </tr>
           </tbody>
         </table>
       </div>

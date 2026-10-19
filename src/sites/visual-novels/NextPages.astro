@@ -2,13 +2,13 @@
 /**
  * The end of an inner page (kit README "Deprecated": a masonry of next pages instead of the v2
  * finale): the lead-in line as the heading, the next page as the tall tile, and four more of the
- * site's pages beside it. On the last page the next site takes the tall tile. Page tiles keep
- * one colour each from the accent's ramp, the same as on the landing.
+ * site's pages beside it. On the last page the next site takes the tall tile. Each page keeps its
+ * one colour (tiles.ts), the same as on the landing.
  */
 import Section from '../../kit/components/Section.astro';
 import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
-import { accentRamp } from '../../kit/color';
-import { fieldOf, kindFields } from '../../kit/theme';
+import { fieldOf } from '../../kit/theme';
+import { pageTiles } from './tiles';
 import { nextSite, pageHref, siteFor } from '../../kit/sites';
 import { kinds } from '../../kit/content';
 import site from '../../content/sites/visual-novels';
@@ -23,11 +23,9 @@ const rows = site.strings.landing.pagesIndex.rows;
 const found = siteFor(Astro.url.pathname);
 if (!found || found.site.id !== site.id) throw new Error(`${Astro.url.pathname}: NextPages is for the visual-novels site`);
 const inner = site.pages.filter((p) => p.slug);
-const ramp = accentRamp(kindFields['visual-novels'].field);
 const tileOf = (slug: string, withLine: string): MasonryItem => {
-  const i = inner.findIndex((p) => p.slug === slug);
-  const p = inner[i]!;
-  return { id: p.slug, name: p.label, line: withLine, href: pageHref(site, p), bg: ramp[i]!.bg, on: ramp[i]!.on };
+  const p = inner.find((x) => x.slug === slug)!;
+  return { id: p.slug, name: p.label, line: withLine, href: pageHref(site, p), ...pageTiles[slug]! };
 };
 const here = inner.findIndex((p) => p.slug === found.page.slug);
 const nextPage = inner[here + 1];

@@ -13,11 +13,11 @@ import Closing from '../../kit/components/Closing.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import { kindById, kindHref, partById } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
-import { accentRamp } from '../../kit/color';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/visual-novels';
 import { exampleSelections, matches } from '../../sites/visual-novels/releases';
 import { pictures } from '../../sites/visual-novels/pictures';
+import { pageTiles } from '../../sites/visual-novels/tiles';
 import '../../sites/visual-novels/vn.css';
 
 const s = site.strings.landing;
@@ -36,16 +36,14 @@ const queries = exampleSelections.map((sel) => {
 
 const parts = kind.parts.map((id) => ({ title: partById(id).name, body: s.parts.notes[id]! }));
 
-// The six inner pages as violet tiles, the releases page tallest.
-const ramp = accentRamp(kindFields['visual-novels'].field);
+// The six inner pages as violet tiles (one colour per page, tiles.ts), the releases page tallest.
 const inner = site.pages.filter((p) => p.slug);
-const pageTiles: MasonryItem[] = inner.map((p, i) => ({
+const tiles: MasonryItem[] = inner.map((p) => ({
   id: p.slug,
   name: p.label,
   line: s.pagesIndex.rows[p.slug],
   href: pageHref(site, p),
-  bg: ramp[i]!.bg,
-  on: ramp[i]!.on,
+  ...pageTiles[p.slug]!,
 }));
 const pageColumns: MasonryPlace[][] = [
   [{ id: 'releases', h: 5 }, { id: 'translations', h: 3 }],
@@ -91,7 +89,7 @@ const neighbourColumns: MasonryPlace[][] = s.neighbours.items.map((n) => [{ id: 
   </Section>
 
   <Section eyebrow={s.pagesIndex.label} title={s.pagesIndex.headline}>
-    <TileMasonry slot="wide" items={pageTiles} columns={pageColumns} phone={pagePhone} height={520} label={s.pagesIndex.label} />
+    <TileMasonry slot="wide" items={tiles} columns={pageColumns} phone={pagePhone} height={520} label={s.pagesIndex.label} />
   </Section>
 
   <Section eyebrow={s.neighbours.label} title={s.neighbours.headline} lead={s.neighbours.body}>

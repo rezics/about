@@ -40,8 +40,8 @@ const cols = [n.columns.language, n.columns.where, n.columns.spoiler];
         ))}
         <tr data-folded>
           <th scope="row">{n.hidden.kind}</th>
-          <td data-col={n.columns.language}><span class="vn-fold" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></td>
-          <td data-col={n.columns.where}><span class="vn-fold" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></td>
+          <td data-col={n.columns.language} class="vn-closed">{sh.closed}</td>
+          <td data-col={n.columns.where} class="vn-closed">{sh.closed}</td>
           <td data-col={n.columns.spoiler}>{n.hidden.spoiler}</td>
         </tr>
       </tbody>

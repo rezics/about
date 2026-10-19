@@ -41,8 +41,10 @@ export function verdictText(release: VnRelease, selection: Selection, labels: Ve
   const v = judge(release, selection);
   if (v.state === 'match') return labels.match;
   if (v.state === 'neutral') return '';
-  if (v.titleOnly && v.fails.length === 1) return labels.titleOnly;
-  return labels.fails + v.fails.map((d) => labels.dims[d]).join('、');
+  // A translated title is named as such instead of a bare language failure.
+  const rest = v.titleOnly ? v.fails.filter((d) => d !== 'language') : v.fails;
+  const failing = rest.length ? labels.fails + rest.map((d) => labels.dims[d]).join('、') : '';
+  return v.titleOnly ? [labels.titleOnly, failing].filter(Boolean).join('；') : failing;
 }
 
 export const matches = (releases: VnRelease[], selection: Selection) =>

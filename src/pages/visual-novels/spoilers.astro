@@ -1,6 +1,6 @@
 ---
-// 分類與暴雷 (SITE.md "v3"): the fold photograph, one route read to 路線一 with the later facts
-// folded, the reading rules, the two votes, include and exclude, the statement, Realm readings,
+// 分類與暴雷 (SITE.md "v3"): one route read to 路線一 with the later facts folded and the reading
+// rules, the fold photograph, the two votes, include and exclude, the statement, Realm readings,
 // the next pages.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
@@ -22,8 +22,6 @@ const v = s.votes;
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <PhotoRow side="left" eyebrow={s.fold.label} title={s.fold.headline} body={s.fold.body} image={pictures.fold} />
-
   <Section eyebrow={r.label} title={r.headline}>
     <ol class="vn-route" role="list">
       {r.nodes.map((node, i) => {
@@ -34,7 +32,7 @@ const v = s.votes;
             <p class="vn-route__fact">
               {state === 'here' && <span class="vn-route__here">{r.here}</span>}
               {node.fact && (state === 'ahead'
-                ? <><span class="vn-fold vn-fold--long" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></>
+                ? <span class="vn-closed">{sh.closed}</span>
                 : <span>{node.fact}</span>)}
             </p>
           </li>
@@ -44,6 +42,8 @@ const v = s.votes;
     <p class="vn-caption">{r.caption}</p>
     <FactList items={r.rules} class="vn-route__rules" />
   </Section>
+
+  <PhotoRow side="left" eyebrow={s.fold.label} title={s.fold.headline} body={s.fold.body} image={pictures.fold} />
 
   <Section eyebrow={v.label} title={v.headline} lead={v.body}>
     <table class="vn-table">
@@ -60,7 +60,7 @@ const v = s.votes;
           </tr>
         ))}
         <tr data-folded>
-          <th scope="row"><span class="vn-fold" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></th>
+          <th scope="row" class="vn-closed">{sh.closed}</th>
           <td data-col={v.columns.fit}>{v.hidden.fit}</td>
           <td data-col={v.columns.spoiler}>{v.hidden.spoiler}</td>
         </tr>

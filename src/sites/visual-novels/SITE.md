@@ -55,12 +55,13 @@ layer); the spoilers picture folds the unread part out of sight.
 
 ### Theme
 
-The v3 tokens unchanged (ground `#efe9e0`, ink `#26292d`, muted `#6b6f73`, hairline, link
+The v3 tokens unchanged (ground `#efe9e0`, ink `#26292d`, muted `#606468`, hairline, link
 `#2f4fa3`). The accent `#7768a3` is a paper colour, used only as a flat field: the site's own
-tiles, the closing. Text on it: paper `#efe9e0` measures about 4.0:1, so it carries only large
-serif names (3:1); the small tile lines use white (about 4.9:1) or sit on the deeper tint the
-kit's ramp derives. Violet is never text on the paper ground (about 4.0:1, too low for body
-text).
+tiles, the site bar's marker, a 3 px rule and a 14 % tint behind the one matching release or
+the reader's position. Each inner page has one fixed tile colour (`tiles.ts`: the accent, two
+deeper shades with light text, three tints with ink text; `tiles.test.ts` checks AA). On the
+accent itself the kit's `inkOn` picks white (4.9:1; paper is only 4.0:1). Violet is never text on
+the paper ground (4.0:1).
 
 ### Pictures (paper still-life series)
 
@@ -87,16 +88,16 @@ one colour from `accentRamp` wherever its tile appears.
 
 **`/visual-novels/` 總覽**
 
-1. Hero, `routes`: eyebrow 視覺小說; h1 「有沒有中文、能不能玩，／一版一版說清楚。」; one
-   sentence; 「前往 REZICS」.
-2. Section 「同一個版本」: h2 「三個條件，要落在同一個版本上。」; lead on the route chart; photo
-   row with `window`; a facts list of three queries and their one answer (示意資料), the last
+1. Hero, `routes`: h1 「有沒有中文，／一版一版說清楚。」 (two short clauses fit the hero's five
+   columns; the longer 「有沒有中文、能不能玩」 broke on a single character); one sentence naming
+   language, platform, region and coverage; 「前往 REZICS」.
+2. Photo row 「同一個版本」 with `window`: h2 「三個條件，落在同一版上。」; lead on the route chart; a facts list of three queries and their one answer (示意資料), the last
    one an honest zero.
 3. Statement: 「名稱翻成中文，」 muted 「不代表遊戲有中文。」
 4. Section 「部件」: h2; the eight parts as a facts list (part name left, what it does here
    right).
 5. Section 「這個站」: h2 「六個頁面，一頁講一件事。」; tile masonry of the six inner pages in
-   violet tints (releases tallest).
+   violet shades and tints (releases tallest), deep and light alternating in both layouts.
 6. Section 「相鄰的種類」: h2 「改編與原作之間，是一條真正的連結。」; lead with the
    《魔法禁書目錄》 example; four neighbouring kinds as tiles in their own colours.
 7. Closing: 「下一部視覺小說，從能玩的那一版開始。」 and 「前往 REZICS」 (the same closing on
@@ -139,10 +140,12 @@ one colour from `accentRamp` wherever its tile appears.
 **`/spoilers/` 分類與暴雷**
 
 1. Intro: h1 「還沒讀到的路線，先不告訴你。」
-2. Photo row `fold` (picture on the left): 「讀到哪裡，頁面就打開到哪裡。」
-3. Section 「一條路線」: h2 「你讀到路線一，後面的事先摺著。」; the route as an ordered hairline
-   list with the reader's row tinted; facts of later rows folded (a tint bar, 「尚未讀到」 for
-   assistive tech); the four rules as a facts list.
+2. Section 「進度」: h2 「讀到哪裡，頁面就打開到哪裡。」; the route as an ordered hairline list
+   with the reader's row tinted at 路線一; facts of later rows folded (a tint bar, 「尚未讀到」
+   for assistive tech); the four rules as a facts list.
+3. Photo row `fold` (picture on the left): 「後面的事，先摺著。」 It follows the route rather than
+   opening the page: right under the short intro its picture entered the phone's first screen
+   and became a late, lazy LCP (4.0 s).
 4. Section 「兩張票」: h2; the votes table, the spoiling tag folded.
 5. Section 「篩選」: include and exclude.
 6. Statement: 「暴雷、分級、遮罩，」 muted 「各管各的。」 with the body as a note.
