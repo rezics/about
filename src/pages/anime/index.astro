@@ -37,10 +37,9 @@ const pageColumns: MasonryPlace[][] = [
   [{ id: 'adaptations', h: 1 }],
 ];
 const pagePhone: MasonryRowPlace[][] = [
-  [{ id: 'seasons' }],
-  [{ id: 'tracking' }, { id: 'discussion' }],
-  [{ id: 'ratings' }, { id: 'credits' }],
-  [{ id: 'adaptations' }],
+  [{ id: 'seasons' }, { id: 'tracking' }],
+  [{ id: 'discussion' }, { id: 'ratings' }],
+  [{ id: 'credits' }, { id: 'adaptations' }],
 ];
 
 const anime = kinds.find((k) => k.id === 'anime')!;
@@ -50,12 +49,12 @@ const neighbours = s.neighbours.tiles.map((t) => kindTile(t.to, t.label));
 const neighbourColumns: MasonryPlace[][] = neighbours.map((t) => [{ id: t.id, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <PhotoHero title={s.hero.headline} lede={s.hero.lede} image={heroPhoto(s.hero.photo)} bar>
+  <PhotoHero class="anime-hero" title={s.hero.headline} lede={s.hero.lede} image={heroPhoto(s.hero.photo)} bar>
     <ProductCall />
   </PhotoHero>
 
   <Section eyebrow={s.pages.eyebrow} title={s.pages.headline}>
-    <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.eyebrow} />
+    <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={520} phoneRow={156} label={s.pages.eyebrow} />
   </Section>
 
   <PhotoRow
@@ -86,5 +85,5 @@ const neighbourColumns: MasonryPlace[][] = neighbours.map((t) => [{ id: t.id, h:
     <TileMasonry slot="wide" items={neighbours} columns={neighbourColumns} height={300} label={s.neighbours.eyebrow} />
   </Section>
 
-  <Closing title={site.strings.common.closing} />
+  <Closing title={s.closing.headline} body={s.closing.body} />
 </MiniSiteLayout>

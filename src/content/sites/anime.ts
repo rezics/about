@@ -35,17 +35,21 @@ export interface Statement {
   muted: string;
   note?: string;
 }
+/** The final invitation, specific to the subject of each page. */
+export interface ClosingCopy {
+  headline: string;
+  body: string;
+}
 
 export type AnimeStrings = {
   common: {
-    /** The closing statement above 「前往 REZICS」 on every page. */
-    closing: string;
     /** Eyebrow of the section that leads to the next pages. */
     onward: string;
     /** Caption under generic example data. */
     example: string;
   };
   landing: {
+    closing: ClosingCopy;
     hero: Head & { photo: Photo };
     pages: Section & { lines: { slug: string; line: string }[] };
     schedule: { eyebrow: string; headline: string; body: string; link: string; photo: Photo };
@@ -55,6 +59,7 @@ export type AnimeStrings = {
     neighbours: Section & { tiles: { to: KindId; label: string }[] };
   };
   seasons: {
+    closing: ClosingCopy;
     head: Head;
     marks: Section & { rows: Row[] };
     zones: { eyebrow: string; headline: string; body: string[]; photo: Photo };
@@ -64,6 +69,7 @@ export type AnimeStrings = {
     next: string;
   };
   tracking: {
+    closing: ClosingCopy;
     head: Head;
     statuses: Section & { rows: Row[] };
     seasons: Section & { tiles: Row[] };
@@ -72,6 +78,7 @@ export type AnimeStrings = {
     next: string;
   };
   discussion: {
+    closing: ClosingCopy;
     head: Head;
     spoiler: { eyebrow: string; headline: string; body: string; photo: Photo };
     position: Section & { rows: Row[] };
@@ -81,6 +88,7 @@ export type AnimeStrings = {
     next: string;
   };
   ratings: {
+    closing: ClosingCopy;
     head: Head;
     anatomy: Section & { rows: Row[] };
     episodes: Statement;
@@ -89,6 +97,7 @@ export type AnimeStrings = {
     next: string;
   };
   credits: {
+    closing: ClosingCopy;
     head: Head;
     record: Section & { rows: Row[] };
     voice: { eyebrow: string; headline: string; body: string; photo: Photo };
@@ -96,6 +105,7 @@ export type AnimeStrings = {
     next: string;
   };
   adaptations: {
+    closing: ClosingCopy;
     head: Head;
     example: { eyebrow: string; headline: string; body: string; photo: Photo };
     /** Generic family: each tile in the colour of its kind (null: a relation still to confirm). */
@@ -179,11 +189,14 @@ const site: MiniSite<AnimeStrings> = {
   ],
   strings: {
     common: {
-      closing: '這一季追的每一部，都排進你自己的日程。',
       onward: '接著看',
       example: '示意。',
     },
     landing: {
+      closing: {
+        headline: '這一季追的每一部，都排進你自己的日程。',
+        body: '在 REZICS 整理想看的動畫，記下進度，再走進每一集的討論。',
+      },
       hero: {
         headline: '一集一集，從開播追到完結。',
         lede: '每一季的集數與播出時間排成日程，照你的時區顯示。看完一集就記一集；聲優、製作公司與原作，都連在這部動畫上。',
@@ -237,7 +250,7 @@ const site: MiniSite<AnimeStrings> = {
           progress: '看到第幾集、追上播出沒有、下一集是哪集，分開記。',
           ratings: '整部和每一集各有分數，旁邊寫著人數，也寫著是哪一群人評的。',
           discussion: '每一集一個討論串；比你進度新的劇情，要你自己點開。',
-          wiki: 'Wiki+ 的每筆事實都注明出自哪一集，你看到哪一集，就讀到哪一集。',
+          wiki: 'Wiki+ 的每筆事實都註明出自哪一集，你看到哪一集，就讀到哪一集。',
         },
       },
       neighbours: {
@@ -253,6 +266,10 @@ const site: MiniSite<AnimeStrings> = {
       },
     },
     seasons: {
+      closing: {
+        headline: '想追的動畫，照你的時間排。',
+        body: '從當季新番開始，查看播出日程，為下一集設好提醒。',
+      },
       head: {
         headline: '一年四季，每季一張播出表。',
         lede: '動畫多半在一月、四月、七月和十月開播。你追的那幾部，從開播日到每一集的時間，都排在同一張表上。',
@@ -306,6 +323,10 @@ const site: MiniSite<AnimeStrings> = {
       next: '追上了和看完了，是兩回事。',
     },
     tracking: {
+      closing: {
+        headline: '看到哪裡，下次就從哪裡接著看。',
+        body: '把在看的動畫放進清單，記下每一集，也留下每次重看的紀錄。',
+      },
       head: {
         headline: '每看完一集，進度就往前一集。',
         lede: '在看的動畫，一集一集記。追上你看得到的集數、看完所有已播出的集數、整部完結，是三件不同的事，REZICS 分開標示。',
@@ -344,13 +365,17 @@ const site: MiniSite<AnimeStrings> = {
       next: '看完第八集，就去第八集的討論串。',
     },
     discussion: {
+      closing: {
+        headline: '把剛看完的那一集，留在討論裡。',
+        body: '找到同一集的觀眾，交換你的看法，讓後面的劇情等你追上再讀。',
+      },
       head: {
         headline: '看完這一集，就聊這一集。',
         lede: '討論串掛在每一集上，不必在整部作品的大串裡翻找。讀別人的討論，不用先加入任何社群。',
       },
       spoiler: {
         eyebrow: '暴雷線',
-        headline: '你看到第幾集，暴雷線就畫在第幾集。',
+        headline: '看到哪一集，暴雷線就到哪裡。',
         body: '標了暴雷的內容先遮起來，要你自己點開才顯示。點開只是你自己要看，不算替它投下暴雷票。',
         photo: {
           src: 'covered',
@@ -389,6 +414,10 @@ const site: MiniSite<AnimeStrings> = {
       next: '故事和製作，可以分開評。',
     },
     ratings: {
+      closing: {
+        headline: '你的看法，和作品一起留下來。',
+        body: '為一集或整部動畫評分，寫一篇評論，再把值得重看的作品排成清單。',
+      },
       head: {
         headline: '每個分數，都附上題目與評分的人。',
         lede: '同一部動畫，可以問故事好不好，也可以問這一集的作畫如何。REZICS 把題目、尺度、人數和評分的群體放在分數旁邊，不同的題目不會混在一起算。',
@@ -430,6 +459,10 @@ const site: MiniSite<AnimeStrings> = {
       next: '導演、製作公司和聲優，各自連到自己的作品。',
     },
     credits: {
+      closing: {
+        headline: '從一個名字，找到下一部作品。',
+        body: '沿著導演、作畫與聲優的署名，認識每部作品背後的人。',
+      },
       head: {
         headline: '片尾名單上的每個名字，都能點開。',
         lede: '導演、腳本、作畫監督、製作公司與聲優，在 REZICS 各有一個身分。點開一個名字，就看到他參與過的每一部作品，以及在每一部裡做了什麼。',
@@ -462,6 +495,10 @@ const site: MiniSite<AnimeStrings> = {
       next: '這部動畫改編自哪裡，順著關係走回去。',
     },
     adaptations: {
+      closing: {
+        headline: '從喜歡的動畫，接著讀它的原作。',
+        body: '順著改編與外傳的關係，找到小說、漫畫與遊戲，各自記下進度。',
+      },
       head: {
         headline: '每一部改編，都連得回原作。',
         lede: '動畫、它的原作小說或漫畫、續季、外傳和改編遊戲，在 REZICS 各是一部作品，用寫明類型的關係連在一起。從任何一部出發，都走得到其他幾部。',

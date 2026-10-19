@@ -30,8 +30,9 @@ const seasons: MasonryItem[] = s.seasons.tiles.map((t, i) => ({ id: `s${i}`, nam
       <TileMasonry
         items={seasons}
         columns={[[{ id: 's0', h: 1 }], [{ id: 's1', h: 1 }], [{ id: 's2', h: 1 }]]}
-        phone={[[{ id: 's0' }], [{ id: 's1' }], [{ id: 's2' }]]}
+        phone={[[{ id: 's0' }, { id: 's1' }], [{ id: 's2' }]]}
         height={260}
+        phoneRow={164}
         label={s.seasons.eyebrow}
       />
       <p class="anime-caption">{site.strings.common.example}</p>
@@ -44,5 +45,5 @@ const seasons: MasonryItem[] = s.seasons.tiles.map((t, i) => ({ id: `s${i}`, nam
 
   <Onward title={s.next} tiles={[pageTile('discussion', 0), pageTile('ratings', 3)]} />
 
-  <Closing title={site.strings.common.closing} />
+  <Closing title={s.closing.headline} body={s.closing.body} />
 </MiniSiteLayout>

@@ -44,8 +44,9 @@ const spaces: MasonryItem[] = s.spaces.tiles.map((t, i) => {
       slot="wide"
       items={spaces}
       columns={[[{ id: 'community', h: 1 }], [{ id: 'zones', h: 1 }]]}
-      phone={[[{ id: 'community' }], [{ id: 'zones' }]]}
+      phone={[[{ id: 'community' }, { id: 'zones' }]]}
       height={260}
+      phoneRow={208}
       label={s.spaces.eyebrow}
     />
   </Section>
@@ -54,5 +55,5 @@ const spaces: MasonryItem[] = s.spaces.tiles.map((t, i) => {
 
   <Onward title={s.next} tiles={[pageTile('ratings', 0), pageTile('credits', 3)]} />
 
-  <Closing title={site.strings.common.closing} />
+  <Closing title={s.closing.headline} body={s.closing.body} />
 </MiniSiteLayout>

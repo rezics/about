@@ -141,7 +141,8 @@ developer or platform named; no REZICS data about it.
 
 | Claim | Source |
 |---|---|
-| Closing: the shows you follow this season go onto your own schedule | Following a show puts its airings on your schedule (landing) |
+| Landing closing: the shows you follow this season go onto your own schedule | Following a show puts its airings on your schedule (landing) |
+| Each detail-page closing invites the action that page explains: reminders, progress, episode discussion, reviews/lists, credits or source relations | The corresponding page's claims above; no new capability is introduced by the closing |
 | Tracking tiles (season one 12 episodes, season two aired to 6, specials) and the adaptations family tiles are generic | Illustrative, captioned 示意 |
 
 ## Unsure
