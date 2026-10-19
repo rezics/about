@@ -189,7 +189,8 @@ the shared sentence.
 Copy first everywhere: the hero's copy and pill, then the phone crop as a 260 px band;
 inner pages' pictures follow their copy at full width; photo rows put text first; tiles two
 per row (the project list's last tile spans the row); facts lists stack the title over its
-text. No grids of text cells, no horizontal scrollers of our own.
+text, except the five short measurement definitions, which retain compact label/value rows.
+No grids of text cells, no horizontal scrollers of our own.
 
 ### Copy changes for v3
 
@@ -208,7 +209,7 @@ text. No grids of text cells, no horizontal scrollers of our own.
 
 A generic API directory opens on a search bar over logo cards with stars and an uptime
 badge. Here the first screen is one paper photograph and one sentence about sourced facts;
-no API is named (examples are invented and marked 示意); there are no star ratings and no
+no real API is named (examples are invented and marked 示意); there are no star ratings and no
 uptime numbers (scores state question, version and population; measurements state five
 fields).
 
@@ -221,6 +222,11 @@ fields).
   AVIF is now 28,570 bytes at 960 × 640 and 11,171 bytes at 640 × 427; WebP is 37,694 and
   17,752 bytes respectively. Inspected both formats at both sizes: the cut edges, fibres,
   window light and shadows remain visible.
+- A later run put the versions and specifications photographs above the phone LCP budget.
+  Re-encoded their 1200 × 800 AVIFs at quality 45 after comparing the paper textures: versions
+  is 16,711 bytes (was 42,472), specifications 19,603 bytes (was 49,195). The immediate
+  follow-up measured 2076 ms and 2144 ms respectively, with zero CLS and axe violations.
+  The remaining responsive sizes and both WebP fallbacks were already within budget.
 - The first phone screenshots exposed a kit issue: current-tab centring used an offset
   relative to the whole bar, clipping the first tabs beside API Hub. `apis.css` makes
   `.sitebar__tabs` positioned so the existing script measures the scrolling list. This is a
