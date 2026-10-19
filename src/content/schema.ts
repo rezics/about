@@ -129,26 +129,20 @@ export interface Site {
     groups: { works: string; agents: string };
   };
   /**
-   * The home page (DESIGN.md "Direction v2"; the reference mock .temp/mocks/home.html): the hero
-   * with the wall of the nine kinds, the index section and its adaptation chain, the community
-   * band, the platform statement over the module index, developers and agents with a real
-   * request, the principles, the closing block. It names no specific work.
+   * The home page (v3, .temp/sites/V3-SPEC.md; the reference mock .temp/sites/v3-home-mock.html):
+   * the photograph hero, the nine kinds as a tile masonry, the statement, one identity across
+   * kinds and languages, community and Zones, the five modules, developers and AI agents with
+   * one real request, the principles, the closing. One idea per section; it names no work.
    */
   home: {
-    hero: { label: string; headline: string; lede: string; primary: string; secondary: string };
-    index: {
-      label: string;
-      link: string;
-      /** Two lines. */
-      headline: [string, string];
-      body: [string, string];
-      /** The adaptation chain: a relation over each name (示意, no work named). */
-      chain: { kind: KindId; rel: string; name: string }[];
-    };
-    community: { label: string; headline: string; body: string; items: Item[] };
-    platform: { headline: string; more: string; modules: Record<ModuleId, string> };
-    agents: { label: string; headline: string; body: string; link: string; code: string; codeLabel: string; caption: string };
-    principles: { headline: string; items: Principle[] };
+    hero: { headline: string; lede: string; primary: string; imageAlt: string };
+    kinds: { eyebrow: string; headline: [string, string] };
+    statement: { text: string; sub: string };
+    identity: { eyebrow: string; headline: string; body: [string, string]; link: string; imageAlt: string };
+    community: { eyebrow: string; headline: string; body: [string, string]; link: string; imageAlt: string };
+    platform: { eyebrow: string; headline: string; lead: string; modules: Record<ModuleId, string> };
+    agents: { eyebrow: string; headline: string; lead: string; link: string; code: string; codeLabel: string; caption: string };
+    principles: { eyebrow: string; headline: string; items: Principle[] };
     finale: { headline: string; body: string };
   };
   engine: {

@@ -1,9 +1,9 @@
 /**
- * Flat colour for tiles (DESIGN.md "Direction v2", tiles): mixing, WCAG contrast, the text
- * colour (paper or ink) a ground takes, and a ramp of distinct flat shades and tints of an
- * accent, each with text that passes AA.
+ * Flat colour for tiles (DESIGN.md "v3", tiles): mixing, WCAG contrast, the text colour (paper
+ * or ink) a ground takes, and a ramp of distinct flat shades and tints of an accent, each with
+ * text that passes AA. `inkOn` (theme.ts) gives the exact text colour for a ground.
  */
-import { palette } from './theme';
+import { inkOn, palette } from './theme';
 
 type Rgb = [number, number, number];
 
@@ -35,15 +35,15 @@ export function textOn(bg: string): 'paper' | 'ink' {
   return contrast(palette.paper, bg) >= contrast(palette.ink, bg) ? 'paper' : 'ink';
 }
 
-/** The darkest stop of a ramp: a deep ink with a trace of blue. */
-const DEEP = '#121820';
+/** The darkest stop of a ramp: a deep warm ink. */
+const DEEP = '#1a1c1f';
 
 /** A ground nudged deeper (paper text) or lighter (ink text) until its text passes AA. */
 function settle(bg: string): { bg: string; on: 'paper' | 'ink' } {
   let ground = bg;
   for (let i = 0; i < 20; i++) {
     const on = textOn(ground);
-    if (contrast(palette[on], ground) >= 4.6) return { bg: ground, on };
+    if (contrast(inkOn(ground, on), ground) >= 4.6) return { bg: ground, on };
     ground = on === 'paper' ? mix(ground, DEEP, 0.08) : mix(ground, palette.paper, 0.08);
   }
   return { bg: ground, on: textOn(ground) };
