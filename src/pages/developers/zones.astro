@@ -37,8 +37,8 @@ const s = site.strings.zones;
     <FactList items={s.review.rows} numbered />
   </Section>
 
-  <Statement text={s.statement.text} sub={s.statement.sub} />
+  <Statement text={s.statement.text} sub={s.statement.sub} note={s.statement.note} />
 
   <More slug="zones" />
-  <Closing />
+  <Closing {...site.strings.common.closing} />
 </MiniSiteLayout>

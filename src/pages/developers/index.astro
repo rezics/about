@@ -9,16 +9,12 @@ import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import CodeSet from '../../sites/developers/CodeSet.astro';
 import { pageTiles, pageColumns, pagePhone, hubTiles, hubColumns, hubPhone } from '../../sites/developers/pages';
 import site from '../../content/sites/developers';
 import '../../sites/developers/developers.css';
 
 const s = site.strings.landing;
-const ways = [
-  { title: s.ways.person.label, body: s.ways.person.body },
-  ...s.ways.calls.map((c) => ({ title: c.label, sample: c.sample })),
-  { title: s.ways.shared.label, sample: s.ways.shared.sample },
-];
 ---
 <MiniSiteLayout>
   <PhotoHero
@@ -39,11 +35,14 @@ const ways = [
   </PhotoHero>
 
   <Section eyebrow={s.ways.label} title={s.ways.headline} lead={s.ways.lead}>
-    <CodeFacts items={ways} label={s.ways.label} class="dv-ways" />
+    <div class="dv-stack">
+      <CodeFacts items={[{ title: s.ways.person.label, body: s.ways.person.body }]} />
+      <CodeSet items={s.ways.calls} shared={s.ways.shared} class="dv-ways" />
+    </div>
   </Section>
 
   <Section eyebrow={s.pages.label} title={s.pages.headline} lead={s.pages.lead}>
-    <TileMasonry slot="wide" items={pageTiles} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.label} />
+    <TileMasonry slot="wide" items={pageTiles} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.label} class="dv-pages" />
   </Section>
 
   <Statement text={s.statement.text} sub={s.statement.sub} />
@@ -56,5 +55,5 @@ const ways = [
     <TileMasonry slot="wide" items={hubTiles} columns={hubColumns} phone={hubPhone} height={220} label={s.hubs.label} />
   </Section>
 
-  <Closing />
+  <Closing {...site.strings.common.closing} />
 </MiniSiteLayout>

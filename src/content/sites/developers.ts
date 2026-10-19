@@ -4,7 +4,7 @@
 import type { KindId, MiniSite } from '../schema';
 import { site as shared } from '../site';
 
-/** Languages the site's highlighter knows (src/sites/developers/highlight.ts); `text` is plain. */
+/** Languages used by the site's real code excerpts; `text` is plain. */
 export type CodeLanguage = 'http' | 'json' | 'ts' | 'sh' | 'text';
 
 export interface CodeSample {
@@ -38,10 +38,12 @@ export interface Hero {
 export interface Said {
   text: string;
   sub: string;
+  note?: string;
 }
 export interface Shown {
   label: string;
   sample: CodeSample;
+  caption?: string;
 }
 /** A photo row's text: eyebrow, heading and one paragraph or several. */
 export interface Photo {
@@ -51,7 +53,7 @@ export interface Photo {
 }
 
 export type DevelopersStrings = {
-  common: { nextSite: string; more: Head };
+  common: { nextSite: string; more: Head; closing: { title: string; body: string } };
   /** Descriptions of the paper still-lifes (SITE.md "Pictures"). */
   alts: Record<'hero' | 'mcp' | 'apps' | 'wiki' | 'zones', string>;
   landing: {
@@ -120,7 +122,14 @@ export type DevelopersStrings = {
 const lines = (...l: string[]) => l.join('\n');
 
 const strings: DevelopersStrings = {
-  common: { nextSite: '下一個站點', more: { label: '開發者', headline: '其他頁面' } },
+  common: {
+    nextSite: '下一個站點',
+    more: { label: '開發者', headline: '其他頁面' },
+    closing: {
+      title: '用同一套 API，寫自己的工具。',
+      body: '讓自己的程式讀寫作品、藏書庫與社群資料。每次操作，都沿用 REZICS 的身分與授權規則。',
+    },
+  },
   alts: {
     hero: '暖白紙面上，三條紙帶分別從上方、右側與下方伸過來，末端都壓在同一張深藍灰色的方形紙下。',
     mcp: '一張深藍灰色的紙上打了一排圓孔，一條淺藍色紙帶在孔間一上一下穿過。',
@@ -131,13 +140,13 @@ const strings: DevelopersStrings = {
 
   landing: {
     hero: {
-      headline: '每個按鈕，背後都是一個 API 操作。',
+      headline: '每個按鈕，都是一個 API 操作。',
       lede: 'REZICS 的網站自己就呼叫這套 API。你的程式送出 HTTP 請求，AI 代理經由 MCP 伺服器呼叫工具，抵達的都是同一個操作。',
     },
     ways: {
       label: '三種方式',
       headline: '三種方式進來，拿到同一份回應。',
-      lead: '在藏書庫按下「下載藏書庫」，網站送出的就是這個請求。你的程式與 AI 代理送出相同的請求，經過同樣的檢查，拿到同一份藏書庫匯出。',
+      lead: '在藏書庫按下「下載藏書庫」，網站送出的就是這個請求。你的程式與代理送出相同的請求，經過同樣的檢查，拿到同一份藏書庫匯出。',
       person: { label: '人', body: '在 REZICS 的藏書庫頁面，按下「下載藏書庫」。' },
       calls: [
         {
@@ -146,12 +155,26 @@ const strings: DevelopersStrings = {
         },
         {
           label: '代理',
-          sample: { language: 'json', code: lines('tools/call  library_export', '{ "query": {', '    "actingSubject": "…",', '    "limit": 20 } }') },
+          sample: {
+            language: 'json',
+            code: lines(
+              '{',
+              '  "name": "library_export",',
+              '  "arguments": {',
+              '    "query": {',
+              '      "actingSubject": "…",',
+              '      "limit": 20',
+              '    }',
+              '  }',
+              '}',
+            ),
+          },
+          caption: 'tools/call 的參數。身分由你指定。',
         },
       ],
       shared: {
         label: '同一個操作',
-        sample: { language: 'text', code: lines('operationId  getV1MeLibrary-export', 'profile      rezics-library-export-v1') },
+        sample: { language: 'text', code: lines('operationId', '  getV1MeLibrary-export', 'profile', '  rezics-library-export-v1') },
       },
     },
     pages: {
@@ -176,7 +199,7 @@ const strings: DevelopersStrings = {
       headline: '從哪裡進來，規則都一樣',
       rows: [
         { title: '同一個身分', code: 'actingSubject', body: '寫入時寫明這次以哪個身分行動。權杖不替你選身分，伺服器每次重新檢查。' },
-        { title: '同一道上限', code: 'scope', body: '應用程式與 AI 代理拿到的權限，只會比使用者本人少，不會更多。' },
+        { title: '同一道上限', code: 'scope', body: '應用程式與代理拿到的權限，只會比使用者本人少，不會更多。' },
         { title: '同一張回執', code: 'Idempotency-Key', body: '寫入帶著冪等鍵。逾時後重送同一個請求，拿回原本的結果，不會多做一次。' },
         { title: '同一套代碼', code: 'application/problem+json', body: '失敗時回傳問題詳情，code 欄位固定，程式照代碼處理，不必解析訊息。' },
       ],
@@ -210,7 +233,8 @@ const strings: DevelopersStrings = {
           'Content-Type: application/json',
           '',
           '{',
-          '  "actingSubject": "https://rezics.com/id/…",',
+          '  "actingSubject":',
+          '    "https://rezics.com/id/…",',
           '  "expectedVersion": 3,',
           '  "status": "read",',
           '  "finishedOn": "2026-10-19"',
@@ -252,10 +276,14 @@ const strings: DevelopersStrings = {
       sample: {
         language: 'ts',
         code: lines(
-          'main().v1.works({ id: uuid(work) })',
+          'main().v1',
+          '  .works({ id: uuid(work) })',
           "  ['reader-status'].put({",
-          '    actingSubject, expectedVersion,',
-          "    status: 'read', ...dates }, headers())",
+          '    actingSubject,',
+          '    expectedVersion,',
+          "    status: 'read',",
+          '    ...dates,',
+          '  }, headers())',
         ),
       },
       caption: '節錄自 REZICS 網站的藏書庫功能。',
@@ -292,7 +320,7 @@ const strings: DevelopersStrings = {
       headline: '連線的四個步驟',
       rows: [
         { title: '讀取資源中繼資料', code: 'GET /.well-known/oauth-protected-resource/mcp', body: '沒有權杖的請求會收到 401，標頭指向這份中繼資料，裡面寫明授權伺服器與支援的範圍。' },
-        { title: '登記並取得權杖', code: 'RFC 7591 · PKCE', body: 'AI 代理的用戶端可以自行登記，再以授權碼加 PKCE 取得權杖。登記本身不給任何資源權限。' },
+        { title: '登記並取得權杖', code: 'RFC 7591 · PKCE', body: '代理的用戶端可以自行登記，再以授權碼加 PKCE 取得權杖。登記本身不給任何資源權限。' },
         { title: '列出工具', code: 'tools/list', body: '清單只列出這個身分目前能用的工具。' },
         { title: '呼叫工具', code: 'tools/call', body: '結果原樣帶回 HTTP 狀態碼、標頭與內容，狀態碼 400 以上會標成錯誤。' },
       ],
@@ -302,11 +330,28 @@ const strings: DevelopersStrings = {
       headline: '代理的呼叫，轉送到同一個 HTTP 操作。',
       calls: [
         { label: '程式', sample: { language: 'http', code: lines('GET /v1/search/catalogue', '  ?q=旅行&limit=5') } },
-        { label: '代理', sample: { language: 'json', code: lines('tools/call  search_catalogue', '{ "query": {', '    "q": "旅行",', '    "limit": 5 } }') } },
+        {
+          label: '代理',
+          sample: {
+            language: 'json',
+            code: lines(
+              '{',
+              '  "name": "search_catalogue",',
+              '  "arguments": {',
+              '    "query": {',
+              '      "q": "旅行",',
+              '      "limit": 5',
+              '    }',
+              '  }',
+              '}',
+            ),
+          },
+          caption: '以 tools/call 送出這組參數。',
+        },
       ],
       shared: {
         label: '同一份回應',
-        sample: { language: 'text', code: lines('operationId  getV1SearchCatalogue', 'profile      public-catalogue-ranked-v1') },
+        sample: { language: 'text', code: lines('operationId', '  getV1SearchCatalogue', 'profile', '  public-catalogue-ranked-v1') },
       },
       caption: '以「旅行」搜尋目錄（示意）。代理拿到同一份回應，外面多包一層 HTTP 狀態碼與標頭；參數照 HTTP 操作分組成 path、query、headers 與 body。',
     },
@@ -390,7 +435,7 @@ const strings: DevelopersStrings = {
           'GET /api/auth/oauth2/authorize',
           '  ?response_type=code',
           '  &client_id=…',
-          '  &redirect_uri=https://app.example/cb',
+          '  &redirect_uri=https://a.example/',
           '  &scope=work:read%20library:write',
           '  &code_challenge=…',
           '  &code_challenge_method=S256',
@@ -432,7 +477,7 @@ const strings: DevelopersStrings = {
       label: '界線',
       headline: '什麼留下，什麼送出',
       body: [
-        '原始檔案與完整的章節文字留在你的電腦，轉換與定位由工具組離線完成。送到 REZICS 的是角色、別名、關係、事件與地點，每一項附上定位與短引文，再加上抽取時用的 AI 代理與模型，以及推論在本機還是雲端。',
+        '原始檔案與完整的章節文字留在你的電腦，轉換與定位由工具組離線完成。送到 REZICS 的是角色、別名、關係、事件與地點，每一項附上定位與短引文，再加上抽取時用的代理與模型，以及推論在本機還是雲端。',
         '用雲端模型時，代理讀到的文字會送到那家模型供應者，這由你決定。要完全留在本機，就用本機模型，並關掉能讀取檔案的雲端工具。',
       ],
     },
@@ -446,7 +491,7 @@ const strings: DevelopersStrings = {
       caption: 'units 每行輸出一個段落與它的定位；verify 讀進一個定位，用同一個檔案核對引文。',
       rows: [
         { code: 'rezics-wiki units', title: '切成段落', body: '把 TXT、EPUB 2/3 或視覺小說的純文字腳本（.rpy）轉成段落，每段附上 rezics-locator-v1 定位與整個檔案的 SHA-256 雜湊值。' },
-        { code: 'skill/SKILL.md', title: '交給你的 AI 代理', body: '工具組附一份 Skill，教代理逐章抽取，並分清楚敘述、角色說的話、傳聞與假設。' },
+        { code: 'skill/SKILL.md', title: '交給你的代理', body: '工具組附一份 Skill，教代理逐章抽取，並分清楚敘述、角色說的話、傳聞與假設。' },
         { code: 'wiki_candidates · wiki_validate', title: '比對與預檢', body: '先查已有的名稱與別名，結果分成相符、新增、不明確與無法取得；再預檢引文額度與缺漏的章節對應。' },
         { code: 'wiki-extraction-v1', title: '送去審查', body: '提案經人審查後才會發布。審查者手上有同一個版本，就能在自己的電腦上核對每段引文。' },
         { code: 'wiki-delta-v1', title: '接著寫新章節', body: '之後的章節以差異提案送出。沒提到的既有內容維持原樣，不會被默默刪除。' },
@@ -463,8 +508,8 @@ const strings: DevelopersStrings = {
     },
     statement: {
       text: '不解密，也不繞過；',
-      sub: '受保護的檔案會直接讀取失敗。工具組沒有解密、金鑰還原或任何繞過保護的功能，也不推薦這類外掛。',
-      licence: '工具組與它使用的協定都以 Apache-2.0 授權，不引用 REZICS 的 AGPL 程式碼。不需要 REZICS 帳號，任何相容的伺服器都能搭配；範例只用公有領域或自己有權使用的作品。',
+      sub: '受保護的檔案會直接讀取失敗。',
+      licence: '工具組沒有解密、金鑰還原或繞過保護的功能，也不推薦這類外掛。工具組與協定都以 Apache-2.0 授權，不引用 REZICS 的 AGPL 程式碼。不需要 REZICS 帳號，任何相容的伺服器都能搭配；範例只用公有領域或自己有權使用的作品。',
     },
   },
 
@@ -510,11 +555,14 @@ const strings: DevelopersStrings = {
           "  slug: 'anime',",
           '  css,',
           "  catalogue: { count: 'episodes',",
-          '    formatNames: animeFormatNames },',
+          '    formatNames: animeFormatNames',
+          '  },',
           '  slots: {',
-          '    browseHeader: AnimeBrowseHeader,',
+          '    browseHeader:',
+          '      AnimeBrowseHeader,',
           '    workCard: AnimeCard,',
-          '    cataloguePanel: AnimeCataloguePanel,',
+          '    cataloguePanel:',
+          '      AnimeCataloguePanel,',
           '    footer: AnimeFooter,',
           '  },',
           '});',
@@ -545,7 +593,8 @@ const strings: DevelopersStrings = {
     },
     statement: {
       text: '後端只有一套，前端隨你寫；',
-      sub: '新的社群站點不需要新的後端程式。展示程式碼只讀公開 API，不放商業邏輯，所以 Zone 畫得出來的資料，AI 代理也能從 API 讀到。',
+      sub: 'AI 代理也能讀到同一份資料。',
+      note: '新的社群站點不需要新的後端程式。展示程式碼只讀公開 API，不放商業邏輯，Zone 畫得出來的資料也都能從 API 讀到。',
     },
   },
 
@@ -588,12 +637,17 @@ const strings: DevelopersStrings = {
           sample: {
             language: 'ts',
             code: lines(
-              'import { fromPlainText, parseDocument,',
-              "  serializeDocument } from '@rezics/document';",
+              'import {',
+              '  fromPlainText, parseDocument,',
+              '  serializeDocument,',
+              "} from '@rezics/document';",
               '',
-              "const snapshot = fromPlainText('漢字\\nSecond paragraph');",
+              'const snapshot = fromPlainText(',
+              "  '漢字\\nSecond paragraph',",
+              ');',
               'parseDocument(snapshot);',
-              'const stored = serializeDocument(snapshot);',
+              'const stored =',
+              '  serializeDocument(snapshot);',
             ),
           },
           caption: '@rezics/document 不需要 REZICS 帳號、服務或資料庫。範例節錄自它的說明文件。',
@@ -601,8 +655,9 @@ const strings: DevelopersStrings = {
       ],
     },
     statement: {
-      text: '規則寫進程式碼，理由寫進文件；',
-      sub: '能用型別、測試與檢查表達的規則，就寫成程式；為什麼這樣決定，寫在文件裡，附上日期與理由。',
+      text: '規則寫進程式碼，',
+      sub: '理由寫進文件。',
+      note: '能用型別、測試與檢查表達的規則，就寫成程式；為什麼這樣決定，寫在文件裡，附上日期與理由。',
     },
   },
 };

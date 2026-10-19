@@ -8,6 +8,11 @@ and required body fields, the `GET /v1/search/catalogue` query parameters, the ã
 label, the zone-sdk `ZoneTokens` fields, the anime Zone package entry point, the toolkit's
 `verify` form and the README's three start commands are as below.
 
+The final v3 pass renders S1c and S5 as the JSON parameters of `tools/call`: `name` and
+`arguments`, with HTTP query fields inside `arguments.query`. Captions identify these as
+parameters rather than a complete JSON-RPC envelope. The values and operation mapping stay
+the same; no example names a work.
+
 All paths are in `/home/edge/projects/rezics/rezics-next` unless they start with `about:`.
 Read on 2026-10-19 at the working tree of `main` (HEAD `2795c35090`).
 

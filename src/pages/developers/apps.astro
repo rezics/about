@@ -15,11 +15,22 @@ import site from '../../content/sites/developers';
 import '../../sites/developers/developers.css';
 
 const s = site.strings.apps;
+const image = picture('apps');
 ---
 <MiniSiteLayout>
+  <link
+    rel="preload"
+    as="image"
+    type="image/avif"
+    media="(max-width: 767px)"
+    href={`${image.phone.src}-640.avif`}
+    imagesrcset={image.phone.widths.map((width) => `${image.phone.src}-${width}.avif ${width}w`).join(', ')}
+    imagesizes="100vw"
+    fetchpriority="high"
+  />
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <PhotoRow side="left" eyebrow={s.layers.label} title={s.layers.headline} body={s.layers.body} image={picture('apps')} />
+  <PhotoRow side="left" eyebrow={s.layers.label} title={s.layers.headline} body={s.layers.body} image={image} />
 
   <Section eyebrow={s.each.label} title={s.each.headline}>
     <FactList items={s.each.rows} numbered />
@@ -30,7 +41,7 @@ const s = site.strings.apps;
   </Section>
 
   <Section eyebrow={s.consent.label} title={s.consent.headline} lead={s.consent.note}>
-    <CodeFacts items={s.consent.rows.map((r) => ({ title: r.text, code: r.code }))} class="dv-consent" />
+    <CodeFacts items={s.consent.rows.map((r) => ({ title: r.code, body: r.text }))} mono />
   </Section>
 
   <Section eyebrow={s.revoke.label} title={s.revoke.headline}>
@@ -38,5 +49,5 @@ const s = site.strings.apps;
   </Section>
 
   <More slug="apps" />
-  <Closing />
+  <Closing {...site.strings.common.closing} />
 </MiniSiteLayout>

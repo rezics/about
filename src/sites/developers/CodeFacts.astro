@@ -38,13 +38,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <div class="cfacts__head">
         <Tag class:list={['cfacts__title', mono ? 'cfacts__title--mono' : 'serif']}>
           {numbered && <span class="cfacts__n" aria-hidden="true">{pad(i + 1)}</span>}
-          {r.title}
+          {mono ? <code>{r.title}</code> : r.title}
         </Tag>
         {r.code && <code class="cfacts__code">{r.code}</code>}
       </div>
       <div class="cfacts__main">
         {r.body && <p class="cfacts__body">{r.body}</p>}
-        {r.sample && <CodeTile code={r.sample.code} caption={r.caption} label={`${r.title}：${r.sample.language === 'text' ? '程式碼' : r.sample.language.toUpperCase()}`} class="cfacts__sample" />}
+        {r.sample && <CodeTile code={r.sample.code} caption={r.caption} label={r.title} class="cfacts__sample" />}
         {r.note && <p class="cfacts__note"><code>{r.note}</code></p>}
       </div>
     </li>

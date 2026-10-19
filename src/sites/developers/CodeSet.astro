@@ -20,7 +20,7 @@ const { items, shared, caption, class: className } = Astro.props;
     {items.map((it) => (
       <li class="cset__item">
         <p class="eyebrow cset__label">{it.label}</p>
-        <CodeTile code={it.sample.code} label={it.label} class="cset__code" />
+        <CodeTile code={it.sample.code} caption={it.caption} label={it.label} class="cset__code" />
       </li>
     ))}
   </ul>
