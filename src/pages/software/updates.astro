@@ -1,0 +1,60 @@
+---
+// 追蹤更新 (v3): three levels, what can be followed, changelogs that follow the release, the same
+// events for scripts and AI agents. Plan: src/sites/software/SITE.md "v3".
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/software/Next.astro';
+import site from '../../content/sites/software';
+import { nextTiles } from '../../sites/software/site';
+
+const s = site.strings.updates;
+const { common, sample, channels } = site.strings;
+// The sample changelog, newest first, down to the release the reader starts from (3.2).
+const changes = sample.releases
+  .filter((r) => r.note)
+  .map((r) => ({ title: r.channel === 'beta' ? `${r.version} ${channels.beta}` : r.version, body: r.note!, start: r.version === '3.2' }));
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.levels.label} title={s.levels.headline} lead={s.levels.lead}>
+    <FactList items={s.levels.rows} />
+  </Section>
+
+  <Section eyebrow={s.targets.label} title={s.targets.headline}>
+    <FactList items={s.targets.rows} />
+  </Section>
+
+  <Section eyebrow={s.changelog.label} title={s.changelog.headline} lead={[s.changelog.lead, s.changelog.more]}>
+    <figure class="sw-log">
+      <ol class="sw-log__list" role="list">
+        {changes.map((c) => (
+          <li class="sw-log__row">
+            <p class="sw-log__v">{c.title}{c.start && <span class="sw-log__start">{s.changelog.start}</span>}</p>
+            <p class="sw-log__note">{c.body}</p>
+          </li>
+        ))}
+      </ol>
+      <figcaption class="sw-log__caption">{s.changelog.caption}</figcaption>
+    </figure>
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <Next label={common.nextPage} items={nextTiles('updates')} />
+  <Closing title={s.closing} />
+</MiniSiteLayout>
+
+<style>
+  .sw-log__list { border-top: 1px solid var(--c-line); }
+  .sw-log__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 26px 0 28px; border-bottom: 1px solid var(--c-line); }
+  .sw-log__v { font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sw-log__start { display: block; margin-top: 4px; font-size: 13px; font-weight: 400; color: var(--c-link); }
+  .sw-log__note { font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .sw-log__caption { margin-top: 16px; font-size: 14px; color: var(--c-muted); }
+  @media (max-width: 767px) { .sw-log__row { grid-template-columns: minmax(0, 1fr); padding: 22px 0 24px; } }
+</style>

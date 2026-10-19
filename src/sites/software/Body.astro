@@ -1,0 +1,26 @@
+---
+/**
+ * What follows a photo row under the same heading (a fact list, a table): the heading's columns
+ * 4 to 12, or the whole grid with `wide`. Phones: one column, like every grid.
+ */
+interface Props {
+  wide?: boolean;
+  class?: string;
+}
+const { wide = false, class: className } = Astro.props;
+---
+<div class:list={['sw-body', className]}>
+  <div class="grid">
+    <div class:list={['sw-body__in', wide && 'sw-body__in--wide']}><slot /></div>
+  </div>
+</div>
+<style>
+  .sw-body { padding-top: 80px; }
+  .sw-body__in { grid-column: 4 / 13; min-width: 0; }
+  .sw-body__in--wide { grid-column: 1 / 13; }
+  .sw-body__in > :global(* + *) { margin-top: 56px; }
+  @media (max-width: 767px) {
+    .sw-body { padding-top: 44px; }
+    .sw-body__in > :global(* + *) { margin-top: 36px; }
+  }
+</style>

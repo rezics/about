@@ -43,29 +43,25 @@ export interface SoftwareStrings {
   };
   catalogue: {
     hero: { headline: string; lede: string };
-    releases: Head & { caption: string; columns: [string, string, string, string]; points: Item[] };
+    releases: Head;
+    list: { caption: string; columns: [string, string, string, string]; points: Item[] };
     statement: { text: string; sub: string };
     identity: Head & { rows: Item[] };
-    browse: Head & { conditions: string[]; caption: string; points: Item[] };
+    browse: Head & { points: Item[] };
     closing: string;
   };
   compatibility: {
     hero: { headline: string; lede: string };
     anatomy: Head & { rows: Item[] };
     states: Head & { body: Record<StateId, string>; caption: string; corner: string };
-    conditions: Head & {
-      query: string[];
-      caption: string;
-      candidates: { version: string; channel: string; state: StateId; reason: string }[];
-      result: string;
-    };
+    conditions: Head & { example: string; candidates: Item[]; result: string };
     statement: { text: string; sub: string };
     closing: string;
   };
   reviews: {
     hero: { headline: string; lede: string };
     rules: Head & { facts: Item[] };
-    anatomy: Head & { caption: string; rows: Item[]; points: Item[] };
+    anatomy: Head & { points: Item[] };
     statement: { text: string; sub: string };
     picks: Head & { rows: Item[] };
     closing: string;
@@ -74,7 +70,7 @@ export interface SoftwareStrings {
     hero: { headline: string; lede: string };
     levels: Head & { rows: Item[] };
     targets: Head & { rows: Item[] };
-    changelog: Head & { caption: string; start: string; points: Item[] };
+    changelog: Head & { more: string; caption: string; start: string };
     statement: { text: string; sub: string };
     closing: string;
   };
@@ -82,8 +78,8 @@ export interface SoftwareStrings {
     hero: { headline: string; lede: string };
     record: Head & { caption: string; fields: Item[] };
     steps: Head & { steps: Item[]; note: string };
-    licence: Head & { fields: string[]; points: Item[] };
-    lock: Head & { caption: string; packages: Item[]; points: Item[] };
+    licence: Head & { points: Item[] };
+    lock: Head & { points: Item[] };
     statement: { text: string; sub: string };
     maintenance: Head & { rows: Item[] };
     closing: string;
@@ -268,6 +264,8 @@ const site = {
         label: '發行',
         headline: '每一次發行，各自封存。',
         lead: '一筆發行記下版本號、發行管道、日期、平台，以及當時實際包含的檔案。寫錯的資料可以附證據更正；後來才出的修補，會成為新的一筆。',
+      },
+      list: {
         caption: '範例編輯器的發行，由新到舊（示意）',
         columns: ['版本', '發行管道', '日期', '平台'],
         points: [
@@ -297,8 +295,6 @@ const site = {
         label: '篩選',
         headline: '條件要落在同一個發行上。',
         lead: '找「乙系統 64 位元能跑、開放原始碼授權的穩定版」，REZICS 只列出有某一個發行同時符合全部條件的程式。條件分散在兩個發行的，不會列進來。',
-        conditions: ['乙系統・64 位元', '開放原始碼授權', '穩定版', '相容'],
-        caption: '一組篩選條件（示意）',
         points: [
           { title: '筆數', body: '結果附上筆數；還沒數完時，寫的是「至少」。' },
           { title: '翻到最後', body: '清單可以一路翻到最後一筆，不會停在某一頁。' },
@@ -344,11 +340,10 @@ const site = {
         label: '條件',
         headline: '條件綁在同一筆實測上。',
         lead: '篩選相容性時，所有條件必須由同一個發行、同一筆實測同時滿足。把不同版本的結果拼在一起，看起來能用，裝下去卻不行。',
-        query: ['乙系統・64 位元', '穩定版', '相容', '4.0 以後'],
-        caption: '篩選條件與兩個候選發行（示意）',
+        example: '例如條件是「乙系統・64 位元、穩定版、相容、4.0 以後」，範例編輯器有兩個候選發行（示意）：',
         candidates: [
-          { version: '4.1', channel: '測試版', state: 'compatible', reason: '測過能跑，但不是穩定版' },
-          { version: '4.0', channel: '穩定版', state: 'unknown', reason: '是穩定版，但還沒有人測過' },
+          { title: '4.1 測試版', body: '相容。測過能跑，但不是穩定版。' },
+          { title: '4.0 穩定版', body: '未知。是穩定版，但還沒有人測過。' },
         ],
         result: '條件分散在兩個發行，所以沒有符合的結果。REZICS 會直接回答沒有，不會悄悄放寬條件。',
       },
@@ -377,13 +372,6 @@ const site = {
         label: '問題與對象',
         headline: '每個分數，都有它回答的問題。',
         lead: '評分的問題、量表與對象一起定義。問題不同的分數不會加在一起，單一發行的分數也不會自動算進整個程式。',
-        caption: '一個評分的組成（示意）',
-        rows: [
-          { title: '對象', body: '範例編輯器 3.2' },
-          { title: '問題', body: '整體好用程度' },
-          { title: '量表', body: '1 到 10' },
-          { title: '範圍', body: '全站，以及一個 Realm' },
-        ],
         points: [
           { title: '並排', body: '全站與每個社群的分數並排列出，不揉成一個數字。' },
           { title: '跨版本', body: '跨版本的總分是另一個指標，寫明算法與涵蓋了幾個發行。' },
@@ -438,12 +426,9 @@ const site = {
         label: '更新說明',
         headline: '更新說明，跟著發行走。',
         lead: '更新說明記在每一次發行底下。從 3.2 跳到 4.1 測試版時，中間每一版改了什麼，可以依序讀完。',
+        more: '首頁的「繼續」一欄，會把相容的套件更新和你沒讀完的下一章放在一起。套件更新與退回舊版都鎖定到確切的檔案，退回時拿到的就是當初那一份。',
         caption: '範例編輯器的更新說明，由新到舊（示意）',
         start: '從這裡開始讀',
-        points: [
-          { title: '繼續', body: '首頁的「繼續」一欄，會把相容的套件更新和你沒讀完的下一章放在一起。' },
-          { title: '退回', body: '套件更新與退回舊版都鎖定到確切的檔案，退回時拿到的就是當初那一份。' },
-        ],
       },
       statement: {
         text: '你的腳本與 AI 代理，',
@@ -493,7 +478,6 @@ const site = {
         label: '授權',
         headline: '授權，寫到條款的版本。',
         lead: '一筆授權宣告記下確切的條款與版本、宣告者、時間、適用範圍與出處。從外部來源匯入的授權文字會標明來源，不會被當成你本人的宣告。',
-        fields: ['條款', '版本', '宣告者', '時間', '範圍', '出處'],
         points: [
           { title: '不是認證', body: '宣告本身不是法律上的認證，也不會改變任何人的編輯權限。' },
           { title: '不知道就寫不知道', body: '不知道當初是誰授權、在哪一年，就照實寫不知道。' },
@@ -504,16 +488,11 @@ const site = {
         label: '依賴',
         headline: '依賴關係，照各生態系自己的規則。',
         lead: 'REZICS 解析套件的依賴關係時，保留每個生態系原本的身分、版本順序與依賴意義，再把結果鎖定到確切的檔案。',
-        caption: '三個套件的解析結果（示意）',
-        packages: [
-          { title: '套件甲', body: '候選 1.2、1.3、2.0，鎖定 1.3' },
-          { title: '套件乙', body: '候選 0.9、1.0，鎖定 1.0' },
-          { title: '套件丙', body: '來源查不到，另外回報，不算成無解' },
-        ],
         points: [
           { title: '硬性與建議', body: '硬性的依賴與衝突，和建議性的搭配與提醒，分開記錄。' },
           { title: '撤下的版本', body: '新的解析不會選已撤下的版本；既有的鎖定照樣能原樣重現。' },
-          { title: '查不到', body: '查不到的依賴資料，不會被當成沒有依賴。' },
+          { title: '分開回報', body: '來源查不到、條款不支援或超出預算，和真正無解分開回報。' },
+          { title: '查不到不等於沒有', body: '查不到的依賴資料，不會被當成沒有依賴。' },
         ],
       },
       statement: {

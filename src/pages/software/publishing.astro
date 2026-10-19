@@ -1,0 +1,63 @@
+---
+// 發布與授權 (v3): the record of one release, five steps, the licence, dependencies by each
+// ecosystem's rules, install is not consent to run, after publishing. Plan: SITE.md "v3".
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import Body from '../../sites/software/Body.astro';
+import Next from '../../sites/software/Next.astro';
+import site from '../../content/sites/software';
+import { nextTiles, sectionPicture } from '../../sites/software/site';
+
+const s = site.strings.publishing;
+const { common, pictures } = site.strings;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
+    <ProductCall />
+  </PageHead>
+
+  <PhotoRow side="right" eyebrow={s.record.label} title={s.record.headline} body={s.record.lead} image={sectionPicture(pictures.slit)} />
+  <Body>
+    <figure>
+      <FactList items={s.record.fields} level="p" class="sw-record" />
+      <figcaption class="sw-caption">{s.record.caption}</figcaption>
+    </figure>
+  </Body>
+
+  <Section eyebrow={s.steps.label} title={s.steps.headline}>
+    <FactList items={s.steps.steps} numbered />
+    <p class="lead sw-note">{s.steps.note}</p>
+  </Section>
+
+  <Section eyebrow={s.licence.label} title={s.licence.headline} lead={s.licence.lead}>
+    <FactList items={s.licence.points} />
+  </Section>
+
+  <Section eyebrow={s.lock.label} title={s.lock.headline} lead={s.lock.lead}>
+    <FactList items={s.lock.points} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <Section eyebrow={s.maintenance.label} title={s.maintenance.headline}>
+    <FactList items={s.maintenance.rows} />
+  </Section>
+
+  <Next label={common.nextPage} items={nextTiles('publishing')} />
+  <Closing title={s.closing} />
+</MiniSiteLayout>
+
+<style>
+  .sw-caption { margin-top: 16px; font-size: 14px; color: var(--c-muted); }
+  .sw-note { margin-top: 32px; max-width: 34em; font-size: 17px; }
+  :global(.sw-record .facts__row) { padding: 20px 0 22px; }
+  :global(.sw-record .facts__title) { font-size: 16px; }
+  :global(.sw-record .facts__body) { color: var(--c-fg); font-variant-numeric: tabular-nums; }
+  @media (max-width: 767px) { .sw-note { font-size: 16px; } }
+</style>

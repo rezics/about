@@ -1,0 +1,109 @@
+---
+/**
+ * The sample compatibility of 範例編輯器 (示意): environments down, releases across (newest
+ * first), each result written as its state in words plus the date of the adopted measurement,
+ * with a small flat swatch beside the word (never colour alone). 未知 keeps only its word.
+ * Phones read the same data as one short record per release, newest first, so nothing scrolls
+ * sideways; each form is hidden at the other width (display: none keeps one copy in the
+ * accessibility tree).
+ */
+import site from '../../content/sites/software';
+
+interface Props {
+  caption: string;
+  corner: string;
+}
+const { caption, corner } = Astro.props;
+const { sample, states, channels } = site.strings;
+const id = 'compat-sample';
+---
+<figure class="ctab" aria-labelledby={id}>
+  <div class="ctab__wide">
+    <table aria-labelledby={id}>
+      <thead>
+        <tr>
+          <th scope="col" class="ctab__corner">{corner}</th>
+          {sample.releases.map((r) => (
+            <th scope="col">
+              <span class="ctab__v">{r.version}</span>
+              {r.channel === 'beta' && <span class="ctab__ch">{channels.beta}</span>}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {sample.environments.map((env, row) => (
+          <tr>
+            <th scope="row">{env.name}</th>
+            {sample.cells[row]!.map(([state, date]) => (
+              <td>
+                <span class={`ctab__state ctab__state--${state}`}><i class="ctab__sw" aria-hidden="true" />{states[state]}</span>
+                {date && <span class="ctab__date">{date}</span>}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <ol class="ctab__phone" role="list">
+    {sample.releases.map((r, col) => (
+      <li class="ctab__rel">
+        <p class="ctab__relhead">
+          <span class="ctab__v">{r.version}</span>
+          {r.channel === 'beta' && <span class="ctab__ch">{channels.beta}</span>}
+        </p>
+        <dl class="ctab__list">
+          {sample.environments.map((env, row) => {
+            const [state, date] = sample.cells[row]![col]!;
+            return (
+              <div class="ctab__pair">
+                <dt>{env.name}</dt>
+                <dd>
+                  <span class={`ctab__state ctab__state--${state}`}><i class="ctab__sw" aria-hidden="true" />{states[state]}</span>
+                  {date && <span class="ctab__date">{date}</span>}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      </li>
+    ))}
+  </ol>
+  <figcaption id={id} class="ctab__caption">{caption}</figcaption>
+</figure>
+<style>
+  .ctab { min-width: 0; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; border-top: 1px solid var(--c-line); }
+  th, td { text-align: left; vertical-align: top; padding: 18px 12px 20px 0; line-height: 1.6; }
+  thead th { padding-block: 16px 14px; font-weight: 600; color: var(--c-fg); }
+  thead th.ctab__corner { font-size: 13px; font-weight: 400; color: var(--c-muted); }
+  thead th:first-child, tbody th { width: 24%; }
+  tbody tr { border-top: 1px solid var(--c-line); }
+  tbody tr:last-child { border-bottom: 1px solid var(--c-line); }
+  tbody th { font-weight: 400; font-size: 15px; color: var(--c-fg); }
+  .ctab__v { font-size: 17px; font-variant-numeric: tabular-nums; }
+  .ctab__ch { display: block; font-size: 13px; font-weight: 400; color: var(--c-muted); }
+  .ctab__state { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: var(--c-fg); }
+  .ctab__date { display: block; margin-top: 2px; padding-left: 18px; font-size: 13px; color: var(--c-muted); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+  .ctab__sw { position: relative; flex: none; width: 10px; height: 10px; }
+  .ctab__state--compatible .ctab__sw { background: var(--field); }
+  .ctab__state--incompatible .ctab__sw { background: var(--c-fg); }
+  .ctab__state--stale .ctab__sw { background: color-mix(in srgb, var(--field) 32%, var(--c-bg)); }
+  .ctab__state--unknown .ctab__sw { box-sizing: border-box; border: 1px solid var(--c-line-strong); }
+  .ctab__state--unavailable .ctab__sw::after { content: ''; position: absolute; inset: 4.5px 0 auto; height: 1px; background: var(--c-muted); }
+  .ctab__state--unknown, .ctab__state--unavailable { color: var(--c-muted); }
+  .ctab__phone { display: none; }
+  .ctab__caption { margin-top: 16px; font-size: 14px; color: var(--c-muted); }
+  @media (max-width: 767px) {
+    .ctab__wide { display: none; }
+    .ctab__phone { display: block; border-top: 1px solid var(--c-line); }
+    .ctab__rel { padding: 20px 0 22px; border-bottom: 1px solid var(--c-line); }
+    .ctab__relhead { display: flex; align-items: baseline; gap: 10px; font-weight: 600; }
+    .ctab__relhead .ctab__ch { display: inline; }
+    .ctab__list { margin-top: 12px; display: grid; gap: 10px; }
+    .ctab__pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: baseline; }
+    .ctab__pair dt { font-size: 14px; color: var(--c-text); }
+    .ctab__pair .ctab__date { display: inline; padding-left: 8px; }
+  }
+</style>
