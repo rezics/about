@@ -138,9 +138,9 @@ const tile = (title: string) => s.bundles.tiles.find((t) => t.title === title)!;
     height: 1px;
     background: var(--c-line-strong);
   }
-  .states__sq { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 6cqi; container-type: inline-size; }
-  .states__name { font-size: 40cqi; font-weight: 900; line-height: 1; letter-spacing: 0; }
-  .states__step:nth-child(3) .states__sq { background: var(--g-field); --c-bg: var(--g-field); }
+  .states__sq { aspect-ratio: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; }
+  .states__name { font-size: clamp(2.5rem, 1rem + 4vw, 5rem); font-weight: 900; line-height: 1; letter-spacing: 0; }
+  .states__step:nth-child(3) .states__sq { background: var(--g-field); --c-bg: var(--g-field); --c-muted: var(--c-paper); }
   .states__n { color: var(--c-muted); }
   .states__body { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
 

@@ -178,8 +178,8 @@ The library is 「遊戲庫」 (lead decision; the kinds card uses it too).
 
 - **Site bar:** the kit's bar (square, name, the seven tabs, the current one marked by the red
   square). The stage 1 plan for a bespoke slot row was dropped: the kit owns the bar.
-- **Action:** every page leads into the product with 「前往 REZICS」 (`Go.astro`, a stand-in
-  until the kit's shared action lands on main; then it is replaced by the kit component).
+- **Action:** every page leads into the product with the kit's `ProductCall`
+  (「前往 REZICS」 to `site.productUrl`).
 - **Finale** (`GamesFinale.astro`): the kit's full-bleed band for the next page in the site
   order; on `/games/creators/` it is the next site, 軟體 (`next: 'software'`).
 - **Transitions:** the kit's. The landing's hero square is the Flip target (`flip="target"`).
@@ -191,8 +191,9 @@ The library is 「遊戲庫」 (lead decision; the kinds card uses it too).
   `[data-site='games']` with the semantic tokens (`--c-bg`, `--c-fg`, `--c-muted`, `--c-line`,
   `--c-link`, `--focus`), so the kit pieces follow.
 - **Bands:** the games field `#2a49c9` (paper text, 6.6 : 1) for the signature and one band per
-  page; light paper bands (`.g-light`, ink text, the shared light tokens) for statements and
-  lists, so a page alternates night, field and paper.
+  page; the inverted band tokens (`--c-band-*`) are paper with ink, used by the footer and by the
+  light sections (`.g-light`) for statements and lists, so a page alternates night, field and
+  paper.
 - **Slot material:** a slot is a square cell with the hairline plus an inset frame (`--g-inset`).
   The red square outline (`--c-mark`) is the selection cursor, a mark and never text.
 - **Type:** the shared families. Item and step names set heavy and short like inventory names;
@@ -207,10 +208,10 @@ differs. No page shares another's sequence; no large grid of text cells is a key
 
 | Page | Sections |
 | --- | --- |
-| `/games/` | 1 split hero: h1, lede, 前往 REZICS, the games kind square (Flip target) · 2 開箱 on the field: part chips, inventory, description (phone: scroll-snap row) · 3 index list of the six pages with a square preview (phone: rows) · 4 parts as labelled chips with one-line notes (2 columns; phone: one) · 5 statement on paper · 6 asymmetric pair of five neighbouring kind squares (phone: 2 columns) · 7 finale |
-| `/games/releases/` | 1 work-first: h1, lede, condition chips, the platform × edition table (phone: a stack per platform, each release a card naming its edition; missing combinations left out) · 2 filmstrip row of five release states (phone: scroll-snap) · 3 asymmetric pair, image and the three languages · 4 data/facts on the field: official, measured, unknown · 5 gallery wall: a complete edition holding base game and expansion, soundtrack, remake, mod (phone: stack) · 6 statement on paper · 7 finale |
-| `/games/store/` | 1 full-bleed field hero with the parcel image · 2 checkout: the 結帳前 square beside a two-column list of eight things shown before paying (phone: one column) · 3 filmstrip, pinned horizontal pan of six purchase steps (phone: scroll-snap row, focusable region) · 4 asymmetric pair: what you keep, three squares stepped (phone: rows) · 5 privacy statement on paper · 6 index list: what the store does not do · 7 finale |
-| `/games/library/` | 1 asymmetric pair, cartridge image first (phone: text first) · 2 sticky narrative: one square names the state, five chapters (phone: a sticky strip) · 3 index list of save slots on the field, an empty slot with the cursor · 4 gallery wall of kind squares, each with its unit · 5 playtime rules on paper (phone: rows) · 6 statement · 7 finale |
+| `/games/` | 1 split hero: h1, lede, 前往 REZICS, the games kind square (Flip target), a blinking cursor by the caption · 2 開箱 on the field: part chips, inventory, description (phone: scroll-snap row) · 3 index list of the six pages, rows flood with the field on hover, a square preview (phone: rows) · 4 the kit's `PartsList`: labelled chips with this site's one-line notes · 5 statement on paper · 6 asymmetric pair of five neighbouring kind squares (phone: 2 columns) · 7 finale |
+| `/games/releases/` | 1 work-first: h1, lede, condition chips, the platform × edition table (phone: a stack per platform, each release a card naming its edition; missing combinations left out) · 2 filmstrip row of five release states, each square filled by its name (phone: scroll-snap) · 3 asymmetric pair, image and the three languages · 4 data/facts on the field: official, measured, unknown · 5 gallery wall: a complete edition holding base game and expansion, soundtrack, remake, mod (phone: stack) · 6 statement on paper · 7 finale |
+| `/games/store/` | 1 full-bleed field hero with the parcel image · 2 checkout: the 結帳前 square beside a two-column list of eight things shown before paying (phone: one column) · 3 filmstrip, pinned horizontal pan of six purchase steps (phone: scroll-snap row, focusable region) · 4 asymmetric pair: what you keep, three squares stepped (phone: rows) · 5 privacy statement on paper · 6 what the store does not do, as four crossed-out empty slots · 7 finale |
+| `/games/library/` | 1 asymmetric pair, cartridge image first (phone: text first) · 2 sticky narrative: one square names the state, five chapters (phone: the chapters alone, their titles are the states) · 3 index list of save slots on the field, an empty slot with the cursor · 4 gallery wall of kind squares, each with its unit · 5 playtime rules on paper (phone: rows) · 6 statement · 7 finale |
 | `/games/reviews/` | 1 statement hero · 2 filmstrip of version squares with block distributions on the field (phone: scroll-snap) · 3 asymmetric pair: population and period chips switch one distribution · 4 gallery wall of review targets (phone: stack) · 5 index list of ranking rules on paper · 6 poster line: three kinds of talk · 7 finale |
 | `/games/guides/` | 1 poster: 攻略與 Wiki+ at mega size · 2 the fog on the field: a chapter picker and a track of six chapter rows with entry chips; rows after the chosen chapter are covered · 3 asymmetric pair with the map image · 4 index list of Wiki+ rules on paper · 5 filmstrip chain of adaptations from 《三國演義》 (phone: 2 columns) · 6 Zone statement on the field · 7 finale |
 | `/games/creators/` | 1 split hero, workbench image first (phone: text first) · 2 index list: rights · 3 ledger on paper: labels only, no figures · 4 gallery wall of a creator's works across kinds · 5 asymmetric pair on the field: Realm, Zone, release kit, Wiki+ from scripts · 6 statement · 7 finale to 軟體 |

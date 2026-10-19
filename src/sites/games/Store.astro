@@ -125,10 +125,10 @@ const s = site.strings.store;
   .pan__head { grid-column: 1 / span 4; }
   .pan__view { grid-column: 5 / span 8; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: thin; }
   .pan__track { list-style: none; padding: 0; display: flex; gap: var(--gutter); width: max-content; }
-  .pan__frame { flex: 0 0 auto; width: clamp(240px, 24vw, 360px); padding: 22px; display: flex; flex-direction: column; gap: 12px; scroll-snap-align: start; container-type: inline-size; }
+  .pan__frame { flex: 0 0 auto; width: clamp(240px, 24vw, 360px); padding: 22px; display: flex; flex-direction: column; gap: 12px; scroll-snap-align: start; }
   .pan__frame:first-child { background: var(--g-field); color: var(--c-paper); --c-bg: var(--g-field); --c-line: rgb(244 245 242 / 0.22); --c-muted: var(--c-paper); }
   .pan__n { color: var(--c-muted); }
-  .pan__name { font-size: 30cqi; font-weight: 900; line-height: 1; letter-spacing: 0; margin-top: 18px; }
+  .pan__name { font-size: clamp(2.5rem, 0.8rem + 3.4vw, 4.25rem); font-weight: 900; line-height: 1; letter-spacing: 0; margin-top: 18px; white-space: nowrap; }
   .pan__body { line-height: 1.6; }
   /* Desktop pinned pan: the view clips and the track is moved by the scroll. */
   .pan:global(.is-panning) .pan__view { overflow: clip; scroll-snap-type: none; mask-image: linear-gradient(to right, transparent 0, #000 40px); }
