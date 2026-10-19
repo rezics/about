@@ -1,0 +1,33 @@
+---
+/**
+ * An inner page's opening (SITE.md "v3"): the kit's PageHead (eyebrow, serif h1, lead) and, when
+ * the page has one, its still-life photograph under it from the heading's column to the right
+ * edge. Phones: the copy first, the photograph after it across the width.
+ */
+import PageHead from '../../kit/components/PageHead.astro';
+import Picture from '../../kit/components/Picture.astro';
+
+interface Props {
+  label: string;
+  title: string;
+  lede?: string;
+  image?: { src: string; widths: number[]; alt: string; width: number; height: number };
+}
+const { label, title, lede, image } = Astro.props;
+---
+<PageHead label={label} title={title} lede={lede} />
+{image && (
+  <div class="grid g-open">
+    <div class="g-open__pic">
+      <Picture {...image} sizes="(max-width: 767px) 100vw, 75vw" priority />
+    </div>
+  </div>
+)}
+<style>
+  .g-open { margin-top: clamp(64px, 7vw, 104px); }
+  .g-open__pic { grid-column: 4 / 13; min-width: 0; }
+  @media (max-width: 767px) {
+    .g-open { margin-top: 40px; }
+    .g-open__pic { grid-column: 1 / -1; margin-inline: calc(var(--gutter) * -1); }
+  }
+</style>

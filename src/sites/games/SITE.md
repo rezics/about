@@ -131,9 +131,10 @@ The library is 「遊戲庫」 (lead decision; the kinds card uses it too).
 The shared v3 ground and ink: paper `#efe9e0`, ink `#26292d`, muted `#6b6f73`, hairlines in ink
 at 14 %. The games blue `#2f4fa3` (paper text on it, 6.3 : 1) is this site's kind colour: the
 large photograph's main paper, the first tile of each masonry, and the link and hover accent
-the whole site already uses. Tiles of the site's own pages and example tiles take shades and
-tints of the blue (the kit's ramp) with one or two neighbours (visual novels `#7768a3`,
-software `#24555a`); tiles that stand for another kind take that kind's colour. No dark
+the whole site already uses. Tiles of the site's own pages and example tiles take the blue, two
+deeper shades from the kit's ramp and three tints mixed toward a cool white (the warm paper
+greys the blue out; `tiles.ts`, AA checked in `drivers.test.ts`); tiles that stand for another
+kind take that kind's colour. No dark
 theme, no gradients, no shadows.
 
 ### Pictures (the paper still-life series)
@@ -156,13 +157,16 @@ statement, facts (hairline list), closing. Example data stays captioned 示意.
 
 | Page | Sections in order |
 | --- | --- |
-| `/games/` | hero (photo `hero`; 「每一款遊戲，每一個版本，都記得清楚。」, one paragraph, 前往 REZICS) · section 發行 with four example releases as a facts list (示意) and a link to 平台與版本 · statement on versions, downloads and 未知 · photo row `store` with the store and creators links · section 六個頁面 as a tile masonry of the site's pages in blue shades · section 部件 as a facts list of the eight parts · section 相關的種類 as a tile masonry in the five neighbours' colours · closing |
-| `/games/releases/` | opening (text) · the release filter: language and platform toggles over a hairline table, a stack per platform on phones (示意) · facts: five release states · section 語言 with three facts · tile masonry: what one release can hold (示意) · facts: requirements, official, measured, unknown · statement on 未知 and dated offers · closing |
-| `/games/store/` | opening with photo `store` · facts: eight things shown before paying · six purchase steps as a numbered tile row in blue shades · section what you keep with three facts · statement on privacy toward creators · facts: what the store does not do · closing |
-| `/games/library/` | opening with photo `library` · facts: five statuses · section 存檔 with a hairline table of three playthroughs (示意) · tile masonry: one library across kinds, each with its unit (示意) · facts: playtime rules and the opt-in note · statement on takeout · closing |
-| `/games/reviews/` | opening (text) · tile row of five versions (示意) · facts: whose score, three rules · tile masonry: what a review is about · facts: how ranking works · statement on three kinds of talk · closing |
-| `/games/guides/` | opening (text) · photo row `guides`: spoilers past your position stay covered · section 攻略 with two facts · facts: five Wiki+ rules · section 改編 on the approved example 《魔法禁書目錄》 (text only) with a tile row of its forms in their kinds' colours · statement on a game's own Zone · closing |
-| `/games/creators/` | opening with photo `creators` · facts: what you keep and what you license · the statement ledger as a hairline list (labels only, no figures) · tile row: one name across kinds · section Realm and Zone with two facts · statement on listing honestly · closing |
+| `/games/` | hero (photo `hero`; 「每一款遊戲，每一個版本，都記得清楚。」, one paragraph, 前往 REZICS) · section 發行 with four example releases as a facts list (示意) and a link to 平台與版本 · statement on versions, downloads and 未知 · photo row `store` with a link to the store · section 六個頁面 as a tile masonry of the site's pages in blue shades · section 部件 as a facts list of the eight parts · section 相關的種類 as a tile masonry in the five neighbours' colours · closing |
+| `/games/releases/` | opening (text) · the release filter: language and platform toggles over a hairline table, a stack per platform on phones (示意) · facts: five release states, numbered · section 語言 with three facts · tile masonry: what one release can hold (示意) · statement on 未知 and dated offers · facts: requirements, official, measured, unknown · closing |
+| `/games/store/` | opening with photo `store` · facts: eight things shown before paying · six purchase steps as a numbered tile row from light to deep · section what you keep with three facts · statement on privacy toward creators · facts: what the store does not do · closing |
+| `/games/library/` | opening with photo `library` · facts: five statuses · section 存檔 with a hairline table of three playthroughs (示意) · statement on takeout · tile masonry: one library across kinds, each with its unit (示意) · facts: playtime rules and the opt-in note · closing |
+| `/games/reviews/` | opening (text) · tile row of five versions from light to deep (示意) · facts: whose score, three rules · tile masonry: what a review is about · statement on three kinds of talk · facts: how ranking works · closing |
+| `/games/guides/` | opening (text) · photo row `guides`: spoilers past your position stay covered · section 攻略 with two facts · facts: five Wiki+ rules · statement on a game's own Zone · section 改編 on the approved example 《魔法禁書目錄》 (text only) with a tile row of its forms in their kinds' colours · closing |
+| `/games/creators/` | opening with photo `creators` · facts: what you keep and what you license · the statement ledger as a hairline list (labels only, no figures) · statement on listing honestly · tile row: one name across kinds · section Realm and Zone with two facts · closing |
+
+Statements are one or two lines with a note in body size under them, and never sit directly
+before the closing (two large serif lines in a row read as one repeated).
 
 Phones: copy and action first, the photograph after as a short band; masonry in two columns;
 the release table becomes a stack per platform; facts lists stack title over text.

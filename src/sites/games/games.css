@@ -1,8 +1,4 @@
-/* 遊戲 (games), DESIGN.md "Direction v2" (Swiss grid, flat tiles): the shared ground and ink;
-   the site's accent is the games field (#2a49c9, set on <body> as --field by the kit), used in
-   its tiles, its closing block and the site bar's marker. Shared rules for the games pages. */
-[data-site='games'] .g-cap { color: var(--c-muted); font-size: 14px; line-height: 1.7; }
-[data-site='games'] .g-notes { display: flex; flex-direction: column; gap: 10px; padding-left: 1.2em; color: var(--c-text); font-size: 16px; line-height: 1.8; max-width: 46em; }
-[data-site='games'] .g-notes li::marker { color: var(--field); }
-[data-site='games'] .g-stack { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
-[data-site='games'] .g-links { display: flex; flex-wrap: wrap; gap: 16px 28px; margin-top: 28px; }
+/* 遊戲 (games), v3 (SITE.md "v3"): the shared paper ground; the games blue appears in the
+   photographs and tiles only. Captions and the opening picture of inner pages. */
+[data-site='games'] .g-cap { margin-top: 18px; font-size: 14px; line-height: 1.7; color: var(--c-muted); }
+[data-site='games'] .g-note { margin-top: 28px; max-width: 34em; font-size: 16px; line-height: 1.9; color: var(--c-text); }

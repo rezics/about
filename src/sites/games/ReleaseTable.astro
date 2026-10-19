@@ -1,13 +1,14 @@
 ---
 /**
- * The releases table: platforms × editions of one fictional game (示意). Conditions (one
- * language, one platform) must hold on the same release; releases that fail fade back. Works
- * without script through :has(); the driver (table.ts) adds the count and the clear button.
+ * The release filter (SITE.md "v3"): platforms by editions of one fictional game (示意).
+ * Conditions (one language, one platform) must hold on the same release; releases that fail
+ * fall back to a hairline outline. Works without script through :has(); the driver (table.ts)
+ * adds the count and the clear button. The one interaction of the games site.
  */
 import type { GamesStrings, Lang, Platform, Edition } from '../../content/sites/games';
 
 interface Props {
-  copy: GamesStrings['releases']['hero'];
+  copy: GamesStrings['releases']['filter'];
   example: GamesStrings['example'];
 }
 const { copy, example } = Astro.props;
@@ -25,13 +26,13 @@ const css = [
   <style is:inline set:html={css}></style>
   <form class="rt__filters">
     <fieldset class="rt__group">
-      <legend class="rt__legend label">{copy.groups.lang}</legend>
+      <legend class="rt__legend eyebrow">{copy.groups.lang}</legend>
       {langs.map((l) => (
         <label class="rt__pill"><input type="radio" name="rt-lang" value={`lang-${l}`} checked={l === 'zh'} />{example.langNames[l]}</label>
       ))}
     </fieldset>
     <fieldset class="rt__group">
-      <legend class="rt__legend label">{copy.groups.platform}</legend>
+      <legend class="rt__legend eyebrow">{copy.groups.platform}</legend>
       {platforms.map((p) => (
         <label class="rt__pill"><input type="radio" name="rt-platform" value={`p-${p}`} checked={p === 'handheld'} />{example.platforms[p]}</label>
       ))}
@@ -43,7 +44,7 @@ const css = [
     <table class="rt__table">
       <thead>
         <tr>
-          <td class="rt__corner label">{copy.corner}</td>
+          <td class="rt__corner">{copy.corner}</td>
           {editions.map((e) => <th scope="col" class="rt__col">{example.editions[e]}</th>)}
         </tr>
       </thead>
@@ -65,7 +66,7 @@ const css = [
                         {r.state ? (
                           <span class="rt__state">{r.state}</span>
                         ) : (
-                          <span class="rt__langs">{r.langs.map((l) => <span class="rt__lang">{example.langNames[l]}</span>)}</span>
+                          <span class="rt__langs">{r.langs.map((l) => <span>{example.langNames[l]}</span>)}</span>
                         )}
                       </div>
                     ))
@@ -79,71 +80,74 @@ const css = [
     </table>
   </div>
   <p class="rt__result" aria-live="polite" data-rt-result data-one={copy.result} data-none={copy.resultNone}></p>
-  <p class="g-cap">{copy.caption}</p>
+  <p class="rt__cap g-cap">{copy.caption}</p>
 </div>
 
 <style>
-  .rt { display: flex; flex-direction: column; gap: 20px; padding: 24px 0; border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line); }
-  .rt__filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; }
-  .rt__group { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
-  .rt__legend { float: left; margin-right: 8px; color: var(--c-muted); }
+  .rt { display: flex; flex-direction: column; gap: 28px; }
+  .rt__filters { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px; }
+  .rt__group { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .rt__legend { float: left; margin-right: 10px; }
   .rt__pill {
     position: relative;
     display: inline-flex;
     align-items: center;
     min-height: 40px;
-    padding: 0 16px;
-    background: var(--c-soft);
-    font-size: var(--t-s);
+    padding: 0 18px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--c-line-strong);
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    transition: background-color var(--d-s) var(--ease-soft), color var(--d-s) var(--ease-soft);
+    transition: background-color 0.3s var(--ease-soft), color 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft);
   }
   .rt__pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-  .rt__pill:has(input:checked) { background: var(--field); color: #fff; }
-  @media (hover: hover) { .rt__pill:not(:has(input:checked)):hover { background: color-mix(in oklab, var(--c-fg) 9%, var(--c-soft)); } }
-  .rt__pill:has(:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
-  .rt__clear { font-size: var(--t-s); min-height: 40px; }
-  .rt__wrap { position: relative; margin-top: 4px; overflow-x: auto; }
+  .rt__pill:has(input:checked) { background: var(--c-fg); color: var(--c-bg); box-shadow: none; }
+  @media (hover: hover) { .rt__pill:not(:has(input:checked)):hover { box-shadow: inset 0 0 0 1px var(--c-fg); } }
+  .rt__pill:has(:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .rt__clear { font-size: 15px; min-height: 40px; }
+  .rt__wrap { position: relative; overflow-x: auto; }
   .rt__table { table-layout: fixed; border-collapse: separate; border-spacing: 3px; margin: -3px; width: calc(100% + 6px); }
-  .rt__corner, .rt__col, .rt__row { text-align: left; font-weight: 500; font-size: var(--t-s); color: var(--c-muted); padding: 4px 2px; vertical-align: bottom; }
-  .rt__corner { width: 16%; }
-  .rt__row { vertical-align: middle; color: var(--c-fg); font-size: var(--t-body); }
-  .rt__cell { height: clamp(68px, 8vw, 104px); padding: 0; vertical-align: top; background: var(--c-soft); }
-  .rt__cell--none { background: transparent; box-shadow: inset 0 0 0 1px var(--c-line); }
+  .rt__corner, .rt__col { text-align: left; font-weight: 400; font-size: 13px; color: var(--c-muted); padding: 0 2px 10px; vertical-align: bottom; }
+  .rt__corner { width: 18%; }
+  .rt__row { text-align: left; vertical-align: middle; padding: 0 12px 0 0; font-family: var(--f-serif); font-weight: 600; font-size: 18px; color: var(--c-fg); }
+  .rt__cell { height: clamp(76px, 7.4vw, 108px); padding: 0; vertical-align: top; }
+  .rt__cell--none { background: none; }
   .rt__rel {
     --dim: 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    justify-content: flex-end;
+    gap: 4px;
     height: 100%;
-    min-height: 60px;
-    padding: 12px;
+    min-height: 64px;
+    padding: 12px 14px;
     background: color-mix(in oklab, var(--field) calc((1 - var(--dim)) * 100%), var(--c-bg));
-    color: color-mix(in oklab, #ffffff calc((1 - var(--dim)) * 100%), var(--c-muted));
-    transition: background-color var(--d-m) var(--ease-soft), color var(--d-m) var(--ease-soft);
+    box-shadow: inset 0 0 0 calc(var(--dim) * 1px) var(--c-line-strong);
+    color: color-mix(in oklab, var(--on-field) calc((1 - var(--dim)) * 100%), var(--c-muted));
+    transition: background-color 0.45s var(--ease-soft), color 0.45s var(--ease-soft);
   }
   .rt__cell:has(.rt__rel + .rt__rel) .rt__rel { min-height: 0; height: calc(50% - 2px); padding-block: 8px; }
   .rt__rel + .rt__rel { margin-top: 4px; }
-  .rt__region { font-size: var(--t-s); font-weight: 500; }
-  .rt__state { font-size: var(--t-s); }
-  .rt__langs { display: flex; flex-wrap: wrap; gap: 4px; }
-  .rt__lang { font-size: var(--t-xs); font-weight: 600; padding: 1px 8px; box-shadow: inset 0 0 0 1px currentColor; line-height: 1.5; }
-  .rt__result { min-height: 1.5em; font-weight: 500; }
+  .rt__region { font-size: 13px; font-weight: 500; }
+  .rt__state { font-size: 14px; }
+  .rt__langs { display: flex; flex-wrap: wrap; gap: 2px 12px; font-size: 14px; font-weight: 500; }
+  .rt__result { min-height: 1.9em; font-size: 16px; color: var(--c-fg); }
   .rt__ed { display: none; }
-  /* Phone: the matrix becomes a stack, one platform after another, each release a card with
-     its edition named; combinations that do not exist are left out. */
+  /* Phone: the matrix becomes a stack, one platform after another, each release named by its
+     edition; combinations that do not exist are left out. */
   @media (max-width: 767px) {
+    .rt__filters { gap: 14px; }
     .rt__table, .rt__table tbody, .rt__table tr, .rt__table th, .rt__table td { display: block; width: auto; }
     .rt__table { margin: 0; border-spacing: 0; }
     .rt__table thead { display: none; }
-    .rt__table tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-block: 14px; border-top: 1px solid var(--c-line); }
-    .rt__row { grid-column: 1 / -1; padding: 0; }
-    .rt__cell { height: auto; display: flex; flex-direction: column; gap: 6px; background: transparent; }
-    .rt__cell--none { display: none; }
-    .rt__ed { display: block; font-size: var(--t-xs); color: var(--c-muted); font-weight: 500; }
-    .rt__rel { min-height: 0; height: auto; padding: 10px; }
+    .rt__table tr { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding-block: 16px; border-top: 1px solid var(--c-line); }
+    .rt__row { grid-column: 1 / -1; padding: 0 0 8px; }
+    .rt__cell { height: auto; display: flex; flex-direction: column; gap: 3px; }
+    .rt__table .rt__cell--none { display: none; }
+    .rt__ed { display: block; font-size: 13px; color: var(--c-muted); padding-bottom: 4px; }
+    .rt__rel { min-height: 0; height: auto; padding: 10px 12px; }
     .rt__cell:has(.rt__rel + .rt__rel) .rt__rel { height: auto; }
   }
 </style>

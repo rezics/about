@@ -1,80 +1,100 @@
 ---
-// /games/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the hero with the wall of the site's
-// own pages, the nine example releases as flat tiles (示意), the statement, the ink band on the
-// store, the eight parts, the neighbouring kinds, the next page and the closing block.
-import HeroWall from '../../kit/components/HeroWall.astro';
-import Sec from '../../kit/components/Sec.astro';
-import TileRow from '../../kit/components/TileRow.astro';
+// /games/ (SITE.md "v3"): the photograph hero, releases recorded apart, the statement, the store
+// beside its photograph, the site's six pages, the eight parts, the five neighbouring kinds, the
+// closing.
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
-import Band from '../../kit/components/Band.astro';
-import PartsList from '../../kit/components/PartsList.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindById, kindHref } from '../../kit/content';
-import { kindFields } from '../../kit/theme';
-import { accentRamp } from '../../kit/color';
-import { pageWall } from '../../kit/pageWall';
+import { kindById, kindHref, partById } from '../../kit/content';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/games';
+import { heroPicture, sectionPicture } from './pictures';
+import { blue, kindTile } from './tiles';
 import './games.css';
 
 const s = site.strings.landing;
-const L = s.labels;
-const kind = kindById('games');
-const accent = kindFields.games.field;
-const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-const wall = pageWall(site, accent, s.pages.rows);
-const ramp = accentRamp(accent);
-const releases = s.releases.items.map((it, i) => ({ name: it.label[1], rel: it.label[0], line: it.body, ...ramp[[0, 1, 2, 3, 4, 5, 0, 3, 2][i] ?? 0]! }));
-const neighbours = s.connections.squares.map((c) => ({
-  name: kindById(c.to).name,
-  tag: kindById(c.to).tag,
-  line: c.body,
-  href: kindHref(c.to),
-  bg: kindFields[c.to].field,
-  on: kindFields[c.to].on,
+const page = (slug: string) => site.pages.find((p) => p.slug === slug)!;
+const href = (slug: string) => pageHref(site, page(slug));
+
+// The six pages in the games blue: the two most used pages carry the deepest tone and the tallest tiles.
+const tones: Record<string, { bg: string; on: 'paper' | 'ink' }> = {
+  releases: blue.accent,
+  store: blue.deep,
+  library: blue.tint,
+  reviews: blue.light,
+  guides: blue.deeper,
+  creators: blue.lightest,
+};
+const pages: MasonryItem[] = Object.keys(tones).map((slug) => ({
+  id: slug,
+  name: page(slug).label,
+  line: s.pages.lines[slug],
+  href: href(slug),
+  ...tones[slug]!,
 }));
+const pageColumns: MasonryPlace[][] = [
+  [{ id: 'releases', h: 5 }, { id: 'reviews', h: 3 }],
+  [{ id: 'store', h: 4 }, { id: 'guides', h: 4 }],
+  [{ id: 'library', h: 3 }, { id: 'creators', h: 5 }],
+];
+const pagePhone: MasonryRowPlace[][] = [
+  [{ id: 'releases' }, { id: 'store' }],
+  [{ id: 'library' }, { id: 'reviews' }],
+  [{ id: 'guides' }, { id: 'creators' }],
+];
+
+const kinds: MasonryItem[] = s.connections.tiles.map((t) => ({
+  id: t.to,
+  name: kindById(t.to).name,
+  line: t.line,
+  href: kindHref(t.to),
+  ...kindTile(t.to),
+}));
+const kindColumns: MasonryPlace[][] = [
+  [{ id: 'visual-novels', h: 1 }],
+  [{ id: 'books', h: 3 }, { id: 'manga', h: 2 }],
+  [{ id: 'anime', h: 3 }, { id: 'software', h: 2 }],
+];
+const kindPhone: MasonryRowPlace[][] = [[{ id: 'visual-novels' }], [{ id: 'books' }, { id: 'anime' }], [{ id: 'manga' }, { id: 'software' }]];
+
+const parts = kindById('games').parts.map((id) => ({ title: partById(id).name, body: s.parts.notes[id] ?? partById(id).gives }));
 ---
-<HeroWall label={site.name} title={s.hero.headline} lede={s.hero.lede} items={wall.items} wide={wall.wide} phone={wall.phone} phoneHeight={860} bar>
+<PhotoHero eyebrow={site.name} title={s.hero.headline} lede={s.hero.lede} image={heroPicture} bar>
   <ProductCall />
-  <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.hero.secondary}</a>
-</HeroWall>
+</PhotoHero>
 
-<Sec label={L.releases} title={s.releases.headline} link={{ href: pageHref(site, pageBy('releases')), text: s.releases.link }}>
-  <p class="text">{s.releases.lede}</p>
-  <div slot="wide" class="g-stack">
-    <TileRow items={releases} cols={3} height={230} phoneHeight={200} label={s.releases.caption} class="g-releases" />
-    <p class="g-cap">{s.releases.caption}</p>
-  </div>
-</Sec>
+<Section eyebrow={s.releases.label} title={s.releases.headline} lead={s.releases.lead} link={{ href: href('releases'), text: s.releases.link }}>
+  <FactList items={s.releases.items} />
+  <p class="g-cap">{s.releases.caption}</p>
+</Section>
 
-<Statement text={s.specifics.statement} note={s.specifics.body} />
+<Statement text={s.versions.text} sub={s.versions.more} note={s.versions.note} />
 
-<Band label={L.store} title={s.store.headline} text={s.store.body.join('')}>
-  <p class="g-band-links">
-    <a class="link-draw" href={pageHref(site, pageBy('store'))}>{s.store.links[0]}</a>
-    <a class="link-draw" href={pageHref(site, pageBy('creators'))}>{s.store.links[1]}</a>
-  </p>
-</Band>
+<PhotoRow
+  side="right"
+  eyebrow={s.store.label}
+  title={s.store.headline}
+  body={s.store.lead}
+  link={{ href: href('store'), text: s.store.link }}
+  image={sectionPicture('store')}
+/>
 
-<Sec label={L.parts} title={s.parts.headline}>
-  <div class="g-stack">
-    <p class="text">{s.parts.lede}</p>
-    <PartsList parts={kind.parts} notes={s.parts.notes} level="h3" />
-    <p class="g-cap">{s.parts.caption}</p>
-  </div>
-</Sec>
+<Section eyebrow={s.pages.label} title={s.pages.headline}>
+  <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.headline} />
+</Section>
 
-<Sec label={L.connections} title={s.connections.headline}>
-  <p class="text">{s.connections.lede}</p>
-  <TileRow slot="wide" items={neighbours} cols={5} label={s.connections.headline} />
-</Sec>
+<Section eyebrow={s.parts.label} title={s.parts.headline} lead={s.parts.lead}>
+  <FactList items={parts} />
+  <p class="g-cap">{s.parts.caption}</p>
+</Section>
 
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
+<Section eyebrow={s.connections.label} title={s.connections.headline} lead={s.connections.lead}>
+  <TileMasonry slot="wide" items={kinds} columns={kindColumns} phone={kindPhone} height={420} label={s.connections.headline} />
+</Section>
 
-<style>
-  .g-band-links { grid-column: 8 / 13; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 16px 28px; }
-  @media (max-width: 767px) { :global(.g-releases) { grid-template-columns: minmax(0, 1fr) !important; } }
-</style>
+<Closing title={s.closing} />

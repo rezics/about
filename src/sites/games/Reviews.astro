@@ -1,54 +1,52 @@
 ---
-// /games/reviews/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, a score per
-// version as flat tiles (示意), whose score it is, what a review is about, how ranking works, the
-// ink band on where talk goes, the next page and the closing block.
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import ItemList from '../../kit/components/ItemList.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import Pills from '../../kit/components/Pills.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+// /games/reviews/ (SITE.md "v3"): the opening, a score per version (示意), whose score it is,
+// what a review is about, the statement on three kinds of talk, how ranking works, the closing.
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
-import { accentRamp } from '../../kit/color';
 import site from '../../content/sites/games';
+import Opening from './Opening.astro';
+import { blue, sequence } from './tiles';
 import './games.css';
 
 const s = site.strings.reviews;
-const accent = kindFields.games.field;
-const page = site.pages.find((p) => p.slug === 'reviews')!;
-const ramp = accentRamp(accent);
-const versions = s.versions.frames.map((f, i) => ({ name: f.title, line: f.body, ...ramp[[0, 2, 4, 1, 3][i] ?? 0]! }));
----
-<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+// Versions from the launch day to the complete edition, light to deep.
+const versions: MasonryItem[] = s.versions.tiles.map((t, i) => ({ id: `v${i}`, name: t.title, line: t.body, ...sequence[i + 1]! }));
+const vColumns = versions.map((v) => [{ id: v.id, h: 1 }]);
+const vPhone: MasonryRowPlace[][] = [[{ id: 'v0' }, { id: 'v1' }], [{ id: 'v2' }, { id: 'v3' }], [{ id: 'v4' }]];
 
-<Sec label="01" title={s.versions.headline}>
-  <p class="text">{s.versions.lede}</p>
-  <div slot="wide" class="g-stack">
-    <TileRow items={versions} cols={5} height={200} label={s.versions.headline} />
+const tones = [blue.accent, blue.light, blue.deep, blue.tint, blue.lightest];
+const targets: MasonryItem[] = s.targets.tiles.map((t, i) => ({ id: `t${i}`, name: t.title, line: t.body, ...tones[i]! }));
+const tColumns: MasonryPlace[][] = [
+  [{ id: 't0', h: 1 }],
+  [{ id: 't1', h: 1 }, { id: 't2', h: 1 }],
+  [{ id: 't3', h: 1.4 }, { id: 't4', h: 1 }],
+];
+const tPhone: MasonryRowPlace[][] = [[{ id: 't0' }, { id: 't1' }], [{ id: 't2' }, { id: 't3' }], [{ id: 't4' }]];
+---
+<Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} />
+
+<Section eyebrow={s.versions.label} title={s.versions.headline} lead={s.versions.lead}>
+  <div slot="wide">
+    <TileMasonry items={versions} columns={vColumns} phone={vPhone} height={260} label={s.versions.headline} />
     <p class="g-cap">{s.versions.caption}</p>
   </div>
-</Sec>
+</Section>
 
-<Sec label="02" title={s.who.headline}>
-  <div class="g-stack">
-    <p class="text">{s.who.body}</p>
-    <Pills items={s.who.tabs} label={s.who.tabsLabel} tone="tint" />
-    <Pills items={s.who.toggle} label={s.who.periodLabel} />
-    <ul class="g-notes">{s.who.items.map((it) => <li>{it}</li>)}</ul>
-  </div>
-</Sec>
+<Section eyebrow={s.who.label} title={s.who.headline} lead={s.who.lead}>
+  <FactList items={s.who.items} />
+</Section>
 
-<Sec label="03" title={s.targets.headline}>
-  <p class="text">{s.targets.lede}</p>
-  <ItemGrid slot="wide" items={s.targets.tiles} cols={5} />
-</Sec>
+<Section eyebrow={s.targets.label} title={s.targets.headline} lead={s.targets.lead}>
+  <TileMasonry slot="wide" items={targets} columns={tColumns} phone={tPhone} height={440} label={s.targets.headline} />
+</Section>
 
-<ItemList label="04" title={s.rules.headline} items={s.rules.rows} />
+<Statement text={s.talk.text} sub={s.talk.more} note={s.talk.note} />
 
-<Band label={page.label} title={s.talk.poster} text={s.talk.body} />
+<Section eyebrow={s.rules.label} title={s.rules.headline}>
+  <FactList items={s.rules.items} />
+</Section>
 
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
+<Closing title={s.closing} />

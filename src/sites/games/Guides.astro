@@ -1,72 +1,43 @@
 ---
-// /games/guides/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, the Wiki+
-// that follows your progress (示意), guides pinned to versions, the rules of Wiki+, adaptations as
-// flat tiles in their fields (示意), the ink band on Zones, the next page and the closing block.
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import ItemList from '../../kit/components/ItemList.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+// /games/guides/ (SITE.md "v3"): the opening, the folded strip beside the spoiler rule, guides
+// for a version, the five Wiki+ rules, the statement on a game's own Zone, the approved
+// example's adaptations, the closing.
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import TileMasonry, { type MasonryItem, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
+import Opening from './Opening.astro';
+import { sectionPicture } from './pictures';
+import { kindTile } from './tiles';
 import './games.css';
 
 const s = site.strings.guides;
-const accent = kindFields.games.field;
-const page = site.pages.find((p) => p.slug === 'guides')!;
-const chain = s.adaptations.chain.map((c) => ({ name: c.name, rel: c.relation ?? '原作', line: c.body, bg: kindFields[c.to].field, on: kindFields[c.to].on }));
+const chain: MasonryItem[] = s.adaptations.chain.map((c, i) => ({ id: `a${i}`, name: c.name, line: c.line, rel: c.rel, ...kindTile(c.to) }));
+const columns = chain.map((c) => [{ id: c.id, h: 1 }]);
+const phone: MasonryRowPlace[][] = [[{ id: 'a0' }, { id: 'a1' }], [{ id: 'a2' }, { id: 'a3' }], [{ id: 'a4' }]];
 ---
-<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+<Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} />
 
-<Sec label="01" title={s.fog.headline}>
-  <p class="text">{s.fog.lede}</p>
-  <div slot="wide" class="g-stack">
-    <div class="gd-groups">
-      {s.fog.groups.map((g) => (
-        <div class="gd-group">
-          <h3 class="gd-title">{g.title}</h3>
-          <ul role="list" class="gd-list">
-            {g.cells.map((c) => (
-              <li><span>{c.name}</span><span class="label">{s.fog.from.replace('{n}', String(c.from))}</span></li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
-    <p class="g-cap">{s.fog.caption}</p>
-  </div>
-</Sec>
+<PhotoRow side="left" eyebrow={s.fog.label} title={s.fog.headline} body={s.fog.lead} image={sectionPicture('guides')} />
 
-<Sec label="02" title={s.guides.headline}>
-  <p class="text">{s.guides.body}</p>
-  <ItemGrid slot="wide" items={s.guides.items} cols={2} />
-</Sec>
+<Section eyebrow={s.guides.label} title={s.guides.headline} lead={s.guides.lead}>
+  <FactList items={s.guides.items} />
+</Section>
 
-<ItemList label="03" title={s.rules.headline} items={s.rules.rows} />
+<Section eyebrow={s.rules.label} title={s.rules.headline}>
+  <FactList items={s.rules.items} />
+</Section>
 
-<Sec label="04" title={s.adaptations.headline}>
-  <div class="g-stack">
-    <p class="text">{s.adaptations.lede}</p>
-    <p class="g-cap">{s.adaptations.note}</p>
-  </div>
-  <div slot="wide" class="g-stack">
-    <TileRow items={chain} cols={5} height={240} label={s.adaptations.headline} />
+<Statement text={s.zone.text} sub={s.zone.more} note={s.zone.note} />
+
+<Section eyebrow={s.adaptations.label} title={s.adaptations.headline} lead={[s.adaptations.lead, s.adaptations.note]}>
+  <div slot="wide">
+    <TileMasonry items={chain} columns={columns} phone={phone} height={280} phoneRow={130} label={s.adaptations.caption} />
     <p class="g-cap">{s.adaptations.caption}</p>
   </div>
-</Sec>
+</Section>
 
-<Band label={page.label} title={s.zone.statement} text={s.zone.body} />
-
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
-
-<style>
-  .gd-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px var(--gutter); }
-  .gd-title { font-size: 18px; font-weight: 600; padding-bottom: 12px; }
-  .gd-list { border-top: 1px solid var(--c-line); }
-  .gd-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
-  @media (max-width: 767px) { .gd-groups { grid-template-columns: minmax(0, 1fr); } }
-</style>
+<Closing title={s.closing} />

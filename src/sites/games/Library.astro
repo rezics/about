@@ -1,59 +1,50 @@
 ---
-// /games/library/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, five states,
-// every playthrough its own record (示意), one library across kinds as flat tiles in their fields,
-// playtime, the ink band on takeout, the next page and the closing block.
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
+// /games/library/ (SITE.md "v3"): the opening with the tray photograph, five statuses, each
+// playthrough a save (示意), the takeout statement, one library across kinds, playtime, the
+// closing.
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
 import Table from '../../kit/components/Table.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
+import Opening from './Opening.astro';
+import { sectionPicture } from './pictures';
+import { kindTile } from './tiles';
 import './games.css';
 
 const s = site.strings.library;
-const accent = kindFields.games.field;
-const page = site.pages.find((p) => p.slug === 'library')!;
-const together = s.together.tiles.map((t) => ({ name: t.at, rel: t.name, bg: kindFields[t.to].field, on: kindFields[t.to].on }));
+const together: MasonryItem[] = s.together.tiles.map((t) => ({ id: t.to, name: t.name, line: t.at, ...kindTile(t.to) }));
+const columns: MasonryPlace[][] = [
+  [{ id: 'games', h: 1 }],
+  [{ id: 'books', h: 3 }, { id: 'manga', h: 2 }],
+  [{ id: 'anime', h: 2 }, { id: 'visual-novels', h: 3 }],
+];
+const phone: MasonryRowPlace[][] = [[{ id: 'games' }], [{ id: 'books' }, { id: 'anime' }], [{ id: 'manga' }, { id: 'visual-novels' }]];
 ---
-<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+<Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} image={sectionPicture('library')} />
 
-<Sec label="01" title={s.status.headline}>
-  <ItemGrid slot="wide" items={s.status.chapters} cols={5} numbered />
-</Sec>
+<Section eyebrow={s.status.label} title={s.status.headline}>
+  <FactList items={s.status.items} />
+</Section>
 
-<Sec label="02" title={s.slots.headline}>
-  <div class="g-stack">
-    <p class="text">{s.slots.lede}</p>
-    <Table columns={s.slots.columns} rows={s.slots.rows.map((r) => [r.slot, r.release, r.state])} caption={s.slots.caption} label={s.slots.headline} />
-  </div>
-</Sec>
+<Section eyebrow={s.slots.label} title={s.slots.headline} lead={s.slots.lead}>
+  <Table columns={s.slots.columns} rows={s.slots.rows.map((r) => [r.slot, r.release, r.state])} caption={s.slots.caption} label={s.slots.headline} />
+</Section>
 
-<Sec label="03" title={s.together.headline}>
-  <p class="text">{s.together.lede}</p>
-  <div slot="wide" class="g-stack">
-    <TileRow items={together} cols={5} height={180} label={s.together.headline} />
+<Statement text={s.takeout.text} sub={s.takeout.more} note={s.takeout.note} />
+
+<Section eyebrow={s.together.label} title={s.together.headline} lead={s.together.lead}>
+  <div slot="wide">
+    <TileMasonry items={together} columns={columns} phone={phone} height={420} label={s.together.headline} />
     <p class="g-cap">{s.together.caption}</p>
-    <p class="text g-lists">{s.together.lists}</p>
   </div>
-</Sec>
+</Section>
 
-<Sec label="04" title={s.playtime.headline}>
-  <div class="g-stack">
-    <p class="text">{s.playtime.lede}</p>
-    <p class="g-cap">{s.playtime.note}</p>
-  </div>
-  <ItemGrid slot="wide" items={s.playtime.facts} cols={4} look="cards" />
-</Sec>
+<Section eyebrow={s.playtime.label} title={s.playtime.headline} lead={s.playtime.lead}>
+  <FactList items={s.playtime.items} />
+  <p class="g-note">{s.playtime.note}</p>
+</Section>
 
-<Band label={page.label} title={s.takeout.statement} text={s.takeout.body} />
-
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
-
-<style>
-  .g-lists { max-width: 46em; }
-</style>
+<Closing title={s.closing} />
