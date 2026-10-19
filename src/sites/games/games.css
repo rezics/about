@@ -7,6 +7,27 @@
    (看商店與購 買的流程). Text-only links inside paragraphs need no gap. */
 [data-site='games'] p > .link-draw { gap: 0; }
 
+/* Standalone text actions answer with a small arrow as well as the kit's drawn rule. */
+[data-site='games'] :is(.section__link > .link-draw, .prow__link > .link-draw, .header__go, .rt__clear)::before {
+  content: '';
+  position: absolute;
+  right: -19px;
+  top: calc(50% - 4px);
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  rotate: 45deg;
+  translate: -5px 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: translate var(--d-m) var(--ease-snap), opacity var(--d-s) var(--ease-soft);
+}
+@media (hover: hover) {
+  [data-site='games'] :is(.section__link > .link-draw, .prow__link > .link-draw, .header__go, .rt__clear):hover::before { translate: 0 0; opacity: 1; }
+}
+[data-site='games'] :is(.section__link > .link-draw, .prow__link > .link-draw, .header__go, .rt__clear):focus-visible::before { translate: 0 0; opacity: 1; }
+
 /* This photograph's empty paper is narrower than the kit's five-column copy area.
    Tablets use the same copy-first composition as phones, with a wider photo band. */
 @media (min-width: 1200px) {

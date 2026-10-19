@@ -196,9 +196,11 @@ CSS-only path, gains a table caption and uses 44 px radio targets.
 
 Shared-kit workarounds stay in `games.css`: remove the flex gap that split text-only links;
 give site tabs a small rise on hover/focus; show the native thin scrollbar for the seven phone
-tabs. The second merge of `site/v3` supplies the header-label rise, text-link underline and
-serif preload fixes, so the redundant local header and text-link rules are removed. No shared
-paths are edited locally.
+tabs. Standalone text actions (the header action, section/photo-row links and release-filter
+reset) reveal a small directional arrow on hover/focus, making the response visible alongside
+the shared underline. The second merge of `site/v3` supplies the header-label rise, text-link
+underline and serif preload fixes, so the redundant local header and text-link rules are
+removed. No shared paths are edited locally.
 
 ### Copy changes for v3
 
