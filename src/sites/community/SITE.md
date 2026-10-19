@@ -36,29 +36,35 @@ section wins.
   so on the trust tile only large type (the serif name) sits in paper; its small line needs
   white (4.67:1) or ink. Follow the kit's mapping if it differs.
 
-### Module family (proposed to modules agent A; adopt agent A's version where it differs)
+### Module family (agent A's, `.temp/sites/modules-a/FAMILY-V3.md`, adopted as written)
 
-1. **Opening.** The kit's hero: the full-bleed paper still-life with the copy in its empty
-   paper area on the left; eyebrow = the module's name (社群, 創作與發行, 信任), serif h1, one short
-   paragraph, the ink pill 「前往 REZICS」. Phone: copy first, the picture as a band after it.
-2. **Body.** Sections on the 12-column grid (eyebrow 1 to 3, h2 4 to 11, lead 4 to 9), hairline
-   facts lists, one or two statements. No eyebrow repeats a heading.
-3. **Closing.** A section 「五個模組」 with the kit's tile masonry of the five modules in their
-   ink tints (serif name plus the module's summary from `src/content/modules.ts`, the current
-   module shown as the current page, not a link), the next module's tile tallest and carrying
-   the page's `next` line; trust's next is 路線圖. Then the kit's closing (statement and
-   「前往 REZICS」) and the footer.
+1. **Opening.** The kit's `PhotoHero` with `bar`: the module's paper still-life (its ink tint
+   plus one or two kind colours), eyebrow 「模組」 (`site.nav.engine`; the site bar names the
+   module), serif h1, one paragraph, the ink pill 「前往 REZICS」. Phone: copy first, the
+   picture as a band.
+2. **Closing** (`src/sites/community/ModuleEnd.astro`): the module's `statement` from
+   `src/content/modules.ts` split at its first 「，」 (ink, then muted); the ring of the five
+   modules (`ModuleRing.astro`, the same markup as agent A's: eyebrow 「五個模組」, one row of
+   five ink-tint tiles in schema order with name and summary, the current one unlinked with
+   「你在這裡」, then 「回到模組總覽」 to `/engine/`); the kit's `Closing` with the page's own line
+   and 「前往 REZICS」. The ring's three labels sit in each content file under `family.ring`
+   until the branches meet (agent A keeps them in `engine.ts`).
+3. Because the family closes on a statement, no page of mine ends its own body on one: 社群's
+   等級 is a section, 創作與發行's mid-page statement is 「公開讓人閱讀，不等於……」 and the
+   service-licence sentence moved into the 譯本與權利 facts (the module statement already says
+   uploading does not transfer copyright).
 
 ### Pictures (paper still-life, codex-2, style reference `v3-reference-paper.png`)
 
 | Page | Idea | Picture | Files (`public/images/sites/<id>/`) |
 |---|---|---|---|
-| 社群 | many people gathered around one shared place | about fourteen small sheets (graphite greys, one each of forest green, dusty rose, teal, violet, pale blue) gathered around one larger charcoal sheet | `hero-1920`, `hero-960`, `hero-phone-780` (.avif, .webp) |
+| 社群 | many people gathered around one shared place | about fourteen small sheets (graphite greys, two dusty rose, two pale blue) gathered around one larger charcoal sheet | `hero-1920`, `hero-960`, `hero-phone-780` (.avif, .webp) |
 | 創作與發行 | a work bound and published, an earlier edition beneath | two stacks of grey sheets, each bound along one edge with a darker paper strip, coloured sheets showing at the fanned edges | same names |
 | 信任 | layered records, each with its provenance tag | five sheets stepped like an archive (greys, one ochre), each with a blank paper tag tied on with cotton thread | same names |
 
 Left 45 % of every picture is empty paper for the hero copy. Prompts and raw files:
-`.temp/sites/modules-b/v3-art/` (accepted: `community-1`, `create-1`, `trust-1`; rejected
+`.temp/sites/modules-b/v3-art/` (accepted: `community-3`, `create-1`, `trust-1`; rejected
+`community-1`: five accent colours where the series allows one or two neighbours;
 `community-2`: the central sheet is not a clean square and the fibre looks embossed).
 
 ### Pages
@@ -79,8 +85,8 @@ never owns you)
 | 6 | Section + facts | 評分: question, target, population; 5 / 10 / 50 as serif numerals in the facts' title column |
 | 7 | Section + facts | 追蹤: anything can be followed, three levels |
 | 8 | Section + facts | 動態: newest is newest; 最佳, recommendations, mute, channels |
-| 9 | Statement | 被採納的貢獻才算數，(muted) 簽到不算。 with the levels sentence under it |
-| 10 | Family closing | 五個模組 (next: 站點, 「想自己決定每一頁，就替社群架一個站點。」), closing |
+| 9 | Section | 等級: 被採納的貢獻才算數，簽到不算。 (lead only) |
+| 10 | Family closing | 一個社群屬於它的成員，(muted) 一個人屬於他自己。 · ring · closing 「想自己決定每一頁，就替社群架一個站點。」 |
 
 Phone: the specimen stacks (pills above the line, the line wraps after the dot).
 
@@ -94,11 +100,11 @@ deduction is visible)
 | 3 | Section + facts | 設定集: a private world beside the manuscript (6) |
 | 4 | Section + facts | 章節: a chapter is a post placed in a book (6) |
 | 5 | Section + facts | 版次: released is sealed; later things get their own record (7, the page's centre) |
-| 6 | Statement | 著作權是你的，(muted) REZICS 只拿提供服務需要的那一部分授權。 body and line under it |
-| 7 | Section + facts | 譯本與權利 (7) |
+| 6 | Statement | 公開讓人閱讀，(muted) 不等於別人可以轉載、販售、翻譯，或拿去訓練 AI。 |
+| 7 | Section + facts | 譯本與權利 (8, the service licence first) |
 | 8 | Section + facts | 發行: books and games sold directly, DRM-free (6) |
 | 9 | Section + statement of account | 結算: the seven lines as a hairline list; deductions indented in muted ink, 淨收入 under a heavier rule, the two shares 「依合約比例」, no figures |
-| 10 | Family closing | next: 信任 |
+| 10 | Family closing | 上傳到 REZICS，(muted) 不會把著作權轉給 REZICS。 · ring · closing 「你寫作，REZICS 替你記下每一版與每一筆帳。」 |
 
 **信任** `/engine/trust/` (leave with: everything says where it came from and who decided;
 marks are added, never erased)
@@ -112,14 +118,14 @@ marks are added, never erased)
 | 5 | Section + figures | 時限: 48 小時, 10 到 14 個工作天, 6 個月, 13 歲, 7 天, 1 個月 as large serif numerals with their unit and sentence, three per row on desktop, one per row on phones; the note under it |
 | 6 | Section + facts | 可見範圍: who sees what (7) |
 | 7 | Statement + facts | 你的閱讀紀錄，(muted) 不會變成廣告。 and the seven privacy commitments |
-| 8 | Family closing | next: 路線圖 (「五個模組都看過了。……」) |
+| 8 | Family closing | 規則在伺服器上執行，(muted) 網頁、App 與 AI 代理得到的是同一個結果。 · ring · closing 「每一筆都寫明出處，你可以自己去查。」 |
 
 ### Build notes
 
-- Shapes: `ModuleSection` and `ModuleStatement` live in `src/content/sites/community.ts` and are
-  shared by create and trust. Page components: `src/sites/community/` (the byline specimen,
-  the module family closing if the kit has none), `src/sites/create/` (the statement of
-  account), `src/sites/trust/` (the figures).
+- Shapes: `ModuleSection`, `ModuleStatement` and `ModuleFamilyStrings` live in
+  `src/content/sites/community.ts` and are shared by create and trust. Components:
+  `src/sites/community/` (`Byline`, `ModuleRing`, `ModuleEnd`), `src/sites/create/Account`,
+  `src/sites/trust/Figures`.
 - Motion: the kit's reveals and tile hovers only. No idle motion, no scrub.
 
 ## Brief

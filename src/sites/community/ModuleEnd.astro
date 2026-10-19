@@ -1,0 +1,24 @@
+---
+/**
+ * The module family's closing, in its order (FAMILY-V3.md): the module's statement from
+ * src/content/modules.ts split at its first 「，」 (first half in ink, the rest muted), the ring of
+ * the five modules, then the kit's closing with the page's own line and 「前往 REZICS」.
+ */
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ModuleRing from './ModuleRing.astro';
+import { moduleById } from '../../kit/content';
+import type { ModuleId } from '../../content/schema';
+import type { ModuleFamilyStrings } from '../../content/sites/community';
+
+interface Props {
+  current: ModuleId;
+  family: ModuleFamilyStrings;
+}
+const { current, family } = Astro.props;
+const statement = moduleById(current).statement;
+const cut = statement.indexOf('，') + 1;
+---
+<Statement text={statement.slice(0, cut)} sub={statement.slice(cut)} />
+<ModuleRing current={current} ring={family.ring} />
+<Closing title={family.closing} />

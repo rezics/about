@@ -1,7 +1,7 @@
 // 信任 /engine/trust/: copy for the v3 module page (plan in src/sites/community/SITE.md). Every
 // statement restates docs/contracts, docs/operations or docs/legal in rezics-next (facts.md).
 import type { MiniSite } from '../schema';
-import type { ModuleSection, ModuleStatement } from './community';
+import type { ModuleFamilyStrings, ModuleSection, ModuleStatement } from './community';
 
 export interface TrustStrings {
   hero: { headline: string; lede: string; imageAlt: string };
@@ -12,7 +12,8 @@ export interface TrustStrings {
   numbers: ModuleSection & { figures: { value: string; unit: string; body: string }[] };
   views: ModuleSection;
   privacy: ModuleStatement & { facts: { title: string; body: string }[] };
-  nextLine: string;
+  /** The module family (SITE.md): the ring's three labels and the page's closing line. */
+  family: ModuleFamilyStrings;
 }
 
 const strings: TrustStrings = {
@@ -133,7 +134,10 @@ const strings: TrustStrings = {
       { title: '你的資料，你可以要', body: '想查看、更正、匯出或刪除自己的資料，都可以提出請求，沒有帳號也可以。' },
     ],
   },
-  nextLine: '五個模組都看過了。接下來，看 REZICS 一步一步往哪裡走。',
+  family: {
+    ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
+    closing: '每一筆都寫明出處，你可以自己去查。',
+  },
 };
 
 export default {

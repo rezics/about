@@ -11,6 +11,12 @@ export interface ModuleSection {
   note?: string;
 }
 
+/** The module family's strings: the ring of the five modules and the page's closing line. */
+export interface ModuleFamilyStrings {
+  ring: { label: string; current: string; overview: string };
+  closing: string;
+}
+
 /** A large serif statement; `sub` is its muted second half. */
 export interface ModuleStatement {
   statement: string;
@@ -38,15 +44,15 @@ export interface CommunityStrings {
   ratings: ModuleSection;
   follow: ModuleSection;
   feed: ModuleSection;
-  recognition: ModuleStatement;
-  /** The family's closing: the line on the next module's tile. */
-  nextLine: string;
+  recognition: ModuleSection;
+  /** The module family (SITE.md): the ring's three labels and the page's closing line. */
+  family: ModuleFamilyStrings;
 }
 
 const strings: CommunityStrings = {
   hero: {
     headline: '你是說話的人，Realm 是接待你的場地。',
-    lede: '在 REZICS，一個人只有一個公開身分。評論、清單與書庫都記在這個身分底下，走進哪個 Realm 都一起帶著；Realm 給你話題、規則與管理，不會把你收進它的名下。',
+    lede: '一個人只有一個公開身分，評論、清單與書庫跟著你走進每個 Realm。Realm 給你話題、規則與管理，不會把你收進它的名下。',
     imageAlt: '許多小紙片圍在一張較大的深灰色紙片四周，像一群人聚在同一張桌子旁。',
   },
   person: {
@@ -146,11 +152,14 @@ const strings: CommunityStrings = {
     ],
   },
   recognition: {
-    statement: '被採納的貢獻才算數，',
-    sub: '簽到不算。',
-    body: '每個 Realm 有自己的經驗值與等級，來源是被採納、真正幫上忙的評論、修正、翻譯、管理與創作。等級不能花用，不能轉讓，也不代表管理權；用多個帳號灌水換等級，違反使用規範。',
+    label: '等級',
+    headline: '被採納的貢獻才算數，簽到不算。',
+    lead: '每個 Realm 有自己的經驗值與等級，來源是被採納、真正幫上忙的評論、修正、翻譯、管理與創作。等級不能花用，不能轉讓，也不代表管理權；用多個帳號灌水換等級，違反使用規範。',
   },
-  nextLine: '想自己決定每一頁，就替社群架一個站點。',
+  family: {
+    ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
+    closing: '想自己決定每一頁，就替社群架一個站點。',
+  },
 };
 
 export default {

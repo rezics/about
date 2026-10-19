@@ -1,0 +1,52 @@
+---
+/**
+ * The ring of the five modules: the closing part every module page shares (the module family,
+ * `.temp/sites/modules-a/FAMILY-V3.md`; the same markup as agent A's
+ * `src/sites/engine/ModuleRing.astro`, with the labels passed in until the two branches meet).
+ * The eyebrow 「五個模組」, then the five modules as flat tiles in their ink tints in schema order
+ * (name and summary); the current module is not a link and carries 「你在這裡」 at the top; under
+ * the row, 「回到模組總覽」. Desktop: one row of five. Phones: two per row, the last one across.
+ * Used by 社群, 創作與發行 and 信任.
+ */
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import { modules, moduleHref } from '../../kit/content';
+import { moduleFields } from '../../kit/theme';
+import type { ModuleId } from '../../content/schema';
+import type { ModuleFamilyStrings } from '../../content/sites/community';
+
+interface Props {
+  current: ModuleId;
+  ring: ModuleFamilyStrings['ring'];
+}
+const { current, ring } = Astro.props;
+const items: MasonryItem[] = modules.map((m) => ({
+  id: m.id,
+  name: m.name,
+  line: m.summary,
+  bg: moduleFields[m.id].field,
+  on: moduleFields[m.id].on,
+  href: m.id === current ? undefined : moduleHref(m.id),
+  rel: m.id === current ? ring.current : undefined,
+}));
+const columns = items.map((i) => [{ id: i.id, h: 1 }]);
+const phone = [items.slice(0, 2), items.slice(2, 4), items.slice(4)].map((row) => row.map((i) => ({ id: i.id })));
+---
+<nav class="ring" aria-labelledby="ring-label">
+  <div class="grid">
+    <p id="ring-label" class="eyebrow ring__label">{ring.label}</p>
+    <div class="ring__tiles">
+      <TileMasonry items={items} columns={columns} phone={phone} height={220} phoneRow={128} label={ring.label} />
+    </div>
+    <p class="ring__back"><a class="link-draw" href="/engine/">{ring.overview}</a></p>
+  </div>
+</nav>
+<style>
+  .ring { padding-top: var(--space-section); }
+  .ring__label { grid-column: 1 / 13; }
+  .ring__tiles { grid-column: 1 / 13; margin-top: 28px; min-width: 0; }
+  .ring__back { grid-column: 1 / 13; margin-top: 28px; }
+  .ring :global(.tile__rel) { font-size: 13px; }
+  @media (max-width: 767px) {
+    .ring__tiles { margin-top: 16px; }
+  }
+</style>

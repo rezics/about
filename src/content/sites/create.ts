@@ -1,7 +1,7 @@
 // 創作與發行 /engine/create/: copy for the v3 module page (plan in src/sites/community/SITE.md,
 // sources in src/sites/community/facts.md).
 import type { MiniSite } from '../schema';
-import type { ModuleSection, ModuleStatement } from './community';
+import type { ModuleFamilyStrings, ModuleSection, ModuleStatement } from './community';
 
 export interface CreateStrings {
   hero: { headline: string; lede: string; imageAlt: string };
@@ -9,21 +9,23 @@ export interface CreateStrings {
   world: ModuleSection;
   chapters: ModuleSection;
   editions: ModuleSection;
-  copyright: ModuleStatement & { line: string };
+  copyright: ModuleStatement;
   rights: ModuleSection;
   sell: ModuleSection;
   /** The statement of account: its lines and what fills each, never amounts or shares. */
   account: ModuleSection & {
     rows: { label: string; detail: string; kind: 'paid' | 'deduct' | 'net' | 'share' }[];
+    deduct: string;
     caption: string;
   };
-  nextLine: string;
+  /** The module family (SITE.md): the ring's three labels and the page's closing line. */
+  family: ModuleFamilyStrings;
 }
 
 const strings: CreateStrings = {
   hero: {
     headline: '作者、譯者、版次與權利，每一筆都記清楚。',
-    lede: '在 REZICS 寫稿、排定時間、發出章節。每次正式發行都封存起來，譯本與授權各自記名；想直接賣書與遊戲也可以，結算單列出每一筆扣除。',
+    lede: '寫稿、排程、發出章節都在這裡。每次正式發行都封存起來，譯本與授權逐筆記名；直接賣書與遊戲時，結算單列出每一筆扣除。',
     imageAlt: '兩疊用深灰紙條沿一邊裝訂起來的紙，疊在一起，側邊露出一層層顏色。',
   },
   writing: {
@@ -83,16 +85,18 @@ const strings: CreateStrings = {
     ],
   },
   copyright: {
-    statement: '著作權是你的，',
-    sub: 'REZICS 只拿提供服務需要的那一部分授權。',
-    body: '放上 REZICS 的內容，你只授權 REZICS 為了你使用的服務去儲存、傳送、顯示與轉換格式。這份授權不包括廣告用途、出售你的私人內容、推出新的商業版本，也不包括不受限制的 AI 訓練。',
-    line: '公開讓人閱讀，不等於別人可以轉載、販售、翻譯，或拿去訓練 AI。',
+    statement: '公開讓人閱讀，',
+    sub: '不等於別人可以轉載、販售、翻譯，或拿去訓練 AI。',
   },
   rights: {
     label: '譯本與權利',
     headline: '譯本記在譯者名下，權利一項一項寫明。',
     lead: '誰能翻譯、譯文能不能公開、作品用了多少 AI，沒有一項靠默許。每一項都是一筆記了名字、記了時間的聲明。',
     facts: [
+      {
+        title: '服務授權有範圍',
+        body: '著作權留在你手上。放上 REZICS 的內容，你只授權 REZICS 為了你使用的服務去儲存、傳送、顯示與轉換格式；這份授權不包括廣告用途、出售你的私人內容、推出新的商業版本，也不包括不受限制的 AI 訓練。',
+      },
       { title: '譯本歸做它的人', body: '一部作品可以同時有幾個譯本，讀者與 Realm 各自選用。每個譯本屬於翻譯它的人。' },
       {
         title: '公開要有依據',
@@ -140,9 +144,13 @@ const strings: CreateStrings = {
       { label: '創作者的分成', detail: '依合約比例撥給你', kind: 'share' },
       { label: 'REZICS 的分成', detail: '依合約比例留給平台', kind: 'share' },
     ],
+    deduct: '扣除',
     caption: '結算單的樣子：每一項扣除各占一行，任何一筆都不會重複扣，金額依每筆交易計算。',
   },
-  nextLine: '下一頁說明 REZICS 怎麼記錄來源、處理申訴，又怎麼保護你的隱私。',
+  family: {
+    ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
+    closing: '你寫作，REZICS 替你記下每一版與每一筆帳。',
+  },
 };
 
 export default {

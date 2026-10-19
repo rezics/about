@@ -1,0 +1,39 @@
+---
+/**
+ * Figures (信任, section 時限): numbers written into REZICS's policies, each a large serif numeral
+ * with its unit and one sentence, under a hairline. Three per row on wide screens, two on
+ * tablets, one per row on phones.
+ */
+interface Figure {
+  value: string;
+  unit: string;
+  body: string;
+}
+interface Props {
+  figures: Figure[];
+  label: string;
+}
+const { figures, label } = Astro.props;
+---
+<ul class="figures" role="list" aria-label={label}>
+  {figures.map((f) => (
+    <li class="figures__item">
+      <p class="figures__value"><span class="figures__num serif">{f.value}</span><span class="figures__unit">{f.unit}</span></p>
+      <p class="figures__body">{f.body}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .figures__item { padding: 28px 0 48px; border-top: 1px solid var(--c-line); }
+  .figures__value { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+  .figures__num { font-size: clamp(2.25rem, 1.6rem + 2vw, 3.25rem); line-height: 1.2; letter-spacing: 0.01em; font-variant-numeric: lining-nums; }
+  .figures__unit { font-size: var(--t-s); color: var(--c-text); }
+  .figures__body { margin-top: 16px; font-size: var(--t-s); line-height: 1.85; color: var(--c-text); }
+  @media (max-width: 1023px) { .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) {
+    .figures { grid-template-columns: minmax(0, 1fr); }
+    .figures__item { padding: 22px 0 30px; }
+    .figures__body { margin-top: 10px; }
+  }
+</style>

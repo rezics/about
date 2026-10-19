@@ -1,8 +1,70 @@
 ---
-// STUB: the trust module page's builder replaces this page (src/kit/README.md).
+// 信任 /engine/trust/ (v3; plan in src/sites/community/SITE.md). One picture, one idea per section:
+// marks, imports, decisions, the numbers in the policies, who sees what, privacy, then the module
+// family's closing.
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../../kit/components/StubLanding.astro';
+import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import Section from '../../../kit/components/Section.astro';
+import FactList from '../../../kit/components/FactList.astro';
+import Statement from '../../../kit/components/Statement.astro';
+import ProductCall from '../../../kit/components/ProductCall.astro';
+import Figures from '../../../sites/trust/Figures.astro';
+import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
+import { site as shared } from '../../../kit/content';
+import site from '../../../content/sites/trust';
+
+const s = site.strings;
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    bar
+    eyebrow={shared.nav.engine}
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/trust/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: s.hero.imageAlt,
+      position: '100% 50%',
+      phone: { src: '/images/sites/trust/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.marks.label} title={s.marks.headline} lead={s.marks.lead}>
+    <FactList items={s.marks.facts!} />
+  </Section>
+
+  <Section eyebrow={s.imports.label} title={s.imports.headline} lead={s.imports.lead}>
+    <FactList items={s.imports.facts!} />
+  </Section>
+
+  <Section eyebrow={s.humans.label} title={s.humans.headline} lead={s.humans.lead}>
+    <FactList items={s.humans.facts!} />
+  </Section>
+
+  <Section eyebrow={s.numbers.label} title={s.numbers.headline} lead={s.numbers.lead}>
+    <Figures figures={s.numbers.figures} label={s.numbers.headline} />
+    <p class="module-note">{s.numbers.note}</p>
+  </Section>
+
+  <Section eyebrow={s.views.label} title={s.views.headline} lead={s.views.lead}>
+    <FactList items={s.views.facts!} />
+  </Section>
+
+  <Statement text={s.privacy.statement} sub={s.privacy.sub} level="h2">
+    <div class="privacy"><FactList items={s.privacy.facts} /></div>
+  </Statement>
+
+  <ModuleEnd current="trust" family={s.family} />
 </MiniSiteLayout>
+
+<style>
+  .module-note { margin-top: 12px; max-width: 34em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
+  .privacy { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .privacy > :global(*) { grid-column: 4 / 13; }
+  @media (max-width: 767px) { .privacy { grid-template-columns: minmax(0, 1fr); } .privacy > :global(*) { grid-column: 1 / -1; } }
+</style>

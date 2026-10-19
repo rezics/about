@@ -1,8 +1,68 @@
 ---
-// STUB: the create module page's builder replaces this page (src/kit/README.md).
+// 創作與發行 /engine/create/ (v3; plan in src/sites/community/SITE.md). One picture, one idea per
+// section: writing, the private world, chapters, editions, what publishing does not grant,
+// translations and rights, selling, the statement of account, then the module family's closing.
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../../kit/components/StubLanding.astro';
+import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import Section from '../../../kit/components/Section.astro';
+import FactList from '../../../kit/components/FactList.astro';
+import Statement from '../../../kit/components/Statement.astro';
+import ProductCall from '../../../kit/components/ProductCall.astro';
+import Account from '../../../sites/create/Account.astro';
+import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
+import { site as shared } from '../../../kit/content';
+import site from '../../../content/sites/create';
+
+const s = site.strings;
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    bar
+    eyebrow={shared.nav.engine}
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/create/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: s.hero.imageAlt,
+      position: '100% 50%',
+      phone: { src: '/images/sites/create/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.writing.label} title={s.writing.headline} lead={s.writing.lead}>
+    <FactList items={s.writing.facts!} />
+  </Section>
+
+  <Section eyebrow={s.world.label} title={s.world.headline} lead={s.world.lead}>
+    <FactList items={s.world.facts!} />
+  </Section>
+
+  <Section eyebrow={s.chapters.label} title={s.chapters.headline} lead={s.chapters.lead}>
+    <FactList items={s.chapters.facts!} />
+  </Section>
+
+  <Section eyebrow={s.editions.label} title={s.editions.headline} lead={s.editions.lead}>
+    <FactList items={s.editions.facts!} />
+  </Section>
+
+  <Statement text={s.copyright.statement} sub={s.copyright.sub} />
+
+  <Section eyebrow={s.rights.label} title={s.rights.headline} lead={s.rights.lead}>
+    <FactList items={s.rights.facts!} />
+  </Section>
+
+  <Section eyebrow={s.sell.label} title={s.sell.headline} lead={s.sell.lead}>
+    <FactList items={s.sell.facts!} />
+  </Section>
+
+  <Section eyebrow={s.account.label} title={s.account.headline} lead={s.account.lead}>
+    <Account rows={s.account.rows} deduct={s.account.deduct} caption={s.account.caption} label={s.account.label} />
+  </Section>
+
+  <ModuleEnd current="create" family={s.family} />
 </MiniSiteLayout>

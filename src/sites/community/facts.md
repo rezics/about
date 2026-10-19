@@ -41,6 +41,10 @@ Illustrations (示意) are marked as such on the page and are not claims about R
 9. **Realm moderators' access** (trust, 可見範圍). `legal/privacy-policy.md` §4 says they
    "do not receive unrestricted access"; the copy says 「不能任意查看」 to keep that scope.
 
+The family's closing statements are the shared `statement` of each module in
+`src/content/modules.ts` (not restated here); the ring shows each module's `summary` from the
+same file.
+
 Deliberately left out: redeemable points and purchased credit (later, and excluded from
 `legal/terms-of-service.md` line 119); verified or notable identities (a "future feature" in
 `plan/frontend.md#home`); direct messages (deferred, `product/capabilities.md`); naming any
@@ -81,9 +85,9 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Following · New chronological, ends "caught up"; Best normalised per Realm, no Realm fills a page; recommendations labelled, explicit signals only, can be turned off (動態) | `plan/frontend.md#home` and `#discover`; `contracts/recommendations.md` |
 | Mute, Ignore, Block separate, same menu (動態) | `contracts/community-interactions.md` |
 | Inbox, push, email digest; one-click unsubscribe (動態) | `contracts/notifications.md` |
-| Per-Realm experience and levels from accepted, helpful reviews, corrections, translations, moderation, creation; not spendable, not transferable, not authority; streaks earn nothing (statement 被採納的貢獻) | `product/markets-and-growth.md#recognition-points-and-credit`; `legal/terms-of-service.md` line 119 |
-| Farming recognition with multiple accounts violates policy (same, body) | `legal/acceptable-use-policy.md` §5 |
-| Realm routes are the platform's; a community that wants its own pages adds a Zone, the 站點 module (五個模組: the next line) | `contracts/space.md#surfaces-and-routers` |
+| Per-Realm experience and levels from accepted, helpful reviews, corrections, translations, moderation, creation; not spendable, not transferable, not authority; streaks earn nothing (等級) | `product/markets-and-growth.md#recognition-points-and-credit`; `legal/terms-of-service.md` line 119 |
+| Farming recognition with multiple accounts violates policy (等級) | `legal/acceptable-use-policy.md` §5 |
+| Realm routes are the platform's; a community that wants its own pages adds a Zone, the 站點 module (closing line) | `contracts/space.md#surfaces-and-routers` |
 
 ## 創作與發行 `/engine/create/`
 
@@ -118,7 +122,7 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Declaration records target, instrument and version, declaring Agent, time, scope; unknown stays unknown; not legal clearance (譯本與權利) | `contracts/license-grants.md` |
 | Standing offering; ending it cannot rewrite the declaration (譯本與權利) | same; `contracts/content-languages.md` (author's standing rights offering) |
 | AI-use declarations none, assisted, generated; human review separate; readers filter (譯本與權利) | `contracts/license-grants.md#ai-disclosure-and-consent`; `legal/ai-policy.md` §1 to §2 |
-| Copyright stays with the creator; service licence limited to store, reproduce, transmit, display, process; excludes advertising, sale of private content, new commercial editions, unrestricted AI training; publishing does not grant republish, sell, translate or train (statement 著作權是你的) | `legal/terms-of-service.md` lines 69 to 79 |
+| Copyright stays with the creator; service licence limited to store, reproduce, transmit, display, process; excludes advertising, sale of private content, new commercial editions, unrestricted AI training; publishing does not grant republish, sell, translate or train (statement 公開讓人閱讀; 譯本與權利: 服務授權有範圍) | `legal/terms-of-service.md` lines 69 to 79 |
 | Contracted creators; rights-cleared DRM-free EPUB/PDF and small games and VNs; no launcher (發行 lead) | `contracts/distribution.md#creator-distribution`; `legal/creator-distribution-agreement-outline.md` §3, §7 |
 | Statement of account lines, no figures (結算 rows) | agreement outline §4; see uncertainty 1 |
 | Net receipts definition; overhead and REZICS income tax not deductible; every deduction visible; nothing deducted twice (結算 lead and caption) | agreement outline §4 |
