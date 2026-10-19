@@ -1,7 +1,7 @@
 ---
 /**
- * "Next page / next site": a full-bleed band in the next thing's field colour, its name set as
- * large as the band allows. The whole band is the link. On hover or focus three ink steps rise
+ * "Next page / next site": a band in the next thing's field colour across the grid (inside the
+ * outer margins), its name set as large as the band allows. The whole band is the link. On hover or focus three ink steps rise
  * from the bottom-left (歸位, one grid step each), the name slides right by an arrow's width and
  * the small label grows while its arrow travels. The footer's action square (「前往 REZICS」)
  * follows it on every page, so a finale needs no action of its own.
@@ -35,6 +35,8 @@ const size = Math.min(22, 92 / Math.max(2, [...name].length * (/^[\x20-\x7e]+$/.
     justify-content: space-between;
     gap: 24px;
     min-height: min(70svh, 640px);
+    /* Set on the grid's outer margins like every block, so the page edge stays ground. */
+    margin-inline: var(--gutter);
     padding: var(--gutter);
     padding-top: clamp(24px, 4vw, 48px);
     overflow: clip;
