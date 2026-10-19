@@ -1,0 +1,32 @@
+---
+/**
+ * The fifteen parts on /engine/ (SITE.md "v3", section 4): the kit's hairline facts list with a
+ * second, muted line per row: the part's name left in the serif; what it does, then an example
+ * of it on one kind, right. Phones: the name above its text.
+ */
+import { parts } from '../../kit/content';
+import engine from '../../content/sites/engine';
+
+const s = engine.strings.parts;
+---
+<ul class="pidx" role="list">
+  {parts.map((part) => (
+    <li class="pidx__row">
+      <h3 class="pidx__name serif">{part.name}</h3>
+      <div class="pidx__text">
+        <p class="pidx__gives">{part.gives}</p>
+        <p class="pidx__eg"><span class="pidx__k">{s.example}</span>{s.examples[part.id]}</p>
+      </div>
+    </li>
+  ))}
+</ul>
+<style>
+  .pidx { border-top: 1px solid var(--c-line); }
+  .pidx__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
+  .pidx__name { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .pidx__text { max-width: 34em; }
+  .pidx__gives { font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .pidx__eg { margin-top: 10px; font-size: 14px; line-height: 1.8; color: var(--c-muted); }
+  .pidx__k { margin-right: 0.6em; }
+  @media (max-width: 767px) { .pidx__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; } }
+</style>

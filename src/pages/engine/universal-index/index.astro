@@ -1,8 +1,95 @@
 ---
-// STUB: the universal-index module page's builder replaces this page (src/kit/README.md).
+// 通用索引 (v3; src/sites/engine/SITE.md): the family opening, then one idea per section with
+// 《魔法禁書目錄》 as a plain-text example (names, credits, three layers, relations, values, merge
+// and split), then the family closing (statement, the ring of the five modules, the closing).
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../../kit/components/StubLanding.astro';
+import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import Section from '../../../kit/components/Section.astro';
+import Statement from '../../../kit/components/Statement.astro';
+import TileMasonry, { type MasonryItem } from '../../../kit/components/TileMasonry.astro';
+import FactList from '../../../kit/components/FactList.astro';
+import Closing from '../../../kit/components/Closing.astro';
+import ProductCall from '../../../kit/components/ProductCall.astro';
+import ModuleRing from '../../../sites/engine/ModuleRing.astro';
+import Names from '../../../sites/universal-index/Names.astro';
+import { moduleById } from '../../../kit/content';
+import { kindFields } from '../../../kit/theme';
+import { accentRamp } from '../../../kit/color';
+import { splitStatement } from '../../../sites/engine/family';
+import site from '../../../content/sites/universal-index';
+
+const s = site.strings;
+const statement = splitStatement(moduleById('universal-index').statement);
+// Related works in their kinds' colours; the second novel series a deeper shade of the first.
+const deep = accentRamp(kindFields.books.field)[2]!;
+const pale = accentRamp(kindFields.manga.field)[1]!;
+const colour = (id: string, kind: keyof typeof kindFields) =>
+  id === 'souyaku' ? deep : id === 'railgun' ? pale : { bg: kindFields[kind].field, on: kindFields[kind].on };
+const relations: MasonryItem[] = s.relations.items.map((r) => {
+  const c = colour(r.id, r.kind);
+  return { id: r.id, name: r.name, rel: r.rel, line: r.line, bg: c.bg, on: c.on };
+});
+const columns = [
+  [{ id: 'shinyaku', h: 1 }, { id: 'souyaku', h: 1 }],
+  [{ id: 'manga', h: 1 }],
+  [{ id: 'anime', h: 1.2 }, { id: 'vn', h: 1 }],
+  [{ id: 'railgun', h: 1 }],
+];
+const phone = [[{ id: 'shinyaku' }, { id: 'souyaku' }], [{ id: 'manga' }, { id: 'anime' }], [{ id: 'railgun' }, { id: 'vn' }]];
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    bar
+    eyebrow={s.hero.eyebrow}
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/universal-index/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: s.hero.alt,
+      position: '100% 50%',
+      phone: { src: '/images/sites/universal-index/hero-phone', widths: [640, 960], width: 960, height: 640 },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.names.label} title={s.names.headline} lead={s.names.lead}>
+    <Names names={s.names.names} caption={s.names.caption} />
+  </Section>
+
+  <Section eyebrow={s.people.label} title={s.people.headline} lead={s.people.lead}>
+    <FactList items={s.people.rows} />
+    <p class="ui-after">{s.people.characters}</p>
+  </Section>
+
+  <Section eyebrow={s.layers.label} title={s.layers.headline} lead={s.layers.lead}>
+    <FactList items={s.layers.items} />
+    <p class="ui-after">{s.layers.aside}</p>
+  </Section>
+
+  <Section eyebrow={s.relations.label} title={s.relations.headline} lead={s.relations.lead}>
+    <TileMasonry slot="wide" items={relations} columns={columns} phone={phone} height={420} phoneRow={150} label={s.relations.label} />
+    <p slot="wide" class="ui-note">{s.relations.note}</p>
+  </Section>
+
+  <Section eyebrow={s.values.label} title={s.values.headline} lead={s.values.lead}>
+    <FactList items={s.values.items} />
+  </Section>
+
+  <Section eyebrow={s.merge.label} title={s.merge.headline} lead={s.merge.lead}>
+    <FactList items={s.merge.items} />
+  </Section>
+
+  <Statement text={statement[0]} sub={statement[1]} />
+  <ModuleRing current="universal-index" />
+  <Closing title={s.closing} />
 </MiniSiteLayout>
+
+<style>
+  .ui-after { margin-top: 32px; max-width: 34em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .ui-note { margin-top: 32px; margin-left: calc((100% + var(--gutter)) * 3 / 12); max-width: 36em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  @media (max-width: 767px) { .ui-note { margin-left: 0; } }
+</style>

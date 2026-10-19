@@ -3,6 +3,7 @@
 // .temp/sites/EXAMPLE-WORK.md. Its handle, routes and revision log are not REZICS data.
 import type { MiniSite } from '../schema';
 import { modules } from '../modules';
+import { site as shared } from '../site';
 
 const mod = modules.find((m) => m.id === 'zones')!;
 
@@ -48,7 +49,7 @@ export default {
   ],
   strings: {
     hero: {
-      eyebrow: mod.name,
+      eyebrow: shared.nav.engine,
       headline: '社群的網站，蓋在共用的圖上。',
       lede: '一個 Zone 有自己的首頁、索引、詳細頁、自訂頁面與導覽。網站長什麼樣子由社群決定；網站上的人物、作品與事實，是共用圖上的同一筆資料。',
       alt: '一張深灰色的紙折成沒有屋頂的小房子，前牆開了一扇門，兩個房間裡各放著一小張玫瑰色與藍色的紙',

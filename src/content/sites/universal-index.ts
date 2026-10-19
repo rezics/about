@@ -3,6 +3,7 @@
 // (.temp/sites/EXAMPLE-WORK.md: no cover or likeness, no publishers or studios, no counts).
 import type { MiniSite } from '../schema';
 import { modules } from '../modules';
+import { site as shared } from '../site';
 
 const mod = modules.find((m) => m.id === 'universal-index')!;
 
@@ -23,7 +24,14 @@ export interface IndexStrings {
   };
   people: { label: string; headline: string; lead: string; rows: Item[]; characters: string };
   layers: { label: string; headline: string; lead: string; items: Item[]; aside: string };
-  relations: { label: string; headline: string; lead: string; items: Item[]; note: string };
+  relations: {
+    label: string;
+    headline: string;
+    lead: string;
+    /** Related works seen from the main series' page: the label on that side, the work, one line; `kind` colours its tile. */
+    items: { id: string; rel: string; name: string; line: string; kind: 'books' | 'manga' | 'anime' | 'visual-novels' }[];
+    note: string;
+  };
   values: { label: string; headline: string; lead: string; items: Item[] };
   merge: { label: string; headline: string; lead: string; items: Item[] };
   closing: string;
@@ -47,7 +55,7 @@ export default {
   ],
   strings: {
     hero: {
-      eyebrow: mod.name,
+      eyebrow: shared.nav.engine,
       headline: '一部作品，一個身分，每一種寫法。',
       lede: '例如《魔法禁書目錄》：日文原名、中文書名與英文書名，都掛在同一個身分上。你讀哪一種語言，頁面就先用那一種名稱。',
       alt: '一張深灰色的底紙上，許多同樣大小的灰色與彩色紙片排成整齊的格線，其中一片翹起一角',
@@ -88,14 +96,14 @@ export default {
     relations: {
       label: '關聯',
       headline: '關係記一次，兩頭各有說法。',
-      lead: '這個故事分成三個系列：正篇、《新約》與《創約》。正篇接到《新約》的關係只存一筆，正篇那頁寫「續作」，《新約》那頁寫「前作」。下面是從正篇那頁看出去的樣子。',
+      lead: '這個故事分成三個系列：正篇、《新約》與《創約》。正篇接到《新約》的關係只存一筆，正篇那頁寫「續作」，《新約》那頁寫「前作」。下面是從正篇那頁看出去的六筆關係。',
       items: [
-        { title: '《新約》', body: '續作：第二個系列，2011 至 2019 年。' },
-        { title: '《創約》', body: '續作：第三個系列，2020 年開始，仍在出版。' },
-        { title: '漫畫', body: '改編作品：由近木野中哉作畫，2007 年開始連載。' },
-        { title: '動畫', body: '改編作品：三季（2008、2010、2018 年）與一部電影（2013 年）。' },
-        { title: '《科學超電磁砲》、《科學一方通行》', body: '外傳：和正篇共用角色，各有自己的身分。' },
-        { title: '視覺小說遊戲', body: '改編作品：2013 年推出，同時出現在視覺小說的目錄裡。' },
+        { id: 'shinyaku', rel: '續作', name: '《新約》', line: '第二個系列，2011 至 2019 年', kind: 'books' },
+        { id: 'souyaku', rel: '續作', name: '《創約》', line: '第三個系列，2020 年開始，仍在出版', kind: 'books' },
+        { id: 'manga', rel: '改編作品', name: '漫畫', line: '近木野中哉作畫，2007 年開始連載', kind: 'manga' },
+        { id: 'anime', rel: '改編作品', name: '動畫', line: '三季（2008、2010、2018 年）與一部電影（2013 年）', kind: 'anime' },
+        { id: 'railgun', rel: '外傳', name: '《科學超電磁砲》', line: '和《科學一方通行》一樣是外傳，與正篇共用角色', kind: 'manga' },
+        { id: 'vn', rel: '改編作品', name: '視覺小說', line: '2013 年推出，也列在視覺小說的目錄裡', kind: 'visual-novels' },
       ],
       note: '每一種關係都有名字、方向與出處。兩個名稱很像不算證據；沒有證據的連結，寧可不建。',
     },

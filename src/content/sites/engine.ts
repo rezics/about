@@ -10,7 +10,7 @@ export interface EngineStrings {
     /** The ring of the five modules that closes every module page. */
     ring: { label: string; current: string; overview: string };
   };
-  hero: { eyebrow: string; headline: string; lede: string; alt: string };
+  hero: { headline: string; lede: string; alt: string };
   picker: {
     label: string;
     headline: string;
@@ -24,7 +24,7 @@ export interface EngineStrings {
   };
   statement: [string, string];
   parts: { label: string; headline: string; lead: string; example: string; examples: Record<PartId, string> };
-  modules: { label: string; headline: string; lead: string; chapters: Record<ModuleId, { role: string; body: string }> };
+  modules: { label: string; headline: string; lead: string; roles: Record<ModuleId, string> };
   config: { label: string; headline: string; lead: string; items: { title: string; body: string }[]; note: string };
   closing: string;
 }
@@ -50,7 +50,6 @@ export default {
       ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
     },
     hero: {
-      eyebrow: '模組',
       headline: '九種東西，拆開來是同一套部件。',
       lede: '書、動畫、遊戲、軟體，連 MCP 伺服器也一樣，每一種都從十五個共用部件裡取八個組成。',
       alt: '五張深淺不同的灰紙疊成階梯，最上面一張排著五小張彩色紙片',
@@ -91,28 +90,13 @@ export default {
     modules: {
       label: '五個模組',
       headline: '部件依用途，歸進五個模組。',
-      lead: '這樣東西是什麼，人怎麼對待它，怎麼排成一個網站，怎麼寫出來、送出去，憑什麼相信它。五個問題，各由一個模組回答。',
-      chapters: {
-        'universal-index': {
-          role: '這樣東西是什麼',
-          body: '書名可以有十種寫法，作品只有一個身分。版本、製作人員、關聯與規格，全都掛在這個身分上。',
-        },
-        community: {
-          role: '人怎麼對待它',
-          body: 'Realm 是人聚集的地方。討論、評分與清單直接指向作品，你的名聲跟著你走。',
-        },
-        zones: {
-          role: '怎麼排成一個網站',
-          body: 'Zone 是社群自己的網站，路由、導覽與主題自己定；頁面上的每一筆資料，仍是圖上的同一筆。',
-        },
-        create: {
-          role: '怎麼寫出來、送出去',
-          body: '作者在這裡寫作、發布章節，讀者在這裡接著讀；書與小型遊戲也能直接發行。',
-        },
-        trust: {
-          role: '憑什麼相信它',
-          body: '每一筆資料都記下出處。權利、檢舉與申訴有紀錄可查，私人的東西留在私人。',
-        },
+      lead: '每個模組回答一個問題，各自用上幾個部件。信任是例外：它不挑部件，每一個部件底下都有它，管出處、權利與隱私。',
+      roles: {
+        'universal-index': '這樣東西是什麼',
+        community: '人怎麼對待它',
+        zones: '怎麼排成一個網站',
+        create: '怎麼寫出來、送出去',
+        trust: '憑什麼相信它',
       },
     },
     config: {

@@ -1,0 +1,30 @@
+---
+/**
+ * The names of one work (通用索引, section 2): the kit's hairline facts list with each name set
+ * in its own language (`lang`) on the left and what it is on the right. The Japanese title takes
+ * a Japanese face: the shipped Noto Serif TC and Noto Sans TC lack 「録」.
+ */
+interface Props {
+  names: { name: string; lang: string; label: string }[];
+  caption: string;
+}
+const { names, caption } = Astro.props;
+---
+<ul class="names" role="list">
+  {names.map((n) => (
+    <li class="names__row">
+      <p class:list={['names__name', n.lang === 'ja' ? 'names__name--ja' : 'serif']} lang={n.lang}>{n.name}</p>
+      <p class="names__label">{n.label}</p>
+    </li>
+  ))}
+</ul>
+<p class="names__caption">{caption}</p>
+<style>
+  .names { border-top: 1px solid var(--c-line); }
+  .names__row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3fr); gap: 8px var(--gutter); align-items: baseline; padding: 28px 0 30px; border-bottom: 1px solid var(--c-line); }
+  .names__name { font-size: clamp(1.375rem, 1.15rem + 0.8vw, 1.875rem); font-weight: 600; line-height: 1.4; letter-spacing: 0.02em; }
+  .names__name--ja { font-family: 'Noto Serif JP', 'Noto Serif CJK JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif; }
+  .names__label { font-size: 15px; line-height: 1.8; color: var(--c-muted); }
+  .names__caption { margin-top: 24px; font-size: 14px; line-height: 1.8; color: var(--c-muted); }
+  @media (max-width: 767px) { .names__row { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 22px 0 24px; } }
+</style>

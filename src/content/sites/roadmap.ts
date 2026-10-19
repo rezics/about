@@ -9,7 +9,7 @@ export interface Item {
 }
 
 export interface RoadmapStrings {
-  hero: { eyebrow: string; headline: string; lede: string; alt: string };
+  hero: { headline: string; lede: string; alt: string };
   order: { label: string; headline: string; lead: string; steps: Item[] };
   further: { label: string; headline: string; lead: string; items: Item[] };
   statement: [string, string];
@@ -35,7 +35,6 @@ export default {
   ],
   strings: {
     hero: {
-      eyebrow: shared.nav.roadmap,
       headline: '引擎橫著蓋，社群一個一個開。',
       lede: 'REZICS 不替每個領域另做一套系統。一套引擎橫跨所有種類；社群則一次開一個，往下做深、做到完整。',
       alt: '一長條深灰色的紙從紙捲上展開，上面依序放著六小張彩色紙片',

@@ -58,7 +58,8 @@ tint; small text on `#6e757c` is checked for AA (see Checks).
 Written for agent B in `.temp/sites/modules-a/FAMILY-V3.md`.
 
 1. **Opening:** the kit's hero with the module's photograph (its ink tint plus one or two kind
-   colours), eyebrow = the module's name, serif h1, one paragraph, the 「前往 REZICS」 pill.
+   colours), eyebrow 「模組」 (the site bar above names the module), serif h1, one paragraph,
+   the 「前往 REZICS」 pill.
 2. **Closing:** the module's `statement` (modules.ts) as a two-tone statement; the ring of the
    five modules (eyebrow 「五個模組」, five flat ink-tint tiles in schema order with name and
    summary, the current one unlinked and marked 「你在這裡」, then 「回到模組總覽」); the kit's
