@@ -8,6 +8,7 @@ import Section from '../../../kit/components/Section.astro';
 import FactList from '../../../kit/components/FactList.astro';
 import Statement from '../../../kit/components/Statement.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
+import FactGrid from '../../../sites/community/FactGrid.astro';
 import Byline from '../../../sites/community/Byline.astro';
 import Figures from '../../../sites/community/Figures.astro';
 import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
@@ -42,22 +43,22 @@ const s = site.strings;
   <Section eyebrow={s.lead.label} title={s.lead.headline} lead={s.lead.lead}>
     <Byline {...s.lead.specimen} />
     <FactList items={s.lead.facts!} />
-    <p class="module-note">{s.lead.note}</p>
+    <p class="module-note phrase">{s.lead.note}</p>
   </Section>
 
   <Section eyebrow={s.realm.label} title={s.realm.headline} lead={s.realm.lead}>
-    <FactList items={s.realm.facts!} />
+    <FactGrid items={s.realm.facts!} label={s.realm.headline} />
   </Section>
 
   <Statement text={s.leave.statement} sub={s.leave.sub} />
 
   <Section eyebrow={s.ratings.label} title={s.ratings.headline} lead={s.ratings.lead}>
     <Figures figures={s.ratings.figures} label={s.ratings.headline} />
-    <p class="module-note">{s.ratings.note}</p>
+    <p class="module-note phrase">{s.ratings.note}</p>
   </Section>
 
   <Section eyebrow={s.follow.label} title={s.follow.headline} lead={s.follow.lead}>
-    <FactList items={s.follow.facts!} />
+    <FactGrid items={s.follow.facts!} label={s.follow.headline} />
   </Section>
 
   <Section eyebrow={s.feed.label} title={s.feed.headline} lead={s.feed.lead}>
@@ -70,5 +71,5 @@ const s = site.strings;
 </MiniSiteLayout>
 
 <style>
-  .module-note { margin-top: 28px; max-width: 34em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
+  .module-note { margin-top: 28px; max-width: 40em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
 </style>

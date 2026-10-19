@@ -67,7 +67,6 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Rules per language; posts in any content language (Realm) | `contracts/community-interactions.md#community-completeness`; `plan/frontend.md#languages-and-themes` (rule titles stored per language) |
 | Admission open, request, invitation; Join writes the follow; leaving removes only the join-sourced follow (Realm) | `contracts/space.md#visibility-listing-and-history`; `contracts/community-interactions.md` |
 | Visibility and listing separate; listing covers search, recommendations, sitemaps; private join page only when admission is by request, otherwise the same 404 (Realm) | `contracts/space.md#visibility-listing-and-history` |
-| History everything or from admission (Realm) | same |
 | Reports become cases with correspondence; reasons and appeals (Realm) | `contracts/community-interactions.md#community-completeness`; `operations/trust-and-safety.md#intake-response-and-recovery` |
 | Polls; an approved resolution executes only the admitted capability (Realm) | `contracts/votes-and-references.md` |
 | Owner cannot close a Realm; the platform can take it out of reach and restore it (Realm) | `contracts/space.md#closing-a-realm` |
@@ -150,7 +149,7 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Unassessed shown as Not assessed, never general (標記: 未評估) | `contracts/classification-judgments.md#suitability-and-disclosure` |
 | Automated actors disclose themselves and their operator, act within scope, never fabricate reviews, votes or participation (標記: 自動化身分) | `legal/ai-policy.md` §5; `contracts/license-grants.md#ai-disclosure-and-consent` |
 | The platform answers for its imports; users for their input; tools prompt for a source, the platform keeps it (匯入 lead) | `contracts/source-lifecycle.md#platform-imports-and-user-contributions` |
-| Adapted or translated CC BY-SA summaries keep the licence through reads and exports (匯入) | same |
+| Adapted or translated share-alike summaries keep the licence through reads and exports; this is not stated for every open licence (匯入) | same |
 | Covers credited to their rights holder and source; cover role only, never banner or showcase (匯入) | same |
 | Work and statement pages show the licence and display obligations; missing assessment is unassessed (匯入) | `contracts/license-grants.md` |
 | Per-passage and cumulative per-source quotation budgets across accounts, translations and Zones (匯入) | `contracts/information-verification.md#a-big-franchise-wiki-for-every-work` |
@@ -160,7 +159,7 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | AI review records method, inputs, configuration; ambiguous goes to a human or pending (申訴與決定: AI 只是協助) | `contracts/governance-rules.md#rule-lifecycle-still-to-model` |
 | Child-safety and NCII evidence never sent to general-purpose generative AI (申訴與決定: 最敏感的證據) | `legal/ai-policy.md` §6; `legal/ncii-takedown-policy.md` §6; `legal/privacy-policy.md` §5 |
 | NCII removed within 48 hours of a valid request, with known identical copies; appeals do not pause it (時限) | `legal/ncii-takedown-policy.md` §4, §7; `operations/trust-and-safety.md` |
-| Counter-notice restoration between 10 and 14 business days unless a court action is notified (時限) | `legal/copyright-and-dmca-policy.md` §6 |
+| Counter-notice restoration between 10 and 14 business days unless a court action is notified; independent safety, legal or contractual restrictions remain (時限) | `legal/copyright-and-dmca-policy.md` §6 |
 | Appeals free for at least six months, including decisions not to act on a report (時限) | `legal/acceptable-use-policy.md` §8 |
 | Minimum ages 13, 14 in South Korea, 16 in the EEA (時限) | `legal/content-ratings-and-age-policy.md` §1; `operations/trust-and-safety.md` |
 | Uploaded library files expire after seven days; export before then includes the source fields (時限) | `contracts/source-lifecycle.md#reader-upload-retention` |
@@ -172,7 +171,7 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | R15 from 15; a rating is presentation, not permission to private material (可見範圍) | `contracts/classification-judgments.md`; `legal/content-ratings-and-age-policy.md` §4 |
 | R18 and R18G separate opt-ins, both required for both; unavailable markets (可見範圍) | `legal/content-ratings-and-age-policy.md` §1, §2; `operations/trust-and-safety.md` |
 | Realm moderators get information needed, no unrestricted access to accounts, private libraries, confidential reports (可見範圍) | `legal/privacy-policy.md` §4 |
-| Drafts and reading records private unless you share (隱私: 只有你看得到) | `legal/privacy-policy.md` §4 |
+| Drafts and reading records private from other users unless you share (隱私: 預設不公開) | `legal/privacy-policy.md` §4 |
 | Search indexing and share previews use the anonymous presentation; no adult material in email or push (可見範圍) | `legal/content-ratings-and-age-policy.md` §4; `contracts/classification-judgments.md` |
 | NSFW masked by default, viewer may show; author masks persist (可見範圍) | `legal/content-ratings-and-age-policy.md` §4 |
 | No advertising profiles or sensitive-trait inference from reading records (隱私) | `legal/privacy-policy.md` §3 |
@@ -183,3 +182,10 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Birthday private by default; content settings never publish it; eligibility independent of publication (隱私) | `legal/privacy-policy.md` §2; `legal/content-ratings-and-age-policy.md` §6 |
 | REZICS's cookies limited to locale, theme and session (隱私: 沒有廣告追蹤器) | `legal/privacy-policy.md` §9 (the draft asks to verify Turnstile and Cloudflare cookies before publication) |
 | Access, correction, export, deletion requests without an account (隱私) | `legal/privacy-policy.md` §10 |
+
+## Finishing pass
+
+- Generic release/chapter and cover-removal examples now say 示意 in visible copy. No real work is named.
+- Translation attribution says 記在譯者名下, without implying that attribution clears the underlying work’s rights. An open licence must permit translation.
+- Restoration keeps the independent-restriction exception in copyright policy §6. Confirmed statutory timing against [17 USC 512(g)(2)](https://www.copyright.gov/title17/92chap5.html#512), and the NCII elapsed-hours rule against [FTC TAKE IT DOWN guidance](https://www.ftc.gov/business-guidance/resources/complying-take-it-down-act), read 2026-10-19. These sources verify the statutory process; product-policy commitments remain the local drafts named above.
+- Privacy describes what other users can see, without suggesting that necessary operational or legally required access is impossible.

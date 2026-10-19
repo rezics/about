@@ -1,7 +1,7 @@
 // 信任 /engine/trust/: copy for the v3 module page (plan in src/sites/community/SITE.md). Every
 // statement restates docs/contracts, docs/operations or docs/legal in rezics-next (facts.md).
 import type { MiniSite } from '../schema';
-import type { Figure, ModuleFamilyStrings, ModuleSection, ModuleStatement } from './community';
+import type { Figure, ModuleFamilyStrings, ModuleSection } from './community';
 
 export interface TrustStrings {
   hero: { headline: string; lede: string; imageAlt: string };
@@ -11,7 +11,7 @@ export interface TrustStrings {
   /** Numbers written into the policies: a numeral, its unit and one sentence. */
   numbers: ModuleSection & { figures: Figure[] };
   views: ModuleSection;
-  privacy: ModuleStatement & { facts: { title: string; body: string }[] };
+  privacy: ModuleSection;
   /** The module family (SITE.md): the ring's three labels and the page's closing line. */
   family: ModuleFamilyStrings;
 }
@@ -20,7 +20,7 @@ const strings: TrustStrings = {
   hero: {
     headline: '誰決定、根據什麼，都看得到。',
     lede: '事實寫明來源，授權寫明條款，管理決定寫明依據的規則與證據。審核、爭議與申訴一筆一筆加上去，後來的不會蓋掉先前的。',
-    imageAlt: '幾張紙一層層錯開疊放，每一層的邊上都用棉線繫著一張空白的小吊牌。',
+    imageAlt: '五張灰色、赭色與淡藍色的紙一層層錯開，邊緣各留著空白的紙標籤。',
   },
   marks: {
     label: '標記',
@@ -32,10 +32,9 @@ const strings: TrustStrings = {
         body: '平台匯入的事實與文字，都標出來源與授權，並連回原處。授權允許什麼，就公開什麼；授權不明時只取事實。其他網站的使用者寫的評論、網誌與留言，從不搬過來。',
       },
       { title: '未驗證', body: '新建立的項目會先公開，但標成未驗證，每個欄位附上出處；驗證以前，它不會出現在可信的匯出與推薦裡。' },
-      { title: '已審核', body: '審核會記下是誰、根據哪些證據、依哪一版規則。' },
       {
-        title: '有爭議',
-        body: '審核過，不代表沒有人質疑；同一個欄位可以同時標著已審核與有爭議。質疑在評估完成前維持待定，缺少資料或評估過時，都不算被否定。',
+        title: '已審核，也可能有爭議',
+        body: '審核會記下是誰、根據哪些證據、依哪一版規則。審核過，不代表沒有人質疑：同一個欄位可以同時標著已審核與有爭議，質疑在評估完成前維持待定；缺少資料或評估過時，都不算被否定。',
       },
       {
         title: 'AI 使用聲明',
@@ -53,12 +52,12 @@ const strings: TrustStrings = {
     headline: '平台匯入的資料，由平台負責。',
     lead: 'REZICS 自己匯入的內容，只公開來源授權的範圍。使用者輸入的內容，是使用者的貢獻與責任；工具只會提醒他寫下來源，平台則保存他提供的出處。',
     facts: [
-      { title: '授權跟著文字走', body: '改寫或翻譯過的開放授權簡介，仍然沿用原本的授權，讀取與匯出時一起帶著。' },
+      { title: '授權跟著文字走', body: '要求相同方式分享的開放授權簡介，改寫或翻譯後仍沿用原授權，讀取與匯出時一起帶著。' },
       { title: '封面歸權利人', body: '匯入的封面標明著作權屬於權利人，並寫出取自哪裡。封面只當封面用，不會被拿去當橫幅或展示圖。' },
       { title: '沒有封面也不留白', body: '沒有封面的作品，顯示以書名與作者排成的文字封面。' },
       { title: '授權有沒有評估過', body: '作品頁與事實頁會列出這段內容適用的授權與標示義務；還沒評估的，就寫「未評估」。' },
       { title: 'Wiki+ 的引用有上限', body: 'Wiki+ 引用原文時，每一段與每一個來源累積引用的份量都有上限，跨帳號、跨譯本、跨 Zone 合併計算。' },
-      { title: 'Wiki+ 的事實逐條附位置', body: '代理整理出的 Wiki+ 事實，每一筆都附上章節位置與短引文；沒有經過人審核，讀者看不到。' },
+      { title: 'Wiki+ 的事實逐條附位置', body: 'AI 代理整理出的 Wiki+ 事實，每一筆都附上章節位置與短引文；沒有經過人審核，讀者看不到。' },
     ],
   },
   humans: {
@@ -68,7 +67,7 @@ const strings: TrustStrings = {
     facts: [
       {
         title: '只撤下被指出的部分',
-        body: '例如撤下一張封面時，原處改放文字封面，作品的其他資料照樣保留；之後的資料更新，也不會把那張封面帶回來。',
+        body: '以撤下一張封面為例（示意），原處改放文字封面，作品的其他資料照樣保留；之後的資料更新，也不會把那張封面帶回來。',
       },
       { title: '申訴由人審查', body: '不同意決定的人可以申訴。人手允許時，申訴交給另一位審查者；做不到時，會告訴你是原來的人重新審查。' },
       { title: '改判也是一筆紀錄', body: '改判是新的一筆決定，原本的紀錄照樣留著。' },
@@ -92,7 +91,7 @@ const strings: TrustStrings = {
       {
         value: '10 到 14',
         unit: '個工作天',
-        body: '著作權反通知有效、權利人也沒有提起訴訟時，內容在收到反通知後第 10 到第 14 個工作天之間恢復。',
+        body: '收到有效的著作權反通知後，未收到權利人已提起訴訟的通知，內容於第 10 到第 14 個工作天恢復。若另有安全、法律或合約限制，會說明原因與申訴途徑。',
       },
       { value: '6', unit: '個月', body: '收到管理決定的通知後，至少六個月內都能免費申訴；連「決定不處理你的檢舉」也能申訴。' },
       { value: '13', unit: '歲', body: '註冊的最低年齡：一般為 13 歲，南韓 14 歲，歐洲經濟區 16 歲。' },
@@ -104,14 +103,13 @@ const strings: TrustStrings = {
   views: {
     label: '可見範圍',
     headline: '同一頁，不同的人看到的範圍不同。',
-    lead: '每一次讀取與送出，伺服器都一併檢查封鎖、隱私、閱讀進度、管轄與撤回。搜尋結果、筆數、預覽、通知、匯出，以及 AI 讀到的內容，套用的是同一套規則。',
+    lead: '每一次讀取與送出，伺服器都一併檢查封鎖、隱私、閱讀進度、管轄與撤回。搜尋結果、筆數、預覽、通知、匯出，以及 AI 代理讀到的內容，套用的是同一套規則。',
     facts: [
       { title: '沒有登入的人', body: '看到普遍級與未評估的內容。作品的 Wiki+ 從故事開頭讀起，不洩漏後面的情節。' },
       { title: '讀到第三章的你', body: 'Wiki+ 與討論停在你讀完的地方。想看到哪一章，或全部顯示，都能自己選。' },
-      { title: '十五歲以上', body: 'R15 從十五歲開始。分級只決定畫面怎麼顯示，不會讓你讀到原本沒有權限的私人內容。' },
       {
-        title: '開啟 R18 的成年人',
-        body: '性內容（R18）與獵奇內容（R18G）要分別開啟，兩種都有的內容，兩項都開才看得到；在不提供成人內容的地區，這兩項無法開啟。',
+        title: '分級內容',
+        body: 'R15 從十五歲開始。性內容（R18）與獵奇內容（R18G）要分別開啟，兩種都有的內容，兩項都開才看得到；在不提供成人內容的地區，這兩項無法開啟。分級只決定畫面怎麼顯示，不會讓你讀到沒有權限的私人內容。',
       },
       { title: 'Realm 管理員', body: '只取得管理需要的資訊，不能任意查看成員的帳號、私人書庫或機密的安全檢舉。' },
       { title: '搜尋引擎與分享預覽', body: '只拿到未登入時的樣子。成人內容也不會出現在電子郵件與推播通知裡。' },
@@ -119,17 +117,19 @@ const strings: TrustStrings = {
     ],
   },
   privacy: {
-    statement: '你的閱讀紀錄，',
-    sub: '不會變成廣告。',
+    label: '隱私',
+    headline: '你的閱讀紀錄，不會變成廣告。',
     facts: [
-      { title: '不做廣告輪廓', body: '讀過的書不會被整理成廣告輪廓，也不會被拿來猜測你的敏感特質。' },
-      { title: '沒有廣告追蹤器', body: '網站上沒有廣告追蹤器，個人資料也不賣；REZICS 自己的 Cookie 只用在介面語言、外觀主題與登入。' },
+      {
+        title: '不做廣告輪廓',
+        body: '讀過的書不會被整理成廣告輪廓，也不會被拿來猜測你的敏感特質。網站上沒有廣告追蹤器，個人資料也不賣；REZICS 自己的 Cookie 只用在介面語言、外觀主題與登入。',
+      },
       {
         title: '不拿私人內容訓練',
         body: '訓練 AI 模型時，預設不會用到你沒公開的草稿和閱讀紀錄；只有你另外明確選擇加入才會，註冊或使用 AI 功能都不算同意。',
       },
       { title: '送出以前先說明', body: '選用的 AI 功能要把私人資料送到外部服務以前，會先說明是哪一家、送出什麼、用途與保存多久。' },
-      { title: '只有你看得到', body: '草稿與閱讀紀錄只有你看得到，除非你主動分享；就算別人替你管理公開身分或 Realm，也碰不到你的私人閱讀紀錄。' },
+      { title: '預設不公開', body: '草稿與閱讀紀錄預設不公開，只有你主動分享才會讓其他使用者看見；就算別人替你管理公開身分或 Realm，也碰不到你的私人閱讀紀錄。' },
       { title: '生日不公開', body: '生日預設不公開；開啟分級內容不會公開生日，年齡資格也和生日公不公開無關。' },
       { title: '你的資料，你可以要', body: '想查看、更正、匯出或刪除自己的資料，都可以提出請求，沒有帳號也可以。' },
     ],

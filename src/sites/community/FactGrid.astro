@@ -1,0 +1,37 @@
+---
+/**
+ * Facts as a grid (社群, 創作與發行, 信任): the kit's fact rows turned into three columns under
+ * hairlines (title in the serif, text under it), so a page alternates between rows and a grid
+ * instead of running list after list.
+ * Two columns on tablets, one on phones (where it reads like the kit's fact list).
+ */
+interface Row {
+  title: string;
+  body: string;
+}
+interface Props {
+  items: Row[];
+  label?: string;
+}
+const { items, label } = Astro.props;
+---
+<ul class="fgrid" role="list" aria-label={label}>
+  {items.map((r) => (
+    <li class="fgrid__item">
+      <h3 class="fgrid__title serif">{r.title}</h3>
+      <p class="fgrid__body">{r.body}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .fgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 var(--gutter); margin: 0; padding: 0; list-style: none; }
+  .fgrid__item { padding: 28px 0 44px; border-top: 1px solid var(--c-line); }
+  .fgrid__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .fgrid__body { margin-top: 12px; font-size: var(--t-s); line-height: 1.85; color: var(--c-text); }
+  @media (max-width: 1023px) { .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) {
+    .fgrid { grid-template-columns: minmax(0, 1fr); border-bottom: 1px solid var(--c-line); }
+    .fgrid__item { padding: 24px 0 26px; }
+    .fgrid__body { margin-top: 8px; font-size: 16px; line-height: 1.9; }
+  }
+</style>

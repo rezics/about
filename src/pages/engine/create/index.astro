@@ -8,6 +8,7 @@ import Section from '../../../kit/components/Section.astro';
 import FactList from '../../../kit/components/FactList.astro';
 import Statement from '../../../kit/components/Statement.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
+import FactGrid from '../../../sites/community/FactGrid.astro';
 import Account from '../../../sites/create/Account.astro';
 import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
 import { site as shared } from '../../../kit/content';
@@ -39,7 +40,7 @@ const s = site.strings;
   </Section>
 
   <Section eyebrow={s.world.label} title={s.world.headline} lead={s.world.lead}>
-    <FactList items={s.world.facts!} />
+    <FactGrid items={s.world.facts!} label={s.world.headline} />
   </Section>
 
   <Section eyebrow={s.chapters.label} title={s.chapters.headline} lead={s.chapters.lead}>
@@ -47,7 +48,8 @@ const s = site.strings;
   </Section>
 
   <Section eyebrow={s.editions.label} title={s.editions.headline} lead={s.editions.lead}>
-    <FactList items={s.editions.facts!} />
+    <FactGrid items={s.editions.facts!} label={s.editions.headline} />
+    <p class="module-note phrase">{s.editions.note}</p>
   </Section>
 
   <Statement text={s.copyright.statement} sub={s.copyright.sub} />
@@ -57,7 +59,7 @@ const s = site.strings;
   </Section>
 
   <Section eyebrow={s.sell.label} title={s.sell.headline} lead={s.sell.lead}>
-    <FactList items={s.sell.facts!} />
+    <FactGrid items={s.sell.facts!} label={s.sell.headline} />
   </Section>
 
   <Section eyebrow={s.account.label} title={s.account.headline} lead={s.account.lead}>
@@ -66,3 +68,7 @@ const s = site.strings;
 
   <ModuleEnd current="create" family={s.family} />
 </MiniSiteLayout>
+
+<style>
+  .module-note { margin-top: 12px; max-width: 40em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
+</style>

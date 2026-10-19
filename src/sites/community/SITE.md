@@ -31,6 +31,10 @@ section wins.
 - **Hero headlines fit the copy area.** The hero's copy is about five columns wide, so each
   clause of an h1 stays within about nine characters at 56 px (the first build wrapped
   「Realm 是接待你的場地。」 onto a third line).
+- **Rows and grids alternate** (critic pass 1, below): a page never runs two hairline lists
+  of the same form in a row. Long lists became `FactGrid` (three columns under hairlines,
+  without decorative numbering), lists were capped at about six rows by merging
+  related rows, and the trust page's privacy list is an ordinary section.
 - **One interaction**, on 社群 only: the byline specimen switches between the two readers with
   radio pills (CSS `:has()`, works without script). It shows a real rule, so it earns its place.
   The other two pages have no interaction beyond the kit's hovers and reveals.
@@ -61,7 +65,7 @@ section wins.
 
 | Page | Idea | Picture | Files (`public/images/sites/<id>/`) |
 |---|---|---|---|
-| 社群 | many people gathered around one shared place | about fourteen small sheets (graphite greys, two dusty rose, two pale blue) gathered around one larger charcoal sheet | `hero-1920`, `hero-960`, `hero-phone-780` (.avif, .webp) |
+| 社群 | many people gathered around one shared place | about fourteen small sheets (graphite greys, two dusty rose, two pale blue) gathered around one larger charcoal sheet | `hero-1920`, `hero-960`, `hero-phone-960` and `hero-phone-640` (.avif, .webp) |
 | 創作與發行 | a work bound and published, an earlier edition beneath | two stacks of grey sheets, each bound along one edge with a darker paper strip, coloured sheets showing at the fanned edges | same names |
 | 信任 | layered records, each with its provenance tag | five sheets stepped like an archive (greys, one ochre), each with a blank paper tag tied on with cotton thread | same names |
 
@@ -102,7 +106,7 @@ deduction is visible)
 | 2 | Section + facts | 寫作: every saved revision can be found again (6) |
 | 3 | Section + facts | 設定集: a private world beside the manuscript (6) |
 | 4 | Section + facts | 章節: a chapter is a post placed in a book (6) |
-| 5 | Section + facts | 版次: released is sealed; later things get their own record (7, the page's centre) |
+| 5 | Section + facts | 版次: released is sealed; later things get their own record (6, the page's centre) |
 | 6 | Statement | 公開讓人閱讀，(muted) 不等於別人可以轉載、販售、翻譯，或拿去訓練 AI。 |
 | 7 | Section + facts | 譯本與權利 (8, the service licence first) |
 | 8 | Section + facts | 發行: books and games sold directly, DRM-free (6) |
@@ -272,3 +276,12 @@ traced in `facts.md`.
   exposes reading history; cookies limited to locale, theme and session; requests without an
   account; GDPR one month (`legal/privacy-policy.md`, `legal/ai-policy.md`). One disclosure
   policy on every read and delivery (`operations/security.md#one-disclosure-and-enforcement-policy`).
+
+## v3 finishing pass
+
+Continues the previous build and its uncommitted layout refinements. Merged `site/v3` first; already up to date. Shared kit, engine, styles and shared content are untouched. All five module pages retain the agreed PhotoHero opening and statement, five-module ring, Closing ending.
+
+- Keep the previous agent’s FactGrid variation for long collections, the Account row layout, and the simpler privacy section. Remove numbering from edition categories, since they are not sequential steps. Byline radio targets are at least 44 px high.
+- Generic release and cover-removal examples explicitly say 示意. Translation attribution and share-alike licensing are stated narrowly. Copyright restoration retains the separate safety, legal and contractual restriction clause. Privacy describes what other users can see. No revenue-split amounts or percentages. No real work is needed.
+- Keep community and create photographs. Replace trust’s cotton-thread tags with blank tabs made entirely of paper, using built-in image_gen and `.temp/ref/v3-reference-paper.png` as the style reference. Source: `.temp/v3-art/trust-paper-tabs.png`, prompt alongside it. Accepted after visual inspection for light, paper grain, absence of text and absence of non-paper objects.
+- Deliver all heroes at 1920 × 1280 and 960 × 640 in AVIF and WebP. Phone crops are 960 × 640 and 640 × 427. Community and create phone files are recompressed to 44 KB / 28 KB budgets to reduce phone LCP; trust is below those budgets.

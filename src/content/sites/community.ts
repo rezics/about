@@ -6,7 +6,7 @@ import type { Item, MiniSite } from '../schema';
 export interface ModuleSection {
   label: string;
   headline: string;
-  lead: string | string[];
+  lead?: string | string[];
   facts?: Item[];
   note?: string;
 }
@@ -109,11 +109,9 @@ const strings: CommunityStrings = {
         title: '讀得到，不一定找得到',
         body: 'Realm 可以公開給人讀，同時不出現在搜尋、推薦與網站地圖裡。私密 Realm 若接受申請，外人只看得到名稱、介紹、規則與申請按鈕。',
       },
-      { title: '新成員從哪裡讀起', body: '私密 Realm 可以讓新成員讀到全部歷史，或只從加入那天開始讀。' },
       { title: '檢舉成為案件', body: '成員檢舉的內容成為一個案件，處理結果附上理由，當事人可以申訴。' },
       { title: '投票決議', body: 'Realm 可以發起投票；通過的決議，只能執行這個 Realm 本來就獲准做的事。' },
-      { title: '不能說關就關', body: '擁有者無法自行關閉 Realm。只有平台會因為管理或權利問題讓整個 Realm 下架，也能再恢復。' },
-      { title: '平台規則優先', body: 'Realm 可以把規矩訂得比平台更嚴，不能更鬆。' },
+      { title: '平台規則在上', body: 'Realm 可以把規矩訂得比平台更嚴，不能更鬆。擁有者無法自行關閉 Realm，只有平台會因為管理或權利問題讓它下架，也能再恢復。' },
     ],
   },
   leave: {

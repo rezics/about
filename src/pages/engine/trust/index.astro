@@ -6,8 +6,8 @@ import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
 import PhotoHero from '../../../kit/components/PhotoHero.astro';
 import Section from '../../../kit/components/Section.astro';
 import FactList from '../../../kit/components/FactList.astro';
-import Statement from '../../../kit/components/Statement.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
+import FactGrid from '../../../sites/community/FactGrid.astro';
 import Figures from '../../../sites/community/Figures.astro';
 import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
 import { site as shared } from '../../../kit/content';
@@ -39,7 +39,7 @@ const s = site.strings;
   </Section>
 
   <Section eyebrow={s.imports.label} title={s.imports.headline} lead={s.imports.lead}>
-    <FactList items={s.imports.facts!} />
+    <FactGrid items={s.imports.facts!} label={s.imports.headline} />
   </Section>
 
   <Section eyebrow={s.humans.label} title={s.humans.headline} lead={s.humans.lead}>
@@ -48,23 +48,20 @@ const s = site.strings;
 
   <Section eyebrow={s.numbers.label} title={s.numbers.headline} lead={s.numbers.lead}>
     <Figures figures={s.numbers.figures} label={s.numbers.headline} />
-    <p class="module-note">{s.numbers.note}</p>
+    <p class="module-note phrase">{s.numbers.note}</p>
   </Section>
 
   <Section eyebrow={s.views.label} title={s.views.headline} lead={s.views.lead}>
-    <FactList items={s.views.facts!} />
+    <FactGrid items={s.views.facts!} label={s.views.headline} />
   </Section>
 
-  <Statement text={s.privacy.statement} sub={s.privacy.sub} level="h2">
-    <div class="privacy"><FactList items={s.privacy.facts} /></div>
-  </Statement>
+  <Section eyebrow={s.privacy.label} title={s.privacy.headline}>
+    <FactList items={s.privacy.facts!} />
+  </Section>
 
   <ModuleEnd current="trust" family={s.family} />
 </MiniSiteLayout>
 
 <style>
-  .module-note { margin-top: 12px; max-width: 34em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
-  .privacy { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .privacy > :global(*) { grid-column: 4 / 13; }
-  @media (max-width: 767px) { .privacy { grid-template-columns: minmax(0, 1fr); } .privacy > :global(*) { grid-column: 1 / -1; } }
+  .module-note { margin-top: 12px; max-width: 40em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
 </style>
