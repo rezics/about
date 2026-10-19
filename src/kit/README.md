@@ -2,12 +2,10 @@
 
 Every product (the nine kinds), each engine module, `/engine/`, `/developers/` and `/roadmap/`
 is a mini-site built on this kit. The kit gives you the shared document (header with its two
-dropdown panels of square print tiles, phone sheet, footer with link columns, SEO, fonts, page
-transitions), a site bar and a set of section primitives. Read [DESIGN.md](../../DESIGN.md)
-first, its section "Direction v2" above all: the Swiss / International typographic grid plus
-flat, near-seamless solid-colour tiles. The reference is the working mock
-`.temp/mocks/home.html`; the home page and the books and games sites are the reference builds
-(`src/pages/index.astro`, `src/pages/books/`, `src/sites/games/`).
+dropdown panels of flat paper-colour tiles, phone sheet, footer with link columns, SEO, fonts,
+page transitions), a site bar and the v3 parts below. The design language is **v3**, binding:
+read `.temp/sites/V3-SPEC.md` (in the main checkout) and open the mock it names; DESIGN.md
+"v3" summarises it. The home page (`src/pages/index.astro`) is the reference build.
 
 ## What you own
 
@@ -35,22 +33,18 @@ tooling. Do not edit them; if you need a kit change, say so in your report with 
 ---
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/books';
 const s = site.strings.editions;
 ---
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
-  <Sec label="01" title={s.releases.headline}>
-    <p class="text">{s.releases.caption}</p>
-    <ItemGrid slot="wide" items={s.releases.quarters} cols={4} look="cards" />
-  </Sec>
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} />
-  <Closing bg={kindFields.books.field} />
+  <Section eyebrow={s.kinds.eyebrow} title={s.kinds.headline} lead={s.kinds.lead}>
+    <FactList items={s.kinds.items} />
+  </Section>
+  <Closing />
 </MiniSiteLayout>
 ```
 
@@ -59,10 +53,114 @@ const s = site.strings.editions;
 site bar. A path that is not in your `pages` list fails the build with a message saying so. The
 sitemap, Open Graph images, transitions and every test pick new pages up by themselves.
 
-Each page has exactly one `<h1>` (the `PageHead` or `HeroWall` title). Keep copy in your content file, never in
-the page.
+Each page has exactly one `<h1>` (the `PhotoHero` or `PageHead` title). Keep copy in your content
+file, never in the page.
 
-## The v2 parts
+## v3
+
+The approved language (V3-SPEC): one focal point per screen, editorial serif headings, paper
+still-life photographs whose coloured papers are the nine kinds, flat tiles that are the same
+papers seen flat, restraint and air (120 to 200 px between sections on desktop, one idea per
+section). Pages stay on paper: no ink bands, no tinted panels, no shadows, no gradients, no
+rounded cards; photographs and tiles are square-cornered; the only rounded shape is the ink pill.
+
+### Parts
+
+Import from `src/kit/components/`. Props are stable; new props will be optional.
+
+| Part | Use and props |
+|---|---|
+| `PhotoHero` | A landing's hero and its h1: one photograph, one sentence, one action. `title` (two short clauses), `eyebrow?`, `lede?` (about 60 characters), the ink pill in the slot, `image` = `{ src, widths, alt, width, height, position?, phone? }` (see `Picture`), `side` (`left` or `right`: where the picture's empty paper is), `align` (`end` or `center`), `phoneBand` (px, default 260), `bar` (true on a mini-site, so the site bar fits). Phones: copy first, the picture as a band from its phone crop. |
+| `PageHead` | An inner page's opening without a picture and its h1: `label` (the site's name, as the eyebrow), `title`, `lede?`, actions in the slot. |
+| `Section` | One idea on the 12-column grid: `eyebrow?` (columns 1 to 3), `title` (serif h2, a string or its lines, columns 4 to 11), `lead?` (one paragraph or several, columns 4 to 9), `link?` `{ href, text }`, the default slot across 4 to 12 (a `FactList`, `IndexRows`, `CodeTile`, more text), slot `wide` across the grid (a `TileMasonry`, a `Picture`), `id?`, `space` (`normal` or `none`). |
+| `TileMasonry` | Seamless flat tiles 3 px apart in columns that end level, heights by importance (products, a site's own pages, neighbouring kinds). `items` (`{ id, name, bg, on, href?, line?, rel? }`, in reading order), `columns` (the wide layout: columns of `{ id, h, line? }`), `phone?` (rows of `{ id, w?, line? }`; default two per row), `height` (px, default 560), `phoneRow` (px, default 120), `grain?`, `label?` (the list's accessible name). Every id must have a place in both layouts. |
+| `Tile` | One flat tile: `name` (serif; a Latin name such as MCP Hub is set in Manrope), `bg`, `on` (`paper` or `ink`), `href?`, `line?`, `lineOn?`, `rel?` (a note at the top), `grain?`, `size` (`l` or `m`), `level?`. Hover: tone shifts away from the text, name rises, arrow slides in. |
+| `PhotoRow` | A still-life photograph beside a short text block: `image`, `title` (serif h2), `eyebrow?`, `body?` (one paragraph or several), `link?`, `side` (`right` or `left`: the picture's side). Picture seven columns, text four, feet level. Phones: text first. |
+| `Picture` | The responsive photograph: `src` (base path, files `${src}-${width}.avif|webp`), `widths`, `alt`, `width`, `height` (intrinsic ratio), `sizes?`, `phone?` (`{ src, widths, width, height, position? }`, an art-directed crop under 768 px), `cover?` (fill and crop the parent), `position?`, `priority?` (the page's largest picture). For a picture below a text block put it in a `Section`'s `wide` slot. |
+| `Statement` | One or two lines of large serif across columns 2 to 11: `text`, `sub` (the second half, muted), `note?`, `level?` (`p` default, `h2` when the slot holds what it heads). |
+| `FactList` | A hairline list, title left (serif) and text right: principles, specifications, steps. `items` (`{ title, body }`), `numbered?` (01, 02 … for steps), `level?`. Put it in a `Section`. |
+| `IndexRows` | A calm index of links under hairlines (serif name, one line, arrow): the home page's modules, a site's further pages when a masonry would be too loud. `rows` (`{ name, desc, href }`). |
+| `CodeTile` | One real request, quiet: mono on a deeper paper with a caption. `code`, `caption?`, `label` (accessible name). |
+| `Closing` | Every page ends on it: a final statement in the large serif and the ink pill. `title?` (default `site.product.headline`), `body?`, `label?`, `href?`. |
+| `ProductCall` | The ink pill into REZICS (`label?`, `href?`, `size="small"`, `variant="secondary"`). |
+
+The header (paper, centred tabs, the underlined 「前往 REZICS」 link, phone 選單), the dropdown
+panels (flat tiles with the paper grain), the phone sheet, the site bar and the footer come from
+the layouts; a page does not place them.
+
+### Type and classes
+
+- Headings h1 to h3 are Noto Serif TC 600 (`--t-hero` 30 to 56 px at 1.32, `--t-h2` 26 to 42 px
+  at 1.45); statements are the serif at 500 (`.t-statement`, 26 to 56 px at 1.5) with the second
+  half in `.quiet`; text is Noto Sans TC 400 at 1.9 (`.lead` 17 px for leads, `.text`);
+  `.eyebrow` labels are 13 px sans in muted ink; Latin is Manrope (inside serif headings the
+  serif's own Latin). No mono outside code.
+- The build subsets the serif to the text it finds in h1 to h3 and in elements with the class
+  `serif` (or `t-statement`, `t-h2`, `t-title`, `t-h3`). If you set other text in the serif,
+  give its element the class `serif`, or it falls back to the system serif.
+- Colours: `--c-bg` paper `#efe9e0`, `--c-fg` ink `#26292d`, `--c-text` `#4a4e52` for running
+  text, `--c-muted` `#606468` for small muted text (AA), `--c-quiet` `#6b6f73` for the muted half
+  of large statements only, `--c-line` the hairline, `--c-link` `#2f4fa3` for links and the pill's
+  hover. Logo red is the logo only.
+- `.grid` is the full-bleed 12-column grid (one column under 768 px); `.grain` adds the paper
+  grain to a flat colour; `.link-draw` is the underlined text link; `.btn` the ink pill.
+
+### Your accent
+
+Your accent is your kind's paper colour (modules: their ink tint; developers: `#3b4a5a`). Set it
+in your content file with `theme: { kind: '<id>' }` (or `{ module: '<id>' }`); the layout puts
+it on `<body>` as `--field` with `--on-field` (the AA text colour on it). It shows where your site
+is itself, never as a ground for a section:
+
+- the site bar's square and the underline of the current tab (automatic);
+- tiles of your own pages: `accentRamp(field)` (`src/kit/color.ts`) gives six distinct shades and
+  tints of it, each with `on` that passes AA; neighbouring kinds take `kindFields[id]`;
+- your pictures: mostly your kind's paper plus one or two neighbours (V3-SPEC art direction).
+
+Links, focus and the pill's hover stay `--c-link` on every site. Text on any colour: pass `on`
+and let `inkOn(bg, on)` (`src/kit/theme.ts`) choose the exact shade; never hard-code white.
+
+### Pictures
+
+Put them in `public/images/sites/<id>/` (the home page's are in `public/images/home/`), named
+`<name>-<width>.avif|webp`, and phone crops as `<name>-phone-<width>.avif|webp`. Sizes (V3-SPEC):
+a hero at 1920 and 960 wide (≤ 180 KB and ≤ 70 KB), a section picture at 1200 and 640 wide
+(≤ 110 KB and ≤ 45 KB), a hero's phone crop at 960 and 640 wide. Encode a generated PNG with
+`node /home/edge/projects/rezics/about/.temp/images-v3/encode.mjs <png> <outBase> 1200:110:110,640:45:45 [x,y,w,h crop]`
+(it picks the highest quality under each budget). Generate with codex-2 per V3-SPEC "Art
+direction"; `/home/edge/projects/rezics/about/.temp/images-v3/gen.sh <dir> <name> "<subject>"` wraps the call with the reference attached.
+
+### Motion
+
+Quiet: section headings and leads fade and rise a few pixels as they enter (`data-reveal`, set by
+the parts), tiles respond on hover and press, the dropdown panels fade open, pages cross-fade. No
+scroll-scrubbed scenes, no idle animation. Reveals do nothing below 600 px or under reduced
+motion. The rules in "Motion (engine)" below still hold.
+
+### Deprecated (v2)
+
+These still build so older pages keep working; do not use them in v3 pages, and remove them from
+yours as you rebuild:
+
+| v2 part | v3 instead |
+|---|---|
+| `HeroWall`, `TileWall` | `PhotoHero` (a landing) or `PageHead` (an inner page) |
+| `Sec` | `Section` |
+| `Band`, `.band-ink`, `.band-soft`, `.band-tint` | nothing: pages stay on paper (a `Statement` or a `PhotoRow`) |
+| `TileRow` | `TileMasonry` (a single row is one column per tile: `columns={items.map((i) => [{ id: i.id, h: 1 }])}`) |
+| `ItemList`, `HairList` | `Section` with a `FactList` |
+| `ItemGrid` (`look="cards"` above all), `Pills`, `TextCols` | `FactList`, plain `.lead` paragraphs |
+| `SiteFinale`, `Finale` | a `TileMasonry` of neighbouring kinds or your next pages, then `Closing` |
+| `.mlabel`, `.label`, `.mono` | `.eyebrow` (they now render as one) |
+| `Square`, `SquareName`, `KindSquare`, `ModuleSquare`, `EmptySquare`, `Composer`, `PartsGrid`, `NotifyCall`, `SectionHead`, `CodeBlock` | nothing; `Tile`, `CodeTile` |
+
+`Table` and `PartsList` follow the v3 tokens and stay usable where a page needs a table.
+
+## v2 reference (superseded by v3)
+
+Kept for pages not yet rebuilt.
+
+### The v2 parts
 
 A landing page: `HeroWall` (copy on the left, a seamless wall of tiles on the right: your own
 pages via `pageWall()`), then `Sec` sections (meta column + heading + body, a full-width part in
@@ -76,7 +174,7 @@ No pictures in page bodies (no scene art at all; the square print tiles live onl
 panels). No rounded images, no cards with shadows, no centred heroes, no gradients. Radius 0 on
 tiles, bands and blocks; pills only for buttons. One ink band per page at most.
 
-## Themes
+### Themes
 
 Your accent is your field (`theme` in your content file), exposed as `--field` on `<body>`; tile
 colours come from `kindFields` or `accentRamp(field)` (`src/kit/color.ts`: six distinct shades
@@ -104,7 +202,7 @@ labels' small square and tiny marks, never text.
 - Layout: `.grid` is the full-bleed 12-column grid (one column on phones, every child spanning
   it); `.col-*` placements; the meta column is columns 1 to 3, headings 4 to 12.
 
-## Primitives
+### Primitives
 
 Import from `src/kit/components/`:
 
@@ -140,7 +238,7 @@ Buttons and links: `.btn` (the primary pill; `.btn--white`, `.btn--secondary`, `
 Headings break between clauses (`src/kit/Clauses.astro`) when every clause is short; write
 headings as one or two short clauses.
 
-## Motion
+## Motion (engine)
 
 - Crisp and flat (DESIGN.md "Direction v2"): tiles deepen, their names lift and arrows step
   forward on hover; index rows flood with ink from the left; a click presses; content fades and
@@ -179,6 +277,26 @@ task e2e                        # every route at desktop and 390 px, axe, no con
 `task qa` and `task e2e` wait for a free slot (3 machine-wide). Look at every screenshot.
 
 ## Changes
+
+### 2026-10-19: v3 (KIT-V3-READY)
+
+- The language is v3 (`.temp/sites/V3-SPEC.md`): paper `#efe9e0`, ink `#26292d`, the link accent
+  `#2f4fa3`, the muted kind colours of the photograph (theme.ts), Noto Serif TC 600 for h1 to h3
+  and statements (self-hosted, sliced per page like the sans), sans text at 1.9, 120 to 200 px
+  between sections, header 72 px (60 on phones).
+- New parts: `PhotoHero`, `Section` (the old unused `Section` is replaced), `TileMasonry`,
+  `PhotoRow`, `Picture`, `FactList`. Restyled: `Tile` (serif names, arrow top right),
+  `Statement` (serif, `sub` muted, a paragraph by default), `Closing` (on paper with the ink
+  pill; `bg` is ignored), `PageHead`, `IndexRows` (a calm list, no ink flood), `CodeTile` (quiet,
+  on a deeper paper), header, panels, sheet, footer, site bar.
+- `.btn` is the ink pill (hover: the link accent); the header's action is the underlined text
+  link. Labels (`.mlabel`, `.label`) lose the red square and render as `.eyebrow`.
+- Radius and shadow tokens are flattened to 0 and none. `Field` text colours: use
+  `inkOn(bg, on)` / `fieldText(field)`, which pick the shade that passes AA (visual novels and
+  the lightest module take white, anime a deeper ink).
+- Copy: `tests/unit/copy.test.ts` fails on 「方塊」「一格」「九宮格」.
+- To migrate: replace the v2 parts per "Deprecated (v2)", remove ink bands and tinted grounds,
+  regenerate pictures in the paper still-life series, end every page on `Closing`.
 
 Breaking changes to the kit, newest first. Merge `main`, then fix what the build reports.
 

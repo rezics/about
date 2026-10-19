@@ -1,6 +1,6 @@
-/* Design tokens (DESIGN.md "Direction v2"): the Swiss grid and flat seamless tiles of the
-   reference mock (.temp/mocks/home.html), on the product's Aura palette (rezics-next
-   packages/ui/src/styles.css), copied here because the site carries no package of the app.
+/* Design tokens (v3, .temp/sites/V3-SPEC.md; DESIGN.md "v3"): paper ground, ink, muted, a
+   hairline and one link accent, the muted kind colours of the paper still-life photographs,
+   Noto Serif TC for headings and statements, Noto Sans TC for text, Manrope for Latin.
    Colour values are repeated in src/kit/theme.ts; tests/unit/theme.test.ts keeps them equal and
    checks AA contrast. */
 
@@ -36,17 +36,20 @@
    absent and the local Noto Sans CJK TC or the system face stands in. */
 
 :root {
-  /* Aura palette */
-  --c-paper: #f9f6f2;
-  --c-ink: #2b343d;
-  --c-muted: #5d646c;
-  --c-link: #2f63ad;
+  /* Palette (V3-SPEC "Tokens") */
+  --c-paper: #efe9e0;
+  --c-ink: #26292d;
+  --c-muted: #606468;
+  --c-link: #2f4fa3;
   --c-mark: #df3d35;
-  --c-card: #fefcf9;
-  --c-panel: #efece7;
-  --c-accent-bg: #e4ecf7;
-  --c-accent-fg: #1f4a85;
-  --c-border: #dad7d0;
+  --c-card: #f4efe7;
+  --c-panel: #e7e0d5;
+  /* The spec's muted ink #6b6f73 reads 4.2:1 on paper: large text only (a statement's second
+     half). Small muted text (eyebrows, captions) takes --c-muted, 4.9:1. */
+  --c-quiet: #6b6f73;
+  --c-accent-bg: #e3e4ea;
+  --c-accent-fg: #2f4fa3;
+  --c-border: #d9d1c4;
 
   /* Semantic tokens: everything in the kit reads these, never the palette names above, so a
      site may set its own theme on [data-site='<id>'] (src/kit/README.md "Themes"). */
@@ -54,25 +57,28 @@
   --c-fg: var(--c-ink);
   --c-surface: var(--c-card);
   --c-soft: var(--c-panel);
-  --c-line: rgb(43 52 61 / 0.14);
-  --c-line-strong: rgb(43 52 61 / 0.24);
-  /* Running text in sections (the mock's body grey, AA on the ground). */
-  --c-text: #45505b;
-  /* The ink band and the code tile. */
-  --c-ink-band: #2b343d;
-  --c-code: #1e252c;
+  --c-line: rgb(38 41 45 / 0.14);
+  --c-line-strong: rgb(38 41 45 / 0.26);
+  /* Running text in sections (the mock's body grey, 6.9:1 on paper). */
+  --c-text: #4a4e52;
+  /* The ink band (deprecated in v3) and the code block. */
+  --c-ink-band: #26292d;
+  --c-code: #26292d;
   --c-accent: var(--c-link);
   /* Text on a link-coloured fill (the primary pill); a dark theme with a light link sets it dark. */
   --c-on-link: #ffffff;
+  /* The primary pill: ink with paper text; hover takes the link accent. */
+  --c-pill: var(--c-fg);
+  --c-on-pill: var(--c-bg);
   --c-curtain: var(--c-bg);
   --focus: var(--c-link);
   /* The inverted band (.band-ink), kept for sites that still use one. */
   --c-band-bg: var(--c-ink);
   --c-band-fg: var(--c-paper);
-  --c-band-muted: #b9bfc6;
-  --c-band-line: rgb(249 246 242 / 0.16);
-  --c-band-line-strong: rgb(249 246 242 / 0.32);
-  --c-band-link: #9ab8e6;
+  --c-band-muted: #b9bcbf;
+  --c-band-line: rgb(239 233 224 / 0.16);
+  --c-band-line-strong: rgb(239 233 224 / 0.32);
+  --c-band-link: #a9c3dc;
 
   /* A field: set per element from src/kit/theme.ts (style="--field:…;--on-field:…"). On a
      mini-site it is the site's accent: its art, tinted panels and sub-navigation marker. */
@@ -86,39 +92,47 @@
   --f-cjk: 'REZICS Sans', 'Noto Sans TC', 'Noto Sans CJK TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
   --f-latin: 'Manrope Variable', 'Manrope';
   --f-body: var(--f-latin), var(--f-cjk);
-  --f-display: var(--f-latin), var(--f-cjk);
+  /* Headings, statements and tile names: Noto Serif TC (Song/Ming), Latin included, so a Latin
+     word inside a serif heading is set in the serif too. "REZICS Serif" is the build's subset
+     (scripts/fonts.mjs serif); in `astro dev` the local Noto Serif CJK TC stands in. */
+  --f-serif: 'REZICS Serif', 'Noto Serif TC', 'Noto Serif CJK TC', 'Songti TC', 'PMingLiU', serif;
+  --f-display: var(--f-serif);
   /* Square tiles only (header panels): Archivo for Latin names, set expanded and heavy. */
   --f-square: 'Archivo', 'Archivo Fallback', var(--f-cjk);
   --f-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* Type scale (the mock): headings in Noto Sans TC 600. Hero 34 → 64 px, section 28 → 46 px,
-     band and statement 32 → 58 px, closing 36 → 68 px; body 17 to 18 px at 1.85; labels 13 px. */
-  --t-hero: clamp(2.125rem, 4.4vw, 4rem);
-  --t-title: clamp(2.125rem, 4.4vw, 4rem);
-  --t-h2: clamp(1.75rem, 3.2vw, 2.875rem);
-  --t-big: clamp(2rem, 4vw, 3.625rem);
-  --t-close: clamp(2.25rem, 4.6vw, 4.25rem);
-  --t-h3: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
-  --t-statement: var(--t-big);
-  --t-lede: clamp(1rem, 0.94rem + 0.25vw, 1.125rem);
-  --t-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
+  /* Type scale (V3-SPEC "Tokens"): h1 30 → 56 px at 1.32, h2 26 → 42 px at 1.45, statements
+     26 → 56 px at 1.5 (serif 500, second half muted), body 16 → 17 px at 1.9, eyebrows 13 px. */
+  --t-hero: clamp(1.875rem, 1.2rem + 2.9vw, 3.5rem);
+  --t-title: var(--t-hero);
+  --t-h2: clamp(1.625rem, 1.1rem + 1.9vw, 2.625rem);
+  --t-statement: clamp(1.625rem, 0.9rem + 3vw, 3.5rem);
+  --t-big: var(--t-statement);
+  --t-close: var(--t-statement);
+  --t-h3: clamp(1.125rem, 1.04rem + 0.35vw, 1.375rem);
+  --t-tile: clamp(1.5rem, 1.2rem + 1vw, 1.875rem);
+  --t-lede: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+  --t-body: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
   --t-s: 0.9375rem;
   --t-xs: 0.8125rem;
   --w-head: 600;
-  /* Older names, mapped onto the quiet scale so pages not yet rebuilt follow it. */
-  --t-mega: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  --w-statement: 500;
+  /* Older names, mapped onto the v3 scale so pages not yet rebuilt follow it. */
+  --t-mega: var(--t-hero);
   --t-xl: var(--t-title);
   --t-l: var(--t-h2);
   --t-m: var(--t-h3);
-  --lh-title: 1.22;
-  --lh-text: 1.85;
-  --lh-display: 1.22;
-  --track-display: 0.01em;
-  --measure: 36em; /* 34 to 40 CJK characters */
+  --lh-title: 1.32;
+  --lh-h2: 1.45;
+  --lh-statement: 1.5;
+  --lh-text: 1.9;
+  --lh-display: 1.32;
+  --track-display: 0.02em;
+  --measure: 36em; /* 34 to 38 CJK characters */
 
   /* Space */
   /* The full-bleed 12-column grid: the gutter is also the outer margin. */
-  --gutter: clamp(16px, 2.2vw, 32px);
+  --gutter: clamp(20px, 3vw, 48px);
   --page-pad: var(--gutter);
   --container: 1120px;
   --container-narrow: 760px;
@@ -127,26 +141,28 @@
   --space-tight: clamp(48px, 3rem + 2vw, 80px);
   --space-normal: clamp(64px, 3rem + 5vw, 128px);
   --space-airy: clamp(72px, 3rem + 7vw, 160px);
-  /* The space above each section (the mock: 88 → 168 px; 72 px on phones). */
-  --space-section: clamp(88px, 12vw, 168px);
-  --header-h: 64px;
+  /* The space above each section (V3-SPEC: 120 to 200 px on desktop; 88 px on phones). */
+  --space-section: clamp(96px, 14vw, 200px);
+  --header-h: 72px;
   --bar-h: 56px;
 
-  /* Shape: radius 0 on tiles, bands and blocks; pills only for buttons. The older radius
-     tokens remain for pages not yet moved. */
-  --r-xs: 8px;
-  --r-sm: 12px;
-  --r-lg: 16px;
-  --r-xl: 20px;
-  --r-card: 24px;
-  --r-sheet: 30px;
+  /* Shape (v3): square corners on photographs, tiles and blocks; pills only for buttons. No
+     shadows, no gradients, no rounded cards: the older radius and shadow tokens are flattened
+     so pages not yet rebuilt follow. */
+  --r-xs: 0;
+  --r-sm: 0;
+  --r-lg: 0;
+  --r-xl: 0;
+  --r-card: 0;
+  --r-sheet: 0;
   --r-pill: 999px;
-  --radius: var(--r-card);
+  --radius: 0;
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-float: none;
 
-  /* Aura shadows, on cards only. */
-  --shadow-card: 0 1px 0 0 rgb(43 52 61 / 0.07), 0 22px 48px -36px rgb(43 52 61 / 0.4);
-  --shadow-card-hover: 0 1px 0 0 rgb(43 52 61 / 0.08), 0 30px 72px -44px rgb(43 52 61 / 0.45);
-  --shadow-float: 0 2px 4px -1px rgb(43 52 61 / 0.08), 0 12px 24px -4px rgb(43 52 61 / 0.12), 0 32px 64px -12px rgb(43 52 61 / 0.16);
+  /* A subtle paper grain (fractal noise, multiplied) for flat tiles: `.grain` in base.css. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   /* Motion: quiet. Content fades and rises a few pixels; images settle from a slight scale. */
   --ease-snap: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -165,16 +181,15 @@
 
 @media (max-width: 767px) {
   :root {
-    --header-h: 56px;
+    --header-h: 60px;
     --bar-h: 52px;
+    --space-section: 88px;
   }
 }
-/* Phones: 48 to 64 px between sections. */
 @media (max-width: 599px) {
   :root {
     --space-tight: 48px;
     --space-normal: 56px;
     --space-airy: 64px;
-    --space-section: 72px;
   }
 }
