@@ -143,6 +143,10 @@ const nav = site.nav;
   .sheet__tiles > li > :global(.tile) { flex: 1 1 auto; --pad: 12px; }
   .sheet__tiles :global(.tile__name) { --t-tile: 17px; }
   .sheet__list { border-top: 1px solid var(--c-line); }
-  .sheet__list a { display: flex; align-items: center; min-height: 54px; border-bottom: 1px solid var(--c-line); font-size: 19px; }
+  .sheet__list a { display: flex; align-items: center; min-height: 54px; border-bottom: 1px solid var(--c-line); font-size: 19px; transition: translate var(--d-m) var(--ease-snap), color var(--d-s) var(--ease-soft); }
+  @media (hover: hover) { .sheet__list a:hover { color: var(--c-link); translate: 4px 0; } }
+  .sheet__list a:focus-visible { color: var(--c-link); translate: 4px 0; }
+  .sheet__list a:active { translate: 2px 0; }
+  .sheet__close:active { translate: 0 1px; }
   .sheet__list--main { margin-top: 28px; }
 </style>
