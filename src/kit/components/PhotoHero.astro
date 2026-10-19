@@ -1,0 +1,93 @@
+---
+/**
+ * The landing hero (v3; the mock's hero): one photograph, one sentence, one action. A full-bleed
+ * still-life picture (up to the viewport's height minus the header, at most 860 px) with the copy
+ * set in the picture's empty paper area: an optional eyebrow, the serif h1, one short paragraph
+ * and the ink pill in the slot. Phones: the copy first, then the picture as a band (`phoneBand`
+ * px high, default 260) from its phone crop.
+ *
+ *   image    a Picture: `{ src, widths, alt, width, height, position?, phone? }` (see Picture)
+ *   side     where the empty paper is: `left` (default) or `right`
+ *   align    the copy's vertical place: `end` (default, lower third) or `center`
+ *   bar      a mini-site page: the site bar sits under the header too
+ *
+ * Keep the h1 to two short clauses (Clauses breaks between them) and the paragraph to about 60
+ * characters: the copy area is about five columns wide.
+ */
+import Picture from './Picture.astro';
+import Clauses from '../Clauses.astro';
+
+interface Crop {
+  src: string;
+  widths: number[];
+  width: number;
+  height: number;
+  position?: string;
+}
+interface Props {
+  title: string;
+  eyebrow?: string;
+  lede?: string;
+  image: { src: string; widths: number[]; alt: string; width: number; height: number; position?: string; phone?: Crop };
+  side?: 'left' | 'right';
+  align?: 'end' | 'center';
+  phoneBand?: number;
+  bar?: boolean;
+  class?: string;
+}
+const { title, eyebrow, lede, image, side = 'left', align = 'end', phoneBand = 260, bar = false, class: className } = Astro.props;
+---
+<section class:list={['phero', `phero--${side}`, `phero--${align}`, bar && 'phero--bar', className]} aria-labelledby="hero-title" style={`--band:${phoneBand}px`}>
+  <div class="phero__copy">
+    {eyebrow && <p class="eyebrow phero__eyebrow">{eyebrow}</p>}
+    <h1 id="hero-title" class="phero__title"><Clauses text={title} /></h1>
+    {lede && <p class="phero__lede">{lede}</p>}
+    {Astro.slots.has('default') && <div class="phero__act"><slot /></div>}
+  </div>
+  <div class="phero__pic">
+    <Picture src={image.src} widths={image.widths} alt={image.alt} width={image.width} height={image.height} position={image.position} phone={image.phone} sizes="100vw" cover priority />
+  </div>
+</section>
+<style>
+  .phero {
+    --hero-h: min(calc(100svh - var(--header-h)), 860px);
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding-inline: var(--gutter);
+    height: var(--hero-h);
+    min-height: 600px;
+    overflow: hidden;
+    background: var(--c-panel);
+  }
+  .phero--bar { --hero-h: min(calc(100svh - var(--header-h) - var(--bar-h)), 820px); min-height: 560px; }
+  .phero__pic { position: absolute; inset: 0; z-index: 0; }
+  .phero__copy {
+    position: relative;
+    z-index: 1;
+    grid-row: 1;
+    grid-column: 1 / 6;
+    align-self: end;
+    padding-bottom: clamp(56px, 11vh, 120px);
+  }
+  .phero--right .phero__copy { grid-column: 8 / 13; }
+  .phero--center .phero__copy { align-self: center; padding-bottom: 0; }
+  .phero__eyebrow { margin-bottom: 20px; }
+  .phero__title { font-size: var(--t-hero); line-height: var(--lh-title); letter-spacing: var(--track-display); }
+  .phero__lede { margin-top: 24px; max-width: 29em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .phero__act { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 16px 22px; align-items: center; }
+  @media (max-width: 1023px) {
+    .phero__copy { grid-column: 1 / 8; }
+    .phero--right .phero__copy { grid-column: 6 / 13; }
+  }
+  /* Phones: the copy first, the picture as a band after it. */
+  @media (max-width: 767px) {
+    .phero, .phero--bar { display: block; height: auto; min-height: 0; padding: 0; background: none; }
+    .phero__copy { padding: 28px var(--gutter) 36px; }
+    .phero__title { font-size: 30px; }
+    .phero__lede { margin-top: 20px; }
+    .phero__act { margin-top: 28px; }
+    .phero__pic { position: relative; inset: auto; height: var(--band); }
+  }
+</style>

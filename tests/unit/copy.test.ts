@@ -35,6 +35,7 @@ const rules: [RegExp, string][] = [
   [/即將|敬請期待|coming soon/i, 'status label'],
   [/lorem ipsum|TODO/i, 'placeholder text'],
   [/\.\.\.|……/, 'ellipsis filler'],
+  [/方塊|一格|九宮格/, 'square-metaphor wording (V3-SPEC content rules)'],
 ];
 
 describe('copy', () => {
