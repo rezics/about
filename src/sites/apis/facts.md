@@ -106,7 +106,7 @@ Paths are under `/home/edge/projects/rezics/rezics-next/docs/` unless they start
 | Claim | Source |
 |---|---|
 | Rating names its question, version, population; count and histogram shown | `contracts/ratings.md#scoped-targets-and-roll-ups` |
-| Example (例如): 問「文件清不清楚」, 五分制, 第三版, 全站 | RatingContext identity is question, scale and grain; population label (same); Global as the public baseline (`contracts/context.md`); all values are invented examples (Least certain 4) |
+| Example (示意): 問「文件清不清楚」, 五分制, 第三版, 全站 | RatingContext identity is question, scale and grain; population label (same); Global as the public baseline (`contracts/context.md`); all values are invented examples (Least certain 4) |
 | Different questions never combine | same ("different questions never combine") |
 | Scale stated in advance | RatingContext identity is question, scale and grain (same) |
 | A version's rating stays on that version | "Version pins" (same) |
@@ -161,8 +161,8 @@ Paths are under `/home/edge/projects/rezics/rezics-next/docs/` unless they start
 5. **Version status words.** 已宣布, 可用, 已撤回, 已取消 combine release status
    (withdrawn, cancelled) with the release-event vocabulary (announcement, confirmed
    availability). "Current version" is avoided because no document defines it.
-6. **Last finale to `/developers/`.** Decided by the lead: the site chain runs apis →
-   developers (field `#2f63ad`).
+6. **Final onward links to `/developers/`.** Decided by the lead: the site chain runs apis →
+   developers (v3 field `#3b4a5a`). The v3 pages use index rows before their closing.
 7. **Acquisition scope.** `product/markets-and-growth.md` keeps general AI-directory
    acquisition deferred and a skills/MCP pilot conditional; the brief requires writing every
    capability as available, so the copy says nothing about scale or which APIs are listed.
