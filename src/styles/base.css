@@ -187,6 +187,7 @@ pre code { white-space: inherit; font: inherit; }
    under it; the link accent on hover and focus. Inline in running text (`link-inline`): underlined. Utility: colour
    only. */
 .link-draw {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.2em;
@@ -200,8 +201,24 @@ pre code { white-space: inherit; font: inherit; }
   line-height: 1.4;
   transition: color var(--d-s) var(--ease-soft);
 }
-@media (hover: hover) { .link-draw:hover { color: var(--link-on, var(--c-link)); } }
+.link-draw::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale var(--d-m) var(--ease-snap);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .link-draw:hover { color: var(--link-on, var(--c-link)); }
+  .link-draw:hover::after { scale: 1 1; }
+}
 .link-draw:focus-visible, .link-draw[aria-current='page'] { color: var(--link-on, var(--c-link)); }
+.link-draw:focus-visible::after { scale: 1 1; }
+.link-draw:active { translate: 0 1px; }
 .link-inline {
   color: var(--link-on, var(--c-link));
   text-decoration: underline;
