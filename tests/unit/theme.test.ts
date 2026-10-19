@@ -1,7 +1,7 @@
 // Every text/field pair passes WCAG AA, and tokens.css repeats theme.ts exactly.
 import { readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
-import { kindFields, moduleFields, palette, siteFields, fieldOf, type Field } from '../../src/kit/theme';
+import { kindFields, moduleFields, palette, siteFields, fieldOf, fieldText, inkOn } from '../../src/kit/theme';
 import { sites } from '../../src/kit/sites';
 
 function luminance(hex: string) {
@@ -13,37 +13,50 @@ export function contrast(a: string, b: string) {
   const [x, y] = [luminance(a), luminance(b)].sort((p, q) => q - p);
   return (x! + 0.05) / (y! + 0.05);
 }
-const text = (f: Field) => palette[f.on];
 
 describe('contrast', () => {
   test.each(Object.entries({ ...kindFields, ...moduleFields, ...siteFields }))('text on the %s field passes AA (4.5:1)', (_, f) => {
-    expect(contrast(text(f), f.field)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(fieldText(f), f.field)).toBeGreaterThanOrEqual(4.5);
   });
 
   test.each(sites.map((s) => [s.id, s] as const))('the %s site field passes AA', (_, s) => {
     const f = fieldOf(s.theme);
-    expect(contrast(text(f), f.field)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(fieldText(f), f.field)).toBeGreaterThanOrEqual(4.5);
   });
 
-  test('text roles on paper and on ink bands pass AA', () => {
+  test('text roles on paper pass AA; the quiet ink is for large text only', () => {
     expect(contrast(palette.ink, palette.paper)).toBeGreaterThanOrEqual(4.5);
     expect(contrast(palette.muted, palette.paper)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast('#4a4e52', palette.paper)).toBeGreaterThanOrEqual(4.5); // --c-text
     expect(contrast(palette.link, palette.paper)).toBeGreaterThanOrEqual(4.5);
-    expect(contrast('#a9b2c1', palette.ink)).toBeGreaterThanOrEqual(4.5); // muted on .band-ink
-    expect(contrast('#9ab8e6', palette.ink)).toBeGreaterThanOrEqual(3); // focus ring on .band-ink
+    expect(contrast(palette.quiet, palette.paper)).toBeGreaterThanOrEqual(3); // statements' second half
     expect(contrast(palette.link, palette.paper)).toBeGreaterThanOrEqual(3); // focus ring on paper
   });
 
-  test('v2 surfaces: text on the card, the muted panel and the ink-blue button passes AA', () => {
+  test('the deeper paper (code block, sheet) and the ink pill pass AA', () => {
     for (const ground of [palette.card, palette.panel]) {
       expect(contrast(palette.ink, ground)).toBeGreaterThanOrEqual(4.5);
       expect(contrast(palette.muted, ground)).toBeGreaterThanOrEqual(4.5);
     }
-    expect(contrast('#ffffff', palette.link)).toBeGreaterThanOrEqual(4.5); // primary pill
+    expect(contrast('#3f5a45', palette.panel)).toBeGreaterThanOrEqual(4.5); // code strings
+    expect(contrast(palette.paper, palette.ink)).toBeGreaterThanOrEqual(4.5); // pill at rest
+    expect(contrast(palette.paper, palette.link)).toBeGreaterThanOrEqual(4.5); // pill on hover
   });
 
-  test('the developers field is REZICS ink blue with paper text', () => {
-    expect(siteFields.developers).toEqual({ field: palette.link, on: 'paper' });
+  test('a tile keeps AA when its tone shifts on hover (light text deepens, dark text lightens)', () => {
+    const mix = (a: string, b: string, t: number) => {
+      const p = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+      const [x, y] = [p(a), p(b)];
+      return `#${x.map((c, i) => Math.round(c + (y[i]! - c) * t).toString(16).padStart(2, '0')).join('')}`;
+    };
+    for (const f of [...Object.values(kindFields), ...Object.values(moduleFields)]) {
+      const hover = f.on === 'paper' ? mix(f.field, '#000000', 0.12) : mix(f.field, '#ffffff', 0.14);
+      expect(contrast(inkOn(f.field, f.on), hover), f.field).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  test('the developers field is a deep slate with light text', () => {
+    expect(siteFields.developers).toEqual({ field: '#3b4a5a', on: 'paper' });
   });
 });
 

@@ -1,0 +1,73 @@
+---
+/**
+ * A photo row (v3): a still-life photograph beside a short text block, square-cornered and on the
+ * grid lines. The picture takes seven columns on one side (`side`, default `right`), the text
+ * four on the other, its foot level with the picture's foot. Phones: the text first, then the
+ * picture across the width. For a picture below a text block, put a Picture in a Section's
+ * `wide` slot instead.
+ *
+ *   image  a Picture: `{ src, widths, alt, width, height, phone? }`
+ *   eyebrow, title (h2, serif), body (one paragraph or several), link `{ href, text }`
+ */
+import Picture from './Picture.astro';
+import Clauses from '../Clauses.astro';
+import { idFor } from '../ids';
+
+interface Crop {
+  src: string;
+  widths: number[];
+  width: number;
+  height: number;
+}
+interface Props {
+  image: { src: string; widths: number[]; alt: string; width: number; height: number; phone?: Crop };
+  title: string;
+  eyebrow?: string;
+  body?: string | string[];
+  link?: { href: string; text: string };
+  side?: 'left' | 'right';
+  id?: string;
+  class?: string;
+}
+const { image, title, eyebrow, body, link, side = 'right', id: given, class: className } = Astro.props;
+const paragraphs = body === undefined ? [] : Array.isArray(body) ? body : [body];
+const id = given ?? idFor('photo', title);
+---
+<section class:list={['prow', `prow--${side}`, className]} aria-labelledby={id}>
+  <div class="grid">
+    <div class="prow__text" data-reveal="up">
+      {eyebrow && <p class="eyebrow prow__eyebrow">{eyebrow}</p>}
+      <h2 id={id} class="prow__title"><Clauses text={title} /></h2>
+      {paragraphs.map((p) => <p class="prow__body">{p}</p>)}
+      {link && <p class="prow__link"><a class="link-draw" href={link.href}>{link.text}</a></p>}
+    </div>
+    <div class="prow__pic" data-reveal="image">
+      <Picture src={image.src} widths={image.widths} alt={image.alt} width={image.width} height={image.height} phone={image.phone} sizes="(max-width: 767px) 100vw, 58vw" />
+    </div>
+  </div>
+</section>
+<style>
+  .prow { padding-top: var(--space-section); }
+  .prow .grid { align-items: end; }
+  .prow__text { grid-row: 1; padding-bottom: 8px; }
+  .prow--right .prow__text { grid-column: 1 / 5; }
+  .prow--right .prow__pic { grid-column: 6 / 13; }
+  .prow--left .prow__text { grid-column: 9 / 13; }
+  .prow--left .prow__pic { grid-column: 1 / 8; }
+  .prow__pic { grid-row: 1; min-width: 0; }
+  .prow__eyebrow { margin-bottom: 18px; }
+  .prow__title { font-size: var(--t-h2); line-height: var(--lh-h2); }
+  .prow__body { margin-top: 24px; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .prow__body + .prow__body { margin-top: 1em; }
+  .prow__link { margin-top: 28px; }
+  @media (max-width: 1023px) {
+    .prow--right .prow__text { grid-column: 1 / 6; }
+    .prow--right .prow__pic { grid-column: 7 / 13; }
+    .prow--left .prow__text { grid-column: 8 / 13; }
+    .prow--left .prow__pic { grid-column: 1 / 7; }
+  }
+  @media (max-width: 767px) {
+    .prow__text, .prow__pic { grid-row: auto; }
+    .prow__pic { margin-top: 36px; margin-inline: calc(var(--gutter) * -1); }
+  }
+</style>
