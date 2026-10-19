@@ -196,3 +196,13 @@ the index and zones warnings are duplicate module-navigation labels from the kit
 desktop and phone markup. The kit's skip-link flag does not recognise the Chinese label; the
 first keyboard screenshot visibly focuses 「跳到主要內容」. The roadmap's shared current-page
 SiteBar link changes colour only; shared source remains unchanged as required.
+
+The supplemental browser pass (`.shots/modules-a-browser.json`) checks all four routes at
+320, 390, 768, 1024, 1200, 1440 and 1920 px: no horizontal overflow, overflowing picker labels
+or overlapping tile notes. Without JavaScript, every kind selects exactly one list of eight
+parts, arrow keys keep the visible blue focus ring, and Enter opens all fifteen catalogue
+entries. All four phone menus open, close with Escape and restore focus. The Chinese skip link
+is confirmed as the first focus stop. Full-page screenshots are saved as `desktop-full.png`
+and `phone-full.png` in each route folder; the landing phone first screen is
+`.shots/engine/phone-first.png`. Shared-kit follow-up: the phone menu's close row scrolls out
+of view at the bottom; a sticky close row would help touch users. No shared files were changed.
