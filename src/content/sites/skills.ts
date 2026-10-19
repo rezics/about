@@ -106,9 +106,9 @@ export interface SkillsStrings {
     import: Head & { body: string; pic: Pic };
     steps: Head & { rows: Row[] };
     limits: Head & { rows: Row[]; after: string };
-    statement: Said & { rows: Row[] };
+    statement: Said & { note: string; rows: Row[] };
     credits: Head & { rows: Row[] };
-    end: End;
+    end: End & { nextLine: string };
   };
 }
 
@@ -182,7 +182,7 @@ const skills = {
       hero: {
         eyebrow: 'Skill Hub',
         headline: ['交給 AI 代理之前，', '一層一層讀清楚。'],
-        lede: 'Skill Hub 收錄代理讀的技能。一個技能先給你名稱和一句描述，打開是完整的 SKILL.md，再往下是每個檔案與每個版本，以及誰在什麼條件下用過它。',
+        lede: '在 Skill Hub，讀清楚 AI 代理使用的技能。完整說明、檔案、版本與有日期的使用紀錄，挑選之前都看得到。',
         pic: {
           src: 'fold',
           alt: '一張萊姆綠的紙對摺後半開著，底下錯開疊著米白、淺綠與淡藍的紙，一層露出一層的邊。',
@@ -190,8 +190,8 @@ const skills = {
       },
       layers: {
         eyebrow: '讀的順序',
-        headline: ['一個技能分三層讀，', '和代理讀它的順序一樣。'],
-        lead: '這是技能格式本身的設計：AI 代理不會一次讀完手上所有的技能。Skill Hub 照同樣的順序排版，你看到的每一層，就是代理讀到的那一層。',
+        headline: ['一個技能分三層讀，', '照 AI 代理的順序讀。'],
+        lead: '代理不會一次讀完手上所有的技能。從名稱與描述、完整說明，到任務用到的檔案，Skill Hub 也照這個順序呈現。',
         rows: [
           {
             title: '一行',
@@ -220,7 +220,7 @@ const skills = {
       statement: {
         text: '收錄不是背書。',
         muted:
-          'REZICS 只保存技能的檔案，不執行腳本，也不照裡面的指令行事；全文、檔案、宣告與紀錄都攤開來，由你自己判斷。',
+          '全文、檔案、宣告與紀錄，留給你判斷。REZICS 保存技能，不執行腳本，也不照裡面的指令行事。',
       },
       pages: {
         eyebrow: '這個網站',
@@ -229,7 +229,7 @@ const skills = {
           { slug: 'directory', line: '用一句描述找技能' },
           { slug: 'versions', line: '全文、每個檔案與每一版' },
           { slug: 'evidence', line: '誰在什麼條件下用過' },
-          { slug: 'use', line: '選定一版，交給代理' },
+          { slug: 'use', line: '選定一版，交給 AI 代理' },
           { slug: 'publish', line: '一個資料夾，一個身分' },
         ],
       },
@@ -302,7 +302,7 @@ const skills = {
       frontmatter: {
         eyebrow: 'SKILL.md',
         headline: ['開頭那幾行，', 'REZICS 這樣讀。'],
-        lead: '以一個示範技能為例。',
+        lead: '以一個技能資料夾為例（示意）。',
         rows: [
           {
             key: 'name',
@@ -377,7 +377,7 @@ const skills = {
       statement: {
         text: '每個技能，都署了名。',
         muted:
-          '作者與維護者依角色列名；點開名字，看得到這個人在 REZICS 的其他作品：別的技能、維護的 MCP 伺服器、寫過的評論。',
+          '作者與維護者依角色列名；同一個身分，也連著他寫過的其他技能、MCP 伺服器與評論。',
       },
       end: {
         next: '讀過內容，再看誰用過。',
@@ -393,7 +393,7 @@ const skills = {
         eyebrow: '宣告',
         headline: ['作者寫下的，', '是一句相容條件。'],
         lead: '作者寫在 SKILL.md 裡的相容條件與允許的工具，REZICS 照原文記下，標成需要獨立驗證，不當成已經證實。',
-        code: '# SKILL.md 開頭（示意）\ncompatibility: 適用於支援技能資料夾的代理',
+        code: '# SKILL.md 開頭（示意）\ncompatibility: 適用於支援技能資料夾的 AI 代理',
         codeLabel: '一個示範技能寫在 SKILL.md 開頭的相容條件',
         caption: 'REZICS 照原文記下這一行，標記：需要獨立驗證。',
       },
@@ -446,7 +446,7 @@ const skills = {
       statement: {
         text: '紀錄說的是發生過什麼，',
         muted:
-          '不是安全保證。一筆成功的紀錄，只說明那一次、那個環境下的結果；技能裡的腳本會做什麼，請自己讀過再決定。',
+          '不是安全保證。每次觀察都有環境與版本；採用前，仍要讀過技能的說明與腳本。',
       },
       end: {
         next: '看過紀錄，接著把它用起來。',
@@ -501,7 +501,7 @@ const skills = {
       },
       end: {
         next: '換你寫一個。',
-        closing: '選定一版，交給你的代理。',
+        closing: '選定一版，交給你的 AI 代理。',
       },
     },
     publish: {
@@ -548,7 +548,8 @@ const skills = {
       statement: {
         text: '描述是最先被讀到的一句。',
         muted:
-          '目錄只顯示名稱與描述，AI 代理啟動時也只讀這兩樣；寫清楚它做什麼、什麼時候該用，人找得到，代理也挑得準。',
+          '名稱與描述，讓人找到技能，也讓 AI 代理判斷何時使用。寫清楚做什麼、何時該用，就是起點。',
+        note: '同一份技能描述的兩種寫法（示意）。',
         rows: [
           {
             title: '寫得清楚',
@@ -572,7 +573,8 @@ const skills = {
         ],
       },
       end: {
-        next: '接著看 API Hub：AI 代理呼叫的公開 API，也有自己的索引。',
+        next: '技能之外，還有 API。',
+        nextLine: '把呼叫方式與版本一起讀清楚',
         closing: '你的技能，在 REZICS 有自己的身分。',
       },
     },

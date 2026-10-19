@@ -121,7 +121,7 @@ Source: https://agentskills.io/specification (fetched 2026-10-19; the docs cite 
 12. **Legal statements** (reporting without an account, malware ban, IP retention) come from draft
     policies marked "not reviewed by counsel" with placeholders for the reporting form.
 13. **The example skill** `chapter-cast` and its frontmatter are invented and generic, labelled
-    「以一個示範技能為例」; `allowed-tools: read-file` is a neutral placeholder because that field's
+    「以一個技能資料夾為例（示意）」; `allowed-tools: read-file` is a neutral placeholder because that field's
     syntax depends on the agent.
 14. **REZICS is presented as live** (direction 2026-10-19). The site describes Skill Hub in the
     present tense and leads into the product with the kit's 「前往 REZICS」; the capabilities

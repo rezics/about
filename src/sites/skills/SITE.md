@@ -152,11 +152,23 @@ compete with them).
   every action is 「前往 REZICS」. The package ecosystems and the visual-novel script engine the
   facts name are no longer named on the pages ("生態系", "遊戲腳本"); `facts.md` keeps them as
   sources.
+- Completion pass: shortened the hero paragraph and large statements so the photograph and serif
+  headline keep the focus. The first agent mention in the reading-order heading and illustrative
+  compatibility line now uses 「AI 代理」. Generic examples are explicitly marked 「示意」.
+- The publish page gives API Hub its own short transition heading and tile line, rather than
+  repeating the global navigation description. Its description comparison has an explicit
+  illustrative caption; all new text remains in the site's content file.
 
 ### Pictures
 
 The paper still-life series (V3-SPEC "Art direction"), generated with codex-2 and the reference
 photograph attached; prompts in the worktree's `.temp/img/gen/*.prompt.txt`.
+
+The completion pass inspected all five existing photographs against the approved reference and
+kept them: upper-left soft window light, visible paper fibre, muted lime with neighbouring paper
+colours, and no lettering, symbols, people or non-paper objects. No replacement generation was
+needed. The hero remains 1920/960 wide, its phone crop 960/640 wide, and the four section pictures
+1200/640 wide, each in AVIF and WebP within the v3 byte budgets.
 
 | Stem | Used on | Idea | Picture |
 |---|---|---|---|

@@ -17,7 +17,7 @@ import { sectionImage } from '../../sites/skills/site';
 
 const s = site.strings.publish;
 const apis = kindById('apis');
-const nextSite = { id: 'apis', name: apis.name, line: apis.summary, href: kindHref('apis'), bg: kindFields.apis.field, on: kindFields.apis.on };
+const nextSite = { id: 'apis', name: apis.name, line: s.end.nextLine, href: kindHref('apis'), bg: kindFields.apis.field, on: kindFields.apis.on };
 ---
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
@@ -32,7 +32,7 @@ const nextSite = { id: 'apis', name: apis.name, line: apis.summary, href: kindHr
     <FactList items={s.limits.rows} />
   </Section>
 
-  <Statement text={s.statement.text} sub={s.statement.muted}>
+  <Statement text={s.statement.text} sub={s.statement.muted} note={s.statement.note}>
     <div class="grid sk-examples"><FactList items={s.statement.rows} level="p" class="sk-examples__list" /></div>
   </Statement>
 
