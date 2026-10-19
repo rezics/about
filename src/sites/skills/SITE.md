@@ -150,11 +150,11 @@ photograph attached; prompts in the worktree's `.temp/img/gen/*.prompt.txt`.
 
 | Stem | Used on | Idea | Picture |
 |---|---|---|---|
-| `fold` | landing hero | progressive disclosure | a lime sheet folded in three, partly opened, off-white and pale blue sheets beneath |
+| `fold` | landing hero | progressive disclosure | a lime sheet folded in half and half open, over off-white, pale lime and pale blue sheets fanned beneath |
 | `folder` | landing, 檔案 | a skill is a folder of files | a lime sheet folded into a small folder holding stepped sheets |
 | `bundle` | directory, 清單 | a list is a bundled set | a stack of lime, off-white, pale blue and mustard sheets held by a lime paper band |
 | `fan` | versions, 版本 | every version stays | five sheets fanned in sequence, lime to off-white |
-| `slit` | publish, 匯入 | import passes through unchanged | an off-white strip passing through a slit in a lime sheet |
+| `slit` | publish, 匯入 | import passes through unchanged | an off-white strip threaded through a slit in a lime sheet, a mustard corner beneath |
 
 ## Revisions
 
