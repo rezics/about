@@ -26,7 +26,7 @@ export interface ZonesStrings {
   templates: { label: string; headline: string; lead: string; steps: Item[]; note: string };
   themes: { label: string; headline: string; lead: string; items: Item[] };
   wiki: { label: string; headline: string; lead: string; items: Item[] };
-  shared: { label: string; headline: string; lead: string; more: string };
+  shared: { label: string; headline: string; lead: string; more: string; alt: string };
   log: { label: string; headline: string; lead: string; caption: string; entries: Item[]; items: Item[] };
   closing: string;
 }
@@ -50,8 +50,8 @@ export default {
   strings: {
     hero: {
       eyebrow: shared.nav.engine,
-      headline: '社群的網站，蓋在共用的圖上。',
-      lede: '一個 Zone 有自己的首頁、索引、詳細頁、自訂頁面與導覽。網站長什麼樣子由社群決定；網站上的人物、作品與事實，是共用圖上的同一筆資料。',
+      headline: '自己的網站，共用的資料。',
+      lede: '一個 Zone 有自己的首頁、導覽與版面。社群決定網站的樣子，作品、人物與事實都來自共用的資料。',
       alt: '一張深灰色的紙折成沒有屋頂的小房子，前牆開了一扇門，兩個房間裡各放著一小張玫瑰色與藍色的紙',
     },
     routes: {
@@ -114,6 +114,7 @@ export default {
       headline: '網站各自獨立，資料彼此共用。',
       lead: '繁體中文的 Wiki+ 和一個英文讀書會的網站，可以共用同一批作品與人物。前者寫《魔法禁書目錄》，後者寫 A Certain Magical Index，連到的是同一個身分；名稱、介紹、排序，以及採信哪些說法，各自決定。',
       more: '一個 Zone 也能同時收書、動畫與遊戲，替一整個作品宇宙架一個網站。',
+      alt: '兩段獨立的深灰色摺紙，一前一後放在同一條淺藍色紙帶上',
     },
     log: {
       label: '改版',

@@ -25,7 +25,7 @@ const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k
       const f = kindFields[k.id];
       return (
         <label class:list={['pick__tile', f.on === 'ink' && 'pick__tile--ink']} style={`--c:${f.field};--on:${inkOn(f.field, f.on)}`}>
-          <input class="pick__radio" type="radio" name="pick-kind" id={`pick-${k.id}`} value={k.id} checked={i === 0} />
+          <input class="pick__radio" type="radio" name="pick-kind" id={`pick-${k.id}`} value={k.id} aria-label={k.name} aria-controls={`pick-panel-${k.id}`} checked={i === 0} />
           <span class:list={['pick__name', latin(k.name) ? 'pick__name--latin' : 'serif']}>{k.name}</span>
           <svg class="pick__mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
             <path d="M8 3v9.5M4 8.5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -36,7 +36,7 @@ const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k
   </div>
   <div class="pick__panels">
     {kinds.map((k) => (
-      <section class:list={['pick__panel', `pick__panel--${k.id}`]} aria-labelledby={`pick-title-${k.id}`}>
+      <section id={`pick-panel-${k.id}`} class:list={['pick__panel', `pick__panel--${k.id}`]} aria-labelledby={`pick-title-${k.id}`}>
         <div class="pick__head">
           <h3 id={`pick-title-${k.id}`} class="pick__title">{fill(p.listTitle, k.name)}</h3>
           <p class="pick__link"><a class="link-draw" href={kindHref(k.id)}>{fill(p.link, k.name)}</a></p>
@@ -78,7 +78,7 @@ const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k
     border-radius: 0;
     cursor: pointer;
   }
-  .pick__radio:focus-visible { outline: 2px solid var(--c-fg); outline-offset: 3px; }
+  .pick__radio:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
   .pick__name { font-size: clamp(1.0625rem, 0.85rem + 0.45vw, 1.3125rem); font-weight: 600; line-height: 1.3; letter-spacing: 0.04em; white-space: nowrap; transition: translate 0.5s var(--ease-snap); }
   .pick__name--latin { font-family: var(--f-body); font-weight: 500; letter-spacing: 0.01em; }
   .pick__mark { position: absolute; top: var(--pad); right: var(--pad); width: 16px; height: 16px; opacity: 0; transition: opacity 0.3s var(--ease-snap); }
@@ -117,5 +117,9 @@ const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k
     .pick__head { margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
     .pick__link { margin-top: 0; }
     .pick__note { margin-left: 0; }
+  }
+  @media (max-width: 359px) {
+    .pick__tile { --pad: 10px; }
+    .pick__name { font-size: 16px; letter-spacing: 0.02em; }
   }
 </style>

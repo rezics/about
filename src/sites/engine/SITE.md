@@ -34,7 +34,7 @@ family below.
   parts plate, field finale) do not carry over: v3 asks for one focal point per screen, a slow
   rhythm and the paper still-life series, not bespoke diagrams. What they explained is now said
   by hairline facts lists, tile rows and one photograph per page.
-- **Examples.** 《紅樓夢》 is removed everywhere (EXAMPLE-WORK.md). 通用索引 follows
+- **Examples.** The old example is removed throughout (EXAMPLE-WORK.md). 通用索引 follows
   《魔法禁書目錄》 as a plain-text example (names, credits, the three series, adaptations and
   spin-offs, the 2013 visual novel); 站點 uses an illustrative (示意) Wiki+ for it with a made-up
   handle, routes and revision log. No plot facts, characters, volume counts, companies or
@@ -93,12 +93,13 @@ small kind squares on the top sheet)
 **`/engine/universal-index/`** (picture: a precise grid of grey and coloured chips on one
 charcoal sheet, one chip lifting)
 
-1. Hero (family opening): 「一部作品，一個身分，每一種寫法。」, 例如《魔法禁書目錄》.
+1. Hero (family opening): 「一部作品，一個身分。」, 例如《魔法禁書目錄》.
 2. 名稱: facts list of three names (name in its language left, label right); caption saying the
    work is an example of how REZICS records a work.
 3. 署名: credits as facts list (鎌池和馬, 灰村清孝, 近木野中哉 with their roles), a line on
    characters.
-4. 三層: facts list 作品 / 文本 / 發行 and the rewrite aside.
+4. 三層: a photo row (three layered sheets, text on the right), then the facts list 作品 /
+   文本 / 發行 and the rewrite aside.
 5. 關聯: a tile masonry of the six related works seen from the main series' page, each in its
    kind's colour with the relation label at the top (《新約》 and 《創約》 續作; manga, anime and
    the visual novel 改編作品; 《科學超電磁砲》 外傳), then the evidence note.
@@ -109,13 +110,14 @@ charcoal sheet, one chip lifting)
 **`/engine/zones/`** (picture: one slate sheet folded into a small open-roofed building of three
 rooms with a doorway; a rose and a blue square inside)
 
-1. Hero (family opening): 「社群的網站，蓋在共用的圖上。」
+1. Hero (family opening): 「自己的網站，共用的資料。」
 2. 路由: a table of contents (title, path, child route indented) for the 示意 Wiki+, with its
    caption and the reserved-words note.
 3. 範本: the four-step fallback as a numbered facts list.
 4. 主題: facts list 由社群決定 / 由平台保護 / 自己的呈現程式.
 5. Wiki+: facts list of reading position, building and Realm choice.
-6. 共用: section text only (two Zones, one identity).
+6. 共用: a photo row (two independent folds on one continuous strip, text on the left) explaining
+   two Zones with one identity.
 7. 改版: the 示意 revision log and three facts (grants, visibility, one path for people and
    agents).
 8. Family closing; closing line 「在 REZICS 開一個 Zone，替你的社群架起自己的網站。」
@@ -123,7 +125,7 @@ rooms with a doorway; a rose and a blue square inside)
 **`/roadmap/`** (picture: a long graphite strip unrolling from its roll with six kind squares
 along it)
 
-1. Hero (no eyebrow: the site bar reads 路線圖): 「引擎橫著蓋，社群一個一個開。」
+1. Hero (no eyebrow: the site bar reads 路線圖): 「引擎橫著蓋，社群逐一開。」
 2. 順序: numbered facts list of five steps (先有部件, 九種東西, 一次一個社群, 更多種類, 新的能力).
 3. 更多種類: facts list of six further kinds.
 4. Statement: 「部件很少增加，種類一直在增加；每多一種，用的還是同一套引擎。」
@@ -133,15 +135,24 @@ along it)
 
 ### Phones
 
-Copy first in every hero, the picture as a band after it (a 3:2 crop of the subject, 780 px).
+Copy first in every phone hero, the picture as a band after it (a 3:2 crop of the subject,
+640 and 960 px wide).
 Sections stack; facts lists put the title above its text. The kind picker is three columns of
 short tiles (three rows) with the list under it; the ring of five modules is two columns.
+
+The photos' empty paper narrows towards the bottom. `src/sites/engine/hero.css`, imported only
+by these four pages, caps desktop copy at 28vw. Tablets from 768 to 1199 px use copy followed
+by a 300 to 440 px photograph, avoiding a tall cover crop that would remove the empty paper.
+This is a local workaround; the shared kit is unchanged.
 
 ### Pictures
 
 One series (V3-SPEC art direction), generated with codex-2 against
 `.temp/sites/v3-reference-paper.png`; prompts in `.temp/v3-images/modules-a/prompts/`.
-Each is delivered at 1920 and 960 wide (AVIF, WebP) and as a 780 × 520 phone crop.
+Each hero is delivered at 1920 and 960 wide (AVIF, WebP), with phone crops at 640 and 960 wide.
+The two section pictures added during completion use the built-in image generation tool with
+`.temp/ref/v3-reference-paper.png` attached, per the assignment. Originals and prompts are in
+`.temp/images-modules-a/`; delivery is 1200 × 800 and 640 × 427 in AVIF and WebP.
 
 | File | Idea |
 |---|---|
@@ -149,6 +160,8 @@ Each is delivered at 1920 and 960 wide (AVIF, WebP) and as a 780 × 520 phone cr
 | `universal-index/hero` | many chips aligned on one grid on one sheet: every thing has its one place |
 | `zones/hero` | a sheet folded into a standing structure: a site of its own from the shared material |
 | `roadmap/hero` | a strip unrolling with kinds placed along it: the order, still unrolling |
+| `universal-index/editions` | three sheets in charcoal, pale grey and book green: work, text and release remain distinct |
+| `zones/shared` | two separate folded sheets on one blue-grey strip: independent sites with shared data |
 
 ### Checks
 

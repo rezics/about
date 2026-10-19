@@ -4,6 +4,7 @@
 // family closing (statement, the ring of the five modules, the closing).
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
 import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import PhotoRow from '../../../kit/components/PhotoRow.astro';
 import Section from '../../../kit/components/Section.astro';
 import Statement from '../../../kit/components/Statement.astro';
 import FactList from '../../../kit/components/FactList.astro';
@@ -14,6 +15,7 @@ import Routes from '../../../sites/zones/Routes.astro';
 import { moduleById } from '../../../kit/content';
 import { splitStatement } from '../../../sites/engine/family';
 import site from '../../../content/sites/zones';
+import '../../../sites/engine/hero.css';
 
 const s = site.strings;
 const statement = splitStatement(moduleById('zones').statement);
@@ -21,6 +23,7 @@ const statement = splitStatement(moduleById('zones').statement);
 <MiniSiteLayout>
   <PhotoHero
     bar
+    class="modules-hero"
     eyebrow={s.hero.eyebrow}
     title={s.hero.headline}
     lede={s.hero.lede}
@@ -55,7 +58,12 @@ const statement = splitStatement(moduleById('zones').statement);
     <FactList items={s.wiki.items} />
   </Section>
 
-  <Section eyebrow={s.shared.label} title={s.shared.headline} lead={[s.shared.lead, s.shared.more]} />
+  <PhotoRow
+    eyebrow={s.shared.label}
+    title={s.shared.headline}
+    body={[s.shared.lead, s.shared.more]}
+    image={{ src: '/images/sites/zones/shared', widths: [640, 1200], width: 1200, height: 800, alt: s.shared.alt }}
+  />
 
   <Section eyebrow={s.log.label} title={s.log.headline} lead={s.log.lead}>
     <p class="z-caption">{s.log.caption}</p>

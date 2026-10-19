@@ -4,6 +4,7 @@
 // and split), then the family closing (statement, the ring of the five modules, the closing).
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
 import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import PhotoRow from '../../../kit/components/PhotoRow.astro';
 import Section from '../../../kit/components/Section.astro';
 import Statement from '../../../kit/components/Statement.astro';
 import TileMasonry, { type MasonryItem } from '../../../kit/components/TileMasonry.astro';
@@ -17,6 +18,7 @@ import { kindFields } from '../../../kit/theme';
 import { accentRamp } from '../../../kit/color';
 import { splitStatement } from '../../../sites/engine/family';
 import site from '../../../content/sites/universal-index';
+import '../../../sites/engine/hero.css';
 
 const s = site.strings;
 const statement = splitStatement(moduleById('universal-index').statement);
@@ -40,6 +42,7 @@ const phone = [[{ id: 'shinyaku' }, { id: 'souyaku' }], [{ id: 'manga' }, { id: 
 <MiniSiteLayout>
   <PhotoHero
     bar
+    class="modules-hero"
     eyebrow={s.hero.eyebrow}
     title={s.hero.headline}
     lede={s.hero.lede}
@@ -65,10 +68,19 @@ const phone = [[{ id: 'shinyaku' }, { id: 'souyaku' }], [{ id: 'manga' }, { id: 
     <p class="ui-after">{s.people.characters}</p>
   </Section>
 
-  <Section eyebrow={s.layers.label} title={s.layers.headline} lead={s.layers.lead}>
-    <FactList items={s.layers.items} />
-    <p class="ui-after">{s.layers.aside}</p>
-  </Section>
+  <PhotoRow
+    eyebrow={s.layers.label}
+    title={s.layers.headline}
+    body={s.layers.lead}
+    side="left"
+    image={{ src: '/images/sites/universal-index/editions', widths: [640, 1200], width: 1200, height: 800, alt: s.layers.alt }}
+  />
+  <div class="grid ui-layers">
+    <div class="ui-layers__body">
+      <FactList items={s.layers.items} />
+      <p class="ui-after">{s.layers.aside}</p>
+    </div>
+  </div>
 
   <Section eyebrow={s.relations.label} title={s.relations.headline} lead={s.relations.lead}>
     <TileMasonry slot="wide" items={relations} columns={columns} phone={phone} height={420} phoneRow={150} label={s.relations.label} />
@@ -90,6 +102,8 @@ const phone = [[{ id: 'shinyaku' }, { id: 'souyaku' }], [{ id: 'manga' }, { id: 
 
 <style>
   .ui-after { margin-top: 32px; max-width: 34em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .ui-layers { padding-top: 56px; }
+  .ui-layers__body { grid-column: 4 / 13; min-width: 0; }
   .ui-note { margin-top: 32px; margin-left: calc((100% + var(--gutter)) * 3 / 12); max-width: 36em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
-  @media (max-width: 767px) { .ui-note { margin-left: 0; } }
+  @media (max-width: 767px) { .ui-note { margin-left: 0; } .ui-layers { padding-top: 36px; } }
 </style>

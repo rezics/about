@@ -23,7 +23,7 @@ export interface IndexStrings {
     caption: string;
   };
   people: { label: string; headline: string; lead: string; rows: Item[]; characters: string };
-  layers: { label: string; headline: string; lead: string; items: Item[]; aside: string };
+  layers: { label: string; headline: string; lead: string; alt: string; items: Item[]; aside: string };
   relations: {
     label: string;
     headline: string;
@@ -56,8 +56,8 @@ export default {
   strings: {
     hero: {
       eyebrow: shared.nav.engine,
-      headline: '一部作品，一個身分，每一種寫法。',
-      lede: '例如《魔法禁書目錄》：日文原名、中文書名與英文書名，都掛在同一個身分上。你讀哪一種語言，頁面就先用那一種名稱。',
+      headline: '一部作品，一個身分。',
+      lede: '例如《魔法禁書目錄》：日文原名、中文與英文書名，都指向同一部作品。依你讀的語言，先顯示合適的名稱。',
       alt: '一張深灰色的底紙上，許多同樣大小的灰色與彩色紙片排成整齊的格線，其中一片翹起一角',
     },
     names: {
@@ -86,6 +86,7 @@ export default {
       label: '三層',
       headline: '作品、文本、發行，分三層記。',
       lead: '作品是故事本身。同一個故事有不同的文本：日文原文、中文譯本、英文譯本。每一次實際出版的，是一筆發行。',
+      alt: '深灰、暖灰與綠色的三張紙依序交疊，暖灰紙的一角輕輕捲起',
       items: [
         { title: '作品', body: '故事本身。評論、追蹤與關聯都接在這一層。' },
         { title: '文本', body: '原文與各語言的譯本。譯本是同一部作品的另一份文本，有自己的譯者與權利。' },
