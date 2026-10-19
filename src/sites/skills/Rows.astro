@@ -1,0 +1,75 @@
+---
+/**
+ * Skill Hub's annotated rows: the kit's FactList (hairlines, the left column 3 fr, the text
+ * 5 fr) with a literal from the Agent Skills format on the left. Used for the example skill's
+ * frontmatter (key as code, the example value under it) and for the file roles (name in the
+ * serif, the path as code, a mark such as 可執行 or 缺少). Phones: the left column above the text.
+ */
+interface Row {
+  /** The serif name (a file role); omit for a frontmatter line. */
+  title?: string;
+  /** The literal: a frontmatter key or a path. */
+  code?: string;
+  /** The example value of a frontmatter key. */
+  value?: string;
+  /** A short state beside the name. */
+  mark?: string;
+  body: string;
+}
+interface Props {
+  items: Row[];
+  /** Accessible name of the list. */
+  label: string;
+  class?: string;
+}
+const { items, label, class: className } = Astro.props;
+---
+<ul class:list={['sk-rows', className]} role="list" aria-label={label}>
+  {items.map((r) => (
+    <li class="sk-rows__row">
+      <div class="sk-rows__key">
+        {r.title && (
+          <h3 class="sk-rows__title serif">
+            {r.title}
+            {r.mark && <span class="sk-rows__mark sans">{r.mark}</span>}
+          </h3>
+        )}
+        {r.code && (r.title ? <p class="sk-rows__path"><code>{r.code}</code></p> : <h3 class="sk-rows__code"><code>{r.code}{r.value !== undefined && ':'}</code></h3>)}
+        {r.value && <p class="sk-rows__value">{r.value}</p>}
+      </div>
+      <p class="sk-rows__body">{r.body}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .sk-rows { border-top: 1px solid var(--c-line); }
+  .sk-rows__row {
+    display: grid;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 5fr);
+    gap: 8px var(--gutter);
+    padding: 30px 0 32px;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .sk-rows__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .sk-rows__mark {
+    display: inline-block;
+    margin-left: 12px;
+    padding: 1px 8px 2px;
+    border: 1px solid var(--c-fg);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.6;
+    vertical-align: 3px;
+  }
+  .sk-rows__path { margin-top: 6px; }
+  .sk-rows code { font-family: var(--f-mono); font-size: 13.5px; color: var(--c-fg); overflow-wrap: anywhere; }
+  .sk-rows__path code { color: var(--c-muted); }
+  .sk-rows__code { font-weight: 400; line-height: 1.55; }
+  .sk-rows__code code { font-size: 14.5px; }
+  .sk-rows__value { margin-top: 6px; font-size: 15px; line-height: 1.8; color: var(--c-muted); max-width: 22em; }
+  .sk-rows__body { font-size: 16px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
+  @media (max-width: 767px) {
+    .sk-rows__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; }
+    .sk-rows__body { margin-top: 4px; }
+  }
+</style>

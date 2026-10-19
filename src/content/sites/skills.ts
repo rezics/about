@@ -45,12 +45,19 @@ export interface Pic {
   alt: string;
 }
 
+/**
+ * How an inner page ends: a lead-in to the next page (a section whose title leads into one tile),
+ * then the closing statement before the ink pill into REZICS.
+ */
+export interface End {
+  next: string;
+  closing: string;
+}
+
 export interface SkillsStrings {
   ui: {
     nextPage: string;
     nextSite: string;
-    /** Label of the example caption (示意). */
-    example: string;
   };
   landing: {
     hero: { eyebrow: string; headline: string[]; lede: string; pic: Pic };
@@ -59,7 +66,7 @@ export interface SkillsStrings {
     statement: Said;
     pages: Head & { tiles: { slug: string; line: string }[] };
     neighbours: Head & { tiles: { to: KindId; line: string }[] };
-    closing: string;
+    closing: { title: string; body: string };
   };
   directory: {
     head: { headline: string[]; lede: string };
@@ -67,40 +74,41 @@ export interface SkillsStrings {
     statement: Said;
     lists: Head & { body: string; pic: Pic };
     views: Head & { rows: Row[] };
-    closing: string;
+    end: End;
   };
   versions: {
     head: { headline: string[]; lede: string };
     frontmatter: Head & { rows: KeyRow[] };
     files: Head & { rows: FileRow[] };
-    history: Head & { rows: Row[]; pic: Pic };
+    history: Head & { body: string[]; pic: Pic };
     packages: Head & { rows: Row[] };
     statement: Said;
-    closing: string;
+    end: End;
   };
   evidence: {
     head: { headline: string[]; lede: string };
-    declaration: Head & { key: string; value: string; mark: string };
+    declaration: Head & { code: string; codeLabel: string; caption: string };
     record: Head & { rows: Row[] };
     rules: Head & { rows: Row[] };
     opinions: Head & { rows: Row[] };
     statement: Said;
-    closing: string;
+    end: End;
   };
   use: {
     head: { headline: string[]; lede: string };
     steps: Head & { rows: Row[] };
     agent: Head & { paragraphs: [string, string]; link: string };
     later: Head & { rows: Row[] };
-    closing: string;
+    end: End;
   };
   publish: {
     head: { headline: string[]; lede: string };
-    import: Head & { rows: Row[]; pic: Pic };
+    import: Head & { body: string; pic: Pic };
+    steps: Head & { rows: Row[] };
     limits: Head & { rows: Row[]; after: string };
     statement: Said & { rows: Row[] };
     credits: Head & { rows: Row[] };
-    closing: string;
+    end: End;
   };
 }
 
@@ -169,7 +177,6 @@ const skills = {
     ui: {
       nextPage: '下一頁',
       nextSite: '下一個網站',
-      example: '示意',
     },
     landing: {
       hero: {
@@ -237,7 +244,10 @@ const skills = {
           { to: 'visual-novels', line: "也讀 Ren'Py 腳本" },
         ],
       },
-      closing: '先從一行開始找。',
+      closing: {
+        title: '先從一行開始找。',
+        body: '在 REZICS 搜尋技能，讀過全文、檔案與紀錄，再交給你的 AI 代理。',
+      },
     },
     directory: {
       head: {
@@ -279,7 +289,10 @@ const skills = {
           { title: '追蹤', body: '有新結果時通知你。' },
         ],
       },
-      closing: '找到了，就打開它。',
+      end: {
+        next: '找到了，就打開它。',
+        closing: '你要的技能，可能就在下一列。',
+      },
     },
     versions: {
       head: {
@@ -340,11 +353,9 @@ const skills = {
       history: {
         eyebrow: '版本',
         headline: ['每一版都留著。'],
-        rows: [
-          { title: '改了就是新版本', body: '發布之後的任何修改，都成為下一個版本。上一版的檔案與雜湊值維持原樣。' },
-          { title: '每一版都有日期', body: '版本依發布順序排列，各附日期；版本再多，也能一路往前翻。' },
-          { title: '變更紀錄', body: '每一版寫明改了什麼。追蹤這個技能的人，收到的就是這份紀錄。' },
-          { title: '舊版不被覆蓋', body: '你正在用的那一版，不會被新版本取代。' },
+        body: [
+          '發布之後的任何修改，都成為下一個版本；上一版的檔案與雜湊值維持原樣，你正在用的那一版不會被取代。',
+          '版本依發布順序排列，各附日期與變更紀錄，再多也能一路往前翻。追蹤這個技能的人，收到的就是這份紀錄。',
         ],
         pic: {
           src: 'fan',
@@ -368,7 +379,10 @@ const skills = {
         muted:
           '作者與維護者依角色列名；點開名字，看得到這個人在 REZICS 的其他作品：別的技能、維護的 MCP 伺服器、寫過的評論。',
       },
-      closing: '讀過內容，再看誰用過。',
+      end: {
+        next: '讀過內容，再看誰用過。',
+        closing: '代理會讀到的每一個字，你都先讀得到。',
+      },
     },
     evidence: {
       head: {
@@ -379,9 +393,9 @@ const skills = {
         eyebrow: '宣告',
         headline: ['作者寫下的，', '是一句相容條件。'],
         lead: '作者寫在 SKILL.md 裡的相容條件與允許的工具，REZICS 照原文記下，標成需要獨立驗證，不當成已經證實。',
-        key: 'compatibility',
-        value: '適用於支援技能資料夾的代理',
-        mark: '需要獨立驗證',
+        code: '# SKILL.md 開頭（示意）\ncompatibility: 適用於支援技能資料夾的代理',
+        codeLabel: '一個示範技能寫在 SKILL.md 開頭的相容條件',
+        caption: 'REZICS 照原文記下這一行，標記：需要獨立驗證。',
       },
       record: {
         eyebrow: '紀錄',
@@ -434,7 +448,10 @@ const skills = {
         muted:
           '不是安全保證。一筆成功的紀錄，只說明那一次、那個環境下的結果；技能裡的腳本會做什麼，請自己讀過再決定。',
       },
-      closing: '看過紀錄，接著把它用起來。',
+      end: {
+        next: '看過紀錄，接著把它用起來。',
+        closing: '先看誰用過，再決定要不要用。',
+      },
     },
     use: {
       head: {
@@ -482,7 +499,10 @@ const skills = {
           },
         ],
       },
-      closing: '換你寫一個。',
+      end: {
+        next: '換你寫一個。',
+        closing: '選定一版，交給你的代理。',
+      },
     },
     publish: {
       head: {
@@ -491,8 +511,16 @@ const skills = {
       },
       import: {
         eyebrow: '匯入',
+        headline: ['匯入只保存，', '不執行。'],
+        body: '資料夾經過這一步，成為一個有身分的技能，裡面的檔案一個也沒變。',
+        pic: {
+          src: 'slit',
+          alt: '一張萊姆綠的紙中間割了一道切口，一條米白紙帶從上方穿進切口，再從紙的下緣穿出；底下露出一角芥黃的紙。',
+        },
+      },
+      steps: {
+        eyebrow: '六件事',
         headline: ['匯入時，', '每個位元組照原樣留下。'],
-        lead: '匯入只保存，不執行。資料夾經過這一步，成為一個有身分的技能，裡面的檔案一個也沒變。',
         rows: [
           { title: '照原樣保存', body: '每個檔案的每個位元組都存下來，路徑只能落在資料夾之內。' },
           { title: '什麼都不執行', body: '腳本存成檔案，沒有人執行它；SKILL.md 裡的指令，也沒有人照著做。' },
@@ -504,10 +532,6 @@ const skills = {
           },
           { title: '發布一個版本', body: '發布時固定每個檔案的雜湊值、授權與來源。之後再改，就是下一個版本。' },
         ],
-        pic: {
-          src: 'slit',
-          alt: '一張萊姆綠的紙中間割了一道切口，一條米白紙帶從上方穿進切口，再從紙的下緣穿出；底下露出一角芥黃的紙。',
-        },
       },
       limits: {
         eyebrow: '範圍',
@@ -547,7 +571,10 @@ const skills = {
           { title: '撤回', body: '套用錯了可以撤回。撤回以補正的方式記錄，原本的歷史不會被改寫。' },
         ],
       },
-      closing: '接著看 API Hub：AI 代理呼叫的公開 API，也有自己的索引。',
+      end: {
+        next: '接著看 API Hub：AI 代理呼叫的公開 API，也有自己的索引。',
+        closing: '你的技能，在 REZICS 有自己的身分。',
+      },
     },
   },
 } satisfies MiniSite<SkillsStrings>;

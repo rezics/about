@@ -1,0 +1,19 @@
+---
+/**
+ * The end of an inner page before the closing: a section whose title leads into the next page,
+ * and that page as one flat tile under it (columns 4 to 12), in the colour it has in the
+ * landing's masonry. The last page leads into the next site's tile in its kind colour.
+ */
+import Section from '../../kit/components/Section.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  tile: MasonryItem;
+}
+const { eyebrow, title, tile } = Astro.props;
+---
+<Section eyebrow={eyebrow} title={title} class="sk-next">
+  <TileMasonry items={[tile]} columns={[[{ id: tile.id, h: 1 }]]} phone={[[{ id: tile.id }]]} height={220} phoneRow={150} label={eyebrow} />
+</Section>

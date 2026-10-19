@@ -1,8 +1,70 @@
 ---
-// STUB: the skills site's builder replaces this page (src/kit/README.md).
+// Skill Hub landing (v3; src/sites/skills/SITE.md "v3"): the fold photograph and one sentence,
+// the three layers an agent reads, the files, the statement that listing is not endorsement, the
+// site's five pages, the kinds a skill connects to, the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import { kindById, kindHref } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
+import site from '../../content/sites/skills';
+import { heroImage, pageTile, sectionImage } from '../../sites/skills/site';
+
+const s = site.strings.landing;
+
+// The five pages: finding and reading lead, so the directory takes a whole column and the skill
+// page the larger share of the next.
+const pages = s.pages.tiles.map((t) => pageTile(t.slug, t.line));
+const pageColumns: MasonryPlace[][] = [
+  [{ id: 'directory', h: 1 }],
+  [{ id: 'versions', h: 3 }, { id: 'evidence', h: 2 }],
+  [{ id: 'use', h: 2 }, { id: 'publish', h: 3 }],
+];
+const pagePhone: MasonryRowPlace[][] = [[{ id: 'directory' }], [{ id: 'versions' }, { id: 'evidence' }], [{ id: 'use' }, { id: 'publish' }]];
+
+const neighbours: MasonryItem[] = s.neighbours.tiles.map((t) => ({
+  id: t.to,
+  name: kindById(t.to).name,
+  line: t.line,
+  href: kindHref(t.to),
+  bg: kindFields[t.to].field,
+  on: kindFields[t.to].on,
+}));
+const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero bar eyebrow={s.hero.eyebrow} title={s.hero.headline.join('')} lede={s.hero.lede} image={heroImage(s.hero.pic)}>
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.layers.eyebrow} title={s.layers.headline} lead={s.layers.lead}>
+    <FactList items={s.layers.rows} numbered />
+  </Section>
+
+  <PhotoRow
+    side="left"
+    eyebrow={s.files.eyebrow}
+    title={s.files.headline.join('')}
+    body={s.files.body}
+    link={{ href: '/skills/versions/', text: s.files.link }}
+    image={sectionImage(s.files.pic)}
+  />
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <Section eyebrow={s.pages.eyebrow} title={s.pages.headline}>
+    <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={480} phoneRow={132} label={s.pages.eyebrow} />
+  </Section>
+
+  <Section eyebrow={s.neighbours.eyebrow} title={s.neighbours.headline} lead={s.neighbours.lead}>
+    <TileMasonry slot="wide" items={neighbours} columns={neighbourColumns} height={220} phoneRow={132} label={s.neighbours.eyebrow} />
+  </Section>
+
+  <Closing title={s.closing.title} body={s.closing.body} />
 </MiniSiteLayout>

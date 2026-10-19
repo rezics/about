@@ -1,0 +1,41 @@
+---
+// Skill Hub skill page (v3; SITE.md "v3"): the frontmatter as REZICS reads it, every file by
+// role, every version kept, declared packages, the credits, then the evidence page.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Rows from '../../sites/skills/Rows.astro';
+import NextPage from '../../sites/skills/NextPage.astro';
+import site from '../../content/sites/skills';
+import { pageLine, pageTile, sectionImage } from '../../sites/skills/site';
+
+const s = site.strings.versions;
+const frontmatter = s.frontmatter.rows.map((r) => (r.value === undefined ? { title: r.key, body: r.body } : { code: r.key, value: r.value, body: r.body }));
+const files = s.files.rows.map((r) => ({ title: r.title, code: r.path, mark: r.mark, body: r.body }));
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
+
+  <Section eyebrow={s.frontmatter.eyebrow} title={s.frontmatter.headline} lead={s.frontmatter.lead}>
+    <Rows items={frontmatter} label={s.frontmatter.headline.join('')} />
+  </Section>
+
+  <Section eyebrow={s.files.eyebrow} title={s.files.headline} lead={s.files.lead}>
+    <Rows items={files} label={s.files.headline.join('')} />
+  </Section>
+
+  <PhotoRow side="left" eyebrow={s.history.eyebrow} title={s.history.headline.join('')} body={s.history.body} image={sectionImage(s.history.pic)} />
+
+  <Section eyebrow={s.packages.eyebrow} title={s.packages.headline}>
+    <FactList items={s.packages.rows} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <NextPage eyebrow={site.strings.ui.nextPage} title={s.end.next} tile={pageTile('evidence', pageLine('evidence'))} />
+  <Closing title={s.end.closing} body="" />
+</MiniSiteLayout>
