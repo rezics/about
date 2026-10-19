@@ -1,0 +1,18 @@
+---
+// Short sentences that qualify a section (books): a quiet hairline list in body text, no titles.
+// Facts with a title of their own go in the kit's FactList.
+interface Props {
+  items: string[];
+  label?: string;
+  class?: string;
+}
+const { items, label, class: className } = Astro.props;
+---
+<ul class:list={['bk-notes', className]} role="list" aria-label={label}>
+  {items.map((n) => <li>{n}</li>)}
+</ul>
+<style>
+  .bk-notes { margin-top: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .bk-notes li { padding: 18px 0 20px; border-top: 1px solid var(--c-line); font-size: 15px; line-height: 1.85; color: var(--c-text); }
+  @media (max-width: 767px) { .bk-notes { grid-template-columns: minmax(0, 1fr); margin-top: 28px; } }
+</style>

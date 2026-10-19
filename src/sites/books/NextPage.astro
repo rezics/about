@@ -1,0 +1,27 @@
+---
+// The way on from an inner page (books; the v3 replacement of v2's SiteFinale): a section whose
+// heading is the page's closing line and one calm index row to the next page in tab order; the
+// last page leads to the next site.
+import Section from '../../kit/components/Section.astro';
+import IndexRows from '../../kit/components/IndexRows.astro';
+import { kindById, kindHref } from '../../kit/content';
+import { pageHref } from '../../kit/sites';
+import site from '../../content/sites/books';
+
+interface Props {
+  /** The current page's slug. */
+  slug: string;
+  /** The page's closing line: the section heading. */
+  lead: string;
+}
+const { slug, lead } = Astro.props;
+const s = site.strings;
+const at = site.pages.findIndex((p) => p.slug === slug);
+const next = site.pages[at + 1];
+const row = next
+  ? { name: next.label, desc: s.landing.pages.rows.find((r) => r.slug === next.slug)?.line ?? '', href: pageHref(site, next) }
+  : { name: kindById('anime').name, desc: kindById('anime').summary, href: kindHref('anime') };
+---
+<Section eyebrow={next ? s.common.nextPage : s.common.nextSite} title={lead}>
+  <IndexRows rows={[row]} />
+</Section>

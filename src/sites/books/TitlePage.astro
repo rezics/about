@@ -1,0 +1,39 @@
+---
+// The Work page's example (books): one flat accent tile set like a book's title page with the
+// title, the original title and the author, text only (EXAMPLE-WORK.md: no cover or artwork),
+// and its caption beside it.
+import site from '../../content/sites/books';
+
+const e = site.strings.work.example;
+---
+<figure class="bk-title">
+  <div class="bk-title__page">
+    <p class="bk-title__name serif">{e.title}</p>
+    <p class="bk-title__original" lang="ja">{e.original}</p>
+    <p class="bk-title__author">{e.author}</p>
+  </div>
+  <figcaption class="bk-title__caption">{e.caption}</figcaption>
+</figure>
+<style>
+  .bk-title { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: var(--gutter); align-items: end; margin-bottom: 72px; }
+  .bk-title__page {
+    aspect-ratio: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 24px;
+    background: var(--field);
+    color: var(--on-field);
+  }
+  .bk-title__name { font-size: clamp(1.5rem, 1.3rem + 0.6vw, 1.875rem); font-weight: 600; line-height: 1.4; letter-spacing: 0.02em; }
+  .bk-title__original, .bk-title__author { font-size: 14px; line-height: 1.6; }
+  .bk-title__caption { max-width: 30em; font-size: 15px; line-height: 1.85; color: var(--c-muted); }
+  @media (max-width: 767px) {
+    .bk-title { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; margin-bottom: 44px; }
+    .bk-title__page { padding: 16px; }
+    .bk-title__name { font-size: 20px; }
+    .bk-title__original, .bk-title__author { font-size: 13px; }
+    .bk-title__caption { font-size: 14px; }
+  }
+</style>

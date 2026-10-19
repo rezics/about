@@ -1,0 +1,36 @@
+---
+// The editions page's two orders (books): the same four volumes in publication order and in the
+// recommended reading order, each a row of small flat tiles; the side story is the one tile in
+// sage (the skills paper, a neighbour), so its move between the rows reads at a glance. Ordered lists, so the order is content.
+import site from '../../content/sites/books';
+import { fieldStyle, kindFields } from '../../kit/theme';
+
+const o = site.strings.editions.orders;
+const side = 1; // index of the side story in `tiles`
+const sideStyle = fieldStyle(kindFields.skills);
+const rows: { label: string; order: number[] }[] = [
+  { label: o.rows[0], order: o.tiles.map((_, i) => i) },
+  { label: o.rows[1], order: o.reading },
+];
+---
+<div class="bk-orders">
+  {rows.map((r) => (
+    <div class="bk-orders__row">
+      <p class="bk-orders__label">{r.label}</p>
+      <ol class="bk-orders__tiles" role="list" aria-label={r.label}>
+        {r.order.map((i) => <li class:list={['bk-orders__tile', 'serif', i === side && 'is-side']} style={i === side ? sideStyle : undefined}>{o.tiles[i]}</li>)}
+      </ol>
+    </div>
+  ))}
+</div>
+<style>
+  .bk-orders { display: grid; gap: 28px; margin-bottom: 56px; }
+  .bk-orders__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); align-items: center; }
+  .bk-orders__label { font-size: 13px; color: var(--c-muted); letter-spacing: 0.04em; }
+  .bk-orders__tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
+  .bk-orders__tile { display: flex; align-items: flex-end; height: 88px; padding: 12px 14px; background: var(--field); color: var(--on-field); font-size: 18px; font-weight: 600; letter-spacing: 0.04em; }
+  @media (max-width: 767px) {
+    .bk-orders__row { grid-template-columns: minmax(0, 1fr); }
+    .bk-orders__tile { height: 72px; padding: 10px; font-size: 16px; }
+  }
+</style>

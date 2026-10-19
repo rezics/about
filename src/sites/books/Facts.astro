@@ -1,0 +1,26 @@
+---
+// A facts list that follows a photo row or a statement directly (books): the kit's FactList on
+// the section body's columns (4 to 12), with an optional note under it. Inside a Section, use
+// FactList in its default slot instead.
+import FactList from '../../kit/components/FactList.astro';
+
+interface Props {
+  items: { title: string; body: string }[];
+  numbered?: boolean;
+  note?: string;
+  class?: string;
+}
+const { items, numbered = false, note, class: className } = Astro.props;
+---
+<div class:list={['bk-after', className]}>
+  <div class="grid">
+    <div class="bk-after__body">
+      <FactList items={items} numbered={numbered} />
+      {note && <p class="bk-note">{note}</p>}
+    </div>
+  </div>
+</div>
+<style>
+  .bk-after__body { grid-column: 4 / 13; margin-top: 72px; min-width: 0; }
+  @media (max-width: 767px) { .bk-after__body { margin-top: 44px; } }
+</style>

@@ -1,89 +1,45 @@
 ---
-// 書庫 作品頁 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, the example work
-// as one flat tile (text only) over the eight blocks of a work page, the one main button, ratings
-// and their targets, own records and shared facts, the ink band on languages, the next page and
-// the closing block.
+// 作品頁 (v3, SITE.md "Pages"): the heading and lede; the example's title page and the eight
+// blocks with their examples; the one primary action; what a rating names; what you edit and
+// what you propose; the statement on languages; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import Table from '../../kit/components/Table.astro';
-import Pills from '../../kit/components/Pills.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
+import NextPage from '../../sites/books/NextPage.astro';
+import ExampleFacts from '../../sites/books/ExampleFacts.astro';
+import TitlePage from '../../sites/books/TitlePage.astro';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.work;
-const accent = kindFields.books.field;
-const page = site.pages.find((p) => p.slug === 'work')!;
-const example = [{ name: s.hero.title, rel: `${s.hero.original} · ${s.hero.author}`, line: s.hero.caption, bg: accent, on: 'paper' as const }];
 ---
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <Sec label="01" title={s.sections.headline}>
-    <p class="text">{s.sections.intro}</p>
-    <div slot="wide" class="bk-stack">
-      <TileRow items={example} cols={1} height={240} label={s.hero.title} />
-      <ol class="wk-blocks" role="list">
-        {s.sections.rows.map((row, i) => (
-          <li class="wk-block">
-            <span class="wk-block__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <h3 class="wk-block__title">{row.title}</h3>
-            <p class="wk-block__body">{row.body}</p>
-            <p class="wk-block__example">{row.example}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </Sec>
+  <Section eyebrow={s.sections.label} title={s.sections.headline} lead={s.sections.lead}>
+    <TitlePage />
+    <ExampleFacts items={s.sections.rows} />
+  </Section>
 
-  <Sec label="02" title={s.action.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.action.body}</p>
-      <Table columns={[s.action.control, s.action.column]} rows={s.action.states.map((st) => [st.tab, st.button])} caption={s.action.caption} label={s.action.headline} />
-    </div>
-  </Sec>
+  <Section eyebrow={s.action.label} title={s.action.headline} lead={s.action.lead}>
+    <FactList items={s.action.rows} />
+    <p class="bk-note">{s.action.caption}</p>
+  </Section>
 
-  <Sec label="03" title={s.ratings.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.ratings.body}</p>
-      <Pills items={s.ratings.targets} tone="tint" />
-      <Pills items={s.ratings.scopes} />
-      <p class="bk-note">{s.ratings.caption}</p>
-    </div>
-  </Sec>
+  <Section eyebrow={s.ratings.label} title={s.ratings.headline} lead={s.ratings.lead}>
+    <FactList items={s.ratings.rows} />
+  </Section>
 
-  <Sec label="04" title={s.edit.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.edit.caption}</p>
-      <div class="wk-edit">
-        <div><h3 class="wk-edit__title">{s.edit.direct.title}</h3><Pills items={s.edit.direct.items} tone="tint" /></div>
-        <div><h3 class="wk-edit__title">{s.edit.propose.title}</h3><Pills items={s.edit.propose.items} /></div>
-      </div>
-    </div>
-  </Sec>
+  <Section eyebrow={s.edit.label} title={s.edit.headline}>
+    <FactList items={s.edit.rows} />
+  </Section>
 
-  <Band label={page.label} title={s.languages.statement} text={s.languages.body} />
+  <Statement text={s.languages.text} sub={s.languages.sub} note={s.languages.note} />
 
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
-  <Closing bg={accent} />
+  <NextPage slug="work" lead={s.finaleLead} />
+
+  <Closing title={site.strings.common.closing.title} body={site.strings.common.closing.body} />
 </MiniSiteLayout>
-
-<style>
-  .wk-blocks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); border-top: 1px solid var(--c-line); }
-  .wk-block { display: grid; grid-template-columns: 3em minmax(0, 1fr); column-gap: 12px; row-gap: 8px; padding: 22px 0; border-bottom: 1px solid var(--c-line); }
-  .wk-block > :not(.wk-block__n) { grid-column: 2; }
-  .wk-block__n { grid-row: 1 / span 3; font-family: var(--f-latin), var(--f-cjk); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--c-muted); padding-top: 4px; }
-  .wk-block__title { font-size: 18px; font-weight: 600; line-height: 1.5; }
-  .wk-block__body { color: var(--c-text); font-size: 16px; line-height: 1.8; }
-  .wk-block__example { font-size: 15px; line-height: 1.7; padding: 10px 14px; background: var(--tint-strong); }
-  .wk-edit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px var(--gutter); }
-  .wk-edit__title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
-  @media (max-width: 767px) {
-    .wk-blocks, .wk-edit { grid-template-columns: minmax(0, 1fr); }
-  }
-</style>

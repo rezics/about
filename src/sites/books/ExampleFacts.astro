@@ -1,0 +1,30 @@
+---
+// The Work page's eight blocks (books): the kit's facts layout (title left, text right) with the
+// example line from 《魔法禁書目錄》 under each text, numbered in the page's real order.
+interface Props {
+  items: { title: string; body: string; example: string }[];
+}
+const { items } = Astro.props;
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<ol class="bk-ex" role="list">
+  {items.map((r, i) => (
+    <li class="bk-ex__row">
+      <h3 class="bk-ex__title serif"><span class="bk-ex__n sans" aria-hidden="true">{pad(i + 1)}</span>{r.title}</h3>
+      <div class="bk-ex__text">
+        <p class="bk-ex__body">{r.body}</p>
+        <p class="bk-ex__example">{r.example}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+<style>
+  .bk-ex { border-top: 1px solid var(--c-line); }
+  .bk-ex__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
+  .bk-ex__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .bk-ex__n { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 400; color: var(--c-muted); }
+  .bk-ex__text { max-width: 34em; }
+  .bk-ex__body { font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  .bk-ex__example { margin-top: 12px; padding-left: 14px; border-left: 2px solid var(--field); font-size: 15px; line-height: 1.8; color: var(--c-muted); }
+  @media (max-width: 767px) { .bk-ex__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; } }
+</style>

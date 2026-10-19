@@ -1,53 +1,46 @@
 ---
-// 書庫 連載 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, drafts that do not
-// get lost, the writer and the reader side by side, AI disclosure as flat tiles, the world beside
-// the draft, the ink band on backup, the next page and the closing block.
+// 連載 (v3, SITE.md "Pages"): the heading and lede; the folded strip beside the four safeguards
+// of a manuscript; what a reader sees when the author acts; the AI declaration; the world beside
+// the manuscript; the backup statement; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import Pills from '../../kit/components/Pills.astro';
-import Table from '../../kit/components/Table.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
+import NextPage from '../../sites/books/NextPage.astro';
+import Facts from '../../sites/books/Facts.astro';
+import Notes from '../../sites/books/Notes.astro';
 import site from '../../content/sites/books';
+import { pictures } from '../../sites/books/pictures';
 import '../../sites/books/books.css';
 
 const s = site.strings.serial;
-const accent = kindFields.books.field;
-const page = site.pages.find((p) => p.slug === 'serial')!;
 ---
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <Sec label="01" title={s.safe.headline}>
-    <ItemGrid slot="wide" items={s.safe.pairs} cols={4} />
-  </Sec>
+  <PhotoRow eyebrow={s.safe.label} title={s.safe.headline} image={{ ...pictures.serial, alt: s.safe.alt }} />
+  <Facts items={s.safe.rows} />
 
-  <Sec label="02" title={s.mirror.headline}>
-    <div class="bk-stack">
-      <Table columns={s.mirror.columns} rows={s.mirror.rows} label={s.mirror.headline} />
-      <ul class="bk-notes">{s.mirror.notes.map((n) => <li>{n}</li>)}</ul>
-    </div>
-  </Sec>
+  <Section eyebrow={s.mirror.label} title={s.mirror.headline}>
+    <FactList items={s.mirror.rows} />
+    <Notes items={s.mirror.notes} />
+  </Section>
 
-  <Sec label="03" title={s.ai.headline}>
-    <ul class="bk-notes">{s.ai.notes.map((n) => <li>{n}</li>)}</ul>
-    <ItemGrid slot="wide" items={s.ai.squares} cols={3} look="cards" />
-  </Sec>
+  <Section eyebrow={s.ai.label} title={s.ai.headline}>
+    <FactList items={s.ai.rows} />
+    <Notes items={s.ai.notes} />
+  </Section>
 
-  <Sec label="04" title={s.world.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.world.body}</p>
-      <Pills items={s.world.squares} tone="tint" />
-      <ul class="bk-notes">{s.world.items.map((n) => <li>{n}</li>)}</ul>
-    </div>
-  </Sec>
+  <Section eyebrow={s.world.label} title={s.world.headline} lead={s.world.lead}>
+    <Notes items={s.world.items} />
+  </Section>
 
-  <Band label={page.label} title={s.backup.statement} text={s.backup.body} />
+  <Statement text={s.backup.text} sub={s.backup.sub} note={s.backup.note} />
 
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
-  <Closing bg={accent} />
+  <NextPage slug="serial" lead={s.finaleLead} />
+
+  <Closing title={site.strings.common.closing.title} body={site.strings.common.closing.body} />
 </MiniSiteLayout>
