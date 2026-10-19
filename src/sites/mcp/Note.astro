@@ -1,0 +1,12 @@
+---
+/** A short muted line under a list or table: the 示意 label, a caption. */
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className } = Astro.props;
+---
+<p class:list={['mnote', className]}>{text}</p>
+<style>
+  .mnote { margin-top: 18px; font-size: 14px; line-height: 1.8; color: var(--c-muted); }
+</style>

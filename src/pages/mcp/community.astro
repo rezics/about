@@ -1,0 +1,48 @@
+---
+// MCP Hub community (v3; src/sites/mcp/SITE.md section 3): what a score carries, threads on the
+// server or a version, one mixed list, a community's own directory.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/mcp/Next.astro';
+import Note from '../../sites/mcp/Note.astro';
+import KindList from '../../sites/mcp/KindList.astro';
+import Words from '../../sites/mcp/Words.astro';
+import site from '../../content/sites/mcp';
+import { nextPages } from '../../sites/mcp/tiles';
+
+const s = site.strings;
+const c = s.community;
+---
+<MiniSiteLayout>
+  <Words>
+    <PageHead label={site.name} title={c.hero.headline} lede={c.hero.lede} />
+
+    <Section eyebrow={c.score.label} title={c.score.headline}>
+      <FactList items={c.score.items} />
+      <Note text={c.score.note} />
+    </Section>
+
+    <Section eyebrow={c.discussion.label} title={c.discussion.headline} lead={[c.discussion.body, c.discussion.agents]} />
+
+    <Section eyebrow={c.list.label} title={c.list.headline} lead={c.list.body}>
+      <KindList title={c.list.title} items={c.list.items} />
+      <Note text={c.list.caption} />
+    </Section>
+
+    <PhotoRow
+      side="left"
+      eyebrow={c.zone.label}
+      title={c.zone.headline}
+      body={[c.zone.body, c.zone.routes]}
+      image={{ src: '/images/sites/mcp/zone', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.zone }}
+    />
+
+    <Next eyebrow={s.next.page} title={c.next} masonry={nextPages('community')} />
+
+    <Closing title={c.closing} body="" />
+  </Words>
+</MiniSiteLayout>

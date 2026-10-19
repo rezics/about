@@ -1,0 +1,63 @@
+---
+// MCP Hub directory (v3; src/sites/mcp/SITE.md section 3): one identity, four records kept apart,
+// filters bound to one record, lists that reach the end, the shared parts, the merge rule.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import PartsList from '../../kit/components/PartsList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/mcp/Next.astro';
+import Note from '../../sites/mcp/Note.astro';
+import Words from '../../sites/mcp/Words.astro';
+import site from '../../content/sites/mcp';
+import { kindById } from '../../kit/content';
+import { nextPages } from '../../sites/mcp/tiles';
+
+const s = site.strings;
+const d = s.directory;
+const kind = kindById('mcp');
+---
+<MiniSiteLayout>
+  <Words>
+    <PageHead label={site.name} title={d.hero.headline} lede={d.hero.lede} />
+
+    <PhotoRow
+      side="right"
+      eyebrow={d.records.label}
+      title={d.records.headline}
+      body={d.records.body}
+      image={{ src: '/images/sites/mcp/identity', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.identity }}
+    />
+    <div class="grid mcp-follow">
+      <FactList class="mcp-follow__list" items={d.records.items} />
+    </div>
+
+    <Section eyebrow={d.filters.label} title={d.filters.headline} lead={d.filters.body}>
+      <FactList items={d.filters.rows} level="p" />
+      <Note text={`${d.filters.caption}${d.filters.note}`} />
+    </Section>
+
+    <Section eyebrow={d.traversal.label} title={d.traversal.headline}>
+      <FactList items={d.traversal.facts} />
+    </Section>
+
+    <Section eyebrow={d.parts.label} title={d.parts.headline} lead={d.parts.body}>
+      <PartsList parts={kind.parts} notes={d.parts.notes} level="h3" />
+    </Section>
+
+    <Statement text={d.statement.text} sub={d.statement.sub} note={d.statement.note} />
+
+    <Next eyebrow={s.next.page} title={d.next} masonry={nextPages('directory')} />
+
+    <Closing title={d.closing} body="" />
+  </Words>
+</MiniSiteLayout>
+
+<style>
+  .mcp-follow { margin-top: 72px; }
+  .mcp-follow > :global(.mcp-follow__list) { grid-column: 4 / 13; }
+  @media (max-width: 767px) { .mcp-follow { margin-top: 44px; } }
+</style>

@@ -1,0 +1,49 @@
+---
+// MCP Hub maintainers (v3; src/sites/mcp/SITE.md section 3): four steps, what a maintainer can
+// and cannot change, the licence declaration, the maintainer's agent, then the next site.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/mcp/Next.astro';
+import TwoLists from '../../sites/mcp/TwoLists.astro';
+import Words from '../../sites/mcp/Words.astro';
+import site from '../../content/sites/mcp';
+import { nextSite } from '../../sites/mcp/tiles';
+
+const s = site.strings;
+const m = s.maintainers;
+---
+<MiniSiteLayout>
+  <Words>
+    <PageHead label={site.name} title={m.hero.headline} lede={m.hero.lede} />
+
+    <Section eyebrow={m.steps.label} title={m.steps.headline}>
+      <FactList items={m.steps.items} numbered />
+    </Section>
+
+    <Section eyebrow={m.rules.label} title={m.rules.headline}>
+      <TwoLists first={m.rules.can} second={m.rules.cannot} />
+    </Section>
+
+    <Section eyebrow={m.licence.label} title={m.licence.headline} lead={m.licence.body}>
+      <FactList items={m.licence.rows} />
+    </Section>
+
+    <Statement text={m.agent.text} sub={m.agent.sub} note={m.agent.note} level="p">
+      <p class="mcp-agent"><a class="link-draw" href={m.agent.href}>{m.agent.link}</a></p>
+    </Statement>
+
+    <Next eyebrow={s.next.site} title={m.next.headline} masonry={nextSite()} />
+
+    <Closing title={m.closing} body="" />
+  </Words>
+</MiniSiteLayout>
+
+<style>
+  :global(.stmt__more:has(> .mcp-agent)) { margin-top: 36px; }
+  .mcp-agent { margin-left: calc((100% - 11 * var(--gutter)) / 12 + var(--gutter)); }
+  @media (max-width: 767px) { .mcp-agent { margin-left: 0; } :global(.stmt__more:has(> .mcp-agent)) { margin-top: 24px; } }
+</style>

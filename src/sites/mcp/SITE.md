@@ -98,7 +98,7 @@ structure (a community's own Zone).
 
 **Theme: paper and ochre.** The site keeps the v3 paper ground: `--c-bg #efe9e0`, ink
 `#26292d`, muted `#6b6f73`, hairline `rgb(38 41 45 / .14)`, link and hover `#2f4fa3`. Ochre
-`#c9963f` is the field: the closing block, the site's own page tiles (ochre ramp), the state
+`#c9963f` is the field: the site's own page tiles (ochre ramp), the state
 marks. Text on ochre is always ink (5.5:1); muted text and links never sit on ochre. The
 earlier dark theme ("a dark room where records light up") is dropped: the approved language is
 paper, and the picture series carries the idea that the lit cell used to carry.

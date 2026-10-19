@@ -1,8 +1,57 @@
 ---
-// STUB: the mcp site's builder replaces this page (src/kit/README.md).
+// MCP Hub landing (v3; src/sites/mcp/SITE.md section 3): the photograph hero, what a record pins,
+// what it proves, the site's five pages, the neighbouring indexes, the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import Words from '../../sites/mcp/Words.astro';
+import site from '../../content/sites/mcp';
+import { landingPages, neighbours } from '../../sites/mcp/tiles';
+
+const s = site.strings;
+const l = s.landing;
+const pages = landingPages();
+const near = neighbours();
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <Words>
+    <PhotoHero
+      eyebrow={l.hero.label}
+      title={l.hero.headline}
+      lede={l.hero.lede}
+      bar
+      image={{
+        src: '/images/sites/mcp/hero',
+        widths: [960, 1920],
+        width: 1920,
+        height: 1280,
+        alt: s.pictures.hero,
+        position: '100% 50%',
+        phone: { src: '/images/sites/mcp/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
+      }}
+    >
+      <ProductCall />
+    </PhotoHero>
+
+    <Section eyebrow={l.record.label} title={l.record.headline} lead={l.record.body} link={{ href: `${site.base}evidence/`, text: l.record.link }}>
+      <FactList items={l.record.fields} />
+    </Section>
+
+    <Statement text={l.statement.text} sub={l.statement.sub} />
+
+    <Section eyebrow={l.pages.label} title={l.pages.headline}>
+      <TileMasonry slot="wide" items={pages.items} columns={pages.columns} phone={pages.phone} height={480} label={l.pages.label} />
+    </Section>
+
+    <Section eyebrow={l.neighbours.label} title={l.neighbours.headline} lead={l.neighbours.body}>
+      <TileMasonry slot="wide" items={near.items} columns={near.columns} phone={near.phone} height={280} label={l.neighbours.label} />
+    </Section>
+
+    <Closing title={l.closing.title} body={l.closing.body} />
+  </Words>
 </MiniSiteLayout>

@@ -1,0 +1,32 @@
+---
+/**
+ * Two hairline lists side by side under their own headings: what a record says and what it
+ * does not, what a maintainer can and cannot change. Phones: the second list follows the first.
+ */
+interface List {
+  heading: string;
+  items: string[];
+}
+interface Props {
+  first: List;
+  second: List;
+}
+const { first, second } = Astro.props;
+---
+<div class="mtwo">
+  {[first, second].map((l) => (
+    <div class="mtwo__col">
+      <h3 class="mtwo__heading serif">{l.heading}</h3>
+      <ul class="mtwo__list" role="list">
+        {l.items.map((t) => <li class="mtwo__item">{t}</li>)}
+      </ul>
+    </div>
+  ))}
+</div>
+<style>
+  .mtwo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 56px var(--gutter); }
+  .mtwo__heading { font-size: var(--t-h3); line-height: 1.55; padding-bottom: 18px; border-bottom: 1px solid var(--c-line); }
+  .mtwo__list { list-style: none; margin: 0; padding: 0; }
+  .mtwo__item { padding: 20px 0 22px; border-bottom: 1px solid var(--c-line); font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  @media (max-width: 767px) { .mtwo { grid-template-columns: minmax(0, 1fr); } }
+</style>

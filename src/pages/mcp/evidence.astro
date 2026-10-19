@@ -1,0 +1,66 @@
+---
+// MCP Hub evidence (v3; src/sites/mcp/SITE.md section 3): one record laid open, what it says and
+// does not, the four states, declaration and record kept apart, starting from your client.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/mcp/Next.astro';
+import Note from '../../sites/mcp/Note.astro';
+import StateList from '../../sites/mcp/StateList.astro';
+import TwoLists from '../../sites/mcp/TwoLists.astro';
+import Words from '../../sites/mcp/Words.astro';
+import site from '../../content/sites/mcp';
+import { nextPages } from '../../sites/mcp/tiles';
+
+const s = site.strings;
+const e = s.evidence;
+const fields = e.specimen.fields.map((f) => ({ title: f.label, body: `${f.value}。${f.note}` }));
+---
+<MiniSiteLayout>
+  <Words>
+    <PageHead label={site.name} title={e.hero.headline} lede={e.hero.lede} />
+
+    <PhotoRow
+      side="left"
+      eyebrow={e.specimen.label}
+      title={e.specimen.headline}
+      image={{ src: '/images/sites/mcp/records', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.records }}
+    />
+    <div class="grid mcp-follow">
+      <div class="mcp-follow__list">
+        <FactList items={fields} />
+        <Note text={e.specimen.caption} />
+      </div>
+    </div>
+
+    <Section eyebrow={e.compare.label} title={e.compare.headline}>
+      <TwoLists first={e.compare.says} second={e.compare.not} />
+    </Section>
+
+    <Section eyebrow={e.states.label} title={e.states.headline} lead={e.states.body}>
+      <StateList names={e.states.names} items={e.states.items} />
+    </Section>
+
+    <Statement text={e.statement.text} sub={e.statement.sub} />
+
+    <Section eyebrow={e.layers.label} title={e.layers.headline}>
+      <FactList items={e.layers.chapters} numbered />
+    </Section>
+
+    <Section eyebrow={e.client.label} title={e.client.headline} lead={e.client.body} />
+
+    <Next eyebrow={s.next.page} title={e.next} masonry={nextPages('evidence')} />
+
+    <Closing title={e.closing} body="" />
+  </Words>
+</MiniSiteLayout>
+
+<style>
+  .mcp-follow { margin-top: 72px; }
+  .mcp-follow__list { grid-column: 4 / 13; min-width: 0; }
+  @media (max-width: 767px) { .mcp-follow { margin-top: 44px; } }
+</style>

@@ -1,0 +1,10 @@
+---
+/**
+ * Renders its content and keeps this site's technical words whole (words.ts): each one in the
+ * text is wrapped in a `.nw` span, so the build's phrase breaks never split 伺服器 or 用戶端.
+ */
+import { joinWords } from './words';
+
+const html = await Astro.slots.render('default');
+---
+<Fragment set:html={joinWords(html)} />

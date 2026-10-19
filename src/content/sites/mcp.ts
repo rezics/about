@@ -14,7 +14,7 @@ export type McpPage = 'directory' | 'evidence' | 'versions' | 'community' | 'mai
 /** A section's eyebrow, heading and lead. */
 type Head = { label: string; headline: string; body: string };
 /** A statement: the first half in ink, the continuation muted. */
-type Statement = { text: string; sub: string };
+type Statement = { text: string; sub: string; note?: string };
 
 export type McpStrings = {
   next: { page: string; site: string };
@@ -50,7 +50,7 @@ export type McpStrings = {
     states: Head & { names: Record<McpState, string>; items: Record<McpState, string> };
     statement: Statement;
     layers: { label: string; headline: string; chapters: Item[] };
-    client: Head & { steps: Item[] };
+    client: { label: string; headline: string; body: string[] };
     next: string;
     closing: string;
   };
@@ -114,9 +114,9 @@ const strings: McpStrings = {
 
   landing: {
     hero: {
-      label: 'MCP Hub',
-      headline: 'MCP 伺服器能不能用，看有日期的紀錄。',
-      lede: 'MCP Hub 是 REZICS 的 MCP 伺服器索引。每個伺服器一個身分，每一版各自記錄：哪一天、用哪個用戶端的哪一版、以哪種語言，做成了什麼。',
+      label: 'MCP 伺服器索引',
+      headline: '哪個伺服器能用，看有日期的紀錄。',
+      lede: 'MCP Hub 給每個 MCP 伺服器一個身分，每一版各自記錄：哪一天、用哪個用戶端的哪一版、以哪種語言，做成了什麼。',
     },
     record: {
       label: '一筆紀錄',
@@ -163,10 +163,10 @@ const strings: McpStrings = {
     },
     records: {
       label: '四樣東西',
-      headline: '專案、套件、端點、工具清單，各記各的。',
-      body: '大家口中的「一個 MCP 伺服器」，其實是四樣東西。它們各自變動，所以 REZICS 分開記。',
+      headline: '一個伺服器，其實是四樣東西。',
+      body: '專案、套件、部署端點與工具清單，各自在不同的時候改變，所以 REZICS 分開記。',
       items: [
-        { title: '專案', body: '名稱、說明與維護者。換了版本、換了端點，專案還是同一個。' },
+        { title: '專案', body: '名稱、說明與維護者。換了版本、換了端點，專案還是同一個；從別人的專案分出去的，是另一個專案，用關聯連回去。' },
         { title: '套件', body: '某一版的套件，屬於哪個生態系、原生的名稱與版本號。版本先後照該生態系自己的規則。' },
         { title: '部署端點', body: '伺服器在網路上的位址。連得上，不證明它屬於誰、和你的用戶端相容，或你有權呼叫它。' },
         { title: '工具清單', body: '某個時間點，伺服器列出了哪些工具、各要什麼參數。清單一變，就多一筆觀察。' },
@@ -211,7 +211,8 @@ const strings: McpStrings = {
     },
     statement: {
       text: '名字相同，不代表是同一個伺服器。',
-      sub: '兩筆條目要合併，得有證據並經過審核，原本的身分與歷史都留著；從別人的專案分出去的伺服器是另一筆，用關聯連回去。',
+      sub: '合併要有證據，也要經過審核。',
+      note: '合併以後，原本的身分與歷史都還在，隨時查得到。',
     },
     next: '一筆紀錄寫了什麼，又刻意不寫什麼。',
     closing: '找伺服器之前，先確定找的是哪一個。',
@@ -232,7 +233,7 @@ const strings: McpStrings = {
         { label: '語言', value: '繁體中文', note: '任務用哪種語言下達。' },
         { label: '結果', value: '成功', note: '做成或沒做成，都記。' },
         { label: '日期', value: '2026/10/12', note: '這筆紀錄只代表這一天。' },
-        { label: '提交者', value: '一位使用者', note: '人或代理都能提交，代理會標明由誰操作。' },
+        { label: '提交者', value: '一位使用者', note: '人或 AI 代理都能提交，代理會標明由誰操作。' },
         { label: '審核', value: '已審核', note: '經人審核過，紀錄才會公開。' },
       ],
       caption: '示意紀錄。欄位是真的，內容是範例。',
@@ -288,12 +289,9 @@ const strings: McpStrings = {
     client: {
       label: '從用戶端找',
       headline: '從你的用戶端看起。',
-      body: '三個選擇，目錄就只留下這個組合的紀錄。把它存成檢視並追蹤，符合條件的新紀錄出現時，你就看得到。',
-      steps: [
-        { title: '用戶端', body: '先選你用的那一種用戶端。' },
-        { title: '版本', body: '再選用戶端的版本，紀錄要對得上。' },
-        { title: '任務語言', body: '最後選你下達任務時用的語言。' },
-        { title: '符合的伺服器', body: '留下的，都是這個組合有紀錄的伺服器，結果與日期寫在旁邊。' },
+      body: [
+        '先選你用的用戶端與版本，再選任務語言，目錄就只留下這個組合有紀錄的伺服器，結果與日期寫在旁邊。',
+        '把它存成檢視並追蹤，符合條件的新紀錄出現時，你就看得到。',
       ],
     },
     next: '每一版有自己的一筆，工具清單的增減看得出來。',
@@ -353,7 +351,8 @@ const strings: McpStrings = {
     },
     statement: {
       text: '評分也釘在版本上。',
-      sub: '給 1.4 版的分數不會算進 2.0 版。跨版本的數字是另外計算的指標，會寫明怎麼算、涵蓋了哪幾版。',
+      sub: '給 1.4 版的分數，不會算進 2.0 版。',
+      note: '跨版本的數字是另外計算的指標，會寫明怎麼算、涵蓋了哪幾版。',
     },
     next: '分數、討論與清單，都說清楚對象是誰。',
     closing: '換了版本，就從紀錄重新看起。',
@@ -445,8 +444,9 @@ const strings: McpStrings = {
       ],
     },
     agent: {
-      text: '你的代理可以在每次發版後跑一輪任務，',
-      sub: '把結果交上來，標明來自你的代理，和其他人的紀錄走同一套審核。',
+      text: '你的 AI 代理可以在每次發版後跑一輪任務，',
+      sub: '把結果交上來。',
+      note: '這些紀錄會標明來自你的代理，和其他人的紀錄走同一套審核。',
       link: '看提交方式',
       href: '/developers/',
     },
@@ -458,7 +458,7 @@ const strings: McpStrings = {
         software: '專案、套件與用戶端',
       },
     },
-    closing: '你的宣告和大家的紀錄，並排給讀者看。',
+    closing: '你的宣告與大家的紀錄，並排呈現。',
   },
 };
 
