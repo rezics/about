@@ -1,13 +1,17 @@
 ---
 // The Wiki+ page's reading-position example (示意): pick a position (radio pills) and the people
-// and events from later chapters fold away. Works without script: one CSS rule per position hides
-// the entries whose first chapter lies beyond it.
+// and events from later chapters fold away into a quiet placeholder; their text is hidden, so it
+// is neither seen nor read out. Works without script: the rules below, one selector per position
+// and later entry, are generated here.
 import site from '../../content/sites/books';
 
 const p = site.strings.wiki.position;
-const css = p.positions
-  .map((pos, i) => `.pos:has(#pos-${i}:checked) [data-ch]{--late:0}` + p.entries.filter((e) => e.chapter > pos.chapter).map((e) => `.pos:has(#pos-${i}:checked) [data-ch="${e.chapter}"]{--late:1}`).join(''))
-  .join('');
+const late = p.positions.flatMap((pos, i) =>
+  [...new Set(p.entries.filter((e) => e.chapter > pos.chapter).map((e) => e.chapter))].map((ch) => `.pos:has(#pos-${i}:checked) .pos__entry[data-ch="${ch}"]`),
+);
+const css = late.length
+  ? `${late.map((sel) => `${sel} > *`).join(',')}{visibility:hidden}${late.map((sel) => `${sel}::after`).join(',')}{opacity:1}`
+  : '';
 const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.status.replace('{n}', String(p.positions[i]!.chapter)));
 ---
 <div class="pos">
@@ -69,10 +73,23 @@ const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.st
   .pos:has(#pos-4:checked) .pos__status[data-for='4'], .pos:has(#pos-5:checked) .pos__status[data-for='5'] { display: block; }
   .pos__groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
   .pos__list { display: flex; flex-direction: column; margin-top: 10px; }
-  .pos__entry { --late: 0; display: flex; flex-direction: column; gap: 2px; padding-block: 12px; border-top: 1px solid var(--c-line); }
-  /* A later entry folds into a quiet placeholder: its line stays, its text goes. */
-  .pos__entry[data-ch] { opacity: calc(1 - var(--late) * 0.62); }
-  .pos__entry[data-ch] > * { filter: blur(calc(var(--late) * 5px)); transition: filter var(--d-m) var(--ease-soft); }
+  .pos__entry { position: relative; display: flex; flex-direction: column; gap: 2px; padding-block: 12px; border-top: 1px solid var(--c-line); }
+  /* A later entry folds into a quiet placeholder: its row stays, its text goes (hidden, so it is
+     not read out either) and two soft bars stand in for it. */
+  .pos__entry::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: min(70%, 16em);
+    height: 12px;
+    border-radius: var(--r-pill);
+    background: var(--tint-strong);
+    box-shadow: 0 22px 0 -1px var(--tint);
+    opacity: 0;
+    transition: opacity var(--d-m) var(--ease-soft);
+    pointer-events: none;
+  }
   .pos__name { font-weight: 500; }
   .pos__alias, .pos__note { color: var(--c-muted); font-size: var(--t-s); }
   .pos__src { color: var(--c-muted); }
