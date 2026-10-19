@@ -9,6 +9,7 @@ import FactList from '../../../kit/components/FactList.astro';
 import Statement from '../../../kit/components/Statement.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
 import Byline from '../../../sites/community/Byline.astro';
+import Figures from '../../../sites/community/Figures.astro';
 import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
 import { site as shared } from '../../../kit/content';
 import site from '../../../content/sites/community';
@@ -51,7 +52,7 @@ const s = site.strings;
   <Statement text={s.leave.statement} sub={s.leave.sub} />
 
   <Section eyebrow={s.ratings.label} title={s.ratings.headline} lead={s.ratings.lead}>
-    <FactList items={s.ratings.facts!} />
+    <Figures figures={s.ratings.figures} label={s.ratings.headline} />
     <p class="module-note">{s.ratings.note}</p>
   </Section>
 

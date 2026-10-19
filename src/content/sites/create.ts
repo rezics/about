@@ -24,7 +24,7 @@ export interface CreateStrings {
 
 const strings: CreateStrings = {
   hero: {
-    headline: '作者、譯者、版次與權利，每一筆都記清楚。',
+    headline: '作者、版次與權利，每一筆都記清楚。',
     lede: '寫稿、排程、發出章節都在這裡。每次正式發行都封存起來，譯本與授權逐筆記名；直接賣書與遊戲時，結算單列出每一筆扣除。',
     imageAlt: '兩疊用深灰紙條沿一邊裝訂起來的紙，疊在一起，側邊露出一層層顏色。',
   },

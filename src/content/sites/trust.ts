@@ -1,7 +1,7 @@
 // 信任 /engine/trust/: copy for the v3 module page (plan in src/sites/community/SITE.md). Every
 // statement restates docs/contracts, docs/operations or docs/legal in rezics-next (facts.md).
 import type { MiniSite } from '../schema';
-import type { ModuleFamilyStrings, ModuleSection, ModuleStatement } from './community';
+import type { Figure, ModuleFamilyStrings, ModuleSection, ModuleStatement } from './community';
 
 export interface TrustStrings {
   hero: { headline: string; lede: string; imageAlt: string };
@@ -9,7 +9,7 @@ export interface TrustStrings {
   imports: ModuleSection;
   humans: ModuleSection;
   /** Numbers written into the policies: a numeral, its unit and one sentence. */
-  numbers: ModuleSection & { figures: { value: string; unit: string; body: string }[] };
+  numbers: ModuleSection & { figures: Figure[] };
   views: ModuleSection;
   privacy: ModuleStatement & { facts: { title: string; body: string }[] };
   /** The module family (SITE.md): the ring's three labels and the page's closing line. */
@@ -18,7 +18,7 @@ export interface TrustStrings {
 
 const strings: TrustStrings = {
   hero: {
-    headline: '每一筆資料，都看得到是誰、根據什麼。',
+    headline: '誰決定、根據什麼，都看得到。',
     lede: '事實寫明來源，授權寫明條款，管理決定寫明依據的規則與證據。審核、爭議與申訴一筆一筆加上去，後來的不會蓋掉先前的。',
     imageAlt: '幾張紙一層層錯開疊放，每一層的邊上都用棉線繫著一張空白的小吊牌。',
   },

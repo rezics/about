@@ -28,6 +28,9 @@ section wins.
   sentence of a legal draft or contract (facts.md), in the present tense, nothing added.
 - **One picture per page**, the hero. Each is the page's idea in paper (below). No section
   pictures: the sections are type, hairlines and one specimen at most.
+- **Hero headlines fit the copy area.** The hero's copy is about five columns wide, so each
+  clause of an h1 stays within about nine characters at 56 px (the first build wrapped
+  「Realm 是接待你的場地。」 onto a third line).
 - **One interaction**, on 社群 only: the byline specimen switches between the two readers with
   radio pills (CSS `:has()`, works without script). It shows a real rule, so it earns its place.
   The other two pages have no interaction beyond the kit's hovers and reveals.
@@ -77,12 +80,12 @@ never owns you)
 
 | # | Part | Content |
 |---|---|---|
-| 1 | Hero | 你是說話的人，Realm 是接待你的場地。 |
+| 1 | Hero | 你是說話的人，Realm 是場地。 |
 | 2 | Section + facts | 身分: one public identity across every Realm (5 facts) |
 | 3 | Section + specimen + facts | 署名: the fixed byline rule; the specimen line 「你 · 奇幻小說讀書會」 swaps when the reader toggles 追蹤你的人 / 還沒追蹤你的人 (Realm-led line carries 追蹤); 4 rules |
 | 4 | Section + facts | Realm: the venue sets its rules (8 facts) |
 | 5 | Statement | 你隨時可以離開一個 Realm，(muted) 因為你的身分、書庫與清單，本來就不在它裡面。 |
-| 6 | Section + facts | 評分: question, target, population; 5 / 10 / 50 as serif numerals in the facts' title column |
+| 6 | Section + figures | 評分: question, target, population (two lead paragraphs); 5 / 10 / 50 則評分 as large serif figures (`Figures`, shared with 信任) and the note |
 | 7 | Section + facts | 追蹤: anything can be followed, three levels |
 | 8 | Section + facts | 動態: newest is newest; 最佳, recommendations, mute, channels |
 | 9 | Section | 等級: 被採納的貢獻才算數，簽到不算。 (lead only) |
@@ -95,7 +98,7 @@ deduction is visible)
 
 | # | Part | Content |
 |---|---|---|
-| 1 | Hero | 作者、譯者、版次與權利，每一筆都記清楚。 |
+| 1 | Hero | 作者、版次與權利，每一筆都記清楚。 |
 | 2 | Section + facts | 寫作: every saved revision can be found again (6) |
 | 3 | Section + facts | 設定集: a private world beside the manuscript (6) |
 | 4 | Section + facts | 章節: a chapter is a post placed in a book (6) |
@@ -111,7 +114,7 @@ marks are added, never erased)
 
 | # | Part | Content |
 |---|---|---|
-| 1 | Hero | 每一筆資料，都看得到是誰、根據什麼。 |
+| 1 | Hero | 誰決定、根據什麼，都看得到。 |
 | 2 | Section + facts | 標記: marks are only added (7: 出處, 未驗證, 已審核, 有爭議, AI 使用聲明, 未評估, 自動化身分) |
 | 3 | Section + facts | 匯入: the platform answers for its imports (6) |
 | 4 | Section + facts | 申訴與決定: 拍板的是人 (5) |
@@ -124,8 +127,8 @@ marks are added, never erased)
 
 - Shapes: `ModuleSection`, `ModuleStatement` and `ModuleFamilyStrings` live in
   `src/content/sites/community.ts` and are shared by create and trust. Components:
-  `src/sites/community/` (`Byline`, `ModuleRing`, `ModuleEnd`), `src/sites/create/Account`,
-  `src/sites/trust/Figures`.
+  `src/sites/community/` (`Byline`, `Figures`, `ModuleRing`, `ModuleEnd`) and
+  `src/sites/create/Account`.
 - Motion: the kit's reveals and tile hovers only. No idle motion, no scrub.
 
 ## Brief

@@ -6,7 +6,7 @@ import type { Item, MiniSite } from '../schema';
 export interface ModuleSection {
   label: string;
   headline: string;
-  lead: string;
+  lead: string | string[];
   facts?: Item[];
   note?: string;
 }
@@ -15,6 +15,13 @@ export interface ModuleSection {
 export interface ModuleFamilyStrings {
   ring: { label: string; current: string; overview: string };
   closing: string;
+}
+
+/** A number written into the rules: a numeral, its unit and one sentence. */
+export interface Figure {
+  value: string;
+  unit: string;
+  body: string;
 }
 
 /** A large serif statement; `sub` is its muted second half. */
@@ -41,7 +48,7 @@ export interface CommunityStrings {
   };
   realm: ModuleSection;
   leave: ModuleStatement;
-  ratings: ModuleSection;
+  ratings: ModuleSection & { figures: Figure[] };
   follow: ModuleSection;
   feed: ModuleSection;
   recognition: ModuleSection;
@@ -51,7 +58,7 @@ export interface CommunityStrings {
 
 const strings: CommunityStrings = {
   hero: {
-    headline: '你是說話的人，Realm 是接待你的場地。',
+    headline: '你是說話的人，Realm 是場地。',
     lede: '一個人只有一個公開身分，評論、清單與書庫跟著你走進每個 Realm。Realm 給你話題、規則與管理，不會把你收進它的名下。',
     imageAlt: '許多小紙片圍在一張較大的深灰色紙片四周，像一群人聚在同一張桌子旁。',
   },
@@ -116,14 +123,14 @@ const strings: CommunityStrings = {
   ratings: {
     label: '評分',
     headline: '分數旁邊，寫著問題、對象與評分的人。',
-    lead: '每個分數都標出三件事：問的是什麼、評的是哪一個對象、由哪一群人評。問的不是同一件事，分數就不會被平均在一起；單集的分數不算進整部，某一版的分數留在那一版。',
-    facts: [
-      { title: '5 則', body: '一部作品有 5 則評分以後才顯示平均；不足時只列出筆數與分布，再告訴你還差幾則。' },
-      { title: '10 則', body: '細分的對象，例如單一集數裡的一個角色，要 10 則才顯示平均。' },
-      { title: '50 則', body: '從 50 則評分起才能進入排行榜，排行榜公開它採用的平均值與權重。' },
-      { title: '評論可以不打分', body: '評論寫明評的是故事、翻譯、朗讀還是製作，以及哪一個版本。' },
-      { title: '換一群人看', body: '預設先看全站，旁邊排著你所在的 Realm 和評分最多的幾個 Realm，其他社群的分數也都找得到。' },
-      { title: '沒有評分，就不畫', body: '一則評分都沒有時，畫面不顯示零分，也不畫空白的分布圖。' },
+    lead: [
+      '每個分數都標出三件事：問的是什麼、評的是哪一個對象、由哪一群人評。問的不是同一件事，分數就不會被平均在一起；單集的分數不算進整部，某一版的分數留在那一版。',
+      '評論可以不打分，只要寫明評的是故事、翻譯、朗讀還是製作，以及哪一個版本。預設先看全站，旁邊排著你所在的 Realm 和評分最多的幾個 Realm；一則評分都沒有時，畫面不顯示零分，也不畫空白的分布圖。',
+    ],
+    figures: [
+      { value: '5', unit: '則評分', body: '一部作品有 5 則評分以後才顯示平均；不足時只列出筆數與分布，再告訴你還差幾則。' },
+      { value: '10', unit: '則評分', body: '細分的對象，例如單一集數裡的一個角色，要 10 則才顯示平均。' },
+      { value: '50', unit: '則評分', body: '從 50 則評分起才能進入排行榜，排行榜公開它採用的平均值與權重。' },
     ],
     note: '門檻是預設值，每一種評分可以依自己的資料調整。',
   },

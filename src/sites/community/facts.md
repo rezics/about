@@ -74,11 +74,11 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Realm may be stricter than platform, never looser (Realm) | `operations/trust-and-safety.md#intake-response-and-recovery`; `legal/acceptable-use-policy.md` §7; `legal/content-ratings-and-age-policy.md` §4 |
 | You can always leave; identity, library and lists are not in the Realm (statement after Realm) | `contracts/community-interactions.md` (Leave); `product/goal.md` |
 | A rating's identity is question, scale and grain; populations are segments; different questions never combine (評分 lead) | `contracts/ratings.md#scoped-targets-and-roll-ups` |
-| Thresholds 5 / 10 / 50; below threshold only count and histogram plus how many more; leaderboards publish mean and weight; defaults are overridable (評分: 5, 10, 50 and the note) | `contracts/ratings.md`; `plan/frontend.md#zones` ("below the display threshold the count and how many more ratings reveal it") |
+| Thresholds 5 / 10 / 50; below threshold only count and histogram plus how many more; leaderboards publish mean and weight; defaults are overridable (評分 figures and the note) | `contracts/ratings.md`; `plan/frontend.md#zones` ("below the display threshold the count and how many more ratings reveal it") |
 | No implicit roll-ups; version pins; derived metrics name formula and coverage (評分 lead) | `contracts/ratings.md` |
-| A review never requires a score; reviews name story, translation, narration or production and version (評分: 評論可以不打分) | `plan/frontend.md#work-page` item 6; `contracts/work-and-release.md#explicit-identities-targets-and-units` and `#work-levels-realizations-and-versions` |
-| Scope order: Global, your communities, most-rated communities, then any other (評分: 換一群人看) | `plan/frontend.md#collections-at-any-size` |
-| With no ratings nothing is drawn, never zero (評分: 沒有評分，就不畫) | `plan/frontend.md#zones` ("with none, nothing drawn, never a zero or an empty histogram") |
+| A review never requires a score; reviews name story, translation, narration or production and version (評分 lead) | `plan/frontend.md#work-page` item 6; `contracts/work-and-release.md#explicit-identities-targets-and-units` and `#work-levels-realizations-and-versions` |
+| Scope order: Global, your communities, most-rated communities, then any other (評分 lead) | `plan/frontend.md#collections-at-any-size` |
+| With no ratings nothing is drawn, never zero (評分 lead) | `plan/frontend.md#zones` ("with none, nothing drawn, never a zero or an empty histogram") |
 | Followable targets incl. saved views; default levels per target; Reading follows the Work; Watch on thread, proposal, release, Collection (追蹤) | `contracts/community-interactions.md#follow-join-and-notification` |
 | Lists: mixed types, ordered, annotated, exportable; reading orders with reasons, distinct from publication order (追蹤: 清單) | `product/platform-thesis.md#capabilities` (Listed); `plan/frontend.md#work-page` items 4 and 8 |
 | All, Highlights, Off; Off keeps direct involvement such as replies and mentions (追蹤 lead; 關閉也不漏掉你) | `contracts/notifications.md#recipients-and-levels` |
