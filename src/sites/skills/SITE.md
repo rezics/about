@@ -121,12 +121,20 @@ Each page starts copy-first on phones (390 px): eyebrow, h1, lede, action, then 
 
 | Page | Sequence (one idea each) |
 |---|---|
-| `/skills/` | **Hero** (fold picture, copy in the empty paper on the left, 「前往 REZICS」) → **Section + facts** 讀的順序: three rows 一行 / 一頁 / 用到的檔案 → **Photo row** 檔案: folder picture beside the files text and a link to 版本與檔案 → **Statement** 收錄不是背書 → **Tile masonry** 這個網站: the five pages → **Section + tile row** 接到的地方: 軟體, MCP Hub, 書庫, 視覺小說 in their kind colours → **Closing** |
-| `directory` | **Page head** 一列，一個技能，一句話 → **Section + facts** 篩選 (five filters) → **Statement** 一路翻得到最後一筆 → **Photo row** 清單: bundle picture beside the lists text → **Section + facts** 檢視 (搜尋, 檢視, 追蹤) → **Closing** |
-| `versions` | **Page head** 打開一個技能 → **Section + facts** SKILL.md: frontmatter key and example value left, what REZICS does right → **Section + facts** 檔案: six roles, path as code, marks 可執行 and 缺少 → **Photo row** 版本: fan picture beside four rows → **Section + facts** 套件 → **Statement** 每個技能，都署了名 → **Closing** |
-| `evidence` | **Page head** 宣告是宣告，紀錄是紀錄 → **Section** 宣告: one code line `compatibility: …` with the mark 需要獨立驗證 → **Section + facts** 紀錄: eight fields (two columns on desktop) → **Section + facts** 讀法: five rules → **Section + facts** 評分與討論: two rows → **Statement** 不是安全保證 → **Closing** |
-| `use` | **Page head** 讀過，再交給你的 AI 代理 → **Section + numbered facts** 六個步驟 → **Section** API 與 MCP: two paragraphs and the link to the developers site → **Section + facts** 之後的版本 → **Closing** |
-| `publish` | **Page head** 一個資料夾，發布成一個身分 → **Photo row** 匯入: slit picture beside the lead, then six numbered rows → **Section + facts** 範圍: five limits (figure left, meaning right) → **Statement** 描述是最先被讀到的一句, with the two example descriptions as rows → **Section + facts** 署名與權利 → **Closing** to API Hub |
+| `/skills/` | **PhotoHero** (fold picture, copy in the empty paper on the left, 「前往 REZICS」) → **Section + numbered FactList** 讀的順序: 一行 / 一頁 / 用到的檔案 → **PhotoRow** 檔案: folder picture on the left, the files text and a link to 版本與檔案 → **Statement** 收錄不是背書 → **Section + TileMasonry** 這個網站: the five pages in lime ramp colours (directory a whole column) → **Section + TileMasonry** 接到的地方: 軟體, MCP Hub, 書庫, 視覺小說 in their kind colours → **Closing** |
+| `directory` | **PageHead** 一列，一個技能，一句話 → **Section + FactList** 篩選 (five filters) → **Statement** 一路翻得到最後一筆 → **PhotoRow** 清單: bundle picture → **Section + numbered FactList** 檢視 (搜尋, 檢視, 追蹤) → **next page** → **Closing** |
+| `versions` | **PageHead** 打開一個技能 → **Section + Rows** SKILL.md: frontmatter key as code and example value left, what REZICS does right → **Section + Rows** 檔案: six roles, path as code, marks 可執行 and 缺少 → **PhotoRow** 版本: fan picture, two paragraphs → **Section + FactList** 套件 → **Statement** 每個技能，都署了名 → **next page** → **Closing** |
+| `evidence` | **PageHead** 宣告是宣告，紀錄是紀錄 → **Section + CodeTile** 宣告: the `compatibility:` line, caption 需要獨立驗證 → **Section + two FactLists** 紀錄: eight fields side by side (one list under 1024 px) → **Section + FactList** 讀法 → **Section + FactList** 評分與討論 → **Statement** 不是安全保證 → **next page** → **Closing** |
+| `use` | **PageHead** 讀過，再交給你的 AI 代理 → **Section + numbered FactList** 六個步驟 → **Section** API 與 MCP: two paragraphs and the link to the developers site → **Section + FactList** 之後的版本 → **next page** → **Closing** |
+| `publish` | **PageHead** 一個資料夾，發布成一個身分 → **PhotoRow** 匯入只保存，不執行: slit picture → **Section + numbered FactList** 六件事 → **Section + FactList** 範圍: five limits (figure left, meaning right) → **Statement** 描述是最先被讀到的一句, the two example descriptions as a FactList under it → **Section + FactList** 署名與權利 → **next site** (API Hub tile) → **Closing** |
+
+- **Next page.** An inner page ends on a section whose title leads into the next page (「找到了，
+  就打開它。」) with that page as one tile in the colour it has in the landing masonry
+  (`NextPage.astro`); publish leads into API Hub in its kind colour. Then `Closing` with a
+  page-specific statement and the ink pill. This replaces the v2 finale.
+- **Site parts.** `Rows.astro` is the kit's FactList with a literal on the left (frontmatter key
+  or path as code, the example value, a square-cornered mark); `site.ts` holds the picture
+  definitions and the page tiles' ramp colours.
 
 Pictures per page: the landing has the hero and one photo row; directory, versions and publish
 one photo row each; evidence and use none (their content is lists to read, and a picture would
@@ -141,7 +149,9 @@ compete with them).
 - Neighbours are tiles with one short line; the longer connection text moved into the section
   lead.
 - No square wording, no notify or waiting wording, no other product or company names, no dashes;
-  every action is 「前往 REZICS」.
+  every action is 「前往 REZICS」. The package ecosystems and the visual-novel script engine the
+  facts name are no longer named on the pages ("生態系", "遊戲腳本"); `facts.md` keeps them as
+  sources.
 
 ### Pictures
 
