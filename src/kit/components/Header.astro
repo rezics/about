@@ -93,9 +93,14 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
     color: var(--c-fg);
     transition: color var(--d-s) var(--ease-soft);
   }
-  .tab > span:first-child { padding-block: 2px; border-bottom: 1px solid transparent; }
+  .tab > span:first-child { padding-block: 2px; border-bottom: 1px solid transparent; transition: translate var(--d-m) var(--ease-snap), border-color var(--d-s) var(--ease-soft); }
   .tab[aria-current] > span:first-child { border-bottom-color: currentColor; }
-  @media (hover: hover) { .tab:hover { color: var(--c-link); } }
+  @media (hover: hover) {
+    .tab:hover { color: var(--c-link); }
+    .tab:hover > span:first-child { border-bottom-color: currentColor; translate: 0 -2px; }
+  }
+  .tab:focus-visible > span:first-child { border-bottom-color: currentColor; translate: 0 -2px; }
+  .tab:active > span:first-child { translate: 0 0; }
   .tab[aria-expanded='true'] { color: var(--c-link); }
   .tab__caret {
     width: 5px;
@@ -117,6 +122,7 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
     font-size: 14px;
     font-weight: 600;
   }
+  .header__menu:active { translate: 0 1px; }
   @media (max-width: 899px) {
     .header__bar { grid-template-columns: auto 1fr; }
     .header__tabs { display: none; }
