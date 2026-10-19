@@ -24,6 +24,7 @@ const { href = '/', label, wordmark = true } = Astro.props;
   }
   /* Quiet: the logo eases back a little under the pointer. */
   @media (hover: hover) { .logo:hover { opacity: 0.72; } }
+  .logo:active { opacity: 0.6; }
   .logo svg { width: 25px; height: 18px; fill: var(--c-mark); flex: none; }
   /* The wordmark in the interface face, as in the product. */
   .logo__word {

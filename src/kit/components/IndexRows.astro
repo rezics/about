@@ -48,6 +48,8 @@ const { rows, class: className } = Astro.props;
   .irow:focus-visible { outline-offset: -2px; }
   .irow:focus-visible .irow__name { color: var(--c-link); translate: 6px 0; }
   .irow:focus-visible .irow__arrow { color: var(--c-link); translate: 4px 0; }
+  .irow:active .irow__name { translate: 3px 0; }
+  .irow:active .irow__arrow { translate: 2px 0; }
   @media (max-width: 767px) {
     .irow { grid-template-columns: minmax(0, 1fr) 20px; row-gap: 6px; padding: 22px 0 24px; }
     .irow__desc { grid-column: 1; grid-row: 2; font-size: 15px; }
