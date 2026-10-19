@@ -1,0 +1,42 @@
+---
+/**
+ * The foot of an inner page: the next two pages of API Hub as calm index rows (the last pages
+ * continue to the developers site, where REZICS's own API lives). Placed before the closing.
+ */
+import IndexRows from '../../kit/components/IndexRows.astro';
+import { pageHref } from '../../kit/sites';
+import site from '../../content/sites/apis';
+
+interface Props {
+  /** The current page's slug. */
+  slug: string;
+}
+const { slug } = Astro.props;
+const s = site.strings;
+const lines: Record<string, string> = s.home.pages.rows;
+const inner = site.pages.filter((p) => p.slug !== '');
+const at = inner.findIndex((p) => p.slug === slug);
+if (at < 0) throw new Error(`NextPages: no API Hub page "${slug}"`);
+const rows: { name: string; desc: string; href: string }[] = inner
+  .slice(at + 1, at + 3)
+  .map((p) => ({ name: p.label, desc: lines[p.slug]!, href: pageHref(site, p) }));
+const developers = { name: s.connections.neighbours.developers.name, desc: s.connections.neighbours.developers.line, href: '/developers/' };
+const overview = site.pages[0]!;
+if (rows.length < 2) rows.push(developers);
+if (rows.length < 2) rows.push({ name: overview.label, desc: s.home.closing, href: pageHref(site, overview) });
+---
+<nav class="apis-next" aria-label={s.next.aria}>
+  <div class="grid">
+    <p class="eyebrow apis-next__label">{s.next.label}</p>
+    <div class="apis-next__rows"><IndexRows rows={rows} /></div>
+  </div>
+</nav>
+<style>
+  .apis-next { padding-top: var(--space-section); }
+  .apis-next__label { grid-column: 1 / 4; grid-row: 1; padding-top: 30px; }
+  .apis-next__rows { grid-column: 4 / 13; grid-row: 1; min-width: 0; }
+  @media (max-width: 767px) {
+    .apis-next__label { grid-row: auto; padding: 0 0 14px; }
+    .apis-next__rows { grid-row: auto; }
+  }
+</style>

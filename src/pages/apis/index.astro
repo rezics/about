@@ -1,8 +1,83 @@
 ---
-// STUB: the apis site's builder replaces this page (src/kit/README.md).
+// API Hub landing (v3, SITE.md "v3"): the photograph of punched sheets, the six pages as a tile
+// masonry, the directory beside the request picture, the statement on change, the eight parts,
+// the connections beside their picture, the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import { kindById, partById } from '../../kit/content';
+import { pageHref } from '../../kit/sites';
+import { heroPicture, pictures, tones } from '../../sites/apis/art';
+import site from '../../content/sites/apis';
+import type { PartId } from '../../content/schema';
+
+const s = site.strings.home;
+const lines: Record<string, string> = s.pages.rows;
+const notes: Partial<Record<PartId, string>> = s.parts.notes;
+const kind = kindById('apis');
+const page = (slug: string) => site.pages.find((p) => p.slug === slug)!;
+const tone: Record<string, { bg: string; on: 'paper' | 'ink' }> = {
+  directory: tones.blue,
+  versions: tones.deep,
+  specs: tones.inkBlue,
+  connections: tones.light,
+  community: tones.mid,
+  publishing: tones.slate,
+};
+const tiles: MasonryItem[] = site.pages
+  .filter((p) => p.slug !== '')
+  .map((p) => ({ id: p.slug, name: p.label, line: lines[p.slug], href: pageHref(site, p), ...tone[p.slug]! }));
+// Three columns that end level; the directory leads, publishing closes the first column.
+const columns: MasonryPlace[][] = [
+  [{ id: 'directory', h: 5 }, { id: 'publishing', h: 2 }],
+  [{ id: 'versions', h: 3 }, { id: 'connections', h: 4 }],
+  [{ id: 'specs', h: 4 }, { id: 'community', h: 3 }],
+];
+const phone: MasonryRowPlace[][] = [
+  [{ id: 'directory' }, { id: 'versions' }],
+  [{ id: 'specs' }, { id: 'connections' }],
+  [{ id: 'community' }, { id: 'publishing' }],
+];
+const parts = kind.parts.map((id) => ({ title: partById(id).name, body: notes[id] ?? kind.partNotes[id] ?? '' }));
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero title={s.hero.headline} lede={s.hero.lede} image={heroPicture} bar>
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.pages.eyebrow} title={s.pages.headline}>
+    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={520} label={s.pages.eyebrow} />
+  </Section>
+
+  <PhotoRow
+    side="left"
+    eyebrow={s.directory.eyebrow}
+    title={s.directory.headline}
+    body={s.directory.lead}
+    link={{ href: pageHref(site, page('directory')), text: s.directory.link }}
+    image={pictures.request}
+  />
+
+  <Statement text={s.statement.lead} sub={s.statement.rest} />
+
+  <Section eyebrow={s.parts.eyebrow} title={s.parts.headline} lead={s.parts.lead}>
+    <FactList items={parts} />
+  </Section>
+
+  <PhotoRow
+    side="right"
+    eyebrow={s.connections.eyebrow}
+    title={s.connections.headline}
+    body={s.connections.lead}
+    link={{ href: pageHref(site, page('connections')), text: s.connections.link }}
+    image={pictures.connections}
+  />
+
+  <Closing title={s.closing} body={site.strings.closingBody} />
 </MiniSiteLayout>

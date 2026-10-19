@@ -5,11 +5,16 @@ import { kinds } from '../kinds';
 
 const kind = kinds.find((k) => k.id === 'apis')!;
 
-/** A row of a facts list: title on the left, text on the right, an optional link. */
+/** A row of a facts list: title on the left, text on the right. */
 export interface ApisRow {
   title: string;
   body: string;
-  link?: { label: string; href: string };
+}
+/** An invented example shown as a flat tile: name, a note at the top, one line. */
+export interface ApisTile {
+  name: string;
+  rel?: string;
+  line: string;
 }
 /** A page's first screen: one sentence and one short paragraph. */
 export interface ApisHero {
@@ -22,16 +27,22 @@ export interface ApisSection {
   headline: string;
   lead?: string;
 }
-/** A large statement: the first half in ink, the second in muted ink. */
+/** A large statement: the first half in ink, the second in muted ink, an optional note. */
 export interface ApisStatement {
   lead: string;
   rest: string;
+  note?: string;
 }
 
 export interface ApisStrings {
   /** Prefix of every caption under an invented example. */
   example: string;
-  next: { page: string; site: string };
+  /** The row of further pages at the foot of every inner page. */
+  next: { label: string; aria: string };
+  /** The sentence under every page's closing statement. */
+  closingBody: string;
+  /** Text alternatives of the five photographs. */
+  pictures: { hero: string; request: string; versions: string; specs: string; connections: string };
   home: {
     hero: ApisHero;
     pages: ApisSection & { rows: Record<string, string> };
@@ -46,13 +57,13 @@ export interface ApisStrings {
     facets: ApisSection & { rows: ApisRow[] };
     complete: ApisStatement;
     identity: ApisSection & { rows: ApisRow[] };
-    views: ApisSection & { rows: ApisRow[]; caption: string };
+    views: ApisSection & { tiles: ApisTile[]; caption: string };
     closing: string;
   };
   versions: {
     hero: ApisHero;
     closed: ApisStatement;
-    sequence: ApisSection & { rows: ApisRow[]; caption: string };
+    sequence: ApisSection & { tiles: ApisTile[]; caption: string };
     events: ApisSection & { rows: ApisRow[] };
     follow: ApisSection & { rows: ApisRow[]; footnote: string };
     closing: string;
@@ -60,8 +71,9 @@ export interface ApisStrings {
   specs: {
     hero: ApisHero;
     facts: ApisSection & { rows: ApisRow[] };
+    measure: ApisStatement;
     fields: ApisSection & { rows: ApisRow[]; footnote: string };
-    absent: ApisStatement;
+    absent: ApisSection;
     closing: string;
   };
   connections: {
@@ -79,7 +91,7 @@ export interface ApisStrings {
     hero: ApisHero;
     rating: ApisSection & { rows: ApisRow[] };
     discussion: ApisStatement;
-    lists: ApisSection & { rows: ApisRow[]; caption: string };
+    lists: ApisSection & { tiles: (ApisTile & { kind: 'apis' | 'software' | 'mcp' | 'skills' })[]; caption: string };
     zone: ApisSection & { link: string };
     closing: string;
   };
@@ -165,11 +177,19 @@ export default {
   ],
   strings: {
     example: '示意：',
-    next: { page: '下一頁', site: '下一站' },
+    next: { label: '接著看', aria: 'API Hub 的其他頁面' },
+    closingBody: '用一個帳號找 API、追蹤改版，也把串接的經驗留給下一個人。',
+    pictures: {
+      hero: '暖白紙面上，幾張淺藍色的紙交疊，邊上打著一排排整齊的圓孔，底下露出一張深藍色的紙。',
+      request: '五張淺藍色的紙片像閘門一樣立成一排，一條深灰藍的紙帶依序穿過每一張紙上的切口。',
+      versions: '六張淺藍色的卡紙依序錯開排成扇形，顏色由淡漸深，頂端的圓孔一張接一張對齊。',
+      specs: '三張淺藍色的厚紙交疊，每張的角落都壓著一枚凸起的方形鋼印，沒有任何文字。',
+      connections: '一張淺藍色的紙中央打著一排圓孔，土黃、淺綠與深青三條紙帶從邊緣伸來，各自穿進一個孔。',
+    },
     home: {
       hero: {
-        headline: '每個公開 API 一個條目，每筆事實都有出處。',
-        lede: '提供者、版本、規格文件與認證方式，整理在同一個條目裡，誰說的、什麼時候說的都寫明。依任何事實篩選，跟上它的每一次改版。',
+        headline: '每個 API 一個條目，每筆事實都有出處。',
+        lede: '提供者、版本、規格文件與認證方式整理在同一個條目，誰說的、什麼時候說的都寫明。',
       },
       pages: {
         eyebrow: '六個頁面',
@@ -237,8 +257,9 @@ export default {
         ],
       },
       complete: {
-        lead: '預覽、排名與完整清單，是三種不同的承諾。',
-        rest: '每份結果都寫明筆數有多精確、資料更新到什麼時候；每頁的大小，不是清單的盡頭。',
+        lead: '預覽、排名與完整清單，是三種承諾。',
+        rest: '完整清單，會列到最後一筆。',
+        note: '每份結果都寫明筆數有多精確、資料更新到什麼時候。每頁的大小，不是清單的盡頭。',
       },
       identity: {
         eyebrow: '身分',
@@ -255,15 +276,15 @@ export default {
         eyebrow: '檢視',
         headline: '常用的條件，存起來，再追蹤。',
         lead: '一組條件存成檢視後，就有自己的名稱，可以分享給別人。追蹤一個檢視，符合條件的新條目會出現在你的追蹤動態，也可以設成摘要寄給你。',
-        rows: [
-          { title: '免認證、有規格文件', body: '先做原型時，不必申請金鑰就能試的 API。' },
-          { title: '同一個提供者的全部 API', body: '一個組織提供的 API，一次看完。' },
-          { title: '有 MCP 伺服器', body: 'AI 代理已經能透過 MCP 伺服器使用的 API。' },
-          { title: '名稱有繁體中文', body: '已經有人整理過中文名稱的 API。' },
+        tiles: [
+          { name: '免認證、有規格文件', line: '做原型時，不必申請金鑰就能試的 API' },
+          { name: '同一個提供者', line: '一個組織提供的 API，一次看完' },
+          { name: '有 MCP 伺服器', line: 'AI 代理已經能透過 MCP 伺服器使用的 API' },
+          { name: '名稱有繁體中文', line: '已經有人整理過中文名稱的 API' },
         ],
-        caption: '檢視名稱都是例子。',
+        caption: '檢視名稱與內容都是例子。',
       },
-      closing: '條件寫在事實上，結果列到最後一筆。',
+      closing: '找 API，從一筆有來源的事實開始。',
     },
     versions: {
       hero: {
@@ -271,18 +292,18 @@ export default {
         lede: '每一版各自保存發布時的樣子，被撤回也照樣查得到。追蹤一個 API，下一版宣布、上線或撤回時，消息依你設定的方式送到。',
       },
       closed: {
-        lead: '已經發布的版本，紀錄不會被改寫成後來的樣子。',
+        lead: '發布過的版本，紀錄不會被改寫。',
         rest: '後來的變更，就是下一個版本。',
       },
       sequence: {
         eyebrow: '版本順序',
         headline: '一個 API 的四個版本，依發布順序排列。',
         lead: '有證據顯示紀錄寫錯了，可以更正；但之後才出現的內容，不會補進舊版本裡。',
-        rows: [
-          { title: 'v1　已撤回', body: '提供者撤回這一版之後，它仍排在這裡，狀態改為已撤回。對方不再提供，紀錄還在。' },
-          { title: 'v2　可用', body: '舊版還能用的時候，和新版並排列出，不會被新版蓋過去。' },
-          { title: 'v3　可用', body: '變更紀錄逐條保留，每一條都附上出處。' },
-          { title: 'v4　已宣布', body: '宣布不等於發布。上線之前，它只是一則公告。' },
+        tiles: [
+          { name: 'v1', rel: '已撤回', line: '提供者不再提供，紀錄還在' },
+          { name: 'v2', rel: '可用', line: '和新版並排列出，不會被蓋過去' },
+          { name: 'v3', rel: '可用', line: '變更紀錄逐條保留，各附出處' },
+          { name: 'v4', rel: '已宣布', line: '宣布不等於發布，上線前只是公告' },
         ],
         caption: '一個虛構的 API，版本號與內容都是例子。',
       },
@@ -310,7 +331,7 @@ export default {
         ],
         footnote: '通知可以送到收件匣、推播或電子郵件摘要。每封電子郵件都能一鍵退訂。',
       },
-      closing: '舊的版本留著，下一版找得到你。',
+      closing: '改版的消息，依你選的方式送到。',
     },
     specs: {
       hero: {
@@ -328,10 +349,14 @@ export default {
           { title: '出處', body: '每筆事實都標明出自提供者、從公開資料匯入，還是社群量到的。匯入的資料附上來源與授權的連結。' },
         ],
       },
+      measure: {
+        lead: '量測和評分是兩回事。',
+        rest: '評分是大家的看法；量測說的是，在什麼條件下量到了什麼。',
+      },
       fields: {
         eyebrow: '量測',
         headline: '一筆量測，五個欄位。',
-        lead: '量測和評分是兩回事。評分是大家的看法；量測說的是，在什麼條件下量到了什麼。沒有方法與條件的數字，不算量測結果。',
+        lead: '少了方法與條件的數字，不算量測結果。五個欄位齊了，結果才能和別的 API 放在一起比。',
         rows: [
           { title: '指標', body: '量的是什麼。' },
           { title: '方法', body: '用什麼方法量。' },
@@ -342,10 +367,11 @@ export default {
         footnote: '同一個指標的結果累積成歷史，也能和其他 API 放進同一張比較表。',
       },
       absent: {
-        lead: '未知、零、不適用，是三種答案。',
-        rest: '沒量過不會被寫成零，缺少的資料也不會變成誤導人的分數。',
+        eyebrow: '缺少的資料',
+        headline: '未知、零、不適用，是三種答案。',
+        lead: '沒量過就是未知，不會被寫成零；不適用的指標，也不會被當成缺資料。缺少的資料，不會變成誤導人的分數。',
       },
-      closing: '先知道怎麼認證、規格在哪，再開始串接。',
+      closing: '先知道怎麼認證，再開始串接。',
     },
     connections: {
       hero: {
@@ -357,27 +383,21 @@ export default {
         headline: '關聯有名稱，也有方向。',
         lead: '每條關聯都寫明是哪一種、誰在哪個角色。API 頁面上看得到它們，另一端的頁面也看得到。',
         rows: [
-          {
-            title: '用戶端程式庫',
-            body: '呼叫這個 API 的程式庫是軟體條目，有自己的版本與依賴。',
-            link: { label: '看軟體', href: '/software/' },
-          },
+          { title: '用戶端程式庫', body: '呼叫這個 API 的程式庫是軟體條目，有自己的版本與依賴。' },
           {
             title: '包裝成 MCP 伺服器',
             body: '把它包成 MCP 伺服器的專案，在 MCP Hub 有自己的條目，專案、套件與部署端點分開記錄。',
-            link: { label: '看 MCP Hub', href: '/mcp/' },
           },
           {
             title: '用到它的技能',
             body: '用到這個 API 的技能，在 Skill Hub 有自己的條目，用關聯連回這裡。',
-            link: { label: '看 Skill Hub', href: '/skills/' },
           },
           { title: '同一提供者的其他 API', body: '從提供者的頁面，找到它提供的其他 API。' },
         ],
       },
       both: {
         lead: '從 API 找得到 MCP 伺服器，',
-        rest: '從 MCP 伺服器也找得回 API。',
+        rest: '反過來也找得回 API。',
       },
       provider: {
         eyebrow: '提供者',
@@ -395,7 +415,7 @@ export default {
         },
         developers: { name: '開發者', line: 'REZICS 自己的 API 在這裡' },
       },
-      closing: '從 API 出發，找得到建在它上面的一切。',
+      closing: '從哪一端出發，都找得到另一端。',
     },
     community: {
       hero: {
@@ -422,12 +442,12 @@ export default {
         eyebrow: '清單',
         headline: '一個專案用到的東西，放進一份清單。',
         lead: '清單不分種類：API、用戶端程式庫、MCP 伺服器與技能可以排在一起，每項寫上一句註記。清單有自己的公開範圍，可以排序，也能匯出。',
-        rows: [
-          { title: '天氣資料 API', body: 'API。預報資料的來源。' },
-          { title: '地圖圖磚 API', body: 'API。畫面上的底圖。' },
-          { title: '一個用戶端程式庫', body: '軟體。從程式裡呼叫天氣資料 API。' },
-          { title: '一個天氣 MCP 伺服器', body: 'MCP 伺服器。讓 AI 代理查詢天氣。' },
-          { title: '一個行程整理技能', body: '技能。依天氣調整每天的行程。' },
+        tiles: [
+          { kind: 'apis', rel: 'API', name: '天氣資料 API', line: '預報資料的來源' },
+          { kind: 'apis', rel: 'API', name: '地圖圖磚 API', line: '畫面上的底圖' },
+          { kind: 'software', rel: '軟體', name: '用戶端程式庫', line: '從程式裡呼叫天氣資料 API' },
+          { kind: 'mcp', rel: 'MCP 伺服器', name: '天氣 MCP 伺服器', line: '讓 AI 代理查詢天氣' },
+          { kind: 'skills', rel: '技能', name: '行程整理技能', line: '依天氣調整每天的行程' },
         ],
         caption: '一個虛構專案的清單，名稱都是例子。',
       },
@@ -479,7 +499,7 @@ export default {
         lead: 'API 的提供者可以證明自己擁有它的命名空間，提出的事實會標明出自提供者。提供者的說法仍是一種說法，社群量到的結果與討論，照樣留在條目上。',
         more: '提供者撤回自己的說法時，只會撤掉自己那一份依據。匯入的事實附上來源與授權；有人確認並保護過的欄位，之後的匯入不會悄悄蓋掉。',
       },
-      closing: '新增與更正，都走同一條經人審核的路。',
+      closing: '新增與更正，都經過人的審核。',
     },
   },
 } satisfies MiniSite<ApisStrings>;

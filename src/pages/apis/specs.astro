@@ -1,0 +1,37 @@
+---
+// API Hub 規格與認證 (v3): the head and the embossed sheets, the facts kept on each version,
+// the statement that a measurement is not a rating, the five fields, three kinds of absent data.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import HeadPicture from '../../sites/apis/HeadPicture.astro';
+import NextPages from '../../sites/apis/NextPages.astro';
+import { pictures } from '../../sites/apis/art';
+import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
+
+const s = site.strings.specs;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <HeadPicture image={pictures.specs} />
+
+  <Section eyebrow={s.facts.eyebrow} title={s.facts.headline} lead={s.facts.lead}>
+    <FactList items={s.facts.rows} />
+  </Section>
+
+  <Statement text={s.measure.lead} sub={s.measure.rest} />
+
+  <Section eyebrow={s.fields.eyebrow} title={s.fields.headline} lead={s.fields.lead}>
+    <FactList items={s.fields.rows} />
+    <p class="apis-foot">{s.fields.footnote}</p>
+  </Section>
+
+  <Section eyebrow={s.absent.eyebrow} title={s.absent.headline} lead={s.absent.lead} />
+
+  <NextPages slug="specs" />
+  <Closing title={s.closing} body={site.strings.closingBody} />
+</MiniSiteLayout>
