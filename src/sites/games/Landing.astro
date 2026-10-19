@@ -34,8 +34,9 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
   <div class="hero__scene">
     <div class="hero__square">
       <KindSquare kind="games" mode="image" link={false} flip="target" eager sizes="(max-width: 767px) 100vw, 44vw" />
+      <span class="g-cursor hero__select" aria-hidden="true" data-cursor></span>
     </div>
-    <p class="hero__caption g-cap"><span class="hero__blink" aria-hidden="true" data-cursor></span>{s.hero.caption}</p>
+    <p class="hero__caption g-cap">{s.hero.caption}</p>
   </div>
 </section>
 
@@ -114,7 +115,8 @@ const squareName: Record<string, string> = { guides: '攻略\nWiki+' };
   .hero__scene { grid-column: 7 / span 6; display: flex; flex-direction: column; gap: 12px; }
   .hero__square { position: relative; width: min(100%, calc(100svh - var(--header-h) - var(--bar-h) - 120px)); justify-self: end; margin-left: auto; }
   .hero__caption { color: var(--c-muted); align-self: flex-end; text-align: right; max-width: 34em; display: flex; align-items: center; gap: 10px; }
-  .hero__blink { flex: none; width: 12px; height: 12px; border: 2px solid var(--c-mark); }
+  /* The square is the selected slot: the red cursor waits around it (blinks at rest). */
+  .hero__square .hero__select { left: -10px; top: -10px; right: -10px; bottom: -10px; }
 
   .pages__aside { display: flex; flex-direction: column; gap: 32px; align-self: start; position: sticky; top: calc(var(--header-h) + var(--bar-h) + 32px); }
   .pages__preview { position: relative; width: min(100%, 260px); aspect-ratio: 1; }
