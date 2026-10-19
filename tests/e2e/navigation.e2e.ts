@@ -79,7 +79,7 @@ test.describe('phone sheet', () => {
     await open.click();
     const sheet = page.locator('#menu');
     await expect(sheet).toBeVisible();
-    await expect(sheet.locator('.sheet__squares a')).toHaveCount(9);
+    await expect(sheet.locator('.sheet__tiles a')).toHaveCount(9);
     const trapped = await page.evaluate(() => (document.querySelector('#menu') as HTMLDialogElement).matches(':modal'));
     expect(trapped).toBe(true);
     await page.keyboard.press('Escape');

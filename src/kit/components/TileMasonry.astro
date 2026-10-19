@@ -1,0 +1,113 @@
+---
+/**
+ * The tile masonry (v3; the mock's products): seamless flat tiles 3 px apart in columns that end
+ * level, each tile's height a share of its column chosen by importance. Used for the products,
+ * a site's own pages and neighbouring kinds.
+ *
+ *   items    every tile once, in reading order (the document order on every screen)
+ *   columns  the wide layout: columns of `{ id, h }`, h a relative height (5 for a lead tile,
+ *            1.5 for a small one); `line: false` drops a small tile's line here
+ *   phone    rows of `{ id, w }` under 768 px, w a relative width (default: two per row in
+ *            item order); `line: false` drops the line on phones
+ *   height   the wide masonry's height in px (default 560); `phoneRow` a phone row's least
+ *            height (default 120)
+ *
+ * Every id must appear once in `columns` (and in `phone` when given); the build fails
+ * otherwise. Text colours come from each item's `on` (see Tile).
+ */
+import Tile from './Tile.astro';
+import type { OnField } from '../theme';
+
+export interface MasonryItem {
+  id: string;
+  name: string;
+  bg: string;
+  on: OnField;
+  href?: string;
+  line?: string;
+  /** A relation or note at the top of the tile. */
+  rel?: string;
+}
+export interface MasonryPlace {
+  id: string;
+  h: number;
+  line?: boolean;
+}
+export interface MasonryRowPlace {
+  id: string;
+  w?: number;
+  line?: boolean;
+}
+interface Props {
+  items: MasonryItem[];
+  columns: MasonryPlace[][];
+  phone?: MasonryRowPlace[][];
+  height?: number;
+  phoneRow?: number;
+  grain?: boolean;
+  /** Heading level of the tile names (default p: the section's h2 names the group). */
+  level?: 'h3' | 'p';
+  label?: string;
+  class?: string;
+}
+const { items, columns, phone, height = 560, phoneRow = 120, grain = false, level = 'p', label, class: className } = Astro.props;
+const ROWS = 120;
+const wide = new Map<string, { col: number; row: number; span: number; line: boolean }>();
+columns.forEach((col, c) => {
+  const total = col.reduce((s, p) => s + p.h, 0);
+  let row = 1;
+  col.forEach((p, i) => {
+    const span = i === col.length - 1 ? ROWS + 1 - row : Math.max(1, Math.round((p.h / total) * ROWS));
+    wide.set(p.id, { col: c + 1, row, span, line: p.line ?? true });
+    row += span;
+  });
+});
+const rows: MasonryRowPlace[][] = phone ?? Array.from({ length: Math.ceil(items.length / 2) }, (_, i) => items.slice(i * 2, i * 2 + 2).map((it) => ({ id: it.id })));
+const narrow = new Map<string, { row: number; col: number; span: number; line: boolean }>();
+rows.forEach((row, r) => {
+  const total = row.reduce((s, p) => s + (p.w ?? 1), 0);
+  let col = 1;
+  row.forEach((p, i) => {
+    const span = i === row.length - 1 ? 13 - col : Math.max(1, Math.round(((p.w ?? 1) / total) * 12));
+    narrow.set(p.id, { row: r + 1, col, span, line: p.line ?? true });
+    col += span;
+  });
+});
+for (const it of items) {
+  if (!wide.has(it.id)) throw new Error(`TileMasonry: "${it.id}" has no place in columns`);
+  if (!narrow.has(it.id)) throw new Error(`TileMasonry: "${it.id}" has no place in phone`);
+}
+---
+<ul class:list={['masonry', className]} role="list" aria-label={label} style={`--cols:${columns.length};--rows:${ROWS};--mh:${height}px;--prow:${phoneRow}px`}>
+  {items.map((it) => {
+    const a = wide.get(it.id)!;
+    const b = narrow.get(it.id)!;
+    const lineOn = a.line && b.line ? 'both' : a.line ? 'wide' : b.line ? 'phone' : 'none';
+    return (
+      <li class="masonry__cell" style={`--c1:${a.col};--r1:${a.row};--s1:${a.span};--r2:${b.row};--c2:${b.col};--s2:${b.span}`}>
+        <Tile name={it.name} bg={it.bg} on={it.on} href={it.href} line={it.line} rel={it.rel} lineOn={lineOn} grain={grain} level={level} />
+      </li>
+    );
+  })}
+</ul>
+<style>
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+    column-gap: 3px;
+    height: calc(var(--mh) + 3px);
+    margin: 0 0 -3px;
+    padding: 0;
+    list-style: none;
+  }
+  .masonry__cell { grid-column: var(--c1); grid-row: var(--r1) / span var(--s1); display: flex; min-width: 0; min-height: 0; padding-bottom: 3px; }
+  .masonry__cell :global(.tile) { flex: 1 1 auto; }
+  @media (max-width: 1023px) {
+    .masonry { height: calc(var(--mh) * 0.86 + 3px); }
+  }
+  @media (max-width: 767px) {
+    .masonry { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: none; grid-auto-rows: minmax(var(--prow), auto); gap: 3px; height: auto; margin: 0; }
+    .masonry__cell { grid-column: var(--c2) / span var(--s2); grid-row: var(--r2); padding: 0; }
+  }
+</style>

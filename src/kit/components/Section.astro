@@ -1,31 +1,69 @@
 ---
 /**
- * Section shell: spacing mood, ground and the 12-column grid inside the container. Place
- * children with the .col-* classes (base.css). `band`: `soft` (the muted panel) or `tint` (a soft
- * tint of the site's accent); `field` is the tint too, `ink` an ink band kept for older pages.
- * `grid={false}` renders the slot inside the container only.
+ * A section (v3; the mock's `.sec`): one idea on the 12-column grid. The eyebrow in columns 1 to
+ * 3, the serif h2 across 4 to 11, the lead text across 4 to 9, an optional link under it; the
+ * default slot follows across 4 to 12 (a fact list, a code block, more text), slot `wide` runs
+ * across the whole grid under it (a tile masonry, a picture). 120 to 200 px above it on
+ * desktop, 88 px on phones; phones stack everything in one column.
+ *
+ *   eyebrow  a short label (13 px, muted); title  one string or its lines
+ *   lead     one paragraph or several; link  `{ href, text }`
+ *   space    `normal` (default) or `none` (no space above, when it follows a part directly)
  */
+import Clauses from '../Clauses.astro';
+import { idFor } from '../ids';
+
 interface Props {
+  title: string | string[];
+  eyebrow?: string;
+  lead?: string | string[];
+  link?: { href: string; text: string };
   id?: string;
-  mood?: 'tight' | 'normal' | 'airy' | 'full' | 'none';
-  band?: 'paper' | 'soft' | 'tint' | 'ink' | 'field';
-  grid?: boolean;
-  labelledby?: string;
+  space?: 'normal' | 'none';
   class?: string;
-  [key: `data-${string}`]: unknown;
 }
-const { id, mood = 'normal', band = 'paper', grid = true, labelledby, class: className, ...rest } = Astro.props;
+const { title, eyebrow, lead, link, id: given, space = 'normal', class: className } = Astro.props;
+const lines = Array.isArray(title) ? title : [title];
+const paragraphs = lead === undefined ? [] : Array.isArray(lead) ? lead : [lead];
+const id = given ?? idFor('section', lines.join(''));
 ---
-<section
-  id={id}
-  class:list={['sec', mood !== 'none' && mood !== 'full' && `pad-${mood}`, mood === 'full' && 'sec--full', band !== 'paper' && `band-${band}`, className]}
-  aria-labelledby={labelledby}
-  {...rest}
->
-  {grid ? <div class="grid container sec__grid"><slot /></div> : <div class="container"><slot /></div>}
+<section class:list={['section', space === 'none' && 'section--flush', className]} aria-labelledby={id}>
+  <div class="grid section__grid">
+    {eyebrow && <p class="eyebrow section__eyebrow">{eyebrow}</p>}
+    <h2 id={id} class="section__title" data-reveal="up">
+      {lines.map((l) => (lines.length > 1 ? <span class="section__line"><Clauses text={l} /></span> : <Clauses text={l} />))}
+    </h2>
+    {paragraphs.length > 0 && (
+      <div class="section__lead" data-reveal="up" data-delay="0.08">
+        {paragraphs.map((p) => <p class="lead">{p}</p>)}
+      </div>
+    )}
+    {link && <p class="section__link"><a class="link-draw" href={link.href}>{link.text}</a></p>}
+    {Astro.slots.has('default') && <div class="section__body"><slot /></div>}
+    {Astro.slots.has('wide') && <div class="section__wide"><slot name="wide" /></div>}
+  </div>
 </section>
 <style>
-  .sec { position: relative; }
-  .sec--full { min-height: calc(100svh - var(--header-h)); display: grid; align-content: center; }
-  .sec__grid { row-gap: clamp(24px, 3vw, 48px); }
+  .section { padding-top: var(--space-section); }
+  .section--flush { padding-top: 0; }
+  .section__eyebrow { grid-column: 1 / 4; grid-row: 1; padding-top: 14px; }
+  .section__title { grid-column: 4 / 11; grid-row: 1; font-size: var(--t-h2); line-height: var(--lh-h2); }
+  .section__line { display: block; }
+  .section__lead { grid-column: 4 / 9; margin-top: 28px; display: grid; gap: 1em; }
+  .section__lead .lead { font-size: 17px; max-width: none; }
+  .section__link { grid-column: 4 / 9; margin-top: 28px; }
+  .section__body { grid-column: 4 / 13; margin-top: 56px; min-width: 0; }
+  .section__wide { grid-column: 1 / 13; margin-top: 72px; min-width: 0; }
+  @media (max-width: 1023px) {
+    .section__title { grid-column: 4 / 13; }
+    .section__lead, .section__link { grid-column: 4 / 12; }
+  }
+  @media (max-width: 767px) {
+    .section__eyebrow { grid-row: auto; padding: 0 0 14px; }
+    .section__title { grid-row: auto; }
+    .section__lead { margin-top: 20px; }
+    .section__lead .lead { font-size: 16px; }
+    .section__body { margin-top: 36px; }
+    .section__wide { margin-top: 44px; }
+  }
 </style>

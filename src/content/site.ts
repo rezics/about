@@ -32,40 +32,43 @@ export const site: Site = {
   },
   home: {
     hero: {
-      label: '開放的通用索引與社群',
       headline: '你在乎的一切，都在同一個索引裡。',
-      lede: '書、動畫、漫畫、遊戲、軟體與視覺小說，還有 MCP 伺服器、技能與 API。每一樣東西在 REZICS 只有一個身分，討論、評分、清單與 Wiki 都跟著它，不分語言。',
+      lede: '書、動畫、漫畫、遊戲、軟體與視覺小說，還有 AI 代理用的工具。每一樣東西只有一個身分，討論、評分與 Wiki 都跟著它。',
       primary: '前往 REZICS',
-      secondary: '九種東西，一個索引',
+      imageAlt: '暖白紙面上，九張不同顏色的方形色紙交疊散開，窗光從左上方斜斜落下。',
     },
-    index: {
-      label: '通用索引',
-      link: '看通用索引',
-      headline: ['每樣東西，只有一個身分。', '版本、譯本與改編各自分明，又彼此相連。'],
+    kinds: {
+      eyebrow: '九種東西',
+      headline: ['每一種東西，都有自己的地方；', '背後是同一個索引，同一個帳號。'],
+    },
+    statement: {
+      text: '一部小說、它的漫畫、動畫與遊戲，',
+      sub: '在 REZICS 是四個身分、一張關係圖；有人在任何語言更正一筆事實，每一頁都跟著更新。',
+    },
+    identity: {
+      eyebrow: '通用索引',
+      headline: '一個身分，不分種類與語言。',
       body: [
-        '每部作品、每套軟體、每位創作者，在 REZICS 只有一個身分，不分語言，連在同一張圖上。',
-        '有人在任何一種語言更正一筆事實，每一個用到它的頁面都跟著更新。評分與進度則各自留在每一部作品上。',
+        '同一部作品在中文、日文與英文裡各有名稱，在 REZICS 都指向同一個身分。版本、譯本與改編各自分明，又彼此相連。',
+        '你的書庫、評分與進度跟著這個身分走，換一種語言瀏覽，看到的仍是同一筆紀錄。',
       ],
-      chain: [
-        { kind: 'books', rel: '原作', name: '小說' },
-        { kind: 'manga', rel: '改編自 小說', name: '漫畫' },
-        { kind: 'anime', rel: '改編自 小說', name: '動畫' },
-        { kind: 'games', rel: '改編自 小說', name: '遊戲' },
-      ],
+      link: '看通用索引',
+      imageAlt: '五張同樣大小、不同顏色的紙片依序錯開疊放，像同一張紙的五種顏色。',
     },
     community: {
-      label: '社群',
-      headline: '社群就在作品旁邊。',
-      body: '討論、評分與清單連到作品本身，不是貼文裡提到的一個名字。你的書庫、清單與聲譽跟著同一個身分，走進每一個社群。',
-      items: [
-        { title: 'Realm', body: '為一個故事、一種語言或一個想法成立的社群，有自己的成員、規則與管理。' },
-        { title: 'Zone', body: '社群自己架的完整網站，頁面、導覽與主題自己決定，資料仍取自同一張圖。' },
-        { title: '同一個你', body: '一個身分帶著你的書庫、清單與評分，走進每個社群與每個 Zone。' },
+      eyebrow: '社群與站點',
+      headline: '社群就在作品旁邊，也能有自己的網站。',
+      body: [
+        '討論、評分與清單連到作品本身，不是貼文裡提到的一個名字。為一個故事、一種語言或一個想法成立的 Realm，有自己的成員、規則與管理。',
+        '社群需要更多空間時，可以用 Zone 架起完整的網站，頁面、導覽與主題自己決定，資料仍取自同一張圖。',
       ],
+      link: '看社群與站點',
+      imageAlt: '一張深青色的紙摺成一座小屋立在紙面上，旁邊散著幾張小小的彩色紙片。',
     },
     platform: {
+      eyebrow: '五個模組',
       headline: '一個平台，同時是書庫、商店、資料庫、論壇與 Wiki。',
-      more: '新增一種東西靠的是設定，不必另做一個應用程式。',
+      lead: '九種東西都由同樣五個模組組成。新增一種東西靠的是設定，不必另做一個應用程式。',
       modules: {
         'universal-index': '一個身分、所有版本、跨語言的名稱與關聯',
         community: 'Realm、討論、評分、清單與追蹤',
@@ -75,16 +78,17 @@ export const site: Site = {
       },
     },
     agents: {
-      label: '開發者與 AI 代理',
+      eyebrow: '開發者與 AI 代理',
       headline: '你在 REZICS 能做的事，AI 代理透過同一套 API 也能做。',
-      body: '網頁與 MCP 走的是同一套操作與權限。代理代表人行事，能做的事不會超出授權給它的範圍；它提出的變更經人審核才套用。',
+      lead: '網頁與 MCP 伺服器走的是同一套操作與權限。代理代表人行事，能做的事不會超出授權給它的範圍；它提出的變更經人審核才套用。',
       link: '看開發者資源',
       code: ['# 搜尋目錄，不需要登入', 'curl -G "$REZICS_API/v1/search/catalogue" \\', '  --data-urlencode "q=輕小說" \\', '  -d language=zh-Hant -d limit=5'].join('\n'),
       codeLabel: '用 curl 搜尋 REZICS 目錄的請求範例',
       caption: '每一條路徑與錯誤都寫在公開的 OpenAPI 文件裡。',
     },
     principles: {
-      headline: '我們的承諾',
+      eyebrow: '原則',
+      headline: '我們對每一位使用者的承諾。',
       items: [
         { title: '原始碼公開', body: 'REZICS 以 AGPL-3.0 授權公開原始碼，任何人都能閱讀、架設與改進。' },
         { title: '沒有廣告追蹤器', body: '我們不使用廣告追蹤器，不出售個人資料。' },
@@ -110,7 +114,7 @@ export const site: Site = {
     },
     parts: {
       headline: '十五個部件，每種東西挑八個。',
-      body: '每個方塊九格：中間是名稱，四周八格是部件。身分固定在左上角；換一種東西時，共用的部件留在原位，只有不同的部件移動。',
+      body: '每一種東西挑八個部件，身分永遠排在第一個；換一種東西時，共用的部件留在原位，只有不同的部件替換。',
       pick: '選一種東西',
     },
     modules: {
@@ -245,7 +249,7 @@ export const site: Site = {
     agents: 'AI 代理',
     source: '原始碼',
     sourceUrl: 'https://github.com/rezics/rezics-next',
-    colophon: '內文以 Noto Sans TC 與 Manrope 排版。本站不做流量分析，也不載入第三方資源。',
+    colophon: '標題以 Noto Serif TC、內文以 Noto Sans TC 與 Manrope 排版。本站不做流量分析，也不載入第三方資源。',
     copyright: '© 2026 REZICS Inc.',
   },
 };
