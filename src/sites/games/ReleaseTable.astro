@@ -1,0 +1,145 @@
+---
+/**
+ * The releases table (SITE.md 6.2 R1): platforms × editions of one fictional game. Conditions
+ * (one language, one platform) must hold on the same release; cells that fail fall back to
+ * hairlines. Works without script through :has(); the driver (table.ts) adds the count, the
+ * clear button and the stepping cursor.
+ */
+import type { GamesStrings, Lang, Platform, Edition } from '../../content/sites/games';
+
+interface Props {
+  copy: GamesStrings['releases']['hero'];
+  example: GamesStrings['example'];
+}
+const { copy, example } = Astro.props;
+const langs = Object.keys(example.langNames) as Lang[];
+const platforms = Object.keys(example.platforms) as Platform[];
+const editions = Object.keys(example.editions) as Edition[];
+const releasesIn = (p: Platform, e: Edition) => example.releases.filter((r) => r.platform === p && r.edition === e);
+// A release that fails the chosen language or platform falls back to a hairline (no script needed).
+const css = [
+  ...langs.map((l) => `.rt:has(input[value='lang-${l}']:checked) .rt__rel:not([data-${l}]){--dim:1}`),
+  ...platforms.map((p) => `.rt:has(input[value='p-${p}']:checked) .rt__rel:not([data-on='${p}']){--dim:1}`),
+].join('');
+---
+<div class="rt" data-release-table>
+  <style is:inline set:html={css}></style>
+  <form class="rt__filters">
+    <fieldset class="rt__group">
+      <legend class="rt__legend mono">{copy.groups.lang}</legend>
+      {langs.map((l) => (
+        <label class="g-chip"><input type="radio" name="rt-lang" value={`lang-${l}`} checked={l === 'zh'} />{example.langNames[l]}</label>
+      ))}
+    </fieldset>
+    <fieldset class="rt__group">
+      <legend class="rt__legend mono">{copy.groups.platform}</legend>
+      {platforms.map((p) => (
+        <label class="g-chip"><input type="radio" name="rt-platform" value={`p-${p}`} checked={p === 'handheld'} />{example.platforms[p]}</label>
+      ))}
+    </fieldset>
+    <button class="rt__clear link-draw" type="button" data-rt-clear hidden>{copy.clear}</button>
+  </form>
+
+  <div class="rt__wrap" data-rt-wrap>
+    <table class="rt__table">
+      <thead>
+        <tr>
+          <td class="rt__corner mono">{copy.corner}</td>
+          {editions.map((e) => <th scope="col" class="rt__col">{example.editions[e]}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {platforms.map((p) => (
+          <tr>
+            <th scope="row" class="rt__row">{example.platforms[p]}</th>
+            {editions.map((e) => {
+              const list = releasesIn(p, e);
+              return (
+                <td class:list={['rt__cell', list.length === 0 && 'rt__cell--none']}>
+                  <span class="rt__ed" aria-hidden="true">{example.editions[e]}</span>
+                  {list.length === 0 ? (
+                    <span class="sr-only">{copy.none}</span>
+                  ) : (
+                    list.map((r) => (
+                      <div class="rt__rel" data-rt-rel data-on={r.platform} {...Object.fromEntries(r.langs.map((l) => [`data-${l}`, '']))}>
+                        {r.region && <span class="rt__region">{r.region}</span>}
+                        {r.state ? (
+                          <span class="rt__state">{r.state}</span>
+                        ) : (
+                          <span class="rt__langs">{r.langs.map((l) => <span class="rt__lang">{example.langNames[l]}</span>)}</span>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <span class="g-cursor rt__cursor" aria-hidden="true" data-rt-cursor></span>
+  </div>
+  <p class="rt__result t-m" aria-live="polite" data-rt-result data-one={copy.result} data-none={copy.resultNone}></p>
+  <p class="g-cap mono">{copy.caption}</p>
+</div>
+
+<style>
+  .rt { display: flex; flex-direction: column; gap: 20px; }
+  .rt__filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 32px; }
+  .rt__group { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .rt__legend { float: left; margin-right: 10px; color: var(--c-muted); }
+  .rt__clear { font-size: var(--t-s); min-height: 40px; }
+  .rt__wrap { position: relative; margin-top: 12px; }
+  .rt__table { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 6px; margin: -6px; width: calc(100% + 12px); }
+  .rt__corner, .rt__col, .rt__row { text-align: left; font-weight: 700; font-size: var(--t-s); color: var(--c-muted); padding: 4px 2px; vertical-align: bottom; }
+  .rt__corner { width: 16%; font-weight: 400; }
+  .rt__row { vertical-align: middle; color: var(--c-fg); font-size: var(--t-m); }
+  .rt__cell { height: clamp(72px, 9vw, 116px); padding: 0; vertical-align: top; border: 1px solid var(--c-line-strong); }
+  .rt__cell--none { border-style: dashed; border-color: var(--c-line); }
+  .rt__cell { display: table-cell; }
+  .rt__rel {
+    --dim: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    height: 100%;
+    min-height: 64px;
+    padding: 12px;
+    background: color-mix(in srgb, var(--g-field) calc((1 - var(--dim)) * 100%), transparent);
+    color: color-mix(in srgb, var(--c-paper) calc((1 - var(--dim)) * 100%), var(--c-muted));
+    box-shadow: inset 0 0 0 3px var(--c-bg);
+    transition: background-color var(--d-s) var(--ease-snap), color var(--d-s) var(--ease-snap);
+  }
+  .rt__rel + .rt__rel { border-top: 1px solid var(--c-bg); }
+  .rt__cell:has(.rt__rel + .rt__rel) .rt__rel { min-height: 0; height: 50%; padding-block: 8px; }
+  .rt__region { font-size: var(--t-s); font-weight: 700; }
+  .rt__state { font-size: var(--t-s); }
+  .rt__langs { display: flex; flex-wrap: wrap; gap: 4px; }
+  .rt__lang { font-size: var(--t-xs); font-weight: 700; padding: 2px 6px; border: 1px solid currentColor; line-height: 1.4; }
+  .rt__cursor { display: none; }
+  :global(.js) .rt__cursor { display: block; opacity: 0; }
+  .rt__result { min-height: 1.45em; }
+  .rt__ed { display: none; }
+  /* Phone: the matrix becomes a stack, one platform after another, each release a card with
+     its edition named; combinations that do not exist are left out. */
+  @media (max-width: 767px) {
+    .rt__filters { gap: 12px; }
+    .rt__table, .rt__table tbody, .rt__table tr, .rt__table th, .rt__table td { display: block; width: auto; }
+    .rt__table { margin: 0; border-spacing: 0; }
+    .rt__table thead { display: none; }
+    .rt__table tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-block: 14px; border-top: 1px solid var(--c-line-strong); }
+    .rt__row { grid-column: 1 / -1; font-size: var(--t-m); padding: 0; }
+    .rt__cell { height: auto; border: 0; display: flex; flex-direction: column; gap: 6px; }
+    .rt__cell--none { display: none; }
+    .rt__ed { display: block; font-size: var(--t-xs); color: var(--c-muted); font-weight: 700; }
+    .rt__rel { min-height: 0; height: auto; padding: 10px; border: 1px solid var(--c-line-strong); }
+    .rt__cell:has(.rt__rel + .rt__rel) .rt__rel { height: auto; }
+    .rt__rel + .rt__rel { border-top: 1px solid var(--c-line-strong); }
+  }
+</style>
+
+<script>
+  import { startReleaseTable } from './table';
+  startReleaseTable();
+</script>

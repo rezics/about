@@ -1,0 +1,207 @@
+---
+// /games/guides/ (SITE.md 6.6): poster hero, the fogged map, guides, Wiki+ rules, the adaptation
+// chain, a game's own Zone, finale.
+import Section from '../../kit/components/Section.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import Square from '../../kit/components/Square.astro';
+import { kindFields } from '../../kit/theme';
+import site from '../../content/sites/games';
+import Pic from './Pic.astro';
+import GamesFinale from './GamesFinale.astro';
+import Lines from './Lines.astro';
+import './games.css';
+
+const s = site.strings.guides;
+const f = s.fog;
+const chapters = [1, 2, 3, 4, 5, 6];
+const start = 2;
+// A cell first shown in chapter `from` stays covered while the chosen chapter is earlier
+// (works without script: one rule per chapter and cell).
+// Entries by the chapter in which they first appear.
+const byChapter = chapters.map((n) => f.groups.flatMap((g) => g.cells.filter((c) => c.from === n).map((c) => ({ group: g.title, name: c.name }))));
+// A chapter after the chosen one is covered (works without script: one rule per pair).
+const covered = chapters.flatMap((n) => chapters.filter((m) => m > n).map((m) => `.fog:has(input[value='c${n}']:checked) .fog__ch[data-ch='${m}']`));
+const css = [
+  `${covered.join(',')}{--covered:1}`,
+  `${covered.map((c) => `${c} .fog__chips`).join(',')}{visibility:hidden}`,
+  `${covered.map((c) => `${c} .fog__hidden`).join(',')}{display:block}`,
+].join('');
+---
+<!-- 1 Hero: poster -->
+<section class="ghero" aria-labelledby="ghero-title">
+  <h1 id="ghero-title" class="ghero__title">{s.hero.headline}</h1>
+  <div class="ghero__foot">
+    <p class="lede">{s.hero.lede}</p>
+    <div><ProductCall /></div>
+  </div>
+</section>
+
+<!-- 2 Fog: the wiki as a map whose later cells are covered -->
+<Section mood="airy" band="field" labelledby="fog-title" class="fog-sec">
+  <style is:inline set:html={css}></style>
+  <div class="fog">
+    <div class="fog__aside g-head">
+      <h2 id="fog-title" class="t-l" data-split="lines">{f.headline}</h2>
+      <p>{f.lede}</p>
+      <fieldset class="fog__picker">
+        <legend class="mono fog__legend">{f.position}</legend>
+        {chapters.map((n) => (
+          <label class="g-chip fog__chip"><input type="radio" name="fog-chapter" value={`c${n}`} checked={n === start} />{f.chapter.replace('{n}', String(n))}</label>
+        ))}
+        <label class="g-chip fog__chip"><input type="radio" name="fog-chapter" value="all" />{f.all}</label>
+      </fieldset>
+      <p class="fog__cap mono">{f.caption}</p>
+    </div>
+    <ol class="fog__track" role="list">
+      {byChapter.map((entries, i) => (
+        <li class="fog__ch" data-ch={i + 1}>
+          <span class="fog__chn">{f.chapter.replace('{n}', String(i + 1))}</span>
+          <ul class="fog__chips" role="list">
+            {entries.map((e) => (
+              <li class="fog__chip"><span class="fog__kind">{e.group}</span>{e.name}</li>
+            ))}
+          </ul>
+          <span class="fog__cover" aria-hidden="true"></span>
+          <span class="fog__hidden">{f.covered}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Section>
+
+<!-- 3 Guides: asymmetric pair -->
+<Section mood="normal" labelledby="guides-title" class="gd">
+  <div class="gd__text g-head">
+    <h2 id="guides-title" class="t-l" data-split="lines">{s.guides.headline}</h2>
+    <p class="g-body">{s.guides.body}</p>
+    <dl class="gd__items">
+      {s.guides.items.map((it) => (
+        <div class="gd__item">
+          <dt class="t-m">{it.title}</dt>
+          <dd class="muted">{it.body}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+  <div class="gd__pic" data-reveal="clip">
+    <Pic name="guides" alt={s.guides.imageAlt} sizes="(max-width: 767px) 100vw, 50vw" />
+  </div>
+</Section>
+
+<!-- 4 Wiki+ rules: index list -->
+<Section mood="normal" labelledby="wrules-title" class="wrules g-light">
+  <h2 id="wrules-title" class="col-1-4 t-l">{s.rules.headline}</h2>
+  <ol class="col-5-12 g-rows" role="list">
+    {s.rules.rows.map((r) => (
+      <li>
+        <h3>{r.title}</h3>
+        <p class="muted">{r.body}</p>
+      </li>
+    ))}
+  </ol>
+</Section>
+
+<!-- 5 Adaptations: the relation chain as a filmstrip row -->
+<Section mood="airy" labelledby="adapt-title" class="adapt">
+  <div class="col-1-6 g-head">
+    <h2 id="adapt-title" class="t-l" data-split="lines">{s.adaptations.headline}</h2>
+    <p class="muted">{s.adaptations.lede}</p>
+  </div>
+  <ol class="adapt__chain" role="list" data-reveal="slot">
+    {s.adaptations.chain.map((c) => (
+      <li class="adapt__link">
+        {c.relation && <span class="adapt__rel mono">{c.relation}<span class="arrow" aria-hidden="true"> ←</span></span>}
+        <Square name={c.name} field={kindFields[c.to]} />
+        <p class="adapt__body">{c.body}</p>
+      </li>
+    ))}
+  </ol>
+  <div class="adapt__note">
+    <p class="g-body">{s.adaptations.note}</p>
+    <p class="g-cap mono">{s.adaptations.caption}</p>
+  </div>
+</Section>
+
+<!-- 6 Zone: statement -->
+<Section mood="airy" band="field" labelledby="zone-title" class="zone">
+  <h2 id="zone-title" class="col-1-10 g-statement" data-split="lines"><Lines text={s.zone.statement} /></h2>
+  <p class="zone__body g-body">{s.zone.body}</p>
+</Section>
+
+<GamesFinale />
+
+<style>
+  .ghero { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 56px); padding: clamp(32px, 5vw, 80px) var(--gutter) var(--space-normal); }
+  .ghero__title { font-weight: 900; font-size: clamp(3.5rem, 0.5rem + 13.5vw, 15rem); line-height: 0.98; letter-spacing: -0.03em; margin-left: -0.04em; }
+  .ghero__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; flex-wrap: wrap; }
+  .ghero__foot .lede { max-width: 30em; }
+
+  .fog { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 32px; --c-line: rgb(244 245 242 / 0.22); --c-line-strong: rgb(244 245 242 / 0.5); }
+  .fog__aside { grid-column: 1 / span 4; }
+  .fog__picker { border: 0; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .fog__legend { color: var(--c-paper); margin-bottom: 8px; float: left; width: 100%; }
+  .fog__chip { min-width: 0; }
+  .fog__cap { opacity: 0.9; }
+  .fog__track { grid-column: 5 / span 8; list-style: none; padding: 0; border-top: 1px solid var(--c-line-strong); }
+  .fog__ch {
+    --covered: 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    min-height: 64px;
+    padding-block: 10px;
+    border-bottom: 1px solid var(--c-line-strong);
+  }
+  .fog__chn { font-weight: 900; font-size: var(--t-m); }
+  .fog__chips { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .fog__chip { display: inline-flex; align-items: baseline; gap: 8px; padding: 6px 12px; background: var(--c-paper); color: var(--c-ink); font-weight: 700; font-size: var(--t-s); line-height: 1.3; }
+  .fog__kind { font-weight: 400; font-size: var(--t-xs); color: #566070; }
+  .fog__cover {
+    position: absolute;
+    inset: 0 0 0 calc(6.5em + 14px);
+    background:
+      repeating-linear-gradient(90deg, rgb(244 245 242 / 0.12) 0 1px, transparent 1px 16px),
+      color-mix(in srgb, var(--g-field) 55%, var(--c-ink));
+    clip-path: inset(0 0 calc((1 - var(--covered)) * 100%) 0);
+    transition: clip-path var(--d-m) var(--ease-snap);
+  }
+  .fog__hidden { display: none; position: absolute; left: calc(6.5em + 28px); top: 50%; translate: 0 -50%; color: var(--c-paper); font-size: var(--t-s); }
+
+  .gd__text { grid-column: 1 / span 4; align-self: center; }
+  .gd__items { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+  .gd__item { border-top: 1px solid var(--c-line-strong); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .gd__item dd { line-height: 1.6; }
+  .gd__pic { grid-column: 6 / span 7; }
+
+  .adapt__chain { grid-column: 1 / -1; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gutter); align-items: start; margin-top: 12px; }
+  .adapt__link { position: relative; display: flex; flex-direction: column; gap: 12px; }
+  .adapt__rel { position: absolute; top: -26px; left: 0; color: var(--c-muted); }
+  .adapt__link:nth-child(4) { margin-top: 18%; }
+  .adapt__link:nth-child(5) { margin-top: 36%; }
+  .adapt__body { font-size: var(--t-s); line-height: 1.6; color: var(--c-muted); }
+  .adapt__note { grid-column: 5 / span 6; display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+
+  .zone__body { grid-column: 5 / span 5; }
+
+  @media (max-width: 1023px) {
+    .fog__aside, .fog__track { grid-column: 1 / -1; }
+    .gd__text { grid-column: 1 / span 6; }
+    .gd__pic { grid-column: 7 / span 6; }
+    .adapt__chain { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 48px; }
+    .adapt__link:nth-child(n) { margin-top: 0; }
+  }
+  @media (max-width: 767px) {
+    .ghero { min-height: 0; padding-block: 32px; }
+    .fog { grid-template-columns: 1fr; }
+    .fog__aside, .fog__track { grid-column: 1; }
+    .fog__ch { grid-template-columns: 4.5em minmax(0, 1fr); gap: 10px; }
+    .fog__chn { font-size: var(--t-s); }
+    .fog__cover { inset: 0 0 0 calc(4.5em + 10px); }
+    .fog__hidden { left: calc(4.5em + 22px); font-size: var(--t-xs); }
+    .gd__text, .gd__pic { grid-column: 1 / -1; }
+    .adapt__chain { grid-template-columns: 1fr 1fr; }
+    .adapt__note, .zone__body { grid-column: 1 / -1; }
+  }
+</style>

@@ -1,0 +1,153 @@
+/* The games site (遊戲): theme and shared rules for every /games/ page (SITE.md "Theme").
+   Concept 格位: everything a game has sits in a slot. The ground is a console-menu night blue
+   with paper ink; the games field is the accent band; light paper bands break the rhythm. One
+   design language: radius 0, the shared type families, 歸位 motion and the hover vocabulary. */
+[data-site='games'] {
+  --g-field: #2a49c9;
+  --g-night: #10173a;
+  --c-bg: var(--g-night);
+  --c-fg: #f4f5f2;
+  --c-muted: #aab4d6;
+  --c-line: rgb(244 245 242 / 0.14);
+  --c-line-strong: rgb(244 245 242 / 0.34);
+  --c-link: #9ab8e6;
+  --link-on: #9ab8e6;
+  --focus: #9ab8e6;
+  /* The inverted band (statements, the footer): paper with ink. */
+  --c-band-bg: #f4f5f2;
+  --c-band-fg: #0e1420;
+  --c-band-muted: #566070;
+  --c-band-line: rgb(14 20 32 / 0.12);
+  --c-band-line-strong: rgb(14 20 32 / 0.28);
+  --c-band-link: #2f63ad;
+  /* A slot: the shared hairline plus an inset frame 2 px inside it. */
+  --g-inset: inset 0 0 0 2px var(--c-bg), inset 0 0 0 3px var(--c-line);
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+/* A light paper band on the night ground (the kit's inverted band tokens). */
+[data-site='games'] .g-light {
+  --c-bg: var(--c-band-bg);
+  --c-fg: var(--c-band-fg);
+  --c-muted: var(--c-band-muted);
+  --c-line: var(--c-band-line);
+  --c-line-strong: var(--c-band-line-strong);
+  --c-link: var(--c-band-link);
+  --link-on: var(--c-band-link);
+  --focus: var(--c-band-link);
+  background: var(--c-bg);
+  color: var(--c-fg);
+}
+
+/* Section heading block: h2 and its lede on the strong lines. */
+[data-site='games'] .g-head { display: flex; flex-direction: column; gap: 20px; }
+[data-site='games'] .g-head > p { max-width: var(--measure); }
+[data-site='games'] .g-cap { color: var(--c-muted); font-size: var(--t-s); line-height: 1.6; }
+[data-site='games'] .g-statement {
+  font-weight: 900;
+  font-size: var(--t-xl);
+  line-height: 1.12;
+  letter-spacing: var(--track-display);
+  text-wrap: balance;
+}
+[data-site='games'] .g-body { font-size: var(--t-body); line-height: var(--lh-text); max-width: var(--measure); }
+
+/* A slot cell on paper or on a band: hairline grid plus the inset frame. */
+[data-site='games'] .g-slot {
+  position: relative;
+  border: 1px solid var(--c-line-strong);
+  box-shadow: var(--g-inset);
+}
+[data-site='games'] .g-slot--empty { border-style: dashed; box-shadow: none; }
+
+/* An illustration square from public/images/sites/games/. */
+[data-site='games'] .g-pic { position: relative; aspect-ratio: 1; background: var(--g-field); overflow: clip; }
+[data-site='games'] .g-pic img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Lists of titled rows (index list family). */
+[data-site='games'] .g-rows { list-style: none; padding: 0; border-top: 1px solid var(--c-line-strong); }
+[data-site='games'] .g-rows > li {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--gutter);
+  padding-block: 22px;
+  border-bottom: 1px solid var(--c-line-strong);
+}
+[data-site='games'] .g-rows h3 { font-size: var(--t-m); font-weight: 700; line-height: 1.45; }
+[data-site='games'] .g-rows p { line-height: var(--lh-text); }
+@media (max-width: 767px) {
+  [data-site='games'] .g-rows > li { grid-template-columns: 1fr; gap: 6px; padding-block: 18px; }
+}
+
+/* The selection cursor: the red empty square (a mark, never text). */
+[data-site='games'] .g-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  border: 3px solid var(--c-mark);
+  box-shadow: 0 0 0 1px var(--c-paper), inset 0 0 0 1px var(--c-paper);
+}
+
+/* Small row of square chips (filters, tabs). */
+[data-site='games'] .g-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--c-line-strong);
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+[data-site='games'] .g-chip::before {
+  /* the chip's square fills across from its start when chosen */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--c-fg);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path var(--d-s) var(--ease-snap);
+}
+[data-site='games'] .g-chip { isolation: isolate; transition: color var(--d-s) var(--ease-snap); }
+[data-site='games'] .g-chip:has(input:checked),
+[data-site='games'] .g-chip[aria-pressed='true'] { color: var(--c-bg); }
+[data-site='games'] .g-chip:has(input:checked)::before,
+[data-site='games'] .g-chip[aria-pressed='true']::before { clip-path: inset(0 0 0 0); }
+[data-site='games'] .g-chip:has(:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
+@media (hover: hover) {
+  [data-site='games'] .g-chip:hover::before { clip-path: inset(0 calc(100% - 6px) 0 0); }
+  [data-site='games'] .g-chip:hover { border-color: var(--c-fg); }
+  [data-site='games'] .g-chip:has(input:checked):hover::before,
+  [data-site='games'] .g-chip[aria-pressed='true']:hover::before { clip-path: inset(0 0 0 0); }
+}
+[data-site='games'] .g-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+
+/* Reduced motion: state changes stay, travel goes. */
+@media (prefers-reduced-motion: reduce) {
+  [data-site='games'] main *, [data-site='games'] main *::before, [data-site='games'] main *::after { transition-duration: 0s !important; }
+}
+
+/* Parts as a compact list of labelled chips (one line each). */
+[data-site='games'] .g-parts { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+[data-site='games'] .g-part {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 12px;
+  border: 1px solid var(--c-line-strong);
+  font-size: var(--t-s);
+  font-weight: 700;
+  line-height: 1.3;
+}
+[data-site='games'] .g-part .mono { color: var(--c-muted); font-weight: 400; }
+
+/* Phones: the shared spacing moods, tightened for a 390 px screen. */
+@media (max-width: 767px) {
+  [data-site='games'] main .pad-airy { padding-block: 88px; }
+  [data-site='games'] main .pad-normal { padding-block: 64px; }
+}
