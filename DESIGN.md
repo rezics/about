@@ -493,3 +493,14 @@ Voice (zh-Hant):
   beside it with a drawn 改編自 link back to it, the current one lit and ringed in red), ending
   as one graph; phones show each chapter's edge inline (its square, 改編自, the source square);
   reduced motion and no script show the finished graph.
+- 2026-10-19: examples. The home page names no specific work (a walk through one work's record
+  belongs to the product). Very old classics (西遊記, 紅樓夢, 傲慢與偏見, 三國演義) are not used
+  anywhere: they read as test data and as dated. Where a real work helps, the one approved
+  example is 《魔法禁書目錄》, text only (title and sourced facts; no covers, characters, logos,
+  company or platform names, no implied partnership); otherwise examples are generic and marked
+  示意. REZICS is a US company, so US law is the baseline: titles and short phrases are not
+  copyrightable (US Copyright Office Circular 33) and facts are free to state (Feist v. Rural,
+  1991); naming a work to say how REZICS catalogues it is nominative fair use of any mark in
+  the title (New Kids on the Block v. News America, 9th Cir. 1992), which holds while the work
+  is named only as needed, in plain text, with nothing suggesting sponsorship. The limits above
+  keep every use inside those three conditions.
