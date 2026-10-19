@@ -84,7 +84,7 @@ function breakInner(inner) {
 }
 
 const HEADING = /<(h[1-4])(\s[^>]*)?>([\s\S]*?)<\/\1>/g;
-const DISPLAY_P = /<p(\s[^>]*\bclass="[^"]*\b(?:t-mega|t-xl|t-l|t-m|t-big|t-statement|serif|lede|lead)\b[^"]*"[^>]*)>([\s\S]*?)<\/p>/g;
+const DISPLAY_P = /<p(\s[^>]*\bclass="[^"]*\b(?:t-mega|t-xl|t-l|t-m|t-big|t-statement|serif|lede|lead|phrase)\b[^"]*"[^>]*)>([\s\S]*?)<\/p>/g;
 
 // No orphans: the last few characters of a paragraph stay together, so a line never ends a
 // paragraph with one or two characters (圖。). Phrase breaks inside that tail are dropped.
@@ -94,23 +94,30 @@ const PARAGRAPH = /<(p|dd)(\s[^>]*)?>([\s\S]*?)<\/\1>/g;
 export function bindTail(inner, n = TAIL) {
   const parts = inner.split(/(<[^>]+>)/);
   let tail = '';
+  let at = -1;
   for (let i = parts.length - 1; i >= 0 && [...tail].length < n; i--) {
     const part = parts[i];
+    if (!part) continue;
     if (part.startsWith('<')) {
       if (/^<wbr\s*\/?>$/i.test(part)) {
         parts[i] = '';
         continue;
       }
+      // A paragraph that ends inside an inline element (a statement's muted half): bind the
+      // tail inside it.
+      if (!tail && /^<\/(span|a|em|strong|b|i)>$/i.test(part)) continue;
       break;
     }
     const chars = [...part];
+    if (at < 0) at = i;
     const take = Math.min(chars.length, n - [...tail].length);
     tail = chars.slice(chars.length - take).join('') + tail;
     parts[i] = chars.slice(0, chars.length - take).join('');
     if (parts[i]) break;
   }
   if ([...tail].length < n || /[\s&<>]/.test(tail) || !CJK.test(tail)) return inner;
-  return `${parts.join('')}<span class="nw">${tail}</span>`;
+  parts[at] += `<span class="nw">${tail}</span>`;
+  return parts.join('');
 }
 
 /** Insert phrase breaks into the headings and display paragraphs of one HTML document, and keep
