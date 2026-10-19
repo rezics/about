@@ -293,3 +293,7 @@ The first extra screenshot pass found that `position: 100% 50%` cropped away emp
 ### First independent visual review
 
 The first critic reviewed the production full-page captures and 320/768/1024 px captures, scoring Design 7.1, Usability 6.0, Creativity 6.8, Content 8.0 (6.80 weighted). It identified the same tablet crop and four-line small-desktop heading, plus a no-script byline capture with a low-contrast selected label and an apparently empty second label during a colour transition. The crop and type fixes above address the first two. Byline now changes selection colours atomically, keeping border and press feedback; both reader states are captured again. The body remains editorial facts, statements, figures and the two rule specimens, in the approved paper language.
+
+### Phone payload refinement
+
+The complete three-page QA measured phone LCP at 2308 ms (community), 2868 ms (create), 2592 ms (trust), with CLS 0 and axe 0 throughout. Add 780 × 520 sources for create and trust so the 390 px / DPR 2 phone no longer decodes a 960 px source. AVIF payloads are 20,368 and 17,113 bytes, respectively; WebP fallbacks are 13,930 and 10,954 bytes. Existing 640 and 960 sources remain for other pixel densities. Recheck the changed pages with the same QA runner and shared semaphore against the newly verified production build.
