@@ -297,3 +297,5 @@ The first critic reviewed the production full-page captures and 320/768/1024 px 
 ### Phone payload refinement
 
 The complete three-page QA measured phone LCP at 2308 ms (community), 2868 ms (create), 2592 ms (trust), with CLS 0 and axe 0 throughout. Add 780 × 520 sources for create and trust so the 390 px / DPR 2 phone no longer decodes a 960 px source. AVIF payloads are 20,368 and 17,113 bytes, respectively; WebP fallbacks are 13,930 and 10,954 bytes. Existing 640 and 960 sources remain for other pixel densities. Recheck the changed pages with the same QA runner and shared semaphore against the newly verified production build.
+
+The supplemental captures confirmed left-aligned cropping, but showed that the first medium-width type override tied the scoped PhotoHero rule and lost by source order. `.phero.module-hero .phero__title` now has sufficient specificity to apply 32–52 px at 768–1399 px. Verify computed sizes as well as the resulting two-line heading. The 1440 px and 390 px layouts are unaffected.
