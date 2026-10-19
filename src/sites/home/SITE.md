@@ -41,7 +41,9 @@ Reuse the four existing images in `public/images/home/`: `hero`, `identity`,
 paper fibre, warm ground and upper-left window light match. No new generated
 picture is needed. Hero and missing: 1920 and 960 wide. Section images: 1200 and
 640 wide. AVIF and WebP remain within the v3 byte budgets. The home phone source
-will preserve the reference's composition rather than magnify the coloured papers.
+preserves the reference's composition rather than magnifying the coloured papers.
+Both phone variants are 3:2: 960 × 640 and 640 × 427, in AVIF and WebP. The 404
+also has its own 640 × 427 variants, derived from the existing cut-out photograph.
 
 ### Shared kit and verification
 

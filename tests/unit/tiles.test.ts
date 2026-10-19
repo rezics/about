@@ -4,6 +4,9 @@ import { accentRamp, contrast, textOn } from '../../src/kit/color';
 import { inkOn, kindFields, moduleFields, palette } from '../../src/kit/theme';
 
 describe('tile colours', () => {
+  test('dark text on the textured anime paper stays AA at the darkest grain', () => {
+    expect(contrast(inkOn(kindFields.anime.field, 'ink', true), '#a7726d')).toBeGreaterThanOrEqual(4.5);
+  });
   test('every kind and module field takes text that passes AA', () => {
     for (const f of [...Object.values(kindFields), ...Object.values(moduleFields)]) expect(contrast(inkOn(f.field, f.on), f.field)).toBeGreaterThanOrEqual(4.5);
   });

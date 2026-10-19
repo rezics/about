@@ -214,10 +214,10 @@ pre code { white-space: inherit; font: inherit; }
 }
 @media (hover: hover) {
   .link-draw:hover { color: var(--link-on, var(--c-link)); }
-  .link-draw:hover::after { scale: 1 1; }
+  .link-draw:hover::after { scale: 1.08 1; }
 }
 .link-draw:focus-visible, .link-draw[aria-current='page'] { color: var(--link-on, var(--c-link)); }
-.link-draw:focus-visible::after { scale: 1 1; }
+.link-draw:focus-visible::after { scale: 1.08 1; }
 .link-draw:active { translate: 0 1px; }
 .link-inline {
   color: var(--link-on, var(--c-link));
