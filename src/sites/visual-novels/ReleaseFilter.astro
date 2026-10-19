@@ -117,7 +117,7 @@ const data = {
     .vrf__table tbody tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 0; padding: 16px 0; }
     .vrf__table tbody th, .vrf__table td { display: block; padding: 0; }
     .vrf__table tbody th { flex: 1 1 60%; min-width: 0; }
-    .vrf__table .vrf__verdict { order: 1; flex: 0 1 40%; min-width: 0; text-align: right; white-space: normal; padding-left: 12px; }
+    .vrf__table .vrf__verdict { order: 1; flex: 0 1 40%; min-width: 0; text-align: right; white-space: normal; text-wrap: balance; padding-left: 12px; }
     .vrf__table td[data-dim] { order: 2; flex: 0 0 auto; max-width: 100%; font-size: 15px; }
     .vrf__table td[data-dim] + td[data-dim]::before { content: '・'; display: inline-block; color: var(--c-muted); text-decoration: none; }
     .vrf__table tbody tr[data-state='match'] { padding-inline: 14px; box-shadow: inset 3px 0 0 var(--field); }

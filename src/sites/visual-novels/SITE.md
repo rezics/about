@@ -197,7 +197,8 @@ two columns.
   summary. Photographs have descriptions in content, so their alt attributes survive static
   serialisation and pass the static audit.
 - The mobile release rows wrap metadata as complete values, independent of the width of the
-  verdict. A long title-only explanation cannot squeeze 「完整」 into a vertical column.
+  verdict. A long title-only explanation cannot squeeze 「完整」 into a vertical column. The
+  verdict balances its own lines so a rejection reason does not leave a lone character.
 - The hero phone crop was re-encoded after the first fresh QA measured a 2.892 s LCP:
   AVIF quality 44 at 960/640 px (14.6/6.9 KiB), WebP quality 70 (22.5/11.0 KiB). All
   candidates were visually compared with the inherited photograph before selection.
