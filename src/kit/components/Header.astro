@@ -1,8 +1,9 @@
 ---
 /**
- * Global header (DESIGN.md "Navigation", restyled for "Direction v2"): logo left, four pill tabs
- * centred, one pill action right. 產品 and 模組 are disclosure buttons for the two dropdown
- * panels: floating sheets that hold the flat square tiles, the one place squares stay. The
+ * Global header (v3, V3-SPEC "Parts"): paper ground, the logo left, the four tabs centred
+ * (產品 ▾, 模組 ▾, 開發者, 路線圖), 「前往 REZICS」 as an underlined text link on the right; phones
+ * show the logo and 選單. 產品 and 模組 are disclosure buttons for the two dropdown panels
+ * (full-width areas of flat paper-colour tiles). The
  * panels and the phone sheet are rendered at the end of the document (HeaderPanels.astro), so
  * a page's own content comes first in the HTML; the browser keeps a popover after its invoker
  * in the focus order. The panels are native popovers, so
@@ -13,7 +14,6 @@
  */
 import { kinds, site, kindHref } from '../content';
 import Logo from './Logo.astro';
-import ProductCall from './ProductCall.astro';
 
 interface Props {
   path: string;
@@ -50,7 +50,7 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
       </ul>
     </nav>
     <div class="header__end">
-      <ProductCall size="small" class="header__action" />
+      <a class="header__go link-draw" href={site.productUrl}>{nav.action}</a>
       <button type="button" class="header__menu" command="show-modal" commandfor="menu" aria-haspopup="dialog" data-menu-open>
         {nav.menu}
       </button>
@@ -79,16 +79,17 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
     padding-inline: var(--gutter);
   }
   .header__end { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
-  /* Tabs: plain text (the mock), 15 px 500; the current section is underlined, hover turns ink
-     blue. */
-  .header__tabs ul { display: flex; gap: 32px; }
+  /* Tabs: plain text, 14 px 500, 36 px apart; the current section is underlined, hover and an
+     open panel take the link accent. */
+  .header__tabs ul { display: flex; gap: 36px; }
   .tab {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     min-height: 40px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
+    letter-spacing: 0.02em;
     color: var(--c-fg);
     transition: color var(--d-s) var(--ease-soft);
   }
@@ -97,32 +98,29 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
   @media (hover: hover) { .tab:hover { color: var(--c-link); } }
   .tab[aria-expanded='true'] { color: var(--c-link); }
   .tab__caret {
-    width: 6px;
-    height: 6px;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
+    width: 5px;
+    height: 5px;
+    border-right: 1.25px solid currentColor;
+    border-bottom: 1.25px solid currentColor;
     rotate: 45deg;
     translate: 0 -2px;
-    opacity: 0.6;
+    opacity: 0.55;
     transition: rotate var(--d-s) var(--ease-snap), translate var(--d-s) var(--ease-snap);
   }
   .tab[aria-expanded='true'] .tab__caret { rotate: 225deg; translate: 0 1px; }
+  .header__go { font-size: 14px; }
   .header__menu {
     display: none;
-    min-height: 36px;
-    padding: 0 16px;
-    border-radius: var(--r-pill);
-    box-shadow: inset 0 0 0 1px var(--c-line-strong);
+    min-height: 44px;
+    padding: 0 2px;
     color: var(--c-fg);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
   }
   @media (max-width: 899px) {
     .header__bar { grid-template-columns: auto 1fr; }
     .header__tabs { display: none; }
     .header__menu { display: inline-flex; align-items: center; }
-  }
-  @media (max-width: 767px) {
-    .header__end :global(.header__action) { display: none; }
+    .header__go { display: none; }
   }
 </style>
