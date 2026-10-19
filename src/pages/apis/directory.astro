@@ -13,6 +13,7 @@ import NextPages from '../../sites/apis/NextPages.astro';
 import Caption from '../../sites/apis/Caption.astro';
 import { pictures, tones } from '../../sites/apis/art';
 import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
 
 const s = site.strings.directory;
 const views = [tones.light, tones.blue, tones.mid, tones.deep];
@@ -34,7 +35,7 @@ const tiles: MasonryItem[] = s.views.tiles.map((t, i) => ({ id: `view-${i}`, nam
 
   <Section eyebrow={s.views.eyebrow} title={s.views.headline} lead={s.views.lead}>
     <div slot="wide">
-      <TileMasonry items={tiles} columns={tiles.map((t) => [{ id: t.id, h: 1 }])} height={260} phoneRow={150} label={s.views.headline} />
+      <TileMasonry items={tiles} columns={tiles.map((t) => [{ id: t.id, h: 1 }])} height={260} phoneRow={180} size="m" label={s.views.headline} />
       <Caption text={s.views.caption} />
     </div>
   </Section>

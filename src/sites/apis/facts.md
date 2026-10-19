@@ -63,7 +63,7 @@ Paths are under `/home/edge/projects/rezics/rezics-next/docs/` unless they start
 |---|---|
 | Each version keeps what was published; withdrawn versions stay findable | `contracts/work-and-release.md#closed-records-and-open-axes`; `contracts/distribution.md#release-kinds-and-status` |
 | Versions in release order with status, date and changelog, each sourced | Versioned: edition selection, changelogs (`product/platform-thesis.md#capabilities`); Scheduled for dates (same) |
-| Four versions of an invented API (示意): v1 withdrawn, v2 and v3 available, v4 announced | status values as above; the versions are an invented example and the caption says so |
+| Four versions of an invented weather API (示意): v1 withdrawn, v2 and v3 available, v4 announced; auth changes from none to API key; every tile names a generic provider document and a confirmation date | status values as above; version/auth grain follows the sourced-statement model in Least certain 1. The name, versions, authentication methods, document descriptions and dates are all invented examples, explicitly identified in the lead and caption; no actual API or observed measurement is claimed |
 | Announcement is not publication | "A release announcement is a separate utterance" (`contracts/work-and-release.md` intro) |
 | Published record not rewritten; corrections with evidence allowed; later content is a new version | `contracts/work-and-release.md#closed-records-and-open-axes` |
 | Announcements, scheduled dates, confirmed availability, postponements and withdrawals kept distinct | `product/markets-and-growth.md#release-to-return-loop` |

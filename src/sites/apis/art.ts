@@ -15,7 +15,7 @@ export const heroPicture = {
   width: 1920,
   height: 1280,
   alt: alt.hero,
-  position: '100% 50%',
+  position: '0% 50%',
   phone: { src: `${base}/apis-hero-phone`, widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
 };
 

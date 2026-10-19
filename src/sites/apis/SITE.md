@@ -211,3 +211,34 @@ badge. Here the first screen is one paper photograph and one sentence about sour
 no API is named (examples are invented and marked 示意); there are no star ratings and no
 uptime numbers (scores state question, version and population; measurements state five
 fields).
+
+### Completion pass (2026-10-20)
+
+- Preserved the seven existing v3 pages and all five paper photographs. No new image
+  generation was needed. The hero keeps its empty paper on the left on tall tablet views;
+  its separate phone crop remains copy-first and 260 px high.
+- Re-encoded the phone crop after the first throttled run measured image LCP at 2532 ms.
+  AVIF is now 28,570 bytes at 960 × 640 and 11,171 bytes at 640 × 427; WebP is 37,694 and
+  17,752 bytes respectively. Inspected both formats at both sizes: the cut edges, fibres,
+  window light and shadows remain visible.
+- The first phone screenshots exposed a kit issue: current-tab centring used an offset
+  relative to the whole bar, clipping the first tabs beside API Hub. `apis.css` makes
+  `.sitebar__tabs` positioned so the existing script measures the scrolling list. This is a
+  local workaround only; the shared kit was not edited. All seven pages import that CSS.
+- Site-bar links draw an underline or move their name a few pixels on hover and focus.
+  The updated shared kit supplies the header and standalone-link feedback, so those local
+  overrides were removed after merging `site/v3` again. Motion remains quiet and still at
+  rest, as V3-SPEC requires.
+- Phone tiles have room for their complete copy: own pages and neighbours 150 px, saved
+  views 180 px with the medium name size, versions 220 px, and project-list entries 190 px
+  with the medium name size. The five short measurement definitions keep label and value
+  on one compact row even on phones, rather than each using a full stacked row.
+- The version sequence now demonstrates a fictional weather API changing from no
+  authentication to an API key. Every version carries a generic provider document and a
+  confirmation date. The lead and caption explicitly mark all those values as 示意;
+  `facts.md` records that none is an observed API or measurement.
+- Copy clarifies the community heading, labels the rating example 示意, describes the
+  embossed paper accurately, and uses AI 代理 at the start of the proposal section, then
+  代理. The shared CTA still reads 前往 REZICS.
+- First-pass evidence and the independent critic are in `.shots/`; the final report in
+  `.temp/codex-report.md` records the completed checks and screenshot paths.

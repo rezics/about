@@ -15,6 +15,7 @@ import { kindById, partById } from '../../kit/content';
 import { pageHref } from '../../kit/sites';
 import { heroPicture, pictures, tones } from '../../sites/apis/art';
 import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
 import type { PartId } from '../../content/schema';
 
 const s = site.strings.home;
@@ -52,7 +53,7 @@ const parts = kind.parts.map((id) => ({ title: partById(id).name, body: notes[id
   </PhotoHero>
 
   <Section eyebrow={s.pages.eyebrow} title={s.pages.headline}>
-    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={520} label={s.pages.eyebrow} />
+    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={520} phoneRow={150} label={s.pages.eyebrow} />
   </Section>
 
   <PhotoRow
