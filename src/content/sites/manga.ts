@@ -229,6 +229,7 @@ export default {
       levels: {
         eyebrow: '拆開來看',
         heading: '把一部連載拆開來看。',
+        lead: '從整部系列、每一集到每一話，各有自己的層次，最後都歸在同一個身分底下。',
         picture: {
           name: 'series',
           alt: '十幾本近黑色的薄冊整齊疊成一落，上面幾本用一條深綠色紙帶束在一起。',
@@ -477,6 +478,7 @@ export default {
       steps: {
         eyebrow: '從原稿開始',
         heading: '從原稿到讀者手上。',
+        lead: '一話從上傳到發出，中間的每一步都由你安排，也都留在作品自己的紀錄裡。',
         picture: {
           name: 'publish',
           alt: '一張近黑色的紙摺成三面的小屏風立著，每一面切出幾個窗口，光從窗口透到影子裡；旁邊疊著幾張散頁。',

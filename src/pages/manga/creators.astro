@@ -1,0 +1,31 @@
+---
+// 作者 (第 3 話, SITE.md "v3"): the intro, credits by role, one person across kinds, the statement
+// on people and accounts, the next page and the closing. No picture: the page is about names.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Notes from '../../sites/manga/Notes.astro';
+import NextChapter from '../../sites/manga/NextChapter.astro';
+import { nextAfter } from '../../sites/manga/next';
+import site from '../../content/sites/manga';
+
+const s = site.strings.creators;
+---
+<MiniSiteLayout>
+  <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
+
+  <Section eyebrow={s.roles.eyebrow} title={s.roles.heading}>
+    <FactList items={s.roles.items} />
+    <Notes notes={s.roles.footnotes} />
+  </Section>
+
+  <Section eyebrow={s.person.eyebrow} title={s.person.heading} lead={s.person.lead} />
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <NextChapter {...nextAfter('creators', s.closing)} />
+  <Closing title={s.closing.statement} body="" />
+</MiniSiteLayout>

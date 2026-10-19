@@ -1,8 +1,78 @@
 ---
-// STUB: the manga site's builder replaces this page (src/kit/README.md).
+// 漫畫 landing (v3, SITE.md "v3"): the photograph hero (a sheet cut into panel windows, the place
+// you stopped in rose), the eight parts as facts, the six pages as ink tiles, the statement on the
+// awaited volume, the neighbouring kinds as their own tiles and the closing (the page tiles above
+// already lead to 第 1 話).
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace } from '../../kit/components/TileMasonry.astro';
+import Statement from '../../kit/components/Statement.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { hero } from '../../sites/manga/pictures';
+import { kindById, kindHref, partById } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
+import { accentRamp } from '../../kit/color';
+import { pageHref } from '../../kit/sites';
+import site from '../../content/sites/manga';
+import type { PartId } from '../../content/schema';
+
+const s = site.strings.landing;
+const kind = kindById('manga');
+
+const notes: Partial<Record<PartId, string>> = s.parts.notes;
+const parts = kind.parts.map((id) => {
+  const note = notes[id];
+  if (!note) throw new Error(`manga: no note for part "${id}"`);
+  return { title: partById(id).name, body: note };
+});
+
+// The six pages in the manga sheet's own shades: deep sheets and pale ones, like the grey steps
+// of a printed page. Colour order follows the wide layout so neighbours never share a shade.
+const ramp = accentRamp(kindFields.manga.field);
+const shade: Record<string, number> = { series: 0, creators: 5, progress: 1, adaptations: 2, community: 4, publish: 3 };
+const pages: MasonryItem[] = s.pages.tiles.map((t) => {
+  const page = site.pages.find((p) => p.slug === t.slug);
+  if (!page) throw new Error(`manga: no page "${t.slug}"`);
+  const c = ramp[shade[t.slug] ?? 0]!;
+  return { id: t.slug, name: page.label, rel: t.chapter, line: t.line, href: pageHref(site, page), bg: c.bg, on: c.on };
+});
+const pageColumns: MasonryPlace[][] = [
+  [{ id: 'series', h: 5 }, { id: 'creators', h: 3 }],
+  [{ id: 'progress', h: 3 }, { id: 'adaptations', h: 5 }],
+  [{ id: 'community', h: 4 }, { id: 'publish', h: 4 }],
+];
+
+const neighbours: MasonryItem[] = s.neighbours.tiles.map((t) => ({
+  id: t.kind,
+  name: kindById(t.kind).name,
+  line: t.line,
+  href: kindHref(t.kind),
+  bg: kindFields[t.kind].field,
+  on: kindFields[t.kind].on,
+}));
+const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero bar eyebrow={s.hero.eyebrow} title={s.hero.headline} lede={s.hero.lede} image={hero(s.hero.picture)}>
+    <ProductCall label={site.strings.action} />
+  </PhotoHero>
+
+  <Section eyebrow={s.parts.eyebrow} title={s.parts.heading}>
+    <FactList items={parts} />
+  </Section>
+
+  <Section eyebrow={s.pages.eyebrow} title={s.pages.heading}>
+    <TileMasonry slot="wide" items={pages} columns={pageColumns} height={520} label={s.pages.eyebrow} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <Section eyebrow={s.neighbours.eyebrow} title={s.neighbours.heading} lead={s.neighbours.lead}>
+    <TileMasonry slot="wide" items={neighbours} columns={neighbourColumns} height={240} label={s.neighbours.eyebrow} />
+  </Section>
+
+  <Closing title={s.closing.statement} body="" />
 </MiniSiteLayout>

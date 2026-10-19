@@ -1,0 +1,38 @@
+---
+// 進度 (第 2 話, SITE.md "v3"): the intro, the folded strip beside switching languages, the kinds
+// of "caught up", the statement on owning and reading, what travels with you, the next page and
+// the closing.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Notes from '../../sites/manga/Notes.astro';
+import NextChapter from '../../sites/manga/NextChapter.astro';
+import { photo } from '../../sites/manga/pictures';
+import { nextAfter } from '../../sites/manga/next';
+import site from '../../content/sites/manga';
+
+const s = site.strings.progress;
+---
+<MiniSiteLayout>
+  <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
+
+  <PhotoRow side="left" eyebrow={s.language.eyebrow} title={s.language.heading} body={s.language.lead} image={photo(s.language.picture)} />
+
+  <Section eyebrow={s.caught.eyebrow} title={s.caught.heading}>
+    <FactList items={s.caught.items} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <Section eyebrow={s.travels.eyebrow} title={s.travels.heading}>
+    <FactList items={s.travels.items} />
+    <Notes notes={[s.travels.footnote]} />
+  </Section>
+
+  <NextChapter {...nextAfter('progress', s.closing)} />
+  <Closing title={s.closing.statement} body="" />
+</MiniSiteLayout>

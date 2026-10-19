@@ -1,0 +1,14 @@
+---
+/** Short notes under a list: sources, limits, a privacy line. Small, muted, real text. */
+interface Props {
+  notes: string[];
+}
+const { notes } = Astro.props;
+---
+<div class="m-notes">
+  {notes.map((n) => <p>{n}</p>)}
+</div>
+<style>
+  .m-notes { margin-top: 28px; display: grid; gap: 0.5em; max-width: 38em; }
+  .m-notes p { font-size: 14px; line-height: 1.85; color: var(--c-muted); }
+</style>

@@ -1,0 +1,32 @@
+---
+// 討論 (第 5 話, SITE.md "v3"): the intro, spoilers held at your chapter, ratings that name their
+// target, where people gather, the next page and the closing.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Notes from '../../sites/manga/Notes.astro';
+import NextChapter from '../../sites/manga/NextChapter.astro';
+import { nextAfter } from '../../sites/manga/next';
+import site from '../../content/sites/manga';
+
+const s = site.strings.community;
+---
+<MiniSiteLayout>
+  <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
+
+  <Section eyebrow={s.spoilers.eyebrow} title={s.spoilers.heading}>
+    <FactList items={s.spoilers.items} />
+  </Section>
+
+  <Section eyebrow={s.ratings.eyebrow} title={s.ratings.heading} lead={s.ratings.lead} />
+
+  <Section eyebrow={s.gather.eyebrow} title={s.gather.heading}>
+    <FactList items={s.gather.items} />
+    <Notes notes={[s.gather.footnote]} />
+  </Section>
+
+  <NextChapter {...nextAfter('community', s.closing)} />
+  <Closing title={s.closing.statement} body="" />
+</MiniSiteLayout>
