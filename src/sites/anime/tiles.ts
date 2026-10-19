@@ -21,8 +21,13 @@ export function pageTile(slug: string, stop: number): MasonryItem {
   return { id: slug, name: page.label, line: lines.get(slug), href: `${site.base}${slug}/`, bg, on };
 }
 
-/** A tile for a neighbouring kind, in its own colour. */
+const neighbourLines = new Map(site.strings.landing.neighbours.tiles.map((t) => [t.to, t.label]));
+
+/**
+ * A tile for a neighbouring kind, in its own colour. Its line says what the kind is to anime (the
+ * landing's neighbour labels), not the kind's summary, which the header's panel already shows.
+ */
 export function kindTile(id: KindId, line?: string): MasonryItem {
   const k = kindById(id);
-  return { id, name: k.name, line: line ?? k.summary, href: kindHref(id), bg: kindFields[id].field, on: kindFields[id].on };
+  return { id, name: k.name, line: line ?? neighbourLines.get(id) ?? k.summary, href: kindHref(id), bg: kindFields[id].field, on: kindFields[id].on };
 }
