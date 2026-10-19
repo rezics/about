@@ -28,7 +28,61 @@ skill differ, this file wins and says why.
 - **Out of scope.** Legal policy pages (they live with the product, not here; the footer
   links nowhere for them yet), other locales, deployment.
 
-## Direction v2: a company homepage (supersedes Phases 1 and 2 for page bodies)
+## v3: paper, serif and one focal point (the current language)
+
+**Approved by the maintainer on 2026-10-19 from the mock `.temp/sites/v3-home-mock.html`** (its
+screenshots `v3-home-mock-desktop.png` and `v3-home-mock-phone.png`, the reference photograph
+`v3-reference-paper.png`; the binding text is `.temp/sites/V3-SPEC.md`, all in the main
+checkout). v3 supersedes every earlier direction where they differ: Direction v2's painterly
+imagery and its Swiss tile walls, ink bands and coloured closing blocks, and the Phase 1 and 2
+square system. The kit (`src/kit/README.md`, "v3") implements it; the home page is the
+reference build.
+
+Why it works, and what every page keeps:
+
+- **One focal point per screen.** The first screen is one photograph, one sentence, one action;
+  nothing competes beside the headline. On phones the copy and the action come first and the
+  picture follows as a short band.
+- **Editorial type.** Headings and statements in Noto Serif TC (600; statements 500 with the
+  second half in muted ink), text in Noto Sans TC 400 at 1.9, Latin in Manrope. The serif gives
+  the literary, editorial tone a culture product needs.
+- **A real material.** Every picture is from one series: editorial still-life photographs of
+  cut paper on a warm paper backdrop in soft window light from the upper left. The coloured
+  papers are the nine kinds; the flat tiles are the same papers seen flat, so photograph and
+  tile are one idea in two forms. No text, symbols, people, hands, screens or other objects in
+  a picture; each expresses its section's idea with paper (a stack for editions, overlapping
+  sheets for a relation, a folded standing sheet for a site of its own). Generated with codex-2
+  and the reference photograph attached, delivered as AVIF and WebP at the sizes used.
+- **Restraint and air.** A muted palette, 120 to 200 px between sections on desktop, one idea
+  per section, few elements per screen, a slow rhythm.
+
+Tokens: paper `#efe9e0`, ink `#26292d`, muted `#606468` for small text (the spec's `#6b6f73`
+reads 4.2:1 and is kept for the muted half of large statements), hairline `rgb(38 41 45 / .14)`,
+link and hover accent `#2f4fa3`, logo red only in the logo. Kind colours (muted, from the
+photograph): books `#3f5a45`, anime `#b77d77`, manga `#26282b`, games `#2f4fa3`, software
+`#24555a`, visual novels `#7768a3`, MCP `#c9963f`, skills `#b8c58a`, APIs `#a9c3dc`; developers
+`#3b4a5a`; modules in ink tints `#26292d` to `#6e757c`. Text on each colour is light or dark as
+the spec says, in the shade that passes AA (white on visual novels and the lightest module, a
+deeper ink on anime). Photographs and tiles are square-cornered; buttons are ink pills whose
+hover is the accent; no shadows, gradients or rounded cards.
+
+Parts (kit names): the header on paper with centred tabs and the underlined 「前往 REZICS」
+link; dropdown panels of near-seamless flat tiles with serif names and a paper grain;
+`PhotoHero`; `Section` (eyebrow in columns 1 to 3, serif h2 in 4 to 11, lead in 4 to 9);
+`TileMasonry` (seamless tiles 3 px apart, columns ending level, heights by importance; two
+columns on phones); `PhotoRow`; `Statement`; `FactList`; `Closing` (a final statement and the
+ink pill) and the footer on paper with link columns. Motion is quiet: content fades and rises a
+few pixels, tiles respond on hover and press; no scroll-scrubbed scenes or idle animation.
+
+Content rules stay as before: REZICS is live (every action 「前往 REZICS」), no other product or
+company named, every capability written as available, no old classics, 《魔法禁書目錄》 as the one
+text-only example (never on the home page), no square-metaphor copy (「方塊」「一格」「九宮格」, now
+checked by `tests/unit/copy.test.ts`), zh-Hant Taiwan usage, no dashes, no hype words.
+
+## Direction v2: a company homepage (superseded by v3)
+
+**Superseded by "v3" above.** Its painterly art direction and its Swiss tile walls, ink bands
+and coloured closing blocks no longer apply; the record below stays for the reasoning.
 
 **Revised 2026-10-19: the Swiss grid and flat seamless tiles.** The painterly art direction is
 withdrawn: no generated scene images anywhere (the only pictures left are the flat kind prints
@@ -307,6 +361,8 @@ uses it, so the hero transition shows "same part, same place" and only the diffe
   grid, the module list, then 開發者 and 路線圖. Focus is trapped; Escape closes.
 
 ## Phase 2: art direction
+
+Superseded by "v3" for palette, type, imagery, shape and motion; kept as the record.
 
 ### Palette
 
@@ -606,3 +662,10 @@ Voice (zh-Hant):
   withdrawn; pages follow the Swiss grid and flat seamless tiles of `.temp/mocks/home.html` (see
   "Direction v2", revised). Earlier builder notes in this list about painted images, centred
   intros and card rows are history.
+- 2026-10-19 (v3): the maintainer approved the paper still-life mock (`.temp/sites/V3-SPEC.md`):
+  paper ground, Noto Serif TC headings, one photograph per landing, flat paper-colour tiles,
+  pages on paper without bands. The serif is self-hosted and sliced per page like the sans
+  (a page loads only the serif glyphs its headings and statements use); the spec's muted ink
+  keeps to large text and a darker muted (`#606468`) carries small text, so every pair passes
+  AA. Text on a mid-tone kind colour takes the AA shade of light or dark (`inkOn`), so the kind
+  colours stay exactly those of the photograph.
