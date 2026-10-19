@@ -33,7 +33,7 @@ const rows = v.diff.rows.map((r) => [r.tool, r.before, r.after]);
     />
 
     <Section eyebrow={v.diff.label} title={v.diff.headline} lead={[v.diff.body, v.diff.consequence]}>
-      <Table class="mcp-diff" columns={v.diff.columns} rows={rows} caption={v.diff.caption} />
+      <Table class="mcp-diff" columns={v.diff.columns} rows={rows} caption={v.diff.caption} label={v.diff.headline} />
     </Section>
 
     <Section eyebrow={v.ledger.label} title={v.ledger.headline} lead={v.ledger.body}>

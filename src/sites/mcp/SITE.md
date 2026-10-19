@@ -135,7 +135,7 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
    endorsement).
 4. Tile masonry of the site's five pages on the ochre ramp (證據 tallest).
 5. Section 「相連的索引」: h2 and lead, then a tile masonry of the neighbours: 軟體, API Hub,
-   Skill Hub, and the developers site for REZICS's own MCP server (`/developers/mcp-server/`).
+   Skill Hub, and the developers site for REZICS's own MCP server (`/developers/`).
 6. Closing: final statement and 「前往 REZICS」.
 
 **`/mcp/directory/`**

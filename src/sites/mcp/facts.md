@@ -152,7 +152,8 @@ a feature.
 5. **Claiming** is documented for imported person and organization identities (and as a
    target), not for server entries; the copy claims the identity attached to an imported entry.
 6. **Connections** to API Hub (wraps) and Software (client as a software entry) are inferred.
-7. REZICS's own MCP server links to `/developers/mcp-server/` (lead decision); the maintainers
-   page's 「看提交方式」 links to `/developers/` because no submission page is known.
+7. REZICS's own MCP server and the maintainers page's 「看提交方式」 link to `/developers/`.
+   The earlier `/developers/mcp-server/` target is not built in the shared branch, so this
+   site uses the existing developers landing until its deeper routes are available.
 8. The markets document makes a skills/MCP pilot fifth and conditional on maintainers
    committing to updates; per the brief it is written as available.
