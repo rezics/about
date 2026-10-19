@@ -83,7 +83,7 @@ const show = ROWS.filter((r) => fin.rows[r]).join(' ');
 <style>
   .bm__stage {
     container-type: inline-size;
-    padding: clamp(14px, 2.4cqi, 28px);
+    padding: clamp(12px, 2.4cqi, 28px);
     background: var(--bk-t08);
     border-top: 2px solid var(--field);
   }
@@ -98,7 +98,7 @@ const show = ROWS.filter((r) => fin.rows[r]).join(' ');
     column-gap: var(--gap);
   }
   @container (max-width: 560px) {
-    .bm__frame { --cell: calc((100cqi - var(--label) - var(--gap) - 4.4 * var(--gap)) / 5.4); }
+    .bm__frame { --cell: calc((100cqi - var(--label) - var(--gap) - 5.4 * var(--gap)) / 6.4); }
   }
   .bm__labels, .bm__grid { display: grid; grid-auto-rows: var(--cell); row-gap: var(--gap); }
   .bm__labels { padding-bottom: calc(var(--gap) + 12px); }

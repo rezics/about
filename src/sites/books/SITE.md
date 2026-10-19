@@ -533,7 +533,7 @@ Phone: S2 stage square shrinks to a strip at the top; S3 rows stack label over t
   being read. A GSAP tween on the one clock, paused off screen, absent under reduced motion.
   The bookmark itself never moves at rest.
 - **Phone (390 px), first.** The row labels stay fixed and the twelve columns sit on a track
-  that shows about five volumes at a readable size (about 56 px squares). With motion the
+  that shows about six volumes at a readable size (about 44 px squares). With motion the
   track pans with the bookmark: the same `--mark` that moves the ribbon also translates the
   track so about two volumes stay visible before the bookmark (CSS `clamp`, so it never pans
   past the ends). Without script or under reduced motion the track is a horizontal

@@ -63,9 +63,7 @@ const next = pageBy('work');
     <h2 id="shelf-title" class="col-full shelf__title mono">{s.shelf.headline}</h2>
     <p class="col-full shelf__words">
       {s.shelf.words.map((w, i) => (
-        <>
-          <span class="shelf__word">{w}</span>{i < s.shelf.words.length - 1 && <span class="shelf__sep" aria-hidden="true"></span>}
-        </>
+        <span class="shelf__word">{w}{i < s.shelf.words.length - 1 && <span class="shelf__sep" aria-hidden="true"></span>}</span>
       ))}
     </p>
     <p class="col-5-12 shelf__caption">{s.shelf.caption}</p>
@@ -184,7 +182,7 @@ const next = pageBy('work');
     padding-block: 18px;
     border-block: 2px solid var(--field);
   }
-  .shelf__word { white-space: nowrap; }
+  .shelf__word { white-space: nowrap; display: inline-flex; align-items: center; gap: 0.4em; }
   .shelf__sep { width: 0.28em; height: 0.28em; background: var(--field); flex: none; }
   .shelf__caption { max-width: var(--measure); }
 
