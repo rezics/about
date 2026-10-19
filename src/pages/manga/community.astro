@@ -1,6 +1,7 @@
 ---
 // 討論 (第 5 話, SITE.md "v3"): the intro, spoilers held at your chapter, ratings that name their
-// target, where people gather, the next page and the closing.
+// target, where people gather (with the two modules it runs on as tiles), the next page and the
+// closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
 import Section from '../../kit/components/Section.astro';
@@ -9,9 +10,20 @@ import Closing from '../../kit/components/Closing.astro';
 import Notes from '../../sites/manga/Notes.astro';
 import NextChapter from '../../sites/manga/NextChapter.astro';
 import { nextAfter } from '../../sites/manga/next';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import { moduleById, moduleHref } from '../../kit/content';
+import { moduleFields } from '../../kit/theme';
 import site from '../../content/sites/manga';
 
 const s = site.strings.community;
+const gatherModules: MasonryItem[] = s.gather.tiles.map((t) => ({
+  id: t.module,
+  name: moduleById(t.module).name,
+  line: t.line,
+  href: moduleHref(t.module),
+  bg: moduleFields[t.module].field,
+  on: moduleFields[t.module].on,
+}));
 ---
 <MiniSiteLayout>
   <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
@@ -25,6 +37,7 @@ const s = site.strings.community;
   <Section eyebrow={s.gather.eyebrow} title={s.gather.heading}>
     <FactList items={s.gather.items} />
     <Notes notes={[s.gather.footnote]} />
+    <TileMasonry slot="wide" items={gatherModules} columns={gatherModules.map((m) => [{ id: m.id, h: 1 }])} phone={[gatherModules.map((m) => ({ id: m.id }))]} height={200} phoneRow={150} label={s.gather.eyebrow} />
   </Section>
 
   <NextChapter {...nextAfter('community', s.closing)} />

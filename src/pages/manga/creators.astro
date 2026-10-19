@@ -1,6 +1,7 @@
 ---
 // 作者 (第 3 話, SITE.md "v3"): the intro, credits by role, one person across kinds, the statement
-// on people and accounts, the next page and the closing. No picture: the page is about names.
+// on people and accounts, the next page and the closing. No picture: the page is about names;
+// the person's other kinds are their own tiles.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
 import Section from '../../kit/components/Section.astro';
@@ -10,9 +11,20 @@ import Closing from '../../kit/components/Closing.astro';
 import Notes from '../../sites/manga/Notes.astro';
 import NextChapter from '../../sites/manga/NextChapter.astro';
 import { nextAfter } from '../../sites/manga/next';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import { kindById, kindHref } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/manga';
 
 const s = site.strings.creators;
+const kindsOfPerson: MasonryItem[] = s.person.tiles.map((t) => ({
+  id: t.kind,
+  name: kindById(t.kind).name,
+  line: t.line,
+  href: kindHref(t.kind),
+  bg: kindFields[t.kind].field,
+  on: kindFields[t.kind].on,
+}));
 ---
 <MiniSiteLayout>
   <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
@@ -22,7 +34,9 @@ const s = site.strings.creators;
     <Notes notes={s.roles.footnotes} />
   </Section>
 
-  <Section eyebrow={s.person.eyebrow} title={s.person.heading} lead={s.person.lead} />
+  <Section eyebrow={s.person.eyebrow} title={s.person.heading} lead={s.person.lead}>
+    <TileMasonry slot="wide" items={kindsOfPerson} columns={kindsOfPerson.map((k) => [{ id: k.id, h: 1 }])} phone={[kindsOfPerson.map((k) => ({ id: k.id }))]} height={220} phoneRow={150} label={s.person.eyebrow} />
+  </Section>
 
   <Statement text={s.statement.text} sub={s.statement.muted} />
 

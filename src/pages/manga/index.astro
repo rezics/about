@@ -56,7 +56,7 @@ const neighbours: MasonryItem[] = s.neighbours.tiles.map((t) => ({
 const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <PhotoHero bar eyebrow={s.hero.eyebrow} title={s.hero.headline} lede={s.hero.lede} image={hero(s.hero.picture)}>
+  <PhotoHero bar title={s.hero.headline} lede={s.hero.lede} image={hero(s.hero.picture)}>
     <ProductCall label={site.strings.action} />
   </PhotoHero>
 
@@ -65,7 +65,7 @@ const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h:
   </Section>
 
   <Section eyebrow={s.pages.eyebrow} title={s.pages.heading}>
-    <TileMasonry slot="wide" items={pages} columns={pageColumns} height={520} label={s.pages.eyebrow} />
+    <TileMasonry slot="wide" items={pages} columns={pageColumns} height={520} phoneRow={176} label={s.pages.eyebrow} />
   </Section>
 
   <Statement text={s.statement.text} sub={s.statement.muted} />

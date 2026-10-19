@@ -1,7 +1,7 @@
 // The manga site (漫畫): every visible string of /manga/ and its six inner pages, read as the
 // site's chapters 第 1 話 to 第 6 話. Design record: src/sites/manga/SITE.md ("v3"); sources for
 // every claim: src/sites/manga/facts.md.
-import type { Item, KindId, MiniSite, PartId } from '../schema';
+import type { Item, KindId, MiniSite, ModuleId, PartId } from '../schema';
 
 /** A section head in the v3 grid: eyebrow in columns 1 to 3, serif h2, optional lead. */
 export interface MangaHead {
@@ -38,7 +38,7 @@ export interface MangaStrings {
   /** The action into REZICS (the product's address comes from `site.productUrl`). */
   action: string;
   landing: {
-    hero: MangaIntro & { picture: MangaPicture };
+    hero: Omit<MangaIntro, 'eyebrow'> & { picture: MangaPicture };
     parts: MangaHead & { notes: Partial<Record<PartId, string>> };
     pages: MangaHead & { tiles: { slug: string; chapter: string; line: string }[] };
     statement: MangaStatement;
@@ -63,7 +63,7 @@ export interface MangaStrings {
   creators: {
     intro: MangaIntro;
     roles: MangaHead & { items: Item[]; footnotes: string[] };
-    person: MangaHead;
+    person: MangaHead & { tiles: { kind: KindId; line: string }[] };
     statement: MangaStatement;
     closing: MangaClosing;
   };
@@ -79,7 +79,7 @@ export interface MangaStrings {
     intro: MangaIntro;
     spoilers: MangaHead & { items: Item[] };
     ratings: MangaHead;
-    gather: MangaHead & { items: Item[]; footnote: string };
+    gather: MangaHead & { items: Item[]; footnote: string; tiles: { module: ModuleId; line: string }[] };
     closing: MangaClosing;
   };
   publish: {
@@ -165,7 +165,6 @@ export default {
     action: '前往 REZICS',
     landing: {
       hero: {
-        eyebrow: '漫畫',
         headline: '讀到第幾話，REZICS 替你記著。',
         lede: '每部漫畫在 REZICS 只有一個身分，單行本、連載的每一話與各語言的譯本都歸在它底下。你讀到哪一話、下一話在等哪個語言，打開就知道。',
         picture: {
@@ -215,7 +214,7 @@ export default {
         ],
       },
       closing: {
-        statement: '從第一話讀到最新一集，都在同一個地方。',
+        statement: '第一話到最新一集，都在同一個地方。',
         nextLabel: '下一話　第 1 話',
         nextName: '系列',
       },
@@ -228,7 +227,7 @@ export default {
       },
       levels: {
         eyebrow: '拆開來看',
-        heading: '把一部連載拆開來看。',
+        heading: '把連載拆開來看。',
         lead: '從整部系列、每一集到每一話，各有自己的層次，最後都歸在同一個身分底下。',
         picture: {
           name: 'series',
@@ -291,7 +290,7 @@ export default {
       },
       language: {
         eyebrow: '換一種語言',
-        heading: '換了語言，讀過的集數照樣算數。',
+        heading: '換了語言，讀過的照樣算數。',
         lead: '前十集用日文讀完，後來改讀繁中，那十集照樣算讀過。接下來，REZICS 用繁中替你找下一集；繁中版還沒出，就標出你正在等的那一集。',
         picture: {
           name: 'progress',
@@ -359,6 +358,11 @@ export default {
         eyebrow: '一個人',
         heading: '一個名字，串起他在每一種東西裡的作品。',
         lead: '一位畫家可能替小說畫插畫、連載自己的漫畫，也為遊戲作畫。REZICS 把這些都放在同一個人底下；追蹤他，新作品與公告就會出現在你的追蹤動態。',
+        tiles: [
+          { kind: 'books', line: '替小說畫的插畫' },
+          { kind: 'anime', line: '改編成動畫的原作' },
+          { kind: 'games', line: '為遊戲畫的美術' },
+        ],
       },
       statement: {
         text: '署名的是人，不是帳號。',
@@ -462,6 +466,10 @@ export default {
           { title: '追蹤', body: '追蹤一部作品、一位作者或一個 Realm，各自決定通知多寡。' },
         ],
         footnote: '年齡分級各自設定：一般、R15、R18 與 R18G 分開開關，沒有評估過的內容標示「未評估」。',
+        tiles: [
+          { module: 'community', line: 'Realm、討論、評分與清單' },
+          { module: 'zones', line: 'Zone 與 Wiki+，社群自己的網站' },
+        ],
       },
       closing: {
         statement: '讀完一話，就在那一話底下聊。',
@@ -476,7 +484,7 @@ export default {
         lede: '在 REZICS 連載的作品，和其他漫畫並列在同一個索引裡。讀者用同一套進度、討論與評分讀它；有人改編或翻譯，也會連回你的作品。',
       },
       steps: {
-        eyebrow: '從原稿開始',
+        eyebrow: '流程',
         heading: '從原稿到讀者手上。',
         lead: '一話從上傳到發出，中間的每一步都由你安排，也都留在作品自己的紀錄裡。',
         picture: {
