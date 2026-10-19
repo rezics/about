@@ -97,10 +97,12 @@ describe.skipIf(!built)('build output', () => {
     }
   });
 
-  test('every kind picture the pages reference exists with both formats and sizes', () => {
-    const refs = new Set(pages.flatMap((p) => [...p.html.matchAll(/\/images\/kinds\/([a-z-]+)-(?:320|960)\.(?:avif|webp)/g)].map((m) => m[1]!)));
-    for (const id of refs)
-      for (const variant of ['320.avif', '320.webp', '960.avif', '960.webp'])
-        expect(existsSync(join(dist, 'images/kinds', `${id}-${variant}`)), `${id}-${variant}`).toBe(true);
+  test('every picture a page references exists', () => {
+    const missing = new Set<string>();
+    for (const p of pages)
+      for (const m of p.html.matchAll(/(?:src|srcset)="([^"]+)"/g))
+        for (const url of m[1]!.split(',').map((x) => x.trim().split(/\s+/)[0]!))
+          if (url.startsWith('/images/') && !existsSync(join(dist, url))) missing.add(`${p.route}: ${url}`);
+    expect([...missing]).toEqual([]);
   });
 });
