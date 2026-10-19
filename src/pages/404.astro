@@ -38,4 +38,11 @@ const phone = [0, 2, 4, 6, 8].map((i) => tiles.slice(i, i + 2).map((t) => ({ id:
   :global(section.phero.nf) { --hero-h: min(calc(100svh - var(--header-h)), 720px); }
   :global(.nf-kinds .section__title) { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem); }
   :global(.nf-kinds .section__wide) { margin-top: 48px; }
+  :global(.nf-kinds .tile__name--latin) { --tile-name: clamp(1rem, 1.4vw, 1.25rem); }
+  @media (max-width: 1023px) {
+    :global(.nf-kinds .tile) { --pad: 12px; }
+  }
+  @media (max-width: 767px) {
+    :global(.nf-kinds .tile__name--latin) { --tile-name: 20px; }
+  }
 </style>
