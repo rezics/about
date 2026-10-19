@@ -272,3 +272,9 @@ name and show an arrow on hover; the position control swaps its lists with a sho
 - **Final accessory cut:** the landing's duplicate 書庫 eyebrow was removed. The site bar
   already identifies the section; the photograph, serif sentence and single action carry the
   opening, and the phone photograph arrives sooner.
+- **Article navigation:** each inner page has a short 本頁內容 index after its opening. Its
+  underlined links use the kit's stable heading ids, need no script and keep a 44 px target.
+  On phones they form two columns. This makes the long facts sections directly reachable.
+- **Withheld entries:** the first critic found that invisible Wiki text still kept a full
+  entry's height. Later entries now fold to a 64 px notice; selecting a later position restores
+  their complete content. The control itself stays in place.

@@ -1,0 +1,30 @@
+---
+// A quiet index for long books articles. Labels and headings come from the content file;
+// anchor ids use the same kit helper as Section, so the index works without JavaScript.
+import { idFor } from '../../kit/ids';
+import site from '../../content/sites/books';
+
+interface Props {
+  items: { label: string; headline: string }[];
+}
+const { items } = Astro.props;
+---
+<nav class="bk-contents" aria-labelledby="books-contents">
+  <div class="grid">
+    <p id="books-contents" class="eyebrow bk-contents__label">{site.strings.common.contents}</p>
+    <ul class="bk-contents__links" role="list">
+      {items.map((item) => <li><a class="link-draw" href={`#${idFor('section', item.headline)}`}>{item.label}</a></li>)}
+    </ul>
+  </div>
+</nav>
+<style>
+  .bk-contents { padding-top: 48px; }
+  .bk-contents__label { grid-column: 1 / 4; align-self: center; }
+  .bk-contents__links { grid-column: 4 / 13; display: flex; flex-wrap: wrap; gap: 8px 32px; }
+  .bk-contents__links a { min-height: 44px; font-size: 14px; font-weight: 400; }
+  @media (max-width: 767px) {
+    .bk-contents { padding-top: 36px; }
+    .bk-contents__label { margin-bottom: 12px; }
+    .bk-contents__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
+  }
+</style>

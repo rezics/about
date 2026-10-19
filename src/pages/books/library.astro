@@ -9,6 +9,7 @@ import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/books/NextPage.astro';
 import PhotoHead from '../../sites/books/PhotoHead.astro';
 import Reads from '../../sites/books/Reads.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
 import { pictures } from '../../sites/books/pictures';
 import '../../sites/books/books.css';
@@ -17,6 +18,7 @@ const s = site.strings.library;
 ---
 <MiniSiteLayout>
   <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.library, alt: s.hero.alt }} />
+  <Contents items={[s.reads, s.move, s.shelf, s.privacy]} />
 
   <Section eyebrow={s.reads.label} title={s.reads.headline} lead={s.reads.lead}>
     <Reads />

@@ -11,6 +11,7 @@ import NextPage from '../../sites/books/NextPage.astro';
 import PhotoHead from '../../sites/books/PhotoHead.astro';
 import Notes from '../../sites/books/Notes.astro';
 import Orders from '../../sites/books/Orders.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
 import { pictures } from '../../sites/books/pictures';
 import '../../sites/books/books.css';
@@ -19,6 +20,7 @@ const s = site.strings.editions;
 ---
 <MiniSiteLayout>
   <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.editions, alt: s.hero.alt }} />
+  <Contents items={[s.releases, s.translations, s.sameWork, s.orders]} />
 
   <Section eyebrow={s.releases.label} title={s.releases.headline} lead={s.releases.lead}>
     <FactList items={s.releases.kinds} />

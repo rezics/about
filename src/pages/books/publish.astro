@@ -9,6 +9,7 @@ import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/books/NextPage.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
@@ -16,6 +17,7 @@ const s = site.strings.publish;
 ---
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <Contents items={[s.buy, s.statement, s.distributed]} />
 
   <Section eyebrow={s.buy.label} title={s.buy.headline}>
     <FactList items={s.buy.steps} numbered />

@@ -10,7 +10,7 @@ const late = p.positions.flatMap((pos, i) =>
   [...new Set(p.entries.filter((e) => e.chapter > pos.chapter).map((e) => e.chapter))].map((ch) => `.pos:has(#pos-${i}:checked) .pos__entry[data-ch="${ch}"]`),
 );
 const css = late.length
-  ? `${late.map((sel) => `${sel} > *`).join(',')}{visibility:hidden}${late.map((sel) => `${sel}::after`).join(',')}{opacity:1}`
+  ? `${late.map((sel) => `${sel} > *`).join(',')}{visibility:hidden}${late.join(',')}{height:64px;padding-block:0;overflow:hidden}${late.map((sel) => `${sel}::after`).join(',')}{opacity:1}`
   : '';
 const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.status.replace('{n}', String(p.positions[i]!.chapter)));
 ---

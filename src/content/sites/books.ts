@@ -22,7 +22,7 @@ type Picture = { alt: string };
 
 export type BooksStrings = {
   /** Shared labels across the site's pages; `closing` ends every page. */
-  common: { nextPage: string; nextSite: string; closing: { title: string; body: string } };
+  common: { contents: string; nextPage: string; nextSite: string; closing: { title: string; body: string } };
   landing: {
     hero: { headline: string; lede: string } & Picture;
     /** Photo row: the editions picture beside one fictional series' editions (示意). */
@@ -128,6 +128,7 @@ export type BooksStrings = {
 
 const strings: BooksStrings = {
   common: {
+    contents: '本頁內容',
     nextPage: '下一頁',
     nextSite: '相關種類',
     closing: {

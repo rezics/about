@@ -13,6 +13,7 @@ import NextPage from '../../sites/books/NextPage.astro';
 import PhotoHead from '../../sites/books/PhotoHead.astro';
 import Notes from '../../sites/books/Notes.astro';
 import Position from '../../sites/books/Position.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
 import { pictures } from '../../sites/books/pictures';
 import { tones } from '../../sites/books/tones';
@@ -25,6 +26,7 @@ const zoneTiles = s.zone.tiles.map((t, i) => ({ id: `z${i}`, name: t.name, line:
 ---
 <MiniSiteLayout>
   <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.wiki, alt: s.hero.alt }} />
+  <Contents items={[s.flow, s.position, s.zone, s.review]} />
 
   <Section eyebrow={s.flow.label} title={s.flow.headline}>
     <FactList items={s.flow.steps} numbered />
