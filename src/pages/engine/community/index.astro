@@ -3,6 +3,7 @@
 // section: identity, the byline rule, the Realm, leaving, ratings, follows, the feed,
 // recognition, then the module family's closing (statement, ring of the five modules, closing).
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
+import '../../../sites/community/module-hero.css';
 import PhotoHero from '../../../kit/components/PhotoHero.astro';
 import Section from '../../../kit/components/Section.astro';
 import FactList from '../../../kit/components/FactList.astro';
@@ -19,6 +20,7 @@ const s = site.strings;
 ---
 <MiniSiteLayout>
   <PhotoHero
+    class="module-hero"
     bar
     eyebrow={shared.nav.engine}
     title={s.hero.headline}
@@ -29,7 +31,7 @@ const s = site.strings;
       width: 1920,
       height: 1280,
       alt: s.hero.imageAlt,
-      position: '100% 50%',
+      position: '0% 50%',
       phone: { src: '/images/sites/community/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
     }}
   >

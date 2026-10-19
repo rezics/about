@@ -162,7 +162,7 @@ once (a law, not a product); DMCA is described as 「法定的通知與反通知
 | Counter-notice restoration between 10 and 14 business days unless a court action is notified; independent safety, legal or contractual restrictions remain (時限) | `legal/copyright-and-dmca-policy.md` §6 |
 | Appeals free for at least six months, including decisions not to act on a report (時限) | `legal/acceptable-use-policy.md` §8 |
 | Minimum ages 13, 14 in South Korea, 16 in the EEA (時限) | `legal/content-ratings-and-age-policy.md` §1; `operations/trust-and-safety.md` |
-| Uploaded library files expire after seven days; export before then includes the source fields (時限) | `contracts/source-lifecycle.md#reader-upload-retention` |
+| Uploaded library source data expires after seven days, immediately excluded from reads and exports, then deleted by the retention worker; export before expiry includes source fields (時限) | `contracts/source-lifecycle.md#reader-upload-retention` |
 | GDPR requests ordinarily within one month; extensions explained within the first month (時限) | `legal/privacy-policy.md` §10 |
 | Reporting and appeals without an account and after suspension (時限 note) | `legal/acceptable-use-policy.md` §6; `legal/terms-of-service.md` line 125 |
 | One disclosure policy on every read and delivery: blocks, privacy, reading position, jurisdiction, revocation, incl. search, counts, previews, notifications, exports, AI context (可見範圍 lead) | `operations/security.md#one-disclosure-and-enforcement-policy` (suitability is left out of this sentence because interactive presentation applies it per body and image, `contracts/classification-judgments.md`) |

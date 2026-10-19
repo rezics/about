@@ -6,15 +6,15 @@ One record for the three sites `community`, `create` and `trust` (copy in
 
 ## v3
 
-The v3 rebuild (2026-10-19) follows `.temp/sites/V3-SPEC.md` and the mock
-`.temp/sites/v3-home-mock.html`. Everything from the 方塊 and v2 rounds is gone: the engine
+The v3 rebuild (2026-10-19) follows `.temp/ref/V3-SPEC.md` and the mock
+`.temp/ref/v3-home-mock.html`. Everything from the 方塊 and v2 rounds is gone: the engine
 strip, the parts plate, the field finale, the 「人」 stage, the 版權頁 colophon, the seal ledger,
-the 稿紙 and the running example 《紅樓夢》. Where this section and older notes disagree, this
+the 稿紙 and the dated running example. Where this section and older notes disagree, this
 section wins.
 
 ### Decisions
 
-- **Old classics removed.** 《紅樓夢》 appeared as a Realm name, a rating target, the 稿紙 poem
+- **Old classics removed.** The old running example appeared as a Realm name, a rating target, the 稿紙 poem
   and the trust record. Every example is now generic and marked 示意 (a Realm called
   奇幻小說讀書會, a work's record, 「第 1 到 12 章的第一版」). 《魔法禁書目錄》 is not used: these
   pages walk through moderation, rights complaints and takedowns, and naming a real work there
@@ -61,16 +61,16 @@ section wins.
    service-licence sentence moved into the 譯本與權利 facts (the module statement already says
    uploading does not transfer copyright).
 
-### Pictures (paper still-life, codex-2, style reference `v3-reference-paper.png`)
+### Pictures (paper still-life, style reference `v3-reference-paper.png`)
 
 | Page | Idea | Picture | Files (`public/images/sites/<id>/`) |
 |---|---|---|---|
 | 社群 | many people gathered around one shared place | about fourteen small sheets (graphite greys, two dusty rose, two pale blue) gathered around one larger charcoal sheet | `hero-1920`, `hero-960`, `hero-phone-960` and `hero-phone-640` (.avif, .webp) |
 | 創作與發行 | a work bound and published, an earlier edition beneath | two stacks of grey sheets, each bound along one edge with a darker paper strip, coloured sheets showing at the fanned edges | same names |
-| 信任 | layered records, each with its provenance tag | five sheets stepped like an archive (greys, one ochre), each with a blank paper tag tied on with cotton thread | same names |
+| 信任 | layered records, each with its provenance tag | five grey, ochre and pale-blue sheets stepped like an archive, each with a blank tab cut from paper | same names |
 
 Left 45 % of every picture is empty paper for the hero copy. Prompts and raw files:
-`.temp/sites/modules-b/v3-art/` (accepted: `community-3`, `create-1`, `trust-1`; rejected
+main checkout `.temp/sites/modules-b/v3-art/` (accepted: `community-3`, `create-1`; superseded `trust-1` with this worktree’s `.temp/v3-art/trust-paper-tabs.png` using built-in image_gen; rejected
 `community-1`: five accent colours where the series allows one or two neighbours;
 `community-2`: the central sheet is not a clean square and the fibre looks embossed).
 
@@ -87,7 +87,7 @@ never owns you)
 | 1 | Hero | 你是說話的人，Realm 是場地。 |
 | 2 | Section + facts | 身分: one public identity across every Realm (5 facts) |
 | 3 | Section + specimen + facts | 署名: the fixed byline rule; the specimen line 「你 · 奇幻小說讀書會」 swaps when the reader toggles 追蹤你的人 / 還沒追蹤你的人 (Realm-led line carries 追蹤); 4 rules |
-| 4 | Section + facts | Realm: the venue sets its rules (8 facts) |
+| 4 | Section + facts | Realm: the venue sets its rules (6 facts in a FactGrid) |
 | 5 | Statement | 你隨時可以離開一個 Realm，(muted) 因為你的身分、書庫與清單，本來就不在它裡面。 |
 | 6 | Section + figures | 評分: question, target, population (two lead paragraphs); 5 / 10 / 50 則評分 as large serif figures (`Figures`, shared with 信任) and the note |
 | 7 | Section + facts | 追蹤: anything can be followed, three levels |
@@ -103,12 +103,12 @@ deduction is visible)
 | # | Part | Content |
 |---|---|---|
 | 1 | Hero | 作者、版次與權利，每一筆都記清楚。 |
-| 2 | Section + facts | 寫作: every saved revision can be found again (6) |
+| 2 | Section + facts | 寫作: every saved revision can be found again (5) |
 | 3 | Section + facts | 設定集: a private world beside the manuscript (6) |
-| 4 | Section + facts | 章節: a chapter is a post placed in a book (6) |
+| 4 | Section + facts | 章節: a chapter is a post placed in a book (5) |
 | 5 | Section + facts | 版次: released is sealed; later things get their own record (6, the page's centre) |
 | 6 | Statement | 公開讓人閱讀，(muted) 不等於別人可以轉載、販售、翻譯，或拿去訓練 AI。 |
-| 7 | Section + facts | 譯本與權利 (8, the service licence first) |
+| 7 | Section + facts | 譯本與權利 (6, the service licence first) |
 | 8 | Section + facts | 發行: books and games sold directly, DRM-free (6) |
 | 9 | Section + statement of account | 結算: the seven lines as a hairline list; deductions indented in muted ink, 淨收入 under a heavier rule, the two shares 「依合約比例」, no figures |
 | 10 | Family closing | 上傳到 REZICS，(muted) 不會把著作權轉給 REZICS。 · ring · closing 「你寫作，REZICS 替你記下每一版與每一筆帳。」 |
@@ -119,19 +119,19 @@ marks are added, never erased)
 | # | Part | Content |
 |---|---|---|
 | 1 | Hero | 誰決定、根據什麼，都看得到。 |
-| 2 | Section + facts | 標記: marks are only added (7: 出處, 未驗證, 已審核, 有爭議, AI 使用聲明, 未評估, 自動化身分) |
+| 2 | Section + facts | 標記: marks are only added (6 rows: 出處, 未驗證, 已審核, 有爭議, AI 使用聲明, 未評估, 自動化身分) |
 | 3 | Section + facts | 匯入: the platform answers for its imports (6) |
 | 4 | Section + facts | 申訴與決定: 拍板的是人 (5) |
 | 5 | Section + figures | 時限: 48 小時, 10 到 14 個工作天, 6 個月, 13 歲, 7 天, 1 個月 as large serif numerals with their unit and sentence, three per row on desktop, one per row on phones; the note under it |
-| 6 | Section + facts | 可見範圍: who sees what (7) |
-| 7 | Statement + facts | 你的閱讀紀錄，(muted) 不會變成廣告。 and the seven privacy commitments |
+| 6 | Section + facts | 可見範圍: who sees what (6 rows in a FactGrid) |
+| 7 | Section + facts | 你的閱讀紀錄，不會變成廣告。 and six privacy commitments |
 | 8 | Family closing | 規則在伺服器上執行，(muted) 網頁、App 與 AI 代理得到的是同一個結果。 · ring · closing 「每一筆都寫明出處，你可以自己去查。」 |
 
 ### Build notes
 
 - Shapes: `ModuleSection`, `ModuleStatement` and `ModuleFamilyStrings` live in
   `src/content/sites/community.ts` and are shared by create and trust. Components:
-  `src/sites/community/` (`Byline`, `Figures`, `ModuleRing`, `ModuleEnd`) and
+  `src/sites/community/` (`Byline`, `FactGrid`, `Figures`, `ModuleRing`, `ModuleEnd`) and
   `src/sites/create/Account`.
 - Motion: the kit's reveals and tile hovers only. No idle motion, no scrub.
 
@@ -279,9 +279,13 @@ traced in `facts.md`.
 
 ## v3 finishing pass
 
-Continues the previous build and its uncommitted layout refinements. Merged `site/v3` first; already up to date. Shared kit, engine, styles and shared content are untouched. All five module pages retain the agreed PhotoHero opening and statement, five-module ring, Closing ending.
+Continues the previous build and its uncommitted layout refinements. Merged `site/v3` first; then merged its follow-up `77defac` for serif preloads and link feedback. Shared kit, engine, styles and shared content are untouched. All five module pages retain the agreed PhotoHero opening and statement, five-module ring, Closing ending.
 
 - Keep the previous agent’s FactGrid variation for long collections, the Account row layout, and the simpler privacy section. Remove numbering from edition categories, since they are not sequential steps. Byline radio targets are at least 44 px high.
 - Generic release and cover-removal examples explicitly say 示意. Translation attribution and share-alike licensing are stated narrowly. Copyright restoration retains the separate safety, legal and contractual restriction clause. Privacy describes what other users can see. No revenue-split amounts or percentages. No real work is needed.
 - Keep community and create photographs. Replace trust’s cotton-thread tags with blank tabs made entirely of paper, using built-in image_gen and `.temp/ref/v3-reference-paper.png` as the style reference. Source: `.temp/v3-art/trust-paper-tabs.png`, prompt alongside it. Accepted after visual inspection for light, paper grain, absence of text and absence of non-paper objects.
 - Deliver all heroes at 1920 × 1280 and 960 × 640 in AVIF and WebP. Phone crops are 960 × 640 and 640 × 427. Community and create phone files are recompressed to 44 KB / 28 KB budgets to reduce phone LCP; trust is below those budgets.
+
+### Intermediate-width hero correction
+
+The first extra screenshot pass found that `position: 100% 50%` cropped away empty paper at 768 px, placing ink text on dark paper. Use `0% 50%` for the desktop photograph; the explicit phone crop keeps its own position. At 768–1199 px, `src/sites/community/module-hero.css` sets the two-clause headline to 32–44 px so it fits the kit’s copy columns. Opening and closing markup remain the shared family parts. This is a local workaround, with no kit or shared style edits.
