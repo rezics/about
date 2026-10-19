@@ -350,7 +350,7 @@ const strings = {
       headline: '每一條資訊，都指得回一句台詞。',
       body: '位置由三項組成：腳本的雜湊值、標籤，以及台詞的順序。路線條件記下這句台詞屬於哪一條路線。持有同一版本的審核者，在自己的電腦上就能核對原文。',
       fields: [
-        { label: '腳本雜湊', value: 'sha256 9f2c04b7', code: true },
+        { label: '腳本雜湊（前綴）', value: 'sha256 9f2c04b7', code: true },
         { label: '標籤', value: 'route_two_day3', code: true },
         { label: '台詞', value: '第 142 句', code: false },
         { label: '路線', value: '路線二', code: false },
@@ -379,12 +379,12 @@ const strings = {
 
   zones: {
     hero: {
-      headline: '兩個語言的站，同一批身分。',
+      headline: '兩種語言的站，同一批身分。',
       lede: '中文社群可以架一個視覺小說站，日文社群也可以。兩個站各自決定作品的名稱、介紹、排序與採納哪些說法，底下的作品、角色與製作人員是同一批。',
     },
     mirror: {
       label: '兩個站',
-      headline: '任何一邊修正一筆，兩邊同時變正確。',
+      headline: '共用資料修正一筆，兩邊同時變正確。',
       body: '名稱、介紹與排序由各站自己決定；作品、角色與製作人員的身分，兩站共用同一份。',
       columns: { field: '', zh: '中文站', ja: '日文站' },
       rows: [

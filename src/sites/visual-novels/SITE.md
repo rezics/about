@@ -165,8 +165,8 @@ one colour from `accentRamp` wherever its tile appears.
 
 **`/zones/` 社群與站點**
 
-1. Intro: h1 「兩個語言的站，同一批身分。」
-2. Photo row `sites`: 「任何一邊修正一筆，兩邊同時變正確。」; under it a table (中文站, 日文站) of
+1. Intro: h1 「兩種語言的站，同一批身分。」
+2. Photo row `sites`: 「共用資料修正一筆，兩邊同時變正確。」; under it a table (中文站, 日文站) of
    name, introduction, order and the shared identity.
 3. Section 「Zone」: facts list of what a Zone has.
 4. Section 「空間」: h2 「站是門面，社群是聚會的地方。」; facts list.
@@ -202,6 +202,8 @@ two columns.
 - The hero phone crop was re-encoded after the first fresh QA measured a 2.892 s LCP:
   AVIF quality 44 at 960/640 px (14.6/6.9 KiB), WebP quality 70 (22.5/11.0 KiB). All
   candidates were visually compared with the inherited photograph before selection.
+- Final copy review clarifies that shared-data corrections propagate between the two sites,
+  uses 「兩種語言」, and labels the illustrative script hash as a prefix.
 - The page stays still at rest by V3-SPEC. Reduced motion keeps every section visible.
 
 The final screenshots, performance measurements and remaining limitations are recorded in
