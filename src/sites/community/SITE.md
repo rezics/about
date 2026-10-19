@@ -289,3 +289,7 @@ Continues the previous build and its uncommitted layout refinements. Merged `sit
 ### Intermediate-width hero correction
 
 The first extra screenshot pass found that `position: 100% 50%` cropped away empty paper at 768 px, placing ink text on dark paper. Use `0% 50%` for the desktop photograph; the explicit phone crop keeps its own position. At 768–1399 px, `src/sites/community/module-hero.css` sets the two-clause headline to 32–52 px so it fits the kit’s copy columns. Opening and closing markup remain the shared family parts. This is a local workaround, with no kit or shared style edits.
+
+### First independent visual review
+
+The first critic reviewed the production full-page captures and 320/768/1024 px captures, scoring Design 7.1, Usability 6.0, Creativity 6.8, Content 8.0 (6.80 weighted). It identified the same tablet crop and four-line small-desktop heading, plus a no-script byline capture with a low-contrast selected label and an apparently empty second label during a colour transition. The crop and type fixes above address the first two. Byline now changes selection colours atomically, keeping border and press feedback; both reader states are captured again. The body remains editorial facts, statements, figures and the two rule specimens, in the approved paper language.
