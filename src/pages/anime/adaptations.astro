@@ -11,6 +11,7 @@ import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace 
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import Onward from '../../sites/anime/Onward.astro';
+import PhotoPreload from '../../sites/anime/PhotoPreload.astro';
 import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/anime';
 import { sectionPhoto } from '../../sites/anime/pictures';
@@ -44,17 +45,7 @@ const familyPhone: MasonryRowPlace[][] = [
 ];
 ---
 <MiniSiteLayout>
-  <!-- PhotoRow has no priority prop. This picture enters the wide first viewport;
-       preload its matching AVIF without competing with phone headline fonts. -->
-  <link
-    rel="preload"
-    as="image"
-    type="image/avif"
-    media="(min-width: 768px)"
-    href={`${examplePhoto.src}-1200.avif`}
-    imagesrcset={examplePhoto.widths.map((width) => `${examplePhoto.src}-${width}.avif ${width}w`).join(', ')}
-    imagesizes="58vw"
-  />
+  <PhotoPreload image={examplePhoto} />
   <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
 
   <PhotoRow side="right" eyebrow={s.example.eyebrow} title={s.example.headline} body={s.example.body} image={examplePhoto} />

@@ -33,6 +33,12 @@
     inset: auto;
     height: clamp(320px, 42vw, 460px);
   }
+
+  [data-site='anime'] .anime-hero .phero__pic img { object-position: 100% 100%; }
+}
+
+@media (min-width: 768px) {
+  [data-site='anime'] main .anime-first-section { padding-top: 120px; }
 }
 
 /* Five-character page labels still fit a two-column list at 320 px. */

@@ -1,0 +1,14 @@
+---
+/** Resource hints for a PhotoRow entering the opening viewport; the kit has no priority prop. */
+interface Source {
+  src: string;
+  widths: number[];
+}
+interface Props {
+  image: Source & { phone?: Source };
+}
+const { image } = Astro.props;
+const set = (source: Source) => source.widths.map(width => `${source.src}-${width}.avif ${width}w`).join(', ');
+---
+<link rel="preload" as="image" type="image/avif" media="(min-width: 768px)" imagesrcset={set(image)} imagesizes="58vw" />
+{image.phone && <link rel="preload" as="image" type="image/avif" media="(max-width: 767px)" imagesrcset={set(image.phone)} imagesizes="100vw" />}

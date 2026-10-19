@@ -62,17 +62,19 @@ tints.
 
 Order follows a viewer's week. Each inner page opens with the kit's page head (site name as
 eyebrow, serif h1, one line), runs three to five sections, previews the next page in one line
-(`next`) and ends on the closing statement 「這一季追的每一部，都排進你自己的日程。」 with
-「前往 REZICS」. The last page previews 漫畫.
+(`next`) and ends on its own closing statement with 「前往 REZICS」. The landing closes on the
+season's schedule; inner pages close on their own subject (time, progress, discussion,
+reviews, people and sources). Each page's `closing` includes its body, so the shared product
+pitch does not repeat across seven pages. The last page previews 漫畫.
 
 | Route | Leave with | Sections (part: idea) |
 |---|---|---|
 | `/anime/` | Every episode has its place, in my time, and nothing ahead of me is spoiled. | hero (photo `hero`): 一集一集，從開播追到完結 → tile masonry: the six pages → photo row (`weeks`, picture right): 25:00 in your time zone → statement: the next episode across seasons → photo row (`covered`, picture left): one thread per episode, later plot covered → facts: the eight parts → tile masonry: four neighbouring kinds |
 | `/anime/seasons/` | Airing times in my own time, and only what is known. | head → facts: five marks → photo row (`weeks`): one episode in Japan, Taipei, Los Angeles → facts: date only, airing is not availability, reminders and calendar → section: browse by year |
-| `/anime/tracking/` | My list always knows the next episode, and it is mine to take. | head → facts: five statuses (private by default) → section and three tiles (rose ramp): across seasons, specials optional → section: a rewatch is a new session → statement: import and export |
+| `/anime/tracking/` | My list always knows the next episode, and it is mine to take. | head → three compact tiles (rose ramp): 12/12 finished, 6/6 caught up, specials optional (示意) → facts: five statuses (private by default) → section: a rewatch is a new session → statement: import and export |
 | `/anime/discussion/` | I can talk about the episode I just watched and see nothing beyond it. | head → facts: three conversations → photo row (`covered`): the spoiler line → facts: your position, signed out, across pages → section and two tiles: Realm and Zone → statement: 沒看到的，不必先知道 |
-| `/anime/ratings/` | A score says what it rates and who rated it; my lists are mine. | head → facts: five parts of a score → statement with note: episode versus whole → facts: review targets → section and four tiles (示意 list names): lists |
-| `/anime/credits/` | Every name in the credits is a person or company I can open and follow. | head → facts: one credit, five things → photo row (`threads`): one voice actor across kinds → section: a studio's years |
+| `/anime/ratings/` | A score says what it rates and who rated it; my lists are mine. | short head → facts: one fully labelled score example (評分示意), 4.2/5 from 20 invented votes, with question, scale, count, distribution and population → statement with note: episode versus whole → facts: review targets → section and four tiles (示意 list names): lists |
+| `/anime/credits/` | Every name in the credits is a person or company I can open and follow. | short head → photo row (`threads`): one voice actor across kinds → facts: one credit, five things → section: a studio's years |
 | `/anime/adaptations/` | The anime and its source are linked, yet each keeps its own progress and facts. | head → photo row (`sources`): 《魔法禁書目錄》 as the text example → tile masonry in kind colours (示意): the family with relation labels and one 待確認 → section: progress and facts kept apart → facts: named relations → statement with note: airing order and viewing order |
 
 Section rhythm on a page alternates text-led parts (facts, sections) with at most one picture
@@ -84,6 +86,13 @@ The kit's `PhotoRow` loads its picture lazily. Where a photo row's picture reach
 first screen it becomes the LCP late (4.5 s on the discussion page when the spoiler row came
 right after the short head), so a text section comes first there; on the adaptations page the
 longer head keeps the picture below the first screen.
+
+On wide screens the adaptations and credits photographs enter the first viewport. The local
+`PhotoPreload` hints at their responsive AVIFs because `PhotoRow` has no `priority` prop.
+Credits also hints at its 640 px phone picture, so the first photo row loads promptly without
+requesting the 1200 px variant on a phone. The adaptations photo stays below the phone's first
+screen and has no phone preload. Every later photograph stays lazy. A kit `PhotoRow.priority`
+option would make this cleaner.
 
 ### Pictures (the paper still-life series)
 
@@ -99,7 +108,7 @@ objects; light and paper as the reference). Encoded by `.temp/images-v3/anime/pr
 | `threads` | a rose sheet with punched holes, cotton threads tied to small blue, violet and rose sheets | credits voice row | `threads-1` |
 | `sources` | a tall green sheet, a smaller charcoal sheet and a wide rose sheet overlapping in steps, a small blue sheet apart | adaptations example row | `sources-1` |
 
-Sizes: hero 1920 and 960 wide, phone crop 780 wide; section pictures 1200 and 640 wide; AVIF and
+Sizes: hero 1920 and 960 wide, phone crop 960 and 640 wide; section pictures 1200 and 640 wide; AVIF and
 WebP each, within the V3-SPEC budgets (`public/images/sites/anime/`).
 
 ### Phone (390 px), composed first
@@ -109,11 +118,29 @@ column: eyebrow, h2, lead, then the picture of a photo row (never beside the tex
 masonry runs in two columns; the adaptations family keeps kind colours in two columns with the
 待確認 tile last. Facts lists stack title over text.
 
+The own-page index and onward links stay in two columns. A 156 to 164 px minimum row gives
+their short lines room; the longer Zone description gets 208 px. Below 360 px tile names are
+20 px, so five-character page names fit without a one-character last line.
+
+### Tablets
+
+The original desktop crop brings the accordion into the copy at 768 and 1024 px. Local CSS
+extends the copy-first composition through 1279 px, with a 320 to 460 px photograph band and
+a 38 to 46 px headline. At 1280 px and wider the full-bleed photograph carries the headline
+in its empty left area. The shared `PhotoHero` is unchanged.
+
+The tablet band crops from the bottom, keeping the complete leading accordion fold in the
+first view. The tracking page's first section starts after 120 px on desktop and uses compact
+180 px tiles, so its progress example appears early in the page.
+
 ### Motion
 
 The kit's quiet motion only: content fades and rises a few pixels, tiles answer hover and
 press. No site driver, no scrubbed scene, no idle loop. The old season chart, its week driver
 and the credit roll are gone.
+
+The latest v3 kit draws the standalone links' underline and lifts the header labels. The
+site adds no second movement to those links; focus and reduced motion follow the kit.
 
 ### Changes from the earlier record, with reasons
 
