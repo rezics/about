@@ -3,7 +3,7 @@
 // src/sites/games/facts.md. Example data (one fictional adventure game, its releases, versions
 // and playthroughs) is always captioned 示意 on screen; it describes no real game. The one real
 // work named is 《魔法禁書目錄》, text only, as an example of how relations are recorded.
-import type { KindId, MiniSite, PartId } from '../schema';
+import type { KindId, MiniSite } from '../schema';
 
 export type Lang = 'zh' | 'ja' | 'en';
 export type Platform = 'pc' | 'console' | 'handheld' | 'mobile';
@@ -42,6 +42,8 @@ export interface ExampleRelease {
 }
 
 export type GamesStrings = {
+  /** The line under every page's closing statement, above 前往 REZICS. */
+  closingBody: string;
   /** Alternative text of the paper still-life photographs (public/images/sites/games/). */
   pictures: Record<'hero' | 'store' | 'library' | 'guides' | 'creators', string>;
   example: {
@@ -56,7 +58,6 @@ export type GamesStrings = {
     versions: Said;
     store: Head & { link: string };
     pages: Head & { lines: Record<string, string> };
-    parts: Head & { caption: string; notes: Partial<Record<PartId, string>> };
     connections: Head & { tiles: { to: KindId; line: string }[] };
     closing: string;
   };
@@ -74,7 +75,7 @@ export type GamesStrings = {
     states: Head & { items: Titled[] };
     languages: Head & { items: Titled[] };
     bundles: Head & { tiles: Titled[]; caption: string };
-    requirements: Head & { items: Titled[] };
+    requirements: Head & { tiles: Titled[] };
     offers: Said;
     closing: string;
   };
@@ -82,7 +83,7 @@ export type GamesStrings = {
     hero: { headline: string; lead: string };
     checkout: Head & { items: Titled[] };
     purchase: Head & { steps: Titled[] };
-    keep: Head & { items: Titled[] };
+    keep: Head & { lead: string; more: string };
     privacy: Said;
     refuses: Head & { items: Titled[] };
     closing: string;
@@ -108,7 +109,7 @@ export type GamesStrings = {
   guides: {
     hero: { headline: string; lead: string };
     fog: Head;
-    guides: Head & { items: Titled[] };
+    guides: Head & { lead: string; more: string };
     rules: Head & { items: Titled[] };
     adaptations: Head & { lead: string; chain: { to: KindId; name: string; line: string; rel?: string }[]; note: string; caption: string };
     zone: Said;
@@ -119,13 +120,14 @@ export type GamesStrings = {
     rights: Head & { items: Titled[] };
     ledger: Head & { rows: { label: string; op?: string; total?: boolean }[]; note: string; reserve: string; caption: string };
     name: Head & { tiles: { to?: KindId; name: string; role: string }[]; caption: string };
-    home: Head & { items: Titled[] };
+    home: Head & { lead: string; more: string };
     rules: Said;
     closing: string;
   };
 };
 
 const strings: GamesStrings = {
+  closingBody: '找版本、記遊玩、寫評論，向獨立創作者買遊戲，都用同一個帳號。',
   pictures: {
     hero: '暖白的紙面上，一張大的藍色紙板，從它的一角扇形展開六張小紙片：深淺不同的藍，一張紫，一張青綠。',
     store: '一張淺藍色的紙片，穿過藍色紙板上切開的一道縫，下半段輕輕捲起。',
@@ -160,7 +162,7 @@ const strings: GamesStrings = {
       lead: '電腦、家用主機、掌機與手機各有發行，地區版、豪華版與完整版也各算一筆。每一筆寫明自己的語言、需求與上架紀錄。',
       items: [
         { id: 'handheld-asia', title: '掌機版，亞洲版', body: '亞洲版內建繁中，日本版沒有。地區不同就是不同的發行，篩選「繁中」只會找到這一版。' },
-        { id: 'pc-std', title: '電腦版，標準版', body: '文字與字幕有繁中、日文和英文，配音只有日文。三種語言分開記，不會混成一句「支援中文」。' },
+        { id: 'pc-std', title: '電腦版，標準版', body: '文字與字幕有繁中、日文和英文，配音只有日文。三種語言分開記，不會混成一句「支援中文」了事。' },
         { id: 'console-complete', title: '家用主機版，完整版', body: '一筆發行收錄本體與全部擴充內容。每個擴充內容都有自己的頁面，評分各自計算。' },
         { id: 'fan-zh', title: '玩家中文化', body: '署名中文化團隊，寫明依據哪個版本、翻了多少。它不會被標成官方中文。' },
       ],
@@ -169,7 +171,7 @@ const strings: GamesStrings = {
     },
     versions: {
       text: '分數跟著版本走，下載次數不拿來排名；',
-      more: '查不到的就寫「未知」，不拿猜測補上。',
+      more: '查不到的寫成「未知」而不是猜測。',
     },
     store: {
       label: '商店',
@@ -187,22 +189,6 @@ const strings: GamesStrings = {
         reviews: '每個分數寫明版本與給分的人群',
         guides: '照你的進度顯示，連到每一種改編',
         creators: '保有著作權，結算單逐項列出扣除',
-      },
-    },
-    parts: {
-      label: '部件',
-      headline: '八個部件，其他種類也在用。',
-      lead: '這八個是遊戲挑的部件。同一個「評分」部件，書庫與 MCP Hub 用的也是它，只是題目換成遊戲的。',
-      caption: '每一種東西都從同一套十五個部件裡挑八個。',
-      notes: {
-        identity: '一款遊戲一個身分，不論它出在哪個平台、叫哪個譯名。',
-        editions: '平台、地區、豪華版與完整版，各是一筆發行。',
-        credits: '開發、發行、作曲與配音，每個人連到自己的作品集。',
-        relations: '續作、重製、擴充內容與改編，在雙方的頁面上都看得到。',
-        specs: '官方需求與玩家實測分開列，寫明條件與日期。',
-        ratings: '每個分數寫明是哪一版、哪一群人給的。',
-        discussion: '討論串可以掛在遊戲、某個版本或某一章上。',
-        offers: '哪家商店、哪個地區、什麼價格，附上查詢的日期。',
       },
     },
     connections: {
@@ -228,7 +214,7 @@ const strings: GamesStrings = {
     filter: {
       label: '篩選',
       headline: '條件綁在同一筆發行上。',
-      lead: '選了「繁中」和「掌機」，只有同時符合兩個條件的發行會留下。別的版本有繁中、別的平台有掌機版，都不算數。',
+      lead: '選了繁中和掌機兩個條件，只有同時符合的發行會留下。別的版本有繁中、別的平台有掌機版，都不算數。',
       groups: { lang: '語言', platform: '平台' },
       clear: '清除條件',
       none: '沒有這個版本',
@@ -271,21 +257,21 @@ const strings: GamesStrings = {
         { title: '重製版', body: '另一部作品，用關係連回原作' },
         { title: '模組', body: '寫明需要哪個遊戲版本' },
       ],
-      caption: '示意。移植到新平台，則是同一款遊戲的新發行。',
+      caption: '示意：一筆完整版與它周邊的作品。移植到新平台，則是同一款遊戲的新發行。',
     },
     requirements: {
       label: '需求',
       headline: '需求，要寫明是誰說的。',
       lead: '同一款遊戲在同一台機器上，官方說法和實際結果可能不一樣。兩者並排，各自附上來源與日期。',
-      items: [
-        { title: '官方標示', body: '開發者或發行方寫的最低與建議需求，標明出處，以及它對應的遊戲版本。' },
-        { title: '玩家實測', body: '有人在什麼硬體、什麼設定下玩過，結果如何，哪一天測的。' },
-        { title: '還不知道', body: '沒有人提供的資料就寫未知。未知、不相容與資料過期，是三種不同的狀態。' },
+      tiles: [
+        { title: '官方標示', body: '最低與建議需求，標明出處與適用的遊戲版本' },
+        { title: '玩家實測', body: '什麼硬體、什麼設定、結果如何、哪一天測的' },
+        { title: '還不知道', body: '未知、不相容與資料過期，是三種不同的狀態' },
       ],
     },
     offers: {
       text: '沒有資料的地方，',
-      more: '寫的是「未知」。',
+      more: '寫的是「未知」兩個字。',
       note: '每家商店、每個地區的上架與價格，各是一筆有日期的紀錄，價格怎麼變也看得到。查不到的地方不會拿一家商店的價格代表全部。',
     },
     closing: '語言和裝置，對在同一筆發行上。',
@@ -316,23 +302,19 @@ const strings: GamesStrings = {
       headline: '從試玩到重新下載，一次購買的六步。',
       lead: '購買就在遊戲自己的頁面上，旁邊是它的評分、討論與 Wiki+。',
       steps: [
-        { title: '試玩', body: '有試玩版的遊戲，先玩再決定' },
-        { title: '付款', body: '一次付清，收據存進購買紀錄' },
-        { title: '下載', body: '適合你平台的檔案，不必先裝啟動器' },
-        { title: '更新', body: '修正版連同更新說明一起送到' },
-        { title: '重新下載', body: '換了電腦，登入後再下載一次' },
-        { title: '下架以後', body: '已經買下的授權依然有效' },
+        { title: '試玩', body: '先玩試玩版，再決定' },
+        { title: '付款', body: '一次付清，收據存進紀錄' },
+        { title: '下載', body: '適合你平台的檔案' },
+        { title: '更新', body: '修正版附上更新說明' },
+        { title: '重新下載', body: '換了電腦，登入再下載' },
+        { title: '下架以後', body: '買下的授權依然有效' },
       ],
     },
     keep: {
       label: '你留下的',
       headline: '你留下的三樣東西',
-      lead: '沒有 DRM 不代表可以轉賣或散布，你拿到的是個人使用的授權。退款依頁面寫明的條件辦理，各地法律保障的消費者權利照樣適用。',
-      items: [
-        { title: '檔案', body: '沒有 DRM 的遊戲檔案，隨時重新下載。' },
-        { title: '收據', body: '每一筆購買的收據，跟著你的購買紀錄。' },
-        { title: '授權', body: '購買前寫明的使用授權，連同條款一起保存。' },
-      ],
+      lead: '沒有 DRM 的遊戲檔案，隨時重新下載；每一筆購買的收據，跟著你的購買紀錄；購買前寫明的使用授權，連同條款一起保存。',
+      more: '沒有 DRM 不代表可以轉賣或散布，你拿到的是個人使用的授權。退款依頁面寫明的條件辦理，各地法律保障的消費者權利照樣適用。',
     },
     privacy: {
       text: '你買了哪款遊戲，',
@@ -378,12 +360,12 @@ const strings: GamesStrings = {
         { slot: '第二輪', release: '電腦版，1.2 版', state: '在玩，第五章' },
         { slot: '第三輪', release: '家用主機版，完整版', state: '暫停，在擴充內容' },
       ],
-      caption: '示意。擁有哪個版本另外記錄：買了，不等於玩過。',
+      caption: '示意：擁有哪個版本另外記錄，買了不等於玩過。',
     },
     together: {
       label: '同一個庫',
       headline: '書、動畫、漫畫和遊戲，同一個庫。',
-      lead: '每一種東西用自己的單位記進度。清單也能混著放：一份「暑假要玩的」，可以同時有遊戲、它的原作小說和改編動畫，排好順序、寫上註記，再整份匯出。',
+      lead: '每一種東西用自己的單位記進度。清單也能混著放：一份暑假要玩的清單，可以同時有遊戲、它的原作小說和改編動畫，排好順序、寫上註記，再整份匯出。',
       tiles: [
         { to: 'games', name: '遊戲', at: '第五章' },
         { to: 'books', name: '小說', at: '第三冊' },
@@ -391,7 +373,7 @@ const strings: GamesStrings = {
         { to: 'manga', name: '漫畫', at: '第四十二話' },
         { to: 'visual-novels', name: '視覺小說', at: '第二條路線' },
       ],
-      caption: '示意。',
+      caption: '示意：一個人的庫裡，五種東西各用自己的單位。',
     },
     playtime: {
       label: '遊玩時間',
@@ -468,7 +450,7 @@ const strings: GamesStrings = {
       more: '三種對話分開放。',
       note: '閒聊攻略、回應一篇評論、指出資料有誤，各有自己的地方。從一處換到另一處，你選的版本與劇透進度都跟著走。',
     },
-    closing: '每個分數，都說得出是哪一版、哪一群人。',
+    closing: '每個分數，都有版本與人群。',
   },
 
   guides: {
@@ -485,10 +467,7 @@ const strings: GamesStrings = {
       label: '攻略',
       headline: '攻略寫明適用的版本。',
       lead: '同一個關卡在 1.0 版和 2.0 版，打法可能完全不同。攻略標明它適用的遊戲版本與平台，改版之後，讀者一看就知道這篇是寫給哪一版的。',
-      items: [
-        { title: '模組合集寫明目標', body: '社群整理的模組合集，寫明對應的遊戲版本，以及有沒有檢查過相容性。' },
-        { title: '每一筆修改都有紀錄', body: '看得到誰改了什麼，可以比對兩個版本，也可以還原。' },
-      ],
+      more: '社群整理的模組合集，也寫明對應的遊戲版本，以及有沒有檢查過相容性。每一筆修改都有紀錄：看得到誰改了什麼，可以比對兩個版本，也可以還原。',
     },
     rules: {
       label: 'Wiki+',
@@ -569,10 +548,7 @@ const strings: GamesStrings = {
       label: '社群與網站',
       headline: '發行之後，遊戲有自己的社群與網站。',
       lead: '為遊戲開一個 Realm 讓玩家討論，再架一個 Zone 當官方網站。公告、發行紀錄與更新說明直接寫進目錄，追蹤你遊戲的玩家依自己的語言收到通知。',
-      items: [
-        { title: '發行資料包', body: '新版本上市前備好圖片、說明與時間表，媒體與玩家都能引用。' },
-        { title: '從劇本建 Wiki+', body: '用本機工具組讀你自己的劇本，整理出人物與事件。劇本全文不會送到 REZICS。' },
-      ],
+      more: '新版本上市前，備好發行資料包：圖片、說明與時間表，媒體與玩家都能引用。你也可以用本機工具組讀自己的劇本，整理出人物與事件，建起遊戲的 Wiki+；劇本全文不會送到 REZICS。',
     },
     rules: {
       text: '賣之前，',

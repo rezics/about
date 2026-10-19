@@ -23,9 +23,7 @@ const phone: MasonryRowPlace[][] = [[{ id: 'a0' }, { id: 'a1' }], [{ id: 'a2' },
 
 <PhotoRow side="left" eyebrow={s.fog.label} title={s.fog.headline} body={s.fog.lead} image={sectionPicture('guides')} />
 
-<Section eyebrow={s.guides.label} title={s.guides.headline} lead={s.guides.lead}>
-  <FactList items={s.guides.items} />
-</Section>
+<Section eyebrow={s.guides.label} title={s.guides.headline} lead={[s.guides.lead, s.guides.more]} />
 
 <Section eyebrow={s.rules.label} title={s.rules.headline}>
   <FactList items={s.rules.items} />
@@ -35,9 +33,9 @@ const phone: MasonryRowPlace[][] = [[{ id: 'a0' }, { id: 'a1' }], [{ id: 'a2' },
 
 <Section eyebrow={s.adaptations.label} title={s.adaptations.headline} lead={[s.adaptations.lead, s.adaptations.note]}>
   <div slot="wide">
-    <TileMasonry items={chain} columns={columns} phone={phone} height={280} phoneRow={130} label={s.adaptations.caption} />
+    <TileMasonry items={chain} columns={columns} phone={phone} height={280} phoneRow={164} label={s.adaptations.caption} />
     <p class="g-cap">{s.adaptations.caption}</p>
   </div>
 </Section>
 
-<Closing title={s.closing} />
+<Closing title={s.closing} body={site.strings.closingBody} />

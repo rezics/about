@@ -25,6 +25,12 @@ const columns: MasonryPlace[][] = [
   [{ id: 'soundtrack', h: 1.3 }, { id: 'remake', h: 1 }, { id: 'mod', h: 1 }],
 ];
 const phone: MasonryRowPlace[][] = [[{ id: 'complete' }], [{ id: 'base' }, { id: 'expansion' }], [{ id: 'soundtrack' }, { id: 'remake' }], [{ id: 'mod' }]];
+// Requirements: who said it. The official claim in the blue, the measurement in a tint, the
+// unknown in the lightest tint.
+const needTones = [blue.accent, blue.tint, blue.lightest];
+const needs: MasonryItem[] = s.requirements.tiles.map((t, i) => ({ id: `n${i}`, name: t.title, line: t.body, ...needTones[i]! }));
+const needColumns: MasonryPlace[][] = [[{ id: 'n0', h: 1 }], [{ id: 'n1', h: 1 }], [{ id: 'n2', h: 1 }]];
+const needPhone: MasonryRowPlace[][] = [[{ id: 'n0' }, { id: 'n1' }], [{ id: 'n2' }]];
 ---
 <Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} />
 
@@ -50,7 +56,7 @@ const phone: MasonryRowPlace[][] = [[{ id: 'complete' }], [{ id: 'base' }, { id:
 <Statement text={s.offers.text} sub={s.offers.more} note={s.offers.note} />
 
 <Section eyebrow={s.requirements.label} title={s.requirements.headline} lead={s.requirements.lead}>
-  <FactList items={s.requirements.items} />
+  <TileMasonry slot="wide" items={needs} columns={needColumns} phone={needPhone} height={300} phoneRow={150} label={s.requirements.headline} />
 </Section>
 
-<Closing title={s.closing} />
+<Closing title={s.closing} body={site.strings.closingBody} />

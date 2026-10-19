@@ -41,8 +41,6 @@ const phone = [[{ id: 'w0' }, { id: 'w1' }], [{ id: 'w2' }, { id: 'w3' }]];
   </div>
 </Section>
 
-<Section eyebrow={s.home.label} title={s.home.headline} lead={s.home.lead}>
-  <FactList items={s.home.items} />
-</Section>
+<Section eyebrow={s.home.label} title={s.home.headline} lead={[s.home.lead, s.home.more]} />
 
-<Closing title={s.closing} />
+<Closing title={s.closing} body={site.strings.closingBody} />

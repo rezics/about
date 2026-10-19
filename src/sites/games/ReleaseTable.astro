@@ -2,7 +2,7 @@
 /**
  * The release filter (SITE.md "v3"): platforms by editions of one fictional game (示意).
  * Conditions (one language, one platform) must hold on the same release; releases that fail
- * fall back to a hairline outline. Works without script through :has(); the driver (table.ts)
+ * fall back to the paper's deeper tone. Works without script through :has(); the driver (table.ts)
  * adds the count and the clear button. The one interaction of the games site.
  */
 import type { GamesStrings, Lang, Platform, Edition } from '../../content/sites/games';
@@ -123,8 +123,7 @@ const css = [
     height: 100%;
     min-height: 64px;
     padding: 12px 14px;
-    background: color-mix(in oklab, var(--field) calc((1 - var(--dim)) * 100%), var(--c-bg));
-    box-shadow: inset 0 0 0 calc(var(--dim) * 1px) var(--c-line-strong);
+    background: color-mix(in oklab, var(--field) calc((1 - var(--dim)) * 100%), var(--c-panel));
     color: color-mix(in oklab, var(--on-field) calc((1 - var(--dim)) * 100%), var(--c-muted));
     transition: background-color 0.45s var(--ease-soft), color 0.45s var(--ease-soft);
   }
@@ -138,7 +137,9 @@ const css = [
   /* Phone: the matrix becomes a stack, one platform after another, each release named by its
      edition; combinations that do not exist are left out. */
   @media (max-width: 767px) {
-    .rt__filters { gap: 14px; }
+    .rt__filters { gap: 18px; }
+    .rt__group { gap: 8px; }
+    .rt__legend { flex-basis: 100%; margin: 0 0 2px; }
     .rt__table, .rt__table tbody, .rt__table tr, .rt__table th, .rt__table td { display: block; width: auto; }
     .rt__table { margin: 0; border-spacing: 0; }
     .rt__table thead { display: none; }

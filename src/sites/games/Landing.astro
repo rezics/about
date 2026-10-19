@@ -1,7 +1,6 @@
 ---
-// /games/ (SITE.md "v3"): the photograph hero, releases recorded apart, the statement, the store
-// beside its photograph, the site's six pages, the eight parts, the five neighbouring kinds, the
-// closing.
+// /games/ (SITE.md "v3"): the photograph hero, releases recorded apart, the statement, the site's
+// six pages, the store beside its photograph, the five neighbouring kinds, the closing.
 import PhotoHero from '../../kit/components/PhotoHero.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
@@ -10,7 +9,7 @@ import PhotoRow from '../../kit/components/PhotoRow.astro';
 import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindById, kindHref, partById } from '../../kit/content';
+import { kindById, kindHref } from '../../kit/content';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/games';
 import { heroPicture, sectionPicture } from './pictures';
@@ -61,8 +60,6 @@ const kindColumns: MasonryPlace[][] = [
   [{ id: 'anime', h: 3 }, { id: 'software', h: 2 }],
 ];
 const kindPhone: MasonryRowPlace[][] = [[{ id: 'visual-novels' }], [{ id: 'books' }, { id: 'anime' }], [{ id: 'manga' }, { id: 'software' }]];
-
-const parts = kindById('games').parts.map((id) => ({ title: partById(id).name, body: s.parts.notes[id] ?? partById(id).gives }));
 ---
 <PhotoHero eyebrow={site.name} title={s.hero.headline} lede={s.hero.lede} image={heroPicture} bar>
   <ProductCall />
@@ -75,6 +72,10 @@ const parts = kindById('games').parts.map((id) => ({ title: partById(id).name, b
 
 <Statement text={s.versions.text} sub={s.versions.more} note={s.versions.note} />
 
+<Section eyebrow={s.pages.label} title={s.pages.headline}>
+  <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.headline} />
+</Section>
+
 <PhotoRow
   side="right"
   eyebrow={s.store.label}
@@ -84,17 +85,8 @@ const parts = kindById('games').parts.map((id) => ({ title: partById(id).name, b
   image={sectionPicture('store')}
 />
 
-<Section eyebrow={s.pages.label} title={s.pages.headline}>
-  <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={520} label={s.pages.headline} />
-</Section>
-
-<Section eyebrow={s.parts.label} title={s.parts.headline} lead={s.parts.lead}>
-  <FactList items={parts} />
-  <p class="g-cap">{s.parts.caption}</p>
-</Section>
-
 <Section eyebrow={s.connections.label} title={s.connections.headline} lead={s.connections.lead}>
   <TileMasonry slot="wide" items={kinds} columns={kindColumns} phone={kindPhone} height={420} label={s.connections.headline} />
 </Section>
 
-<Closing title={s.closing} />
+<Closing title={s.closing} body={site.strings.closingBody} />

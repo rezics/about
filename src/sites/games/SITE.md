@@ -157,16 +157,22 @@ statement, facts (hairline list), closing. Example data stays captioned 示意.
 
 | Page | Sections in order |
 | --- | --- |
-| `/games/` | hero (photo `hero`; 「每一款遊戲，每一個版本，都記得清楚。」, one paragraph, 前往 REZICS) · section 發行 with four example releases as a facts list (示意) and a link to 平台與版本 · statement on versions, downloads and 未知 · photo row `store` with a link to the store · section 六個頁面 as a tile masonry of the site's pages in blue shades · section 部件 as a facts list of the eight parts · section 相關的種類 as a tile masonry in the five neighbours' colours · closing |
-| `/games/releases/` | opening (text) · the release filter: language and platform toggles over a hairline table, a stack per platform on phones (示意) · facts: five release states, numbered · section 語言 with three facts · tile masonry: what one release can hold (示意) · statement on 未知 and dated offers · facts: requirements, official, measured, unknown · closing |
-| `/games/store/` | opening with photo `store` · facts: eight things shown before paying · six purchase steps as a numbered tile row from light to deep · section what you keep with three facts · statement on privacy toward creators · facts: what the store does not do · closing |
+| `/games/` | hero (photo `hero`; 「每一款遊戲，每一個版本，都記得清楚。」, one paragraph, 前往 REZICS) · section 發行 with four example releases as a facts list (示意) and a link to 平台與版本 · statement on versions, downloads and 未知 · section 六個頁面 as a tile masonry of the site's pages in blue shades · photo row `store` with a link to the store · section 相關的種類 as a tile masonry in the five neighbours' colours · closing |
+| `/games/releases/` | opening (text) · the release filter: language and platform toggles over a hairline table, a stack per platform on phones (示意) · facts: five release states, numbered · section 語言 with three facts · tile masonry: what one release can hold (示意) · statement on 未知 and dated offers · requirements as three tiles: official, measured, unknown · closing |
+| `/games/store/` | opening with photo `store` · facts: eight things shown before paying · six purchase steps as a numbered tile row from light to deep · section what you keep, in prose · statement on privacy toward creators · facts: what the store does not do · closing |
 | `/games/library/` | opening with photo `library` · facts: five statuses · section 存檔 with a hairline table of three playthroughs (示意) · statement on takeout · tile masonry: one library across kinds, each with its unit (示意) · facts: playtime rules and the opt-in note · closing |
 | `/games/reviews/` | opening (text) · tile row of five versions from light to deep (示意) · facts: whose score, three rules · tile masonry: what a review is about · statement on three kinds of talk · facts: how ranking works · closing |
-| `/games/guides/` | opening (text) · photo row `guides`: spoilers past your position stay covered · section 攻略 with two facts · facts: five Wiki+ rules · statement on a game's own Zone · section 改編 on the approved example 《魔法禁書目錄》 (text only) with a tile row of its forms in their kinds' colours · closing |
-| `/games/creators/` | opening with photo `creators` · facts: what you keep and what you license · the statement ledger as a hairline list (labels only, no figures) · statement on listing honestly · tile row: one name across kinds · section Realm and Zone with two facts · closing |
+| `/games/guides/` | opening (text) · photo row `guides`: spoilers past your position stay covered · section 攻略, in prose · facts: five Wiki+ rules · statement on a game's own Zone · section 改編 on the approved example 《魔法禁書目錄》 (text only) with a tile row of its forms in their kinds' colours · closing |
+| `/games/creators/` | opening with photo `creators` · facts: what you keep and what you license · the statement ledger as a hairline list (labels only, no figures) · statement on listing honestly · tile row: one name across kinds · section Realm and Zone, in prose · closing |
 
 Statements are one or two lines with a note in body size under them, and never sit directly
 before the closing (two large serif lines in a row read as one repeated).
+
+At most two hairline lists per page; short lists become prose or tiles. The landing leaves
+the eight parts to the home page and the modules: as a list of eight rows it read as a
+specification sheet in the middle of a calm page. Every closing carries one games line
+(`closingBody`) instead of the site-wide product sentence. Serif display text avoids a closing
+bracket directly before punctuation (「未知」，), which the subset serif sets with a wide gap.
 
 Phones: copy and action first, the photograph after as a short band; masonry in two columns;
 the release table becomes a stack per platform; facts lists stack title over text.

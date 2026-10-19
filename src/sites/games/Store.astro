@@ -1,7 +1,7 @@
 ---
 // /games/store/ (SITE.md "v3"): the opening with the slit photograph, eight things shown before
-// paying, six purchase steps as a row of tiles, what you keep, the privacy statement, what the
-// store does not do, the closing.
+// paying, six purchase steps as a row of tiles, what you keep (prose), the privacy statement,
+// what the store does not do, the closing.
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
@@ -30,9 +30,7 @@ const phone = [0, 2, 4].map((i) => [{ id: steps[i]!.id }, { id: steps[i + 1]!.id
   <TileMasonry slot="wide" items={steps} columns={columns} phone={phone} height={300} phoneRow={150} label={s.purchase.headline} />
 </Section>
 
-<Section eyebrow={s.keep.label} title={s.keep.headline} lead={s.keep.lead}>
-  <FactList items={s.keep.items} />
-</Section>
+<Section eyebrow={s.keep.label} title={s.keep.headline} lead={[s.keep.lead, s.keep.more]} />
 
 <Statement text={s.privacy.text} sub={s.privacy.more} note={s.privacy.note} />
 
@@ -40,4 +38,4 @@ const phone = [0, 2, 4].map((i) => [{ id: steps[i]!.id }, { id: steps[i + 1]!.id
   <FactList items={s.refuses.items} />
 </Section>
 
-<Closing title={s.closing} />
+<Closing title={s.closing} body={site.strings.closingBody} />
