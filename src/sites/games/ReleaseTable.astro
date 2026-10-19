@@ -42,6 +42,7 @@ const css = [
 
   <div class="rt__wrap" data-rt-wrap>
     <table class="rt__table">
+      <caption class="sr-only">{copy.caption}</caption>
       <thead>
         <tr>
           <td class="rt__corner">{copy.corner}</td>
@@ -92,7 +93,7 @@ const css = [
     position: relative;
     display: inline-flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 18px;
     border-radius: 999px;
     box-shadow: inset 0 0 0 1px var(--c-line-strong);
@@ -106,6 +107,7 @@ const css = [
   .rt__pill:has(input:checked) { background: var(--c-fg); color: var(--c-bg); box-shadow: none; }
   @media (hover: hover) { .rt__pill:not(:has(input:checked)):hover { box-shadow: inset 0 0 0 1px var(--c-fg); } }
   .rt__pill:has(:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .rt__pill:active { scale: 0.98; }
   .rt__clear { font-size: 15px; min-height: 40px; }
   .rt__wrap { position: relative; overflow-x: auto; }
   .rt__table { table-layout: fixed; border-collapse: separate; border-spacing: 3px; margin: -3px; width: calc(100% + 6px); }

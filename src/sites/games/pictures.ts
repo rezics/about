@@ -24,4 +24,6 @@ export const sectionPicture = (name: SectionPictureName) => ({
   width: 1200,
   height: 800,
   alt: alt[name],
+  // A paper photograph needs no 1200 px transfer for a 390 px phone band.
+  phone: { src: `${base}/${name}`, widths: [640], width: 640, height: 427 },
 });

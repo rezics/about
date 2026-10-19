@@ -6,12 +6,13 @@
  */
 import PageHead from '../../kit/components/PageHead.astro';
 import Picture from '../../kit/components/Picture.astro';
+import type { sectionPicture } from './pictures';
 
 interface Props {
   label: string;
   title: string;
   lede?: string;
-  image?: { src: string; widths: number[]; alt: string; width: number; height: number };
+  image?: ReturnType<typeof sectionPicture>;
 }
 const { label, title, lede, image } = Astro.props;
 ---

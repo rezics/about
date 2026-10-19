@@ -6,3 +6,27 @@
    unbreakable tail span (`.nw`) becomes a flex item and opens a gap inside the words
    (看商店與購 買的流程). Text-only links inside paragraphs need no gap. */
 [data-site='games'] p > .link-draw { gap: 0; }
+
+/* The current kit supplies header and text-link feedback. Match that quiet rise on the
+   site's own tabs while leaving the shared components untouched. */
+[data-site='games'] .sitebar__tab,
+[data-site='games'] .sitebar__name {
+  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-snap);
+}
+@media (hover: hover) {
+  [data-site='games'] .sitebar__tab:hover,
+  [data-site='games'] .sitebar__home:hover .sitebar__name { translate: 0 -2px; }
+}
+[data-site='games'] .sitebar__tab:focus-visible,
+[data-site='games'] .sitebar__home:focus-visible .sitebar__name { translate: 0 -2px; }
+
+/* The kit hides the scrollbar. Keep a native scroll cue for seven destinations on a phone;
+   the 44 px tabs and thin scrollbar still fit the shared 52 px site bar. */
+@media (max-width: 767px) {
+  [data-site='games'] .sitebar__tabs {
+    scrollbar-width: thin;
+    scrollbar-color: var(--field) var(--c-line);
+    mask-image: none;
+  }
+  [data-site='games'] .sitebar__tab { min-height: 44px; }
+}

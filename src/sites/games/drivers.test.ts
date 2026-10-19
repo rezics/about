@@ -15,7 +15,7 @@ describe('release filter', () => {
   });
   test('every landing example that names a platform release is a release in the filter', () => {
     const ids = new Set(releases.map((r) => r.id));
-    const named = site.strings.landing.releases.items.filter((i) => i.id !== 'fan-zh');
+    const named = site.strings.landing.releases.items;
     expect(named.length).toBeGreaterThan(0);
     for (const it of named) expect(ids.has(it.id)).toBe(true);
   });

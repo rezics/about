@@ -144,7 +144,7 @@ Five photographs, each one idea, generated with the reference photograph as styl
 
 | Picture | Idea | Used on |
 | --- | --- | --- |
-| `hero` | one large blue sheet with six smaller sheets fanned from its corner (blues, one violet, one teal): one game, its platform releases and editions | landing hero (copy in the empty paper at left); phone band crop |
+| `hero` | one large blue sheet with smaller sheets fanned from its corner (blues, one violet, one teal): one game, its platform releases and editions | landing hero (copy in the empty paper at left); phone band crop |
 | `store` | a pale blue sheet passing through a slit in a blue card: a purchase that reaches you with nothing in between | store opening; landing store row |
 | `library` | a folded blue tray with sheets standing in its slits, one rose and one green among the blues, the last slit empty: every game in its own place, other kinds beside it | library opening |
 | `guides` | a blue strip folded into panels, the first panels open, the rest folded shut under a plain sheet: the wiki shows as far as you have reached | guides, the spoiler section |
@@ -176,6 +176,26 @@ bracket directly before punctuation (「未知」，), which the subset serif se
 
 Phones: copy and action first, the photograph after as a short band; masonry in two columns;
 the release table becomes a stack per platform; facts lists stack title over text.
+
+### Completion pass
+
+The five existing photographs are retained after comparison with the approved reference.
+Phone hero encodes come from the original PNG and the original crop: 960 × 640 and
+640 × 427, AVIF and WebP. The four 640 × 427 section pictures are encoded from their original
+PNGs again; `sectionPicture()` passes a phone source restricted to 640 px, so a 390 px phone
+does not request the 1200 px desktop photograph. The 1920 and 1200 px desktop photographs
+are unchanged.
+
+The landing's four illustrative records use short labelled facts and correspond to all four
+platforms in the release filter. The fourth record shows announced availability with an
+unknown language rather than borrowing another platform's data. The filter retains its
+CSS-only path, gains a table caption and uses 44 px radio targets.
+
+Shared-kit workarounds stay in `games.css`: remove the flex gap that split text-only links;
+give site tabs a small rise on hover/focus; show the native thin scrollbar for the seven phone
+tabs. The second merge of `site/v3` supplies the header-label rise, text-link underline and
+serif preload fixes, so the redundant local header and text-link rules are removed. No shared
+paths are edited locally.
 
 ### Copy changes for v3
 
