@@ -7,6 +7,34 @@
    (看商店與購 買的流程). Text-only links inside paragraphs need no gap. */
 [data-site='games'] p > .link-draw { gap: 0; }
 
+/* This photograph's empty paper is narrower than the kit's five-column copy area.
+   Tablets use the same copy-first composition as phones, with a wider photo band. */
+@media (min-width: 1200px) {
+  [data-site='games'] .g-hero.phero .phero__copy {
+    max-width: min(470px, calc(36vw - var(--gutter)));
+  }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  [data-site='games'] .g-hero.phero {
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+  [data-site='games'] .g-hero.phero .phero__copy {
+    max-width: 760px;
+    padding: 48px var(--gutter);
+  }
+  [data-site='games'] .g-hero.phero .phero__title { font-size: 42px; }
+  [data-site='games'] .g-hero.phero .phero__lede { max-width: 34em; }
+  [data-site='games'] .g-hero.phero .phero__pic {
+    position: relative;
+    inset: auto;
+    height: clamp(300px, 36vw, 400px);
+  }
+}
+
 /* The current kit supplies header and text-link feedback. Match that quiet rise on the
    site's own tabs while leaving the shared components untouched. */
 [data-site='games'] .sitebar__tab,

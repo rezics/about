@@ -176,6 +176,9 @@ bracket directly before punctuation (「未知」，), which the subset serif se
 
 Phones: copy and action first, the photograph after as a short band; masonry in two columns;
 the release table becomes a stack per platform; facts lists stack title over text.
+The landing keeps this copy-first composition through 1199 px, with a 300 to 400 px band on
+tablets. At 1200 px and up, the overlay copy is capped at 470 px and stays in the photograph's
+empty paper; the kit's default five-column area reached the coloured paper at narrower widths.
 
 ### Completion pass
 
