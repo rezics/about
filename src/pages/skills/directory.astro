@@ -11,11 +11,16 @@ import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/skills/NextPage.astro';
 import site from '../../content/sites/skills';
 import { pageLine, pageTile, sectionImage } from '../../sites/skills/site';
+import '../../sites/skills/skills.css';
 
 const s = site.strings.directory;
 ---
 <MiniSiteLayout>
   <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
+
+  <Section eyebrow={s.specimens.eyebrow} title={s.specimens.headline} lead={s.specimens.lead}>
+    <FactList items={s.specimens.rows} />
+  </Section>
 
   <Section eyebrow={s.filters.eyebrow} title={s.filters.headline} lead={s.filters.lead}>
     <FactList items={s.filters.rows} />

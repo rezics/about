@@ -126,3 +126,7 @@ Source: https://agentskills.io/specification (fetched 2026-10-19; the docs cite 
 14. **REZICS is presented as live** (direction 2026-10-19). The site describes Skill Hub in the
     present tense and leads into the product with the kit's 「前往 REZICS」; the capabilities
     listed in item 1 are still documented intent in the product repository.
+15. **Illustrative catalogue and release specimens.** `chapter-cast`, `quote-check`, versions
+    `1.0.0` and `1.1.0`, and their October 2026 dates are fictional format examples, explicitly
+    marked 示意 in their sections. They demonstrate the documented name/description and immutable
+    revision rules; they are not assertions about REZICS's live catalogue, usage or release count.

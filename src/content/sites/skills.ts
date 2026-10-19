@@ -70,6 +70,7 @@ export interface SkillsStrings {
   };
   directory: {
     head: { headline: string[]; lede: string };
+    specimens: Head & { rows: Row[] };
     filters: Head & { rows: Row[] };
     statement: Said;
     lists: Head & { body: string; pic: Pic };
@@ -81,6 +82,7 @@ export interface SkillsStrings {
     frontmatter: Head & { rows: KeyRow[] };
     files: Head & { rows: FileRow[] };
     history: Head & { body: string[]; pic: Pic };
+    historyExample: Head & { rows: Row[] };
     packages: Head & { rows: Row[] };
     statement: Said;
     end: End;
@@ -191,19 +193,19 @@ const skills = {
       layers: {
         eyebrow: '讀的順序',
         headline: ['一個技能分三層讀，', '照 AI 代理的順序讀。'],
-        lead: '代理不會一次讀完手上所有的技能。從名稱與描述、完整說明，到任務用到的檔案，Skill Hub 也照這個順序呈現。',
+        lead: '以整理章節人物的技能為例（示意），先讀名稱與描述，再讀完整說明，最後才讀任務用到的檔案。Skill Hub 也照這個順序呈現。',
         rows: [
           {
             title: '一行',
-            body: '代理啟動時，每個技能只讀名稱和一句描述，靠這一句判斷要不要用它。目錄也是一列一個技能，列出的正是這兩樣。',
+            body: 'chapter-cast 的描述寫明「列出章節裡的人物，附段落位置」。代理先讀這一句，判斷任務是否相符。',
           },
           {
             title: '一頁',
-            body: '任務對上了，代理才讀完整的 SKILL.md。技能頁面把全文原樣放出來，旁邊是每一種東西都有的身分、版本、署名、評分、討論與清單。',
+            body: '需要整理人物表時，再打開 SKILL.md，讀過步驟、輸出格式與限制。身分、版本與署名，和全文放在同一頁。',
           },
           {
             title: '用到的檔案',
-            body: '腳本、參考資料與素材，代理用到時才讀。技能頁面把它們逐一列出，你不必先讀完全部，也看得到全部有什麼。',
+            body: '任務需要比對別稱，才讀它引用的參考檔案。腳本、參考資料與素材逐一列出，讀到哪一層，都看得到下一層有什麼。',
           },
         ],
       },
@@ -253,6 +255,15 @@ const skills = {
       head: {
         headline: ['一列，一個技能，', '一句話。'],
         lede: '目錄的每一列只有兩樣東西：技能的名稱，和作者寫的一句描述。AI 代理靠這一句決定要不要用一個技能，你在這裡也從這一句開始挑。',
+      },
+      specimens: {
+        eyebrow: '目錄示意',
+        headline: ['先讀一句，', '知道它適不適合。'],
+        lead: '以下名稱與描述都是示意。兩個技能處理不同的任務，一句描述就說清楚差別。',
+        rows: [
+          { title: 'chapter-cast', body: '整理章節人物與別稱，附段落位置，核對角色表時使用。' },
+          { title: 'quote-check', body: '逐條核對引文與原文，列出來源位置和找不到出處的句子。' },
+        ],
       },
       filters: {
         eyebrow: '篩選',
@@ -361,6 +372,15 @@ const skills = {
           src: 'fan',
           alt: '五張紙從同一個角扇形展開，最前面是萊姆綠，往後一張比一張淺，最後一張是米白。',
         },
+      },
+      historyExample: {
+        eyebrow: '版本示意',
+        headline: ['同一個技能，', '兩個有日期的版本。'],
+        lead: '以 chapter-cast 為例，以下日期與內容皆為示意。每一版固定檔案與雜湊值；新版本不會蓋掉上一版。',
+        rows: [
+          { title: '1.1.0', body: '2026 年 10 月 19 日。補上人物別稱的對照規則，附上對應的參考檔案。' },
+          { title: '1.0.0', body: '2026 年 10 月 12 日。整理人物首次出場的位置。原始檔案維持不變，評價與留言仍指向這一版。' },
+        ],
       },
       packages: {
         eyebrow: '套件',

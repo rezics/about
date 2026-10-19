@@ -1,0 +1,59 @@
+/* The shared tab centring uses item.offsetLeft. Give the scrollport its own
+   positioning context so the Skill Hub badge is not included in that offset. */
+[data-site='skills'] .sitebar__tabs {
+  position: relative;
+  /* Keep the final tab clear of the shared 24px edge fade. */
+  padding-right: 32px;
+}
+
+[data-site='skills'] .sitebar__name,
+[data-site='skills'] .sitebar__tab {
+  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-soft);
+}
+
+[data-site='skills'] .sitebar__home {
+  position: relative;
+}
+
+[data-site='skills'] .sitebar__home::after,
+[data-site='skills'] .sitebar__tab::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 10px;
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale var(--d-m) var(--ease-snap);
+  pointer-events: none;
+}
+
+[data-site='skills'] .sitebar__home::after {
+  left: 20px;
+}
+
+@media (hover: hover) {
+  [data-site='skills'] .sitebar__home:hover .sitebar__name,
+  [data-site='skills'] .sitebar__tab:hover {
+    translate: 0 -2px;
+  }
+  [data-site='skills'] .sitebar__home:hover::after,
+  [data-site='skills'] .sitebar__tab:hover::before {
+    scale: 1 1;
+  }
+}
+
+[data-site='skills'] .sitebar__home:focus-visible .sitebar__name,
+[data-site='skills'] .sitebar__tab:focus-visible {
+  translate: 0 -2px;
+}
+
+[data-site='skills'] .sitebar__home:focus-visible::after,
+[data-site='skills'] .sitebar__tab:focus-visible::before {
+  scale: 1 1;
+}
+
+[data-site='skills'] .sitebar__home:active .sitebar__name,
+[data-site='skills'] .sitebar__tab:active {
+  translate: 0 1px;
+}

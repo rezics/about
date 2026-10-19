@@ -12,6 +12,7 @@ import Rows from '../../sites/skills/Rows.astro';
 import NextPage from '../../sites/skills/NextPage.astro';
 import site from '../../content/sites/skills';
 import { pageLine, pageTile, sectionImage } from '../../sites/skills/site';
+import '../../sites/skills/skills.css';
 
 const s = site.strings.versions;
 const frontmatter = s.frontmatter.rows.map((r) => (r.value === undefined ? { title: r.key, body: r.body } : { code: r.key, value: r.value, body: r.body }));
@@ -29,6 +30,10 @@ const files = s.files.rows.map((r) => ({ title: r.title, code: r.path, mark: r.m
   </Section>
 
   <PhotoRow side="left" eyebrow={s.history.eyebrow} title={s.history.headline.join('')} body={s.history.body} image={sectionImage(s.history.pic)} />
+
+  <Section eyebrow={s.historyExample.eyebrow} title={s.historyExample.headline} lead={s.historyExample.lead}>
+    <FactList items={s.historyExample.rows} />
+  </Section>
 
   <Section eyebrow={s.packages.eyebrow} title={s.packages.headline}>
     <FactList items={s.packages.rows} />

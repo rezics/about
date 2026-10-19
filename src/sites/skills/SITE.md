@@ -122,8 +122,8 @@ Each page starts copy-first on phones (390 px): eyebrow, h1, lede, action, then 
 | Page | Sequence (one idea each) |
 |---|---|
 | `/skills/` | **PhotoHero** (fold picture, copy in the empty paper on the left, 「前往 REZICS」) → **Section + numbered FactList** 讀的順序: 一行 / 一頁 / 用到的檔案 → **PhotoRow** 檔案: folder picture on the left, the files text and a link to 版本與檔案 → **Statement** 收錄不是背書 → **Section + TileMasonry** 這個網站: the five pages in lime ramp colours (directory a whole column) → **Section + TileMasonry** 接到的地方: 軟體, MCP Hub, 書庫, 視覺小說 in their kind colours → **Closing** |
-| `directory` | **PageHead** 一列，一個技能，一句話 → **Section + FactList** 篩選 (five filters) → **Statement** 一路翻得到最後一筆 → **PhotoRow** 清單: bundle picture → **Section + numbered FactList** 檢視 (搜尋, 檢視, 追蹤) → **next page** → **Closing** |
-| `versions` | **PageHead** 打開一個技能 → **Section + Rows** SKILL.md: frontmatter key as code and example value left, what REZICS does right → **Section + Rows** 檔案: six roles, path as code, marks 可執行 and 缺少 → **PhotoRow** 版本: fan picture, two paragraphs → **Section + FactList** 套件 → **Statement** 每個技能，都署了名 → **next page** → **Closing** |
+| `directory` | **PageHead** 一列，一個技能，一句話 → **Section + FactList** two illustrative name-and-description specimens → **Section + FactList** 篩選 (five filters) → **Statement** 一路翻得到最後一筆 → **PhotoRow** 清單: bundle picture → **Section + numbered FactList** 檢視 (搜尋, 檢視, 追蹤) → **next page** → **Closing** |
+| `versions` | **PageHead** 打開一個技能 → **Section + Rows** SKILL.md: frontmatter key as code and example value left, what REZICS does right → **Section + Rows** 檔案: six roles, path as code, marks 可執行 and 缺少 → **PhotoRow** 版本: fan picture, two paragraphs → **Section + FactList** two dated illustrative releases → **Section + FactList** 套件 → **Statement** 每個技能，都署了名 → **next page** → **Closing** |
 | `evidence` | **PageHead** 宣告是宣告，紀錄是紀錄 → **Section + CodeTile** 宣告: the `compatibility:` line, caption 需要獨立驗證 → **Section + two FactLists** 紀錄: eight fields side by side (one list under 1024 px) → **Section + FactList** 讀法 → **Section + FactList** 評分與討論 → **Statement** 不是安全保證 → **next page** → **Closing** |
 | `use` | **PageHead** 讀過，再交給你的 AI 代理 → **Section + numbered FactList** 六個步驟 → **Section** API 與 MCP: two paragraphs and the link to the developers site → **Section + FactList** 之後的版本 → **next page** → **Closing** |
 | `publish` | **PageHead** 一個資料夾，發布成一個身分 → **PhotoRow** 匯入只保存，不執行: slit picture → **Section + numbered FactList** 六件事 → **Section + FactList** 範圍: five limits (figure left, meaning right) → **Statement** 描述是最先被讀到的一句, the two example descriptions as a FactList under it → **Section + FactList** 署名與權利 → **next site** (API Hub tile) → **Closing** |
@@ -158,6 +158,21 @@ compete with them).
 - The publish page gives API Hub its own short transition heading and tile line, rather than
   repeating the global navigation description. Its description comparison has an explicit
   illustrative caption; all new text remains in the site's content file.
+- The three reading layers follow the same illustrative `chapter-cast` skill. The directory
+  shows actual name-plus-description specimens; the versions page shows two dated illustrative
+  releases, so the explanatory claims have something concrete to read. Names, dates and version
+  numbers in those examples are explicitly labelled 示意, never presented as live catalogue data.
+
+### Local kit workarounds
+
+`skills.css` is imported by all six owned pages and scoped to `[data-site='skills']`:
+
+- The shared site-bar centring uses `item.offsetLeft`, but its scrollport was not positioned.
+  Giving `.sitebar__tabs` `position: relative` makes the offset local, so the active phone tab
+  stays visible. Its right padding also clears the 24 px edge fade.
+- The site-bar home link and tabs lift 2 px on hover/focus and press down 1 px. The first QA
+  pass identified the home link's colour-only response. Shared files are unchanged locally;
+  these two fixes can be promoted to the kit by its owner.
 
 ### Pictures
 
@@ -169,6 +184,10 @@ kept them: upper-left soft window light, visible paper fibre, muted lime with ne
 colours, and no lettering, symbols, people or non-paper objects. No replacement generation was
 needed. The hero remains 1920/960 wide, its phone crop 960/640 wide, and the four section pictures
 1200/640 wide, each in AVIF and WebP within the v3 byte budgets.
+
+The phone crop was then re-encoded for the throttled-phone LCP budget. At 960 px AVIF is 20,740
+bytes and WebP 31,844 bytes; at 640 px AVIF is 14,805 bytes and WebP 19,096 bytes. Each result was
+viewed against the original: the crop, muted colour, upper-left light and paper fibre remain.
 
 | Stem | Used on | Idea | Picture |
 |---|---|---|---|
