@@ -59,7 +59,7 @@ export interface CommunityStrings {
 const strings: CommunityStrings = {
   hero: {
     headline: '你是說話的人，Realm 是場地。',
-    lede: '一個人只有一個公開身分，評論、清單與書庫跟著你走進每個 Realm。Realm 給你話題、規則與管理，不會把你收進它的名下。',
+    lede: '你只有一個公開身分，評論、清單與書庫都跟著你。每個 Realm 給你話題、規則與管理，不會把你收進它的名下。',
     imageAlt: '許多小紙片圍在一張較大的深灰色紙片四周，像一群人聚在同一張桌子旁。',
   },
   person: {
