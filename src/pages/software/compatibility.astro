@@ -11,6 +11,7 @@ import Closing from '../../kit/components/Closing.astro';
 import Body from '../../sites/software/Body.astro';
 import Next from '../../sites/software/Next.astro';
 import CompatTable from '../../sites/software/CompatTable.astro';
+import PhonePhotoPreload from '../../sites/software/PhonePhotoPreload.astro';
 import site from '../../content/sites/software';
 import { nextTiles, sectionPicture } from '../../sites/software/site';
 
@@ -19,6 +20,7 @@ const { states, common, pictures } = site.strings;
 const stateRows = (Object.keys(s.states.body) as (keyof typeof states)[]).map((id) => ({ title: states[id], body: s.states.body[id] }));
 ---
 <MiniSiteLayout>
+  <PhonePhotoPreload image={sectionPicture(pictures.holes)} />
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
   <PhotoRow side="left" eyebrow={s.anatomy.label} title={s.anatomy.headline} body={s.anatomy.lead} image={sectionPicture(pictures.holes)} />

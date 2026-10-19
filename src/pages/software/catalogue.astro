@@ -11,6 +11,7 @@ import Table from '../../kit/components/Table.astro';
 import Closing from '../../kit/components/Closing.astro';
 import Body from '../../sites/software/Body.astro';
 import Next from '../../sites/software/Next.astro';
+import PhonePhotoPreload from '../../sites/software/PhonePhotoPreload.astro';
 import site from '../../content/sites/software';
 import { nextTiles, sectionPicture } from '../../sites/software/site';
 
@@ -19,6 +20,7 @@ const { sample, channels, common, pictures } = site.strings;
 const rows = sample.releases.map((r) => [r.version, channels[r.channel], r.date, r.platforms]);
 ---
 <MiniSiteLayout>
+  <PhonePhotoPreload image={sectionPicture(pictures.versions)} />
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
   <PhotoRow side="right" eyebrow={s.releases.label} title={s.releases.headline} body={s.releases.lead} image={sectionPicture(pictures.versions)} />
