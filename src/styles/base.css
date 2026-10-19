@@ -46,8 +46,9 @@
 }
 
 /* CJK display text breaks only between phrases: the build inserts <wbr> between BudouX phrases
-   in headings and display paragraphs (scripts/phrase.mjs); overflow-wrap is the safety net. */
-h1, h2, h3, h4, .serif, .t-title, .t-h2, .t-h3, .t-big, .t-statement, .t-mega, .t-xl, .t-l, .t-m, .lede, .lead { word-break: keep-all; overflow-wrap: anywhere; }
+   in headings and display paragraphs (`.serif`, `.lead`, `.t-statement`, and any <p> with the
+   class `phrase`; scripts/phrase.mjs); overflow-wrap is the safety net. */
+h1, h2, h3, h4, .serif, .phrase, .t-title, .t-h2, .t-h3, .t-big, .t-statement, .t-mega, .t-xl, .t-l, .t-m, .lede, .lead { word-break: keep-all; overflow-wrap: anywhere; }
 p, dd, li, .lede { text-wrap: pretty; }
 /* Phones: running text breaks between any characters again. */
 @media (max-width: 767px) {

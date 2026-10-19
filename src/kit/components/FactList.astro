@@ -28,7 +28,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </ul>
 <style>
   .facts { border-top: 1px solid var(--c-line); }
-  .facts__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
+  .facts__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); align-items: baseline; gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
   .facts__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
   .facts__n { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 400; color: var(--c-muted); }
   .facts__body { font-size: 16px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
