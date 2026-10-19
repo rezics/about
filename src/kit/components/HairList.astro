@@ -1,0 +1,31 @@
+---
+/**
+ * Titled rows under hairlines (the mock's principles list): the title in its own column, the text
+ * beside it. Phones: the title above its text.
+ */
+interface Row {
+  title: string;
+  body: string;
+}
+interface Props {
+  items: Row[];
+  level?: 'h3' | 'h4';
+  class?: string;
+}
+const { items, level: Tag = 'h3', class: className } = Astro.props;
+---
+<ul class:list={['hlist', className]} role="list">
+  {items.map((r) => (
+    <li class="hlist__row">
+      <Tag class="hlist__title">{r.title}</Tag>
+      <p class="hlist__body">{r.body}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .hlist { border-top: 1px solid var(--c-line); }
+  .hlist__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 6fr); gap: 6px var(--gutter); padding: 22px 0; border-bottom: 1px solid var(--c-line); }
+  .hlist__title { font-size: 18px; font-weight: 600; line-height: 1.5; }
+  .hlist__body { font-size: 16px; line-height: 1.8; color: var(--c-text); }
+  @media (max-width: 767px) { .hlist__row { grid-template-columns: minmax(0, 1fr); } }
+</style>

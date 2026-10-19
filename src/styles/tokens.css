@@ -1,4 +1,5 @@
-/* Design tokens (DESIGN.md "Direction v2"): the product's own Aura design (rezics-next
+/* Design tokens (DESIGN.md "Direction v2"): the Swiss grid and flat seamless tiles of the
+   reference mock (.temp/mocks/home.html), on the product's Aura palette (rezics-next
    packages/ui/src/styles.css), copied here because the site carries no package of the app.
    Colour values are repeated in src/kit/theme.ts; tests/unit/theme.test.ts keeps them equal and
    checks AA contrast. */
@@ -53,8 +54,13 @@
   --c-fg: var(--c-ink);
   --c-surface: var(--c-card);
   --c-soft: var(--c-panel);
-  --c-line: rgb(43 52 61 / 0.1);
-  --c-line-strong: rgb(43 52 61 / 0.18);
+  --c-line: rgb(43 52 61 / 0.14);
+  --c-line-strong: rgb(43 52 61 / 0.24);
+  /* Running text in sections (the mock's body grey, AA on the ground). */
+  --c-text: #45505b;
+  /* The ink band and the code tile. */
+  --c-ink-band: #2b343d;
+  --c-code: #1e252c;
   --c-accent: var(--c-link);
   /* Text on a link-coloured fill (the primary pill); a dark theme with a light link sets it dark. */
   --c-on-link: #ffffff;
@@ -85,30 +91,35 @@
   --f-square: 'Archivo', 'Archivo Fallback', var(--f-cjk);
   --f-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* Type scale (390 px → 1440 px). Quiet: page titles 30 to 48 px, section headings 24 to
-     32 px, body 16 to 18 px. Weights 400 and 500; 700 at most. */
-  --t-title: clamp(1.875rem, 1.45rem + 1.75vw, 3rem);
-  --t-h2: clamp(1.5rem, 1.3rem + 0.75vw, 2rem);
-  --t-h3: clamp(1.125rem, 1.06rem + 0.25vw, 1.3125rem);
-  --t-statement: clamp(1.375rem, 1.1rem + 1.1vw, 2.125rem);
-  --t-lede: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
-  --t-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
-  --t-s: 0.875rem;
+  /* Type scale (the mock): headings in Noto Sans TC 600. Hero 34 → 64 px, section 28 → 46 px,
+     band and statement 32 → 58 px, closing 36 → 68 px; body 17 to 18 px at 1.85; labels 13 px. */
+  --t-hero: clamp(2.125rem, 4.4vw, 4rem);
+  --t-title: clamp(2.125rem, 4.4vw, 4rem);
+  --t-h2: clamp(1.75rem, 3.2vw, 2.875rem);
+  --t-big: clamp(2rem, 4vw, 3.625rem);
+  --t-close: clamp(2.25rem, 4.6vw, 4.25rem);
+  --t-h3: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
+  --t-statement: var(--t-big);
+  --t-lede: clamp(1rem, 0.94rem + 0.25vw, 1.125rem);
+  --t-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
+  --t-s: 0.9375rem;
   --t-xs: 0.8125rem;
+  --w-head: 600;
   /* Older names, mapped onto the quiet scale so pages not yet rebuilt follow it. */
   --t-mega: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
   --t-xl: var(--t-title);
   --t-l: var(--t-h2);
   --t-m: var(--t-h3);
-  --lh-title: 1.3;
-  --lh-text: 1.75;
-  --lh-display: 1.3;
-  --track-display: -0.005em;
+  --lh-title: 1.22;
+  --lh-text: 1.85;
+  --lh-display: 1.22;
+  --track-display: 0.01em;
   --measure: 36em; /* 34 to 40 CJK characters */
 
   /* Space */
-  --gutter: clamp(16px, 2vw, 32px);
-  --page-pad: clamp(20px, 5vw, 64px);
+  /* The full-bleed 12-column grid: the gutter is also the outer margin. */
+  --gutter: clamp(16px, 2.2vw, 32px);
+  --page-pad: var(--gutter);
   --container: 1120px;
   --container-narrow: 760px;
   --cols: 12;
@@ -116,13 +127,13 @@
   --space-tight: clamp(48px, 3rem + 2vw, 80px);
   --space-normal: clamp(64px, 3rem + 5vw, 128px);
   --space-airy: clamp(72px, 3rem + 7vw, 160px);
-  /* The gap between two v2 sections; each section pads half of it on either side. */
-  --space-section: clamp(64px, 2rem + 6.5vw, 136px);
+  /* The space above each section (the mock: 88 → 168 px; 72 px on phones). */
+  --space-section: clamp(88px, 12vw, 168px);
   --header-h: 64px;
   --bar-h: 56px;
 
-  /* Shape: the Aura radius scale. Images and cards 24 px, sheets and the closing panel 30 px,
-     buttons and tabs pills. */
+  /* Shape: radius 0 on tiles, bands and blocks; pills only for buttons. The older radius
+     tokens remain for pages not yet moved. */
   --r-xs: 8px;
   --r-sm: 12px;
   --r-lg: 16px;
@@ -138,7 +149,7 @@
   --shadow-float: 0 2px 4px -1px rgb(43 52 61 / 0.08), 0 12px 24px -4px rgb(43 52 61 / 0.12), 0 32px 64px -12px rgb(43 52 61 / 0.16);
 
   /* Motion: quiet. Content fades and rises a few pixels; images settle from a slight scale. */
-  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snap: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
   --d-s: 0.24s;
   --d-m: 0.45s;
@@ -164,6 +175,6 @@
     --space-tight: 48px;
     --space-normal: 56px;
     --space-airy: 64px;
-    --space-section: 56px;
+    --space-section: 72px;
   }
 }

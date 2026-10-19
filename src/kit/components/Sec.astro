@@ -1,0 +1,56 @@
+---
+/**
+ * A section on the Swiss grid (DESIGN.md "Direction v2"; the mock's `.sec`): a meta column on the
+ * left (a plain label and an optional link), the heading across columns 4 to 12
+ * (one or more lines), the body (the default slot) across columns 4 to 13, and a full-width part
+ * (slot `wide`) under them. Without a title the label is the section's heading. Phones: one
+ * column, the label and its link on one line above.
+ */
+import Clauses from '../Clauses.astro';
+import { idFor } from '../ids';
+
+interface Props {
+  label: string;
+  title?: string | string[];
+  /** A muted continuation after the title, in the same size. */
+  more?: string;
+  link?: { href: string; text: string };
+  id?: string;
+  class?: string;
+}
+const { label, title, more, link, id: given, class: className } = Astro.props;
+const lines = title === undefined ? [] : Array.isArray(title) ? title : [title];
+const id = given ?? idFor('sec', `${label}${lines.join('')}`);
+---
+<section class:list={['sec', className]} aria-labelledby={id}>
+  <div class="grid sec__grid">
+    <div class="sec__side">
+      {lines.length ? <p class="label sec__label">{label}</p> : <h2 id={id} class="label sec__label">{label}</h2>}
+      {link && <a class="link-draw" href={link.href}>{link.text}</a>}
+    </div>
+    {lines.length > 0 && (
+      <h2 id={id} class="sec__title">
+        {lines.map((l) => (lines.length > 1 ? <span class="sec__line"><Clauses text={l} /></span> : <Clauses text={l} />))}
+        {more && <span class="sec__more">{more}</span>}
+      </h2>
+    )}
+    {Astro.slots.has('default') && <div class:list={['sec__body', !lines.length && 'sec__body--top']}><slot /></div>}
+    {Astro.slots.has('wide') && <div class="sec__wide"><slot name="wide" /></div>}
+  </div>
+</section>
+<style>
+  .sec { padding-top: var(--space-section); }
+  .sec__side { grid-column: 1 / 4; grid-row: 1 / span 2; padding-top: 12px; display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+  .sec__title { grid-column: 4 / 12; font-size: var(--t-h2); font-weight: 600; line-height: 1.28; letter-spacing: 0.01em; }
+  .sec__line { display: block; }
+  .sec__more { color: var(--c-muted); }
+  .sec__body { grid-column: 4 / 13; margin-top: 32px; min-width: 0; }
+  .sec__body--top { margin-top: 0; grid-row: 1 / span 2; }
+  .sec__wide { grid-column: 1 / 13; margin-top: 64px; min-width: 0; }
+  @media (max-width: 767px) {
+    .sec__side { grid-row: auto; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; padding: 0 0 18px; }
+    .sec__body { margin-top: 24px; }
+    .sec__body--top { grid-row: auto; margin-top: 0; }
+    .sec__wide { margin-top: 40px; }
+  }
+</style>

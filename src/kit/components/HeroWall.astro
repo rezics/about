@@ -1,0 +1,60 @@
+---
+/**
+ * The landing hero (DESIGN.md "Direction v2"; the mock's hero): the copy on the left (a label
+ * with the red square, the h1 in clauses, one line, the actions in the slot) and on the right a
+ * seamless wall of flat tiles that fills the hero's height to the window's edge. Phones: the copy,
+ * then the wall in two columns at `phoneHeight`.
+ */
+import TileWall, { type WallItem, type WallPlace } from './TileWall.astro';
+import Clauses from '../Clauses.astro';
+
+interface Props {
+  label: string;
+  title: string;
+  lede?: string;
+  items: WallItem[];
+  wide: WallPlace[][];
+  phone: WallPlace[][];
+  /** Wall height on phones (px). */
+  phoneHeight?: number;
+  /** A mini-site page: the site bar sits under the header too. */
+  bar?: boolean;
+}
+const { label, title, lede, items, wide, phone, phoneHeight = 900, bar = false } = Astro.props;
+---
+<section class:list={['hero', bar && 'hero--bar']} aria-labelledby="hero-title" style={`--wall-phone:${phoneHeight}px`}>
+  <div class="hero__copy">
+    <p class="mlabel">{label}</p>
+    <h1 id="hero-title" class="hero__title"><Clauses text={title} /></h1>
+    {lede && <p class="hero__lede">{lede}</p>}
+    {Astro.slots.has('default') && <div class="hero__ctas"><slot /></div>}
+  </div>
+  <div class="hero__wall">
+    <TileWall items={items} wide={wide} phone={phone} />
+  </div>
+</section>
+<style>
+  .hero {
+    --hero-h: calc(100svh - var(--header-h));
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    column-gap: var(--gutter);
+    padding-left: var(--gutter);
+    height: var(--hero-h);
+    min-height: 640px;
+    max-height: 920px;
+  }
+  .hero--bar { --hero-h: calc(100svh - var(--header-h) - var(--bar-h)); min-height: 600px; }
+  .hero__copy { align-self: center; padding: 40px 0 72px; }
+  .hero__title { margin-top: 28px; font-size: var(--t-hero); font-weight: 600; line-height: 1.22; letter-spacing: 0.01em; }
+  .hero__lede { margin-top: 28px; max-width: 27em; font-size: 18px; line-height: 1.85; color: var(--c-text); }
+  .hero__ctas { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; }
+  .hero__wall { min-width: 0; min-height: 0; overflow: hidden; }
+  @media (max-width: 767px) {
+    .hero, .hero--bar { grid-template-columns: minmax(0, 1fr); padding: 0; height: auto; min-height: 0; max-height: none; }
+    .hero__copy { padding: 36px var(--gutter) 40px; }
+    .hero__title { font-size: 34px; }
+    .hero__lede { font-size: 16px; }
+    .hero__wall { height: var(--wall-phone); }
+  }
+</style>

@@ -1,5 +1,5 @@
-// A site may take a dark theme: the shared chrome (header, panels, site bar, footer, closing panel,
-// finales and primitives) reads only semantic tokens, so it follows and keeps AA contrast.
+// A site may take a dark theme: the shared chrome (header, panels, site bar, footer, finales and
+// primitives) reads only semantic tokens, so it follows and keeps AA contrast.
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
@@ -21,14 +21,11 @@ for (const route of ['/books/', '/developers/', '/engine/community/']) {
       header: getComputedStyle(document.querySelector('[data-header]')!).getPropertyValue('--c-bg').trim(),
       body: getComputedStyle(document.body).backgroundColor,
       footer: getComputedStyle(document.querySelector('footer')!).color,
-      closing: getComputedStyle(document.querySelector('.closing__panel')!).backgroundColor,
     }));
-    // The header is a translucent veil of the theme's ground; the footer and its closing panel
-    // follow the theme's ink and muted panel (v2 has no inverted footer band).
+    // The header and the footer follow the theme's ground and ink (no inverted footer band).
     expect(grounds.header).toBe('#0e1420');
     expect(grounds.body).toBe('rgb(14, 20, 32)');
     expect(grounds.footer).toBe('rgb(244, 245, 242)');
-    expect(grounds.closing).toBe('rgb(31, 40, 56)');
     await page.locator('[data-panel-button="panel-products"]').click();
     await expect(page.locator('#panel-products')).toBeVisible();
     const results = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();

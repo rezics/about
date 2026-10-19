@@ -33,27 +33,15 @@ const Name = level ?? 'span';
   })}
 </ul>
 <style>
-  .partslist {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: 10px;
+  .partslist { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); border-top: 1px solid var(--c-line); }
+  .chip { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 4px var(--gutter); padding: 18px 0; border-bottom: 1px solid var(--c-line); min-width: 0; }
+  .chip__head { display: flex; flex-direction: column; gap: 2px; }
+  .chip__mark { display: none; }
+  .chip__name { font-weight: 600; font-size: 17px; line-height: 1.4; }
+  .chip__id { color: var(--c-muted); font-family: var(--f-latin), var(--f-cjk); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .chip__note { font-size: 15px; line-height: 1.75; color: var(--c-text); }
+  @media (max-width: 767px) {
+    .partslist { grid-template-columns: minmax(0, 1fr); }
+    .chip { grid-template-columns: minmax(0, 1fr); }
   }
-  .chip {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 16px 18px;
-    border-radius: var(--r-lg);
-    background: var(--c-surface);
-    border: 1px solid var(--c-line);
-    color: var(--c-fg);
-    min-width: 0;
-  }
-  .chip__head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .chip__mark { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--field); }
-  .chip__name { font-weight: 500; font-size: var(--t-body); line-height: 1.4; }
-  .chip__id { color: var(--c-muted); font-family: var(--f-latin), var(--f-cjk); }
-  .chip__note { font-size: var(--t-s); line-height: 1.7; color: var(--c-muted); }
 </style>

@@ -1,68 +1,62 @@
 ---
 /**
- * "Next page / next site" (DESIGN.md "Direction v2"): a calm card across the container on a soft
- * tint of the next thing's field, its small label and its name at heading size, with an arrow
- * that steps forward on hover or focus. The whole card is the link. The footer's closing panel
- * (「前往 REZICS」) follows it on every page, so a finale needs no action of its own.
+ * "Next page / next site" as a full-width row under a hairline (the index-row language): the
+ * label in the meta column, the name large, an arrow; on hover and focus the row floods with the
+ * next thing's field from the left and the text turns to its paper or ink.
  */
 import type { Field } from '../theme';
-import { fieldStyle } from '../theme';
+import { palette } from '../theme';
 
 interface Props {
   label: string;
   name: string;
   href: string;
   field: Field;
-  /** One line under the name (what the next page or site is about). */
   body?: string;
 }
 const { label, name, href, field, body } = Astro.props;
 ---
-<div class="finale-wrap container">
-  <a class="finale" href={href} style={fieldStyle(field)}>
+<div class="finale-wrap">
+  <a class="finale" href={href} style={`--fin:${field.field};--fin-on:${palette[field.on]}`}>
+    <span class="finale__label mlabel">{label}</span>
     <span class="finale__text">
-      <span class="finale__label label">{label}</span>
       <span class="finale__name">{name}</span>
       {body && <span class="finale__body">{body}</span>}
     </span>
-    <span class="finale__go" aria-hidden="true">
-      <svg viewBox="0 0 16 16" focusable="false"><path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
-    </span>
+    <svg class="finale__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
   </a>
 </div>
 <style>
-  .finale-wrap { padding-top: calc(var(--space-section) / 2); }
+  .finale-wrap { margin-top: var(--space-section); border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line); }
   .finale {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: clamp(24px, 3vw, 40px) clamp(24px, 4vw, 48px);
-    border-radius: var(--r-card);
-    background: var(--tint);
-    color: var(--c-fg);
-    transition: background-color var(--d-m) var(--ease-soft);
-  }
-  .finale__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-  .finale__label { color: var(--c-muted); }
-  .finale__name { font-size: var(--t-h2); font-weight: 500; line-height: 1.3; }
-  .finale__body { color: var(--c-muted); font-size: var(--t-s); }
-  .finale__go {
+    position: relative;
+    isolation: isolate;
     display: grid;
-    place-items: center;
-    flex: none;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: var(--c-surface);
-    box-shadow: var(--shadow-card);
-    transition: translate var(--d-s) var(--ease-soft);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: center;
+    padding: clamp(28px, 3vw, 44px) var(--gutter);
+    color: var(--c-fg);
+    transition: color 0.35s var(--ease-snap);
   }
-  .finale__go svg { width: 18px; height: 18px; }
+  .finale::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--fin); transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease-snap); }
+  .finale__label { grid-column: 1 / 4; transition: color 0.35s var(--ease-snap); }
+  .finale__text { grid-column: 4 / 12; display: flex; flex-direction: column; gap: 6px; }
+  .finale__name { font-size: var(--t-h2); font-weight: 600; line-height: 1.25; }
+  .finale__body { font-size: var(--t-s); line-height: 1.7; }
+  .finale__arrow { grid-column: 12 / 13; justify-self: end; width: 24px; height: 24px; transition: translate 0.45s var(--ease-snap); }
   @media (hover: hover) {
-    .finale:hover { background: var(--tint-strong); }
-    .finale:hover .finale__go { translate: 4px 0; }
+    .finale:hover { color: var(--fin-on); }
+    .finale:hover .finale__label { color: var(--fin-on); }
+    .finale:hover::before { transform: none; }
+    .finale:hover .finale__arrow { translate: 6px 0; }
   }
-  .finale:focus-visible { background: var(--tint-strong); }
-  .finale:focus-visible .finale__go { translate: 4px 0; }
+  .finale:focus-visible { color: var(--fin-on); outline-offset: -4px; outline-color: var(--fin-on); }
+  .finale:focus-visible .finale__label { color: var(--fin-on); }
+  .finale:focus-visible::before { transform: none; }
+  @media (max-width: 767px) {
+    .finale { grid-template-columns: minmax(0, 1fr) auto; row-gap: 10px; }
+    .finale__label, .finale__text { grid-column: 1; }
+    .finale__arrow { grid-column: 2; grid-row: 2; }
+  }
 </style>

@@ -1,94 +1,62 @@
 ---
 /**
- * Footer on every page (DESIGN.md "Direction v2", Rhythm): the closing panel into REZICS
- * (「前往 REZICS」, from `site.product`), then the large footer with link columns: the nine
- * products, the modules, REZICS itself, and the small print. A page that renders its own closing
- * panel passes `action={false}` (the home page does). On a page that ends on a finale, the panel
- * keeps its line and the action and drops its headline, so that sentence is not on every page.
+ * The footer (the mock): the logo and the line on the left; columns for the six works and
+ * software, the three hubs for AI agents, the modules, and REZICS itself; the small print under a
+ * hairline. Pages end on their own closing block before it.
  */
 import { kinds, modules, site, kindHref, moduleHref } from '../content';
 import Logo from './Logo.astro';
-import ClosingPanel from './ClosingPanel.astro';
 
 interface Props {
+  /** Kept for older pages; the closing block is now part of each page. */
   action?: boolean;
 }
-const { action = true } = Astro.props;
 const f = site.footer;
 const nav = site.nav;
+const works = kinds.filter((k) => k.group === 'works');
+const agents = kinds.filter((k) => k.group === 'agents');
 ---
-<footer class="footer">
-  {action && <ClosingPanel class="footer__closing" />}
-  <div class="container footer__main">
-    <div class="footer__brand">
-      <Logo label={site.name} />
-      <p class="footer__tagline">{f.tagline}</p>
+<footer class="footer grid">
+  <div class="footer__brand">
+    <Logo label={site.name} />
+    <p>{f.tagline}</p>
+  </div>
+  <nav class="footer__cols" aria-label={f.sitemap}>
+    <div>
+      <p class="footer__head">{nav.products}</p>
+      <ul role="list">{works.map((k) => <li><a class="link-utility" href={kindHref(k.id)}>{k.name}</a></li>)}</ul>
     </div>
-    <nav class="footer__cols" aria-label={f.sitemap}>
-      <div class="footer__col">
-        <p class="footer__head label">{nav.products}</p>
-        <ul role="list">
-          {kinds.map((k) => <li><a class="link-utility" href={kindHref(k.id)}>{k.name}</a></li>)}
-        </ul>
-      </div>
-      <div class="footer__col">
-        <p class="footer__head label">{nav.engine}</p>
-        <ul role="list">
-          <li><a class="link-utility" href="/engine/">{nav.engineIntro.all}</a></li>
-          {modules.map((m) => <li><a class="link-utility" href={moduleHref(m.id)}>{m.name}</a></li>)}
-        </ul>
-      </div>
-      <div class="footer__col">
-        <p class="footer__head label">{site.name}</p>
-        <ul role="list">
-          <li><a class="link-utility" href="/developers/">{nav.developers}</a></li>
-          <li><a class="link-utility" href="/roadmap/">{nav.roadmap}</a></li>
-          <li><a class="link-utility" href={f.sourceUrl} rel="noopener">{f.source}</a></li>
-          <li><a class="link-utility" href={site.productUrl}>{nav.action}</a></li>
-        </ul>
-      </div>
-    </nav>
-    <div class="footer__meta">
-      <p class="footer__colophon">{f.colophon}</p>
-      <p class="footer__copy">{f.copyright}</p>
+    <div>
+      <p class="footer__head">{f.agents}</p>
+      <ul role="list">{agents.map((k) => <li><a class="link-utility" href={kindHref(k.id)}>{k.name}</a></li>)}</ul>
     </div>
+    <div>
+      <p class="footer__head">{nav.engine}</p>
+      <ul role="list">{modules.map((m) => <li><a class="link-utility" href={moduleHref(m.id)}>{m.name}</a></li>)}</ul>
+    </div>
+    <div>
+      <p class="footer__head">{site.name}</p>
+      <ul role="list">
+        <li><a class="link-utility" href="/developers/">{nav.developers}</a></li>
+        <li><a class="link-utility" href="/roadmap/">{nav.roadmap}</a></li>
+        <li><a class="link-utility" href={f.sourceUrl} rel="noopener">{f.source}</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="footer__meta">
+    <p>{f.colophon}</p>
+    <p>{f.copyright}</p>
   </div>
 </footer>
 <style>
-  .footer { position: relative; z-index: var(--z-content); color: var(--c-fg); }
-  /* After a finale the panel keeps its line and the action; the headline is not repeated. */
-  :global(main:has(.finale)) ~ .footer :global(.closing__title) { display: none; }
-  :global(main:has(.finale)) ~ .footer :global(.closing__body) { color: var(--c-fg); font-size: var(--t-h3); font-weight: 500; }
-  :global(main:has(.finale)) ~ .footer :global(.closing) { padding-top: var(--space-tight); }
-  .footer__main {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    column-gap: var(--gutter);
-    row-gap: 40px;
-    padding-top: clamp(32px, 4vw, 56px);
-    padding-bottom: 40px;
-  }
-  .footer__brand { grid-column: 1 / span 4; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-  .footer__tagline { color: var(--c-muted); font-size: var(--t-s); max-width: 18em; }
-  .footer__cols { grid-column: 6 / span 7; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px var(--gutter); }
-  .footer__head { color: var(--c-fg); margin-bottom: 14px; }
-  .footer__col ul { display: flex; flex-direction: column; gap: 2px; }
-  .footer__col a { display: inline-flex; align-items: center; min-height: 32px; font-size: var(--t-s); }
-  .footer__meta {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 8px 32px;
-    padding-top: 24px;
-    border-top: 1px solid var(--c-line);
-    font-size: var(--t-xs);
-    color: var(--c-muted);
-  }
-  @media (max-width: 899px) {
-    .footer__brand, .footer__cols { grid-column: 1 / -1; }
-  }
-  @media (max-width: 599px) {
+  .footer { position: relative; z-index: var(--z-content); padding-top: 64px; padding-bottom: 40px; row-gap: 40px; font-size: 14px; color: var(--c-fg); }
+  .footer__brand { grid-column: 1 / 5; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; color: var(--c-muted); }
+  .footer__cols { grid-column: 6 / 13; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px var(--gutter); }
+  .footer__head { font-size: 13px; font-weight: 600; color: var(--c-muted); margin-bottom: 12px; }
+  .footer__cols li { line-height: 2.1; }
+  .footer__cols a { display: inline-block; min-height: 24px; }
+  .footer__meta { grid-column: 1 / 13; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; padding-top: 24px; border-top: 1px solid var(--c-line); font-size: 13px; color: var(--c-muted); }
+  @media (max-width: 767px) {
     .footer__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 </style>

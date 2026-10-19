@@ -1,83 +1,85 @@
 ---
 /**
- * A flat colour tile (DESIGN.md "Direction v2", tiles): a solid ground (a kind's field, or a shade
- * or tint of a site's accent) with the text set directly on it: the name large, one short line
- * beneath, an arrow. No picture, no shadow, a tiny radius. On hover and focus a deeper tone of the
- * ground rises through the tile, the name and the arrow step forward; a click presses it briefly.
- * `on` is the text colour that passes AA on `bg` (src/kit/color.ts `textOn`).
+ * A flat tile (DESIGN.md "Direction v2"; the mock's `.tile`): a solid field with the text set on
+ * it: a Latin id or a relation at the top, the name large at the foot with one short line under
+ * it, and an arrow when it is a link. Radius 0, no shadow; tiles sit 3 px apart in walls and rows.
+ * As a link: on hover and focus the field deepens (or lightens under ink text), the name lifts
+ * and the arrow steps forward; a click presses it. `on` is the text colour that passes AA on `bg`.
  */
 import { palette } from '../theme';
 
 interface Props {
-  title: string;
-  body?: string;
-  href: string;
+  name: string;
   bg: string;
   on: 'paper' | 'ink';
-  /** A small line above the name. */
-  label?: string;
-  level?: 'h2' | 'h3' | 'h4';
+  href?: string;
+  /** Latin id, set 12 px uppercase and tracked. */
+  tag?: string;
+  /** A relation or note at the top in the body face (改編自 小說). */
+  rel?: string;
+  /** One short line under the name. */
+  line?: string;
+  /** Hide the line on wide screens or on phones (small tiles in a wall). */
+  lineOn?: 'both' | 'wide' | 'phone' | 'none';
+  level?: 'h2' | 'h3' | 'p';
   class?: string;
   style?: string;
 }
-const { title, body, href, bg, on, label, level: Tag = 'h3', class: className, style } = Astro.props;
+const { name, bg, on, href, tag, rel, line, lineOn = 'both', level: Tag = 'p', class: className, style } = Astro.props;
+const El = href ? 'a' : 'div';
 ---
-<a class:list={['tile', className]} href={href} style={`--tile:${bg};--tile-on:${palette[on]};${style ?? ''}`}>
-  <span class="tile__shade" aria-hidden="true"></span>
-  <span class="tile__text">
-    {label && <span class="tile__label">{label}</span>}
-    <Tag class="tile__name">{title}</Tag>
-    {body && <span class="tile__body">{body}</span>}
+<El class:list={['tile', on === 'ink' && 'tile--ink', href && 'tile--link', className]} href={href} style={`--c:${bg};--on:${palette[on]};${style ?? ''}`}>
+  {tag && <span class="tag tile__tag">{tag}</span>}
+  {rel && <span class="tile__rel">{rel}</span>}
+  <span class="tile__foot">
+    <Tag class="tile__name">{name}</Tag>
+    {line && lineOn !== 'none' && <span class:list={['tile__line', `tile__line--${lineOn}`]}>{line}</span>}
   </span>
-  <svg class="tile__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-    <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
-</a>
+  {href && (
+    <svg class="tile__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  )}
+</El>
 <style>
   .tile {
+    --pad: clamp(14px, 1.4vw, 22px);
     position: relative;
-    isolation: isolate;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 16px;
-    height: 100%;
+    gap: 12px;
+    min-width: 0;
     min-height: 0;
-    padding: clamp(18px, 1.6vw, 28px);
-    overflow: clip;
-    border-radius: 2px;
-    background: var(--tile);
-    color: var(--tile-on);
-    transition: scale 0.14s var(--ease-soft);
+    padding: var(--pad);
+    background: var(--c);
+    color: var(--on);
+    transition: background-color 0.4s var(--ease-snap), scale 0.14s var(--ease-soft);
   }
-  /* A deeper tone of the ground rises through the tile from its foot. */
-  .tile__shade {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: color-mix(in oklab, var(--tile) 84%, var(--tile-on));
-    clip-path: inset(100% 0 0 0);
-    transition: clip-path var(--d-m) var(--ease-snap);
-  }
-  .tile__text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-  .tile__label { font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.01em; }
+  .tile__rel { font-size: 14px; line-height: 1.5; }
+  .tile__foot { display: flex; flex-direction: column; min-width: 0; }
   .tile__name {
-    font-size: var(--tile-name, clamp(1.375rem, 1rem + 1.25vw, 2.125rem));
-    font-weight: 500;
-    line-height: 1.25;
-    letter-spacing: -0.005em;
-    transition: translate var(--d-m) var(--ease-snap);
+    font-size: var(--tile-name, clamp(1.625rem, 2.6vw, 2.5rem));
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    transition: translate 0.45s var(--ease-snap);
   }
-  .tile__body { max-width: 20em; font-size: var(--t-s); line-height: 1.6; transition: translate var(--d-m) var(--ease-snap) 0.03s; }
-  .tile__arrow { flex: none; width: 22px; height: 22px; transition: translate var(--d-m) var(--ease-snap); }
+  .tile__line { margin-top: 8px; max-width: 18em; font-size: 14px; line-height: 1.6; }
+  .tile--link .tile__line { padding-right: 28px; }
+  .tile__arrow { position: absolute; right: var(--pad); bottom: var(--pad); width: 20px; height: 20px; transition: translate 0.45s var(--ease-snap); }
+  @media (max-width: 767px) { .tile__line--wide { display: none; } }
+  @media (min-width: 768px) { .tile__line--phone { display: none; } }
   @media (hover: hover) {
-    .tile:hover .tile__shade { clip-path: inset(0 0 0 0); }
-    .tile:hover .tile__name, .tile:hover .tile__body { translate: 6px 0; }
-    .tile:hover .tile__arrow { translate: 8px 0; }
+    .tile--link:hover { background: color-mix(in oklab, var(--c) 88%, #000); }
+    .tile--ink.tile--link:hover { background: color-mix(in oklab, var(--c) 90%, #fff); }
+    .tile--link:hover .tile__name { translate: 0 -4px; }
+    .tile--link:hover .tile__arrow { translate: 6px 0; }
   }
-  .tile:focus-visible { outline: 2px solid var(--tile-on); outline-offset: -6px; }
-  .tile:focus-visible .tile__shade { clip-path: inset(0 0 0 0); }
-  .tile:focus-visible .tile__name, .tile:focus-visible .tile__body { translate: 6px 0; }
-  .tile:focus-visible .tile__arrow { translate: 8px 0; }
-  .tile:active { scale: 0.985; }
+  .tile--link:focus-visible { outline: 2px solid var(--on); outline-offset: -6px; background: color-mix(in oklab, var(--c) 88%, #000); }
+  .tile--ink.tile--link:focus-visible { background: color-mix(in oklab, var(--c) 90%, #fff); }
+  .tile--link:focus-visible .tile__name { translate: 0 -4px; }
+  .tile--link:focus-visible .tile__arrow { translate: 6px 0; }
+  .tile--link:active { scale: 0.985; }
 </style>

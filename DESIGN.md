@@ -30,6 +30,29 @@ skill differ, this file wins and says why.
 
 ## Direction v2: a company homepage (supersedes Phases 1 and 2 for page bodies)
 
+**Revised 2026-10-19: the Swiss grid and flat seamless tiles.** The painterly art direction is
+withdrawn: no generated scene images anywhere (the only pictures left are the flat kind prints
+inside the header's dropdown tiles). The language is the Swiss / International typographic grid
+plus flat, near-seamless solid-colour tiles: content first, type as the main image, colour as
+flat fields, hairline rules, no decoration. The reference is the working mock
+`.temp/mocks/home.html` (with `.temp/mocks/shared.css` and its screenshots in
+`.temp/mocks/review/`); where the bullets below disagree with it (centred titles, rounded images,
+cards, painterly imagery, quiet weights), the mock wins:
+
+- **Grid:** a full-bleed 12-column grid whose gutter is also the outer margin; a meta column
+  (columns 1 to 3) carries a small label and its link, headings run across columns 4 to 12, text
+  in two columns.
+- **Type:** Noto Sans TC 600 for headings (hero 64 px on desktop, 34 px on phones; sections 46
+  and 28 px), body 17 to 18 px at 1.85, labels 13 px (the hero's and page heads' with the small
+  red square), Latin ids on tiles 12 px uppercase and tracked.
+- **Tiles:** solid fields 3 px apart with the text set on them (Latin id, name, one line, arrow),
+  radius 0, no shadow; on hover the field deepens, the name lifts and the arrow steps forward. A
+  landing's hero is the copy on the left and a seamless wall of tiles on the right (the nine
+  kinds on the home page, a site's own pages in shades of its accent on a site's landing).
+- **Parts:** one ink band per page at most, index rows that flood with ink from the left, a flat
+  code tile, hairline lists and tables, a closing block in ink blue (or the site's accent) with
+  the white pill. Radius 0 on tiles, bands and blocks; pills only for buttons.
+
 Decided 2026-10-19 after looking at how large companies present themselves (OpenAI's About,
 Google's About, Reddit Inc., Anthropic's Company page). Those pages share one manner, and REZICS
 follows it: calm, editorial, image-led, with generous space. None of them is carried by
@@ -579,3 +602,7 @@ Voice (zh-Hant):
   (`TileMasonry`: the kind's field, or shades and tints of the site's accent, paper or ink text
   at AA, varied heights, 4 px gaps, square corners), with the name, one line and an arrow on
   the tile; gradient card art is dropped.
+- 2026-10-19 (art direction reset): the painterly scene art and the calm image-led manner are
+  withdrawn; pages follow the Swiss grid and flat seamless tiles of `.temp/mocks/home.html` (see
+  "Direction v2", revised). Earlier builder notes in this list about painted images, centred
+  intros and card rows are history.

@@ -1,15 +1,16 @@
 ---
 /**
  * A placeholder landing page for a mini-site that has not been rebuilt yet, in the v2 manner: the
- * centred page intro with the site's headline and lede (strings.headline, strings.lede), the
- * action into REZICS, and the next site. Site builders replace the page that uses this; nothing
- * else depends on it.
+ * page head on the Swiss grid (the site's name, its headline and lede from strings.headline and
+ * strings.lede), the action, the next site, and the closing block in the site's field. Site
+ * builders replace the page that uses this; nothing else depends on it.
  */
 import { siteFor, nextSite } from '../sites';
 import { fieldOf } from '../theme';
 import Finale from './Finale.astro';
-import PageIntro from './PageIntro.astro';
+import PageHead from './PageHead.astro';
 import ProductCall from './ProductCall.astro';
+import Closing from './Closing.astro';
 
 const found = siteFor(Astro.url.pathname);
 if (!found) throw new Error(`${Astro.url.pathname}: no mini-site owns this path`);
@@ -17,7 +18,8 @@ const { site } = found;
 const strings = site.strings as { headline?: string; lede?: string; next?: string };
 const next = nextSite(site);
 ---
-<PageIntro title={strings.headline ?? site.name} lede={strings.lede}>
+<PageHead label={site.name} title={strings.headline ?? site.name} lede={strings.lede}>
   <ProductCall />
-</PageIntro>
+</PageHead>
 {next && strings.next && <Finale label={strings.next} name={next.name} href={next.base} field={fieldOf(next.theme)} />}
+<Closing bg={fieldOf(site.theme).field} />

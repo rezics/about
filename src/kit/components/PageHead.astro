@@ -1,0 +1,36 @@
+---
+/**
+ * An inner page's opening on the Swiss grid: the meta column carries the site's name with the red
+ * square, the h1 runs across columns 4 to 12 and its line under it; actions in the slot. No
+ * picture.
+ */
+import Clauses from '../Clauses.astro';
+
+interface Props {
+  label: string;
+  title: string;
+  lede?: string;
+  class?: string;
+}
+const { label, title, lede, class: className } = Astro.props;
+---
+<section class:list={['phead', className]} aria-labelledby="page-title">
+  <div class="grid">
+    <p class="mlabel phead__label">{label}</p>
+    <h1 id="page-title" class="phead__title"><Clauses text={title} /></h1>
+    {lede && <p class="phead__lede">{lede}</p>}
+    {Astro.slots.has('default') && <div class="phead__ctas"><slot /></div>}
+  </div>
+</section>
+<style>
+  .phead { padding-top: clamp(56px, 8vw, 120px); }
+  .phead__label { grid-column: 1 / 4; padding-top: 18px; align-self: start; }
+  .phead__title { grid-column: 4 / 12; font-size: var(--t-hero); font-weight: 600; line-height: 1.22; letter-spacing: 0.01em; }
+  .phead__lede { grid-column: 4 / 11; margin-top: 28px; font-size: 18px; line-height: 1.85; color: var(--c-text); }
+  .phead__ctas { grid-column: 4 / 13; margin-top: 32px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; }
+  @media (max-width: 767px) {
+    .phead__label { padding: 0 0 20px; }
+    .phead__title { font-size: 34px; }
+    .phead__lede { font-size: 16px; margin-top: 20px; }
+  }
+</style>

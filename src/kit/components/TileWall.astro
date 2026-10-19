@@ -1,0 +1,80 @@
+---
+/**
+ * A seamless wall of flat tiles (DESIGN.md "Direction v2"; the mock's hero wall): columns of
+ * tiles 3 px apart that fill the wall's height, each tile's height a share of its column. The
+ * wide layout and the phone layout each list their columns of `{ id, h }` (h is a relative
+ * height); every item appears once in each, so the document order stays the items' order.
+ * `line` per placement shows the tile's short line (`wide`, `phone`, `both` or `none`).
+ */
+import Tile from './Tile.astro';
+
+export interface WallItem {
+  id: string;
+  name: string;
+  bg: string;
+  on: 'paper' | 'ink';
+  href: string;
+  tag?: string;
+  line?: string;
+}
+export interface WallPlace {
+  id: string;
+  h: number;
+  /** Show the short line here. */
+  line?: boolean;
+}
+interface Props {
+  items: WallItem[];
+  wide: WallPlace[][];
+  phone: WallPlace[][];
+  class?: string;
+}
+const { items, wide, phone, class: className } = Astro.props;
+const ROWS = 120;
+function layout(columns: WallPlace[][]) {
+  const out = new Map<string, { col: number; row: number; span: number; line: boolean }>();
+  columns.forEach((col, c) => {
+    const total = col.reduce((s, p) => s + p.h, 0);
+    let row = 1;
+    col.forEach((p, i) => {
+      const span = i === col.length - 1 ? ROWS + 1 - row : Math.max(1, Math.round((p.h / total) * ROWS));
+      out.set(p.id, { col: c + 1, row, span, line: p.line ?? true });
+      row += span;
+    });
+  });
+  return out;
+}
+const w = layout(wide);
+const p = layout(phone);
+for (const it of items) if (!w.has(it.id) || !p.has(it.id)) throw new Error(`TileWall: "${it.id}" needs a place in both layouts`);
+---
+<ul class:list={['wall', className]} role="list" style={`--wcols:${wide.length};--pcols:${phone.length};--rows:${ROWS}`}>
+  {items.map((it) => {
+    const a = w.get(it.id)!;
+    const b = p.get(it.id)!;
+    const lineOn = a.line && b.line ? 'both' : a.line ? 'wide' : b.line ? 'phone' : 'none';
+    return (
+      <li class="wall__cell" style={`--c1:${a.col};--r1:${a.row};--s1:${a.span};--c2:${b.col};--r2:${b.row};--s2:${b.span}`}>
+        <Tile name={it.name} bg={it.bg} on={it.on} href={it.href} tag={it.tag} line={it.line} lineOn={lineOn} level="h3" />
+      </li>
+    );
+  })}
+</ul>
+<style>
+  .wall {
+    display: grid;
+    grid-template-columns: repeat(var(--wcols), minmax(0, 1fr));
+    grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+    gap: 0 3px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .wall__cell { grid-column: var(--c1); grid-row: var(--r1) / span var(--s1); display: flex; min-width: 0; min-height: 0; padding-bottom: 3px; }
+  .wall__cell :global(.tile) { flex: 1 1 auto; }
+  @media (max-width: 767px) {
+    .wall { grid-template-columns: repeat(var(--pcols), minmax(0, 1fr)); }
+    .wall__cell { grid-column: var(--c2); grid-row: var(--r2) / span var(--s2); }
+  }
+</style>

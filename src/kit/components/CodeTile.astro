@@ -1,0 +1,38 @@
+---
+/**
+ * A flat code tile (the mock's `.code`): a real request on the code ground, a caption under a
+ * hairline at its foot. Comments, the command and quoted strings are coloured; the code scrolls
+ * sideways on phones.
+ */
+interface Props {
+  code: string;
+  caption?: string;
+  label: string;
+  class?: string;
+}
+const { code, caption, label, class: className } = Astro.props;
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const html = code
+  .split('\n')
+  .map((line) => {
+    if (/^\s*#/.test(line)) return `<span class="c">${esc(line)}</span>`;
+    return esc(line)
+      .replace(/("[^"]*")/g, '<span class="s">$1</span>')
+      .replace(/^(\s*)(curl|npx|npm|yarn)\b/, '$1<span class="k">$2</span>');
+  })
+  .join('\n');
+---
+<figure class:list={['codetile', className]}>
+  <pre tabindex="0" aria-label={label}><code set:html={html} /></pre>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+<style>
+  .codetile { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-height: 360px; padding: 28px; background: var(--c-code); color: #dfe5ea; min-width: 0; }
+  .codetile pre { font: 14px/1.9 var(--f-mono); white-space: pre; overflow-x: auto; }
+  .codetile :global(.c) { color: #8fa0ae; }
+  .codetile :global(.k) { color: #93c4ef; }
+  .codetile :global(.s) { color: #c7d35a; }
+  .codetile figcaption { padding-top: 14px; border-top: 1px solid rgb(223 229 234 / 0.14); font-size: 13px; color: #a3b1bd; }
+  .codetile pre:focus-visible { outline-color: #dfe5ea; }
+  @media (max-width: 767px) { .codetile { min-height: 0; } .codetile pre { font-size: 12.5px; } }
+</style>

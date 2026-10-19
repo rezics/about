@@ -1,0 +1,53 @@
+---
+/**
+ * The ink band (the mock's community band), once per page at most: a label, a large heading on
+ * the left, its text on the right, and up to three items under hairlines across the width.
+ */
+import Clauses from '../Clauses.astro';
+import { idFor } from '../ids';
+
+interface Props {
+  label: string;
+  title: string;
+  text?: string;
+  items?: { title: string; body: string }[];
+  id?: string;
+}
+const { label, title, text, items = [], id: given } = Astro.props;
+const id = given ?? idFor('band', title);
+---
+<section class="band band-ink" aria-labelledby={id}>
+  <div class="grid">
+    <div class="band__head">
+      <p class="label band__label">{label}</p>
+      <h2 id={id} class="band__title"><Clauses text={title} /></h2>
+    </div>
+    {text && <p class="band__text">{text}</p>}
+    {items.length > 0 && (
+      <ul class="band__items" role="list">
+        {items.map((it) => (
+          <li>
+            <h3>{it.title}</h3>
+            <p>{it.body}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+    <slot />
+  </div>
+</section>
+<style>
+  .band { margin-top: var(--space-section); padding-block: clamp(72px, 9vw, 128px); }
+  .band__label { color: rgb(249 246 242 / 0.72); }
+  .band__head { grid-column: 1 / 7; }
+  .band__title { margin-top: 22px; font-size: var(--t-big); font-weight: 600; line-height: 1.2; letter-spacing: 0.01em; }
+  .band__text { grid-column: 8 / 13; align-self: start; font-size: var(--t-body); line-height: 1.85; color: rgb(249 246 242 / 0.84); }
+  .band__items { grid-column: 1 / 13; margin-top: 72px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .band__items li { border-top: 1px solid rgb(249 246 242 / 0.22); padding-top: 18px; }
+  .band__items h3 { font-size: 20px; font-weight: 600; }
+  .band__items p { margin-top: 10px; font-size: 15px; line-height: 1.8; color: rgb(249 246 242 / 0.8); }
+  @media (max-width: 767px) {
+    .band__text { margin-top: 20px; }
+    .band__items { grid-template-columns: minmax(0, 1fr); margin-top: 40px; gap: 24px; }
+  }
+</style>

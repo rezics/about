@@ -25,7 +25,7 @@ const List = numbered ? 'ol' : 'ul';
 <List class:list={['items', `items--${look}`, numbered && 'items--numbered', className]} role="list" style={`--item-cols:${cols}`} data-reveal="slot">
   {items.map((item, i) => (
     <li class="items__item">
-      {numbered && <span class="items__n" aria-hidden="true">{i + 1}</span>}
+      {numbered && <span class="items__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>}
       {item.label && <p class="items__label label">{item.label}</p>}
       <Tag class="items__title">{item.title}</Tag>
       {item.body && <p class="items__body">{item.body}</p>}
@@ -33,32 +33,21 @@ const List = numbered ? 'ol' : 'ul';
   ))}
 </List>
 <style>
-  .items { display: grid; grid-template-columns: repeat(var(--item-cols), minmax(0, 1fr)); gap: clamp(28px, 3vw, 40px) var(--gutter); }
+  .items { display: grid; grid-template-columns: repeat(var(--item-cols), minmax(0, 1fr)); gap: 28px var(--gutter); }
   .items__item { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-  .items--lines .items__item { padding-top: 20px; border-top: 1px solid var(--c-line-strong); }
-  .items--cards { gap: var(--gutter); }
-  .items--cards .items__item { padding: 24px; border-radius: var(--r-card); background: var(--tint); }
-  .items__n {
-    display: inline-grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    margin-bottom: 6px;
-    border-radius: 50%;
-    background: var(--tint-strong);
-    color: var(--c-fg);
-    font-size: var(--t-s);
-    font-weight: 600;
-    font-family: var(--f-latin), var(--f-cjk);
-  }
-  .items--cards .items__n { background: var(--c-surface); }
+  .items--lines .items__item { padding-top: 18px; border-top: 1px solid var(--c-line); }
+  /* Flat tiles in a tint of the accent, 3 px apart. */
+  .items--cards { gap: 3px; }
+  .items--cards .items__item { padding: clamp(18px, 1.8vw, 26px); background: var(--tint-strong); }
+  .items__n { font-family: var(--f-latin), var(--f-cjk); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--c-muted); }
   .items__label { color: var(--c-muted); }
-  .items__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.45; }
-  .items__body { color: var(--c-muted); font-size: var(--t-body); line-height: 1.75; }
+  .items__title { font-size: 18px; font-weight: 600; line-height: 1.5; }
+  .items__body { color: var(--c-text); font-size: 16px; line-height: 1.8; }
   @media (max-width: 1023px) {
     .items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
   @media (max-width: 599px) {
-    .items { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .items { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .items--cards { gap: 3px; }
   }
 </style>

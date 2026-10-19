@@ -1,0 +1,42 @@
+---
+/**
+ * A row of flat tiles 3 px apart (the mock's adaptation chain): examples, kinds, editions. Each
+ * tile carries a relation or a Latin id at the top and its name at the foot; with `href` it is a
+ * link. `cols` on wide screens (default: one per tile, at most 5); two on phones.
+ */
+import Tile from './Tile.astro';
+
+export interface RowTile {
+  name: string;
+  bg: string;
+  on: 'paper' | 'ink';
+  href?: string;
+  rel?: string;
+  tag?: string;
+  line?: string;
+}
+interface Props {
+  items: RowTile[];
+  cols?: number;
+  /** Tile height on wide screens and on phones (px). */
+  height?: number;
+  phoneHeight?: number;
+  label?: string;
+  class?: string;
+}
+const { items, cols = Math.min(items.length, 5), height = 220, phoneHeight = 150, label, class: className } = Astro.props;
+---
+<ul class:list={['trow', className]} role="list" aria-label={label} style={`--tcols:${cols};--th:${height}px;--tph:${phoneHeight}px`}>
+  {items.map((t) => (
+    <li><Tile name={t.name} bg={t.bg} on={t.on} href={t.href} rel={t.rel} tag={t.tag} line={t.line} style="--tile-name: clamp(1.75rem, 2.6vw, 2.375rem)" /></li>
+  ))}
+</ul>
+<style>
+  .trow { display: grid; grid-template-columns: repeat(var(--tcols), minmax(0, 1fr)); gap: 3px; margin: 0; padding: 0; list-style: none; }
+  .trow > li { display: flex; min-height: var(--th); min-width: 0; }
+  .trow > li > :global(.tile) { flex: 1 1 auto; }
+  @media (max-width: 767px) {
+    .trow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .trow > li { min-height: var(--tph); }
+  }
+</style>

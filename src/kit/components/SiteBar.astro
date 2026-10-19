@@ -45,56 +45,24 @@ const action = site.action && site.action.href !== shared.productUrl && site.act
     position: sticky;
     top: var(--header-h);
     z-index: var(--z-bar);
-    background: color-mix(in oklab, var(--c-bg) 88%, transparent);
-    -webkit-backdrop-filter: saturate(1.4) blur(14px);
-    backdrop-filter: saturate(1.4) blur(14px);
+    background: var(--c-bg);
+    border-top: 1px solid var(--c-line);
     border-bottom: 1px solid var(--c-line);
     color: var(--c-fg);
     transition: translate var(--d-m) var(--ease-snap);
   }
   :global(html.frame-away) .sitebar { translate: 0 calc(-1 * var(--header-h)); }
-  .sitebar__inner {
-    height: var(--bar-h);
-    max-width: calc(var(--container) + 2 * var(--page-pad));
-    margin-inline: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-inline: var(--page-pad);
-  }
-  .sitebar__home { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; flex: none; padding-right: 8px; }
-  .sitebar__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--field); flex: none; }
-  .sitebar__name { font-weight: 500; font-size: 15px; white-space: nowrap; }
-  @media (hover: hover) { .sitebar__home:hover .sitebar__name { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; } }
-  .sitebar__tabs {
-    display: flex;
-    gap: 2px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    flex: 1 1 auto;
-    min-width: 0;
-    padding-inline: 4px 12px;
-    /* Faded edges say the row scrolls; nav.ts scrolls the current tab into view. */
-    mask-image: linear-gradient(to right, transparent 0, #000 6px, #000 calc(100% - 24px), transparent);
-  }
-  .sitebar__tab {
-    display: inline-flex;
-    align-items: center;
-    min-height: 36px;
-    padding: 0 14px;
-    border-radius: var(--r-pill);
-    font-size: var(--t-s);
-    font-weight: 500;
-    white-space: nowrap;
-    color: var(--c-muted);
-    transition: background-color var(--d-s) var(--ease-soft), color var(--d-s) var(--ease-soft);
-  }
-  /* The current page: a tint of the site's accent, ink text. */
-  .sitebar__tab[aria-current='page'] { background: var(--tint-strong); color: var(--c-fg); }
-  @media (hover: hover) { .sitebar__tab:not([aria-current='page']):hover { background: var(--c-soft); color: var(--c-fg); } }
+  .sitebar__inner { height: var(--bar-h); display: flex; align-items: center; gap: 28px; padding-inline: var(--gutter); }
+  .sitebar__home { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; flex: none; }
+  /* The site's accent as a small flat square: the sub-navigation's marker. */
+  .sitebar__dot { width: 10px; height: 10px; background: var(--field); flex: none; }
+  .sitebar__name { font-weight: 600; font-size: 15px; white-space: nowrap; }
+  .sitebar__tabs { display: flex; gap: 24px; overflow-x: auto; scrollbar-width: none; flex: 1 1 auto; min-width: 0; padding-right: 16px; mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); }
+  .sitebar__tab { position: relative; display: inline-flex; align-items: center; min-height: var(--bar-h); font-size: 14px; font-weight: 500; white-space: nowrap; color: var(--c-muted); transition: color var(--d-s) var(--ease-soft); }
+  /* The current page: ink, with a bar in the site's accent along the bar's foot. */
+  .sitebar__tab[aria-current='page'] { color: var(--c-fg); }
+  .sitebar__tab[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--field); }
+  @media (hover: hover) { .sitebar__tab:hover, .sitebar__home:hover .sitebar__name { color: var(--c-link); } }
   .sitebar__action { margin-left: auto; flex: none; }
-  @media (max-width: 599px) {
-    .sitebar__action { display: none; }
-    .sitebar__home { padding-right: 2px; }
-  }
+  @media (max-width: 599px) { .sitebar__action { display: none; } .sitebar__inner { gap: 20px; } }
 </style>

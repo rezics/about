@@ -20,8 +20,9 @@ const { title, lede, align = 'start', level: Tag = 'h2', id, class: className } 
   {Astro.slots.has('default') && <div class="shead__more"><slot /></div>}
 </div>
 <style>
-  .shead { display: flex; flex-direction: column; gap: 14px; max-width: 40em; }
+  .shead { display: flex; flex-direction: column; gap: 16px; max-width: 46em; }
   .shead--center { align-items: center; text-align: center; margin-inline: auto; }
-  .shead__lede { color: var(--c-muted); }
+  .shead :global(.t-h2) { font-size: var(--t-h2); font-weight: 600; line-height: 1.28; }
+  .shead__lede { color: var(--c-text); font-size: var(--t-body); line-height: 1.85; }
   .shead__more { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 4px; }
 </style>
