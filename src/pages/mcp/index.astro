@@ -21,6 +21,7 @@ const near = neighbours();
 <MiniSiteLayout>
   <Words>
     <PhotoHero
+      class="mcp-hero"
       eyebrow={l.hero.label}
       title={l.hero.headline}
       lede={l.hero.lede}
@@ -31,7 +32,7 @@ const near = neighbours();
         width: 1920,
         height: 1280,
         alt: s.pictures.hero,
-        position: '100% 50%',
+        position: '0% 50%',
         phone: { src: '/images/sites/mcp/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
       }}
     >
@@ -55,3 +56,10 @@ const near = neighbours();
     <Closing title={l.closing.title} body={l.closing.body} />
   </Words>
 </MiniSiteLayout>
+
+<style>
+  /* Keep the photographed empty paper beside the copy on medium-width screens. */
+  @media (min-width: 768px) and (max-width: 1279px) {
+    :global(.mcp-hero .phero__copy) { grid-column: 1 / 7; }
+  }
+</style>

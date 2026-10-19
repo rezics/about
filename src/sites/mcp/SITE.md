@@ -126,7 +126,7 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
 
 **`/mcp/` (landing)**
 
-1. Hero, photograph `hero`. Eyebrow MCP Hub; h1 「MCP 伺服器能不能用，／看有日期的紀錄。」; lede
+1. Hero, photograph `hero`. Eyebrow 「MCP 伺服器索引」; h1 「哪個伺服器能用，／看有日期的紀錄。」; lede
    (what MCP Hub is, one identity, every version on its own); 「前往 REZICS」.
 2. Section 「一筆紀錄」: h2 on the record as a combination; lead; a facts list of the five
    things a record pins (server version, client and its version, task, language, date) with a
@@ -141,8 +141,8 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
 **`/mcp/directory/`**
 
 1. Page head: 「一個伺服器，一個身分。」
-2. Photo row `identity` beside h2 「專案、套件、端點、工具清單，各記各的。」 and a facts list of
-   the four.
+2. Photo row `identity` beside h2 「一個伺服器，其實是四樣東西。」, then a facts list of
+   the project, package, endpoint and tool-list observation.
 3. Section 篩選: h2 「篩選條件，出自同一筆紀錄。」; facts list (the view on the left, its
    conditions on the right, 示意); saved views can be followed.
 4. Section 列表: facts list of the three traversal rules.
@@ -160,14 +160,15 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
 4. Section 狀態: 「每個組合，只會是四種狀態之一。」 facts list with the state marks.
 5. Statement: 「沒有紀錄，不等於失敗。」
 6. Section 宣告與紀錄: the four layers (宣告, 觀察, 紀錄, 審核與爭議) as a numbered facts list.
-7. Section 從用戶端找: lead and the three choices as ordered flat tags leading to the result.
+7. Section 從用戶端找: two short paragraphs explain choosing a client, version and task
+   language, then saving and following that view.
 8. Next page, closing.
 
 **`/mcp/versions/`**
 
 1. Page head: 「每一版，各有自己的一筆。」
-2. Photo row `versions` beside h2 「新的一版，從沒有紀錄開始。」 and a short facts list of four
-   versions (newest first, 示意), the newest one without records.
+2. Photo row `versions` beside h2 「新的一版，從沒有紀錄開始。」 and a short paragraph
+   contrasting the new and old versions (示意).
 3. Section 工具清單: a hairline table (tool, 1.4.0, 2.0.0; words, not marks), 示意, and the
    one consequence (a changed tool is worth retesting).
 4. Section 套件: 「同名同版號，不代表同一份檔案。」 facts list of six fields.
@@ -181,7 +182,7 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
 2. Section 評分: five things a score carries, facts list (示意 questions).
 3. Section 討論: threads on the server or on a version; agents disclosed.
 4. Section 清單: one mixed list, ordered rows with a small mark in each kind's colour (示意).
-5. Photo row `zone` beside 「社群可以有自己的伺服器目錄。」 and the Zone's pages as flat tags.
+5. Photo row `zone` beside 「社群可以有自己的伺服器目錄。」 and a short illustrative sitemap.
 6. Next page, closing.
 
 **`/mcp/maintainers/`**
@@ -208,6 +209,17 @@ names and one word per cell) and scrolls nothing. No grid of text cells anywhere
 - REZICS is live: the only action is 「前往 REZICS」.
 - The landing no longer repeats the evidence page's states; each sentence appears once.
 - Motion is the kit's quiet reveal; no scrubbed or pinned scenes, no idle motion.
+
+### Implementation notes
+
+All six routes use the shared v3 parts. No shared kit files were edited by this site.
+`Words.astro` protects technical words from phrase breaks; `versions.astro` keeps its short
+comparison in three columns on phones. The landing aligns the hero photograph to the left
+and uses six columns for its copy at 768 to 1279 px, preserving the empty paper beside it.
+The developers tile links to the existing `/developers/` landing.
+
+Validation so far: `task check` passes (195 tests, no type diagnostics); its production build
+passes. The static audit has zero FAILs and no MCP warnings. Browser QA is queued.
 
 ## 4. What earlier stages left behind
 
