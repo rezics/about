@@ -28,6 +28,52 @@ skill differ, this file wins and says why.
 - **Out of scope.** Legal policy pages (they live with the product, not here; the footer
   links nowhere for them yet), other locales, deployment.
 
+## Direction v2: a company homepage (supersedes Phases 1 and 2 for page bodies)
+
+Decided 2026-10-19 after looking at how large companies present themselves (OpenAI's About,
+Google's About, Reddit Inc., Anthropic's Company page). Those pages share one manner, and REZICS
+follows it: calm, editorial, image-led, with generous space. None of them is carried by
+product screenshots (at most a small stylised device or one video), none uses heavy poster
+type, and none tiles its page bodies with squares. The 方塊 concept below stays only where it
+belongs: **flat square tiles appear only in the header's dropdown panels** (products and
+modules). Everything else on every page follows this section; where Phases 1 and 2 disagree,
+this section wins.
+
+- **Rhythm** (home and every site's landing page): a centred small eyebrow-free page title and
+  one-sentence mission; alternating rows of a short text block beside a large rounded image;
+  one centred statement set larger than body text; a row of three or four cards with art and a
+  one-line caption linking deeper; a large soft rounded panel with the closing call to action
+  (「前往 REZICS」); the large footer with link columns. Inner pages use the same parts in
+  their own order, with more text.
+- **Type:** the product's own voice, quiet. Noto Sans TC at 400 and 500 (700 at most for the
+  largest headings, never 900); Latin in Manrope (the product's interface face). Page titles
+  around 40 to 56 px on desktop and 30 to 36 px on phones; section headings 24 to 32 px; body
+  16 to 18 px with 1.7 line height for CJK. No mono outside code samples.
+- **Colour and surfaces:** the product's Aura palette: ground `#f9f6f2`, ink `#2b343d`, cards
+  `#fefcf9`, muted panel `#efece7`, ink blue `#2f63ad` for links and buttons, logo red only in
+  the logo and tiny marks. Each site keeps one accent drawn from its kind's field colour, used
+  in its art, its tinted panels and its sub-navigation marker, never as large flat blocks of
+  saturated colour.
+- **Shape:** the product's radius scale: images and cards 24 px, the closing panel 30 px,
+  buttons and tabs as pills (20 px or fully rounded). Soft Aura shadows on cards only.
+- **Imagery:** large art carries the page. One art direction for the whole site: painterly,
+  light-filled editorial illustration (soft digital painting, airy colour, visible brushwork),
+  showing places, objects and moods of each kind (a sunlit reading room, a city at dusk, an
+  open sketchbook, a workshop table, a window and sky), never characters, logos, interfaces or
+  recognisable works. Card art may be soft abstract gradients in the site's accent. Generated
+  with Codex, delivered as AVIF and WebP at the sizes used, ≤ 120 KB for a full-width image,
+  ≤ 40 KB for card art. The riso kind squares remain only in the dropdown tiles.
+- **Motion:** quiet: content fades and rises a few pixels as it enters, images settle from a
+  slight scale, the dropdown panels open smoothly; no scrubbed scenes, no idle cycling, no
+  page-wipe theatrics. Reduced motion shows everything at once.
+- **Phones:** one column, images full width with their radius, text before image in each row,
+  48 to 64 px between sections.
+- **Product sites** keep their own pages and sub-navigation and differ through their art and
+  accent, not through different layout systems. The site bar is a quiet row of pill tabs under
+  the header.
+- **Copy** that leans on the square metaphor (「九種東西，同一套部件」, 「最後一格，留給你」,
+  「這一格是空的」) is rewritten in plain words when its page is rebuilt.
+
 ## Phase 1: concept
 
 Three candidates, from different territories:
@@ -504,3 +550,7 @@ Voice (zh-Hant):
   the title (New Kids on the Block v. News America, 9th Cir. 1992), which holds while the work
   is named only as needed, in plain text, with nothing suggesting sponsorship. The limits above
   keep every use inside those three conditions.
+- 2026-10-19: Direction v2 (see the section above): the page bodies move from the 方塊 poster
+  system to a calm company-homepage manner on the product's own Aura design; square tiles stay
+  only in the header dropdowns. A pilot (home and the games site) is reviewed before the other
+  sites are rebuilt.
