@@ -227,8 +227,15 @@ existing 640 px phone source. The shared PhotoRow has no priority option, so thi
 adjusts only its rendered image attributes. MCP-scoped CSS makes the site-bar tab strip the
 positioning origin, correcting the shared current-tab centring calculation on phones.
 
-Validation so far: `task check` passes (195 tests, no type diagnostics); its production build
-passes. The static audit has zero FAILs and no MCP warnings. Browser QA is queued.
+Validation: `task check` passes (195 tests, no type diagnostics), as does the production
+build. Two full six-route QA passes and the necessary repeats are complete, with all desktop,
+phone, reduced-motion, keyboard, hover and transition captures reviewed. Final throttled phone
+LCP is 2252 / 1924 / 2048 / 1828 / 1828 / 1844 ms in route order; every CLS and axe-violation
+count is zero. Final desktop and phone scrolling is 60 fps; errors, failed requests, overflow,
+small targets and focus/hover failures are zero. Another 49 checks cover six viewport widths
+(320 to 1920 px), no JavaScript, skip-link activation and the phone menu's focus lifecycle.
+The static audit has zero FAILs and no MCP warnings; its four shared-page warnings are outside
+this assignment. Evidence and the landing screenshot paths are in `.temp/codex-report.md`.
 
 ## 4. What earlier stages left behind
 
