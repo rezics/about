@@ -210,4 +210,11 @@ Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus
   each adaptation from its source. The landing promises language availability, without implying
   that REZICS predicts a future translation date. The community module tile has its own line
   rather than repeating the shared navigation's sentence.
+- `navigation.css` stays scoped to manga. The chapter list is its own positioning context so
+  the shared bar measures each tab from the list's edge, with native horizontal snapping to
+  whole labels. The manga return link lifts on hover and keyboard focus. Interior openings
+  use 120 to 160 px before their first section, retaining the normal rhythm below it.
+- The publishing headline loses an unnecessary phrase so its second clause fits a phone
+  without leaving 「身分」 on a separate line. No new interaction or illustrated product state
+  is added: the approved v3 photograph, facts, statements and flat tiles remain the language.
 

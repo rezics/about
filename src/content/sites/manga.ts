@@ -480,7 +480,7 @@ export default {
     publish: {
       intro: {
         eyebrow: '第 6 話　發表',
-        headline: '你的漫畫，從第一話就有自己的身分。',
+        headline: '你的漫畫，從第一話就有身分。',
         lede: '在 REZICS 連載的作品，和其他漫畫並列在同一個索引裡。讀者用同一套進度、討論與評分讀它；有人改編或翻譯，也會連回你的作品。',
       },
       steps: {

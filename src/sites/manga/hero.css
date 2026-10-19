@@ -1,7 +1,7 @@
 /* The tall tablet crop brings the cut paper into the headline's area. Keep the same copy-first
    composition as phones here; the desktop's empty-paper composition resumes at 1024 px. */
 @media (min-width: 768px) and (max-width: 1023px) {
-  [data-site='manga'] .manga-hero {
+  [data-site='manga'] .phero.manga-hero {
     display: block;
     height: auto;
     min-height: 0;
