@@ -23,7 +23,7 @@ export interface EngineStrings {
     note: string;
   };
   statement: [string, string];
-  parts: { label: string; headline: string; lead: string; example: string; examples: Record<PartId, string> };
+  parts: { label: string; headline: string; lead: string; toggle: string; example: string; examples: Record<PartId, string> };
   modules: { label: string; headline: string; lead: string; roles: Record<ModuleId, string> };
   config: { label: string; headline: string; lead: string; items: { title: string; body: string }[]; note: string };
   closing: string;
@@ -67,7 +67,8 @@ export default {
     parts: {
       label: '十五個部件',
       headline: '十五個部件，各做一件事。',
-      lead: '每一行介紹一個部件，並用示意情境說明它在不同種類裡的用途。',
+      lead: '同一個部件依種類做不同的事。完整目錄列出各自的用途，並附上示意情境。',
+      toggle: '查看部件目錄與示意',
       example: '示意',
       examples: {
         identity: '同一位作者寫小說也做遊戲，兩邊的製作人員欄連到同一個人。',

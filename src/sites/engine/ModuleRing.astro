@@ -9,6 +9,7 @@
  *   current  the module this page is about
  */
 import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import Arrow from '../../kit/components/Arrow.astro';
 import { modules, moduleHref } from '../../kit/content';
 import { moduleFields } from '../../kit/theme';
 import type { ModuleId } from '../../content/schema';
@@ -37,7 +38,7 @@ const phone = [items.slice(0, 2), items.slice(2, 4), items.slice(4)].map((row) =
     <div class="ring__tiles">
       <TileMasonry items={items} columns={columns} phone={phone} height={220} phoneRow={128} label={ring.label} />
     </div>
-    <p class="ring__back"><a class="link-draw" href="/engine/">{ring.overview}</a></p>
+    <p class="ring__back"><a class="link-draw" href="/engine/">{ring.overview}<Arrow /></a></p>
   </div>
 </nav>
 <style>

@@ -83,7 +83,9 @@ small kind squares on the top sheet)
    `.pick:has(#pick-<kind>:checked)` shows one list; the chosen tile carries an inner ring and an
    arrow down. Books is chosen at first. No idle cycling.
 3. Statement: 「部件只做一次，換一種東西，換的只是排法。」
-4. 十五個部件: facts list of the fifteen parts (name left; what it does, then a muted 例 line).
+4. 十五個部件: a native disclosure opens the reference facts list (name left; what it does,
+   then a muted 示意 line). The selected eight stay the main reading path; the full fifteen
+   remain available without script, without adding another long list to the default flow.
 5. 五個模組: a masonry of the five modules in ink tints (通用索引 full height, the other four two
    by two; name and the question it answers), each linking to its page.
 6. 新的一種: 「多一種東西，是設定的工作。」 facts list of the five settings, and the note that new
@@ -100,9 +102,10 @@ charcoal sheet, one chip lifting)
    characters.
 4. 三層: a photo row (three layered sheets, text on the right), then the facts list 作品 /
    文本 / 發行 and the rewrite aside.
-5. 關聯: a tile masonry of the six related works seen from the main series' page, each in its
-   kind's colour with the relation label at the top (《新約》 and 《創約》 續作; manga, anime and
-   the visual novel 改編作品; 《科學超電磁砲》 外傳), then the evidence note.
+5. 關聯: a tile masonry of six related works, each in its kind's colour with the relation label
+   at the top (《新約》 follows 正篇, 《創約》 follows 《新約》; manga, anime and the visual novel
+   改編作品; 《科學超電磁砲》 外傳), then the evidence note. The labels identify each sequel's
+   source rather than implying that both follow 正篇 directly.
 6. 篩選: facts list of three rules.
 7. 合併與拆分: facts list of five rules.
 8. Family closing; closing line 「到 REZICS 找一部你熟悉的作品，看看它所有的名字。」
@@ -136,7 +139,8 @@ along it)
 ### Phones
 
 Copy first in every phone hero, the picture as a band after it (a 3:2 crop of the subject,
-640 and 960 px wide).
+640, 780 and 960 px wide). The 780 × 520 source is the direct match for a 390 px phone at 2×,
+kept below 48 KB so it does not need to download the 960 px file.
 Sections stack; facts lists put the title above its text. The kind picker is three columns of
 short tiles (three rows) with the list under it; the ring of five modules is two columns.
 
@@ -149,7 +153,7 @@ This is a local workaround; the shared kit is unchanged.
 
 One series (V3-SPEC art direction), generated with codex-2 against
 `.temp/sites/v3-reference-paper.png`; prompts in `.temp/v3-images/modules-a/prompts/`.
-Each hero is delivered at 1920 and 960 wide (AVIF, WebP), with phone crops at 640 and 960 wide.
+Each hero is delivered at 1920 and 960 wide (AVIF, WebP), with phone crops at 640, 780 and 960 wide.
 The two section pictures added during completion use the built-in image generation tool with
 `.temp/ref/v3-reference-paper.png` attached, per the assignment. Originals and prompts are in
 `.temp/images-modules-a/`; delivery is 1200 × 800 and 640 × 427 in AVIF and WebP.

@@ -28,7 +28,7 @@ export interface IndexStrings {
     label: string;
     headline: string;
     lead: string;
-    /** Related works seen from the main series' page: the label on that side, the work, one line; `kind` colours its tile. */
+    /** Related works, with each sequel's source made explicit; `kind` colours its tile. */
     items: { id: string; rel: string; name: string; line: string; kind: 'books' | 'manga' | 'anime' | 'visual-novels' }[];
     note: string;
   };
@@ -97,10 +97,10 @@ export default {
     relations: {
       label: '關聯',
       headline: '關係記一次，兩頭各有說法。',
-      lead: '這個故事分成三個系列：正篇、《新約》與《創約》。正篇接到《新約》的關係只存一筆，正篇那頁寫「續作」，《新約》那頁寫「前作」。下面是從正篇那頁看出去的六筆關係。',
+      lead: '正篇、《新約》與《創約》各自記錄，再用續作關係連起來。正篇那頁寫「續作」，《新約》那頁寫「前作」，讀的是同一筆關係。漫畫、動畫與外傳，也各自連回來源。',
       items: [
-        { id: 'shinyaku', rel: '續作', name: '《新約》', line: '第二個系列，2011 至 2019 年', kind: 'books' },
-        { id: 'souyaku', rel: '續作', name: '《創約》', line: '第三個系列，2020 年開始，仍在出版', kind: 'books' },
+        { id: 'shinyaku', rel: '正篇的續作', name: '《新約》', line: '第二個系列，2011 至 2019 年', kind: 'books' },
+        { id: 'souyaku', rel: '《新約》的續作', name: '《創約》', line: '第三個系列，2020 年開始，仍在出版', kind: 'books' },
         { id: 'manga', rel: '改編作品', name: '漫畫', line: '近木野中哉作畫，2007 年開始連載', kind: 'manga' },
         { id: 'anime', rel: '改編作品', name: '動畫', line: '三季（2008、2010、2018 年）與一部電影（2013 年）', kind: 'anime' },
         { id: 'railgun', rel: '外傳', name: '《科學超電磁砲》', line: '和《科學一方通行》一樣是外傳，與正篇共用角色', kind: 'manga' },

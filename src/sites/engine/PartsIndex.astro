@@ -1,27 +1,43 @@
 ---
 /**
  * The fifteen parts on /engine/ (SITE.md "v3", section 4): the kit's hairline facts list with a
- * second, muted line per row: the part's name left in the serif; what it does, then an example
- * of it on one kind, right. Phones: the name above its text.
+ * second, muted line per row. A native disclosure keeps this reference available without
+ * making readers traverse another fifteen rows after the selected kind's eight. It works
+ * without script. Phones: the name above its text.
  */
 import { parts } from '../../kit/content';
 import engine from '../../content/sites/engine';
 
 const s = engine.strings.parts;
 ---
-<ul class="pidx" role="list">
-  {parts.map((part) => (
-    <li class="pidx__row">
-      <h3 class="pidx__name serif">{part.name}</h3>
-      <div class="pidx__text">
-        <p class="pidx__gives">{part.gives}</p>
-        <p class="pidx__eg"><span class="pidx__k">{s.example}</span>{s.examples[part.id]}</p>
-      </div>
-    </li>
-  ))}
-</ul>
+<details class="pidx-catalog">
+  <summary class="pidx-catalog__summary">
+    <span>{s.toggle}</span>
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+      <path d="m4 6 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </summary>
+  <ul class="pidx" role="list">
+    {parts.map((part) => (
+      <li class="pidx__row">
+        <h3 class="pidx__name serif">{part.name}</h3>
+        <div class="pidx__text">
+          <p class="pidx__gives">{part.gives}</p>
+          <p class="pidx__eg"><span class="pidx__k">{s.example}</span>{s.examples[part.id]}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</details>
 <style>
-  .pidx { border-top: 1px solid var(--c-line); }
+  .pidx-catalog { border-top: 1px solid var(--c-line); }
+  .pidx-catalog__summary { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 56px; padding-block: 16px; border-bottom: 1px solid var(--c-line); color: var(--c-fg); cursor: pointer; list-style: none; font-size: 16px; line-height: 1.5; }
+  .pidx-catalog__summary::-webkit-details-marker { display: none; }
+  .pidx-catalog__summary svg { flex: none; transition: translate var(--d-s) var(--ease-snap), rotate var(--d-s) var(--ease-snap); }
+  .pidx-catalog[open] .pidx-catalog__summary svg { rotate: 180deg; }
+  @media (hover: hover) { .pidx-catalog__summary:hover { color: var(--c-link); } .pidx-catalog__summary:hover svg { translate: 0 3px; } }
+  .pidx-catalog__summary:focus-visible { color: var(--c-link); }
+  .pidx-catalog__summary:active svg { translate: 0 1px; }
   .pidx__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
   .pidx__name { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
   .pidx__text { max-width: 34em; }

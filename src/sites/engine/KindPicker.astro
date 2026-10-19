@@ -8,6 +8,7 @@
  * one row of nine; under 1200 px five and four, ending level; phones three columns.
  */
 import FactList from '../../kit/components/FactList.astro';
+import Arrow from '../../kit/components/Arrow.astro';
 import { kinds, kindHref, partById } from '../../kit/content';
 import { inkOn, kindFields } from '../../kit/theme';
 import engine from '../../content/sites/engine';
@@ -39,7 +40,7 @@ const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k
       <section id={`pick-panel-${k.id}`} class:list={['pick__panel', `pick__panel--${k.id}`]} aria-labelledby={`pick-title-${k.id}`}>
         <div class="pick__head">
           <h3 id={`pick-title-${k.id}`} class="pick__title">{fill(p.listTitle, k.name)}</h3>
-          <p class="pick__link"><a class="link-draw" href={kindHref(k.id)}>{fill(p.link, k.name)}</a></p>
+          <p class="pick__link"><a class="link-draw" href={kindHref(k.id)}>{fill(p.link, k.name)}<Arrow /></a></p>
         </div>
         <FactList class="pick__list" level="h4" items={k.parts.map((id) => ({ title: partById(id).name, body: k.partNotes[id] ?? partById(id).gives }))} />
       </section>
