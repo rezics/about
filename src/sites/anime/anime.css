@@ -1,7 +1,41 @@
-/* The anime site (SITE.md "v3"): the shared paper language; only a caption under example tiles. */
+/* Site-local adjustments to the kit's paper language (SITE.md "v3"). */
 .anime-caption {
   margin-top: 16px;
   font-size: 13px;
   line-height: 1.6;
   color: var(--c-muted);
+}
+
+/* The accordion enters the copy area when a tall tablet crops the wide photograph.
+   Give tablets the same copy-first composition as phones, with a deeper picture band. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  [data-site='anime'] main .anime-hero {
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
+  [data-site='anime'] .anime-hero .phero__copy {
+    padding: 48px var(--gutter);
+  }
+
+  [data-site='anime'] .anime-hero .phero__title {
+    max-width: 12em;
+    font-size: clamp(38px, 4vw, 46px);
+  }
+
+  [data-site='anime'] .anime-hero .phero__lede { max-width: 36em; }
+
+  [data-site='anime'] .anime-hero .phero__pic {
+    position: relative;
+    inset: auto;
+    height: clamp(320px, 42vw, 460px);
+  }
+}
+
+/* Five-character page labels still fit a two-column list at 320 px. */
+@media (max-width: 359px) {
+  [data-site='anime'] main .tile__name { font-size: 20px; }
 }
