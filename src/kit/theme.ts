@@ -1,16 +1,21 @@
 /**
- * Colour roles (DESIGN.md "Palette"). tokens.css repeats these values for CSS; a unit test keeps
+ * Colour roles (DESIGN.md "Direction v2": the product's Aura palette; kind fields from "Palette"). tokens.css repeats these values for CSS; a unit test keeps
  * the two in step and checks every text/field pair for AA contrast.
  */
 import type { KindId, ModuleId } from '../content/schema';
 
 export const palette = {
-  paper: '#f4f5f2',
-  ink: '#0e1420',
-  muted: '#566070',
+  /** Aura ground, ink and muted text (rezics-next packages/ui/src/styles.css). */
+  paper: '#f9f6f2',
+  ink: '#2b343d',
+  muted: '#5d646c',
+  /** Ink blue: links, buttons, focus. */
   link: '#2f63ad',
-  /** Logo red: logo, current-page marker, the empty-square cursor. Never text. */
+  /** Logo red: the logo and tiny marks. Never text. */
   mark: '#df3d35',
+  /** Cards and the muted panel. */
+  card: '#fefcf9',
+  panel: '#efece7',
 } as const;
 
 export type OnField = 'paper' | 'ink';

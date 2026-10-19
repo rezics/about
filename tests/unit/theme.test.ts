@@ -34,6 +34,14 @@ describe('contrast', () => {
     expect(contrast(palette.link, palette.paper)).toBeGreaterThanOrEqual(3); // focus ring on paper
   });
 
+  test('v2 surfaces: text on the card, the muted panel and the ink-blue button passes AA', () => {
+    for (const ground of [palette.card, palette.panel]) {
+      expect(contrast(palette.ink, ground)).toBeGreaterThanOrEqual(4.5);
+      expect(contrast(palette.muted, ground)).toBeGreaterThanOrEqual(4.5);
+    }
+    expect(contrast('#ffffff', palette.link)).toBeGreaterThanOrEqual(4.5); // primary pill
+  });
+
   test('the developers field is REZICS ink blue with paper text', () => {
     expect(siteFields.developers).toEqual({ field: palette.link, on: 'paper' });
   });

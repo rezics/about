@@ -1,0 +1,95 @@
+---
+/**
+ * A card (DESIGN.md "Direction v2"): art, a name and one line, on the card surface with the card
+ * radius and the soft Aura shadow. The art is a picture (`image`) or a soft abstract gradient in
+ * a colour (`field`, e.g. a kind's field; `variant` turns the gradient). With `href` the whole
+ * card is the link; its shadow deepens and its art settles closer on hover and focus.
+ */
+import Picture from './Picture.astro';
+
+export type CardArt =
+  | { image: { base: string; alt?: string; widths?: number[]; ratio?: number } }
+  | { field: string; variant?: number };
+
+interface Props {
+  title: string;
+  body?: string;
+  href?: string;
+  /** A small line above the title (a group, a kind). */
+  label?: string;
+  art?: CardArt;
+  /** Width / height of the art box. */
+  ratio?: number;
+  level?: 'h2' | 'h3' | 'h4';
+  class?: string;
+}
+const { title, body, href, label, art, ratio = 4 / 3, level: Tag = 'h3', class: className } = Astro.props;
+const El = href ? 'a' : 'article';
+// Gradient presets: where the light and the deep tone sit, and the wash's angle.
+const presets = [
+  { x1: '18%', y1: '22%', x2: '82%', y2: '86%', angle: '135deg' },
+  { x1: '80%', y1: '18%', x2: '20%', y2: '90%', angle: '200deg' },
+  { x1: '50%', y1: '12%', x2: '60%', y2: '100%', angle: '160deg' },
+  { x1: '14%', y1: '78%', x2: '88%', y2: '14%', angle: '60deg' },
+];
+const preset = art && 'field' in art ? presets[(art.variant ?? 0) % presets.length]! : undefined;
+const artStyle = art && 'field' in art && preset
+  ? `--art:${art.field};--x1:${preset.x1};--y1:${preset.y1};--x2:${preset.x2};--y2:${preset.y2};--angle:${preset.angle};aspect-ratio:${ratio}`
+  : `aspect-ratio:${ratio}`;
+---
+<El class:list={['card', href && 'card--link', className]} href={href}>
+  {art && (
+    <div class:list={['card__art', 'field' in art && 'card__art--field']} style={artStyle} aria-hidden={'field' in art || !art.image.alt ? 'true' : undefined}>
+      {'image' in art && <Picture base={art.image.base} alt={href ? '' : (art.image.alt ?? '')} widths={art.image.widths ?? [640]} ratio={art.image.ratio ?? 1} sizes="(max-width: 767px) 80vw, 360px" />}
+    </div>
+  )}
+  <div class="card__text">
+    {label && <p class="card__label label">{label}</p>}
+    <Tag class="card__title">{title}{href && <svg class="card__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>}</Tag>
+    {body && <p class="card__body">{body}</p>}
+    <slot />
+  </div>
+</El>
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-card);
+    background: var(--c-surface);
+    color: var(--c-fg);
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--d-m) var(--ease-soft), translate var(--d-m) var(--ease-soft);
+  }
+  .card__art {
+    position: relative;
+    overflow: clip;
+    isolation: isolate;
+    border-radius: var(--r-lg);
+    background: var(--tint);
+  }
+  .card__art :global(img) { transition: scale 0.9s var(--ease-snap); }
+  /* A soft abstract wash in the card's colour: light from one side, the deep tone from the other. */
+  .card__art--field {
+    background:
+      radial-gradient(90% 85% at var(--x1) var(--y1), color-mix(in oklab, var(--art) 22%, #fffdf9) 0%, transparent 72%),
+      radial-gradient(85% 95% at var(--x2) var(--y2), color-mix(in oklab, var(--art) 92%, #10141a) 0%, transparent 74%),
+      linear-gradient(var(--angle), color-mix(in oklab, var(--art) 55%, #f9f6f2), color-mix(in oklab, var(--art) 88%, #fffdf9));
+    transition: filter 0.9s var(--ease-snap);
+  }
+  .card__text { display: flex; flex-direction: column; gap: 6px; padding: 16px 14px 14px; }
+  .card__label { color: var(--c-muted); }
+  .card__title { display: flex; align-items: center; gap: 6px; font-size: var(--t-h3); font-weight: 500; line-height: 1.4; }
+  .card__arrow { width: 0.8em; height: 0.8em; flex: none; color: var(--c-muted); transition: translate var(--d-s) var(--ease-soft), color var(--d-s); }
+  .card__body { color: var(--c-muted); font-size: var(--t-s); line-height: 1.7; }
+  @media (hover: hover) {
+    .card--link:hover { box-shadow: var(--shadow-card-hover); }
+    .card--link:hover .card__art :global(img) { scale: 1.03; }
+    .card--link:hover .card__art--field { filter: saturate(1.12) brightness(1.03); }
+    .card--link:hover .card__arrow { translate: 3px 0; color: var(--c-fg); }
+  }
+  .card--link:focus-visible { box-shadow: var(--shadow-card-hover); outline-offset: 4px; }
+  .card--link:focus-visible .card__arrow { translate: 3px 0; color: var(--c-fg); }
+</style>

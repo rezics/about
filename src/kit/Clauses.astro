@@ -1,0 +1,11 @@
+---
+// A heading's text set clause by clause: each clause (ending in ，；：) is an inline block, so a
+// line breaks between clauses first and inside a clause only when the clause is wider than the
+// line. The text stays one string in the content file.
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+const parts = text.split(/(?<=[，；：])/).filter(Boolean);
+---
+{parts.length > 1 ? parts.map((p) => <span class="clause">{p}</span>) : text}

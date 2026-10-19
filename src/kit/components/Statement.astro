@@ -1,0 +1,32 @@
+---
+/**
+ * A centred statement (DESIGN.md "Direction v2", Rhythm): one or two sentences set larger than
+ * body text, with an optional line under it and a link (slot). One per page at most.
+ */
+interface Props {
+  text: string;
+  sub?: string;
+  /** A heading (default) or a plain paragraph when the section has its own heading. */
+  as?: 'h2' | 'p';
+  id?: string;
+  class?: string;
+}
+import { idFor } from '../ids';
+import Clauses from '../Clauses.astro';
+const { text, sub, as: Tag = 'h2', id: given, class: className } = Astro.props;
+const id = given ?? idFor('statement', text);
+---
+<section class:list={['statement', className]} aria-labelledby={Tag === 'h2' ? id : undefined}>
+  <div class="container container--narrow statement__inner" data-reveal="up">
+    <Tag id={id} class="t-statement statement__text"><Clauses text={text} /></Tag>
+    {sub && <p class="statement__sub">{sub}</p>}
+    {Astro.slots.has('default') && <div class="statement__more"><slot /></div>}
+  </div>
+</section>
+<style>
+  .statement { padding-block: calc(var(--space-section) / 2); }
+  .statement__inner { display: flex; flex-direction: column; align-items: center; gap: 20px; text-align: center; }
+  .statement__text { max-width: 24em; }
+  .statement__sub { color: var(--c-muted); max-width: var(--measure); }
+  .statement__more { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 24px; }
+</style>

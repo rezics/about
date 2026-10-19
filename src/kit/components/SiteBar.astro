@@ -1,10 +1,10 @@
 ---
 /**
- * A mini-site's bar under the global header: its small square and name, its page tabs with the
- * current page marked, and the site's own action when it sets one (`MiniSite.action`); 「前往
- * REZICS」 lives once, in the global header. On phones the tabs scroll sideways with faded edges
- * and the current tab is scrolled into view. Sticky; when the header steps aside on scroll it
- * moves up.
+ * A mini-site's bar under the global header (DESIGN.md "Direction v2"): a quiet row of pill tabs.
+ * The site's name with a dot in its accent, its page tabs with the current page on a tint of the
+ * accent, and the site's own action when it sets one (`MiniSite.action`); 「前往 REZICS」 lives
+ * once, in the global header. On phones the tabs scroll sideways with faded edges and the current
+ * tab is scrolled into view. Sticky; when the header steps aside on scroll it moves up.
  */
 import type { MiniSite, MiniSitePage } from '../../content/schema';
 import { pageHref } from '../sites';
@@ -17,12 +17,11 @@ const { site, page } = Astro.props;
 import { site as shared } from '../content';
 // The header already carries 前往 REZICS: the bar shows only an action of the site's own.
 const action = site.action && site.action.href !== shared.productUrl && site.action.href !== '#notify' ? site.action : undefined;
-const initial = [...site.name][0];
 ---
 <nav class="sitebar" aria-label={site.name} data-sitebar>
   <div class="sitebar__inner">
     <a class="sitebar__home" href={site.base} aria-current={page.slug === '' ? 'page' : undefined}>
-      <span class="sitebar__sq" aria-hidden="true" data-initial={initial}></span>
+      <span class="sitebar__dot" aria-hidden="true"></span>
       <span class="sitebar__name">{site.name}</span>
     </a>
     {site.pages.length > 1 && (
@@ -46,87 +45,56 @@ const initial = [...site.name][0];
     position: sticky;
     top: var(--header-h);
     z-index: var(--z-bar);
-    background: var(--field);
-    color: var(--on-field);
+    background: color-mix(in oklab, var(--c-bg) 88%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--c-line);
+    color: var(--c-fg);
     transition: translate var(--d-m) var(--ease-snap);
-    --c-fg: var(--on-field);
-    --c-bg: var(--field);
-    --focus: var(--on-field);
   }
   :global(html.frame-away) .sitebar { translate: 0 calc(-1 * var(--header-h)); }
   .sitebar__inner {
     height: var(--bar-h);
+    max-width: calc(var(--container) + 2 * var(--page-pad));
+    margin-inline: auto;
     display: flex;
     align-items: center;
-    gap: var(--gutter);
-    padding-inline: var(--gutter);
+    gap: 12px;
+    padding-inline: var(--page-pad);
   }
-  .sitebar__home { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; flex: none; }
-  .sitebar__sq {
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border: 1.5px solid currentColor;
-    font-weight: 900;
-    font-size: 15px;
-    line-height: 1;
-    transition: box-shadow var(--d-m) var(--ease-snap), color var(--d-s) var(--ease-snap);
-  }
-  /* The badge's glyph is generated content, so it is neither read out nor part of the link's text. */
-  .sitebar__sq::before { content: attr(data-initial) / ''; }
-  .sitebar__name {
-    font-weight: 900;
-    font-size: var(--t-s);
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    border-bottom: 2px solid transparent;
-    border-image: linear-gradient(to right, currentColor var(--draw), transparent var(--draw)) 1;
-    transition: --draw var(--d-m) var(--ease-snap);
-  }
-  /* Hover and focus: the small square floods with the text colour (its letter turns to the
-     field), and the name draws its underline. */
-  @media (hover: hover) {
-    .sitebar__home:hover .sitebar__sq { box-shadow: inset 0 -30px 0 0 var(--on-field); color: var(--field); }
-    .sitebar__home:hover .sitebar__name { --draw: 100%; }
-  }
-  .sitebar__home:focus-visible .sitebar__sq { box-shadow: inset 0 -30px 0 0 var(--on-field); color: var(--field); }
-  .sitebar__home:focus-visible .sitebar__name { --draw: 100%; }
+  .sitebar__home { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; flex: none; padding-right: 8px; }
+  .sitebar__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--field); flex: none; }
+  .sitebar__name { font-weight: 500; font-size: 15px; white-space: nowrap; }
+  @media (hover: hover) { .sitebar__home:hover .sitebar__name { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; } }
   .sitebar__tabs {
     display: flex;
-    gap: 4px;
+    gap: 2px;
     overflow-x: auto;
     scrollbar-width: none;
     flex: 1 1 auto;
     min-width: 0;
-    padding-inline: 12px;
+    padding-inline: 4px 12px;
     /* Faded edges say the row scrolls; nav.ts scrolls the current tab into view. */
-    mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, transparent 0, #000 6px, #000 calc(100% - 24px), transparent);
   }
   .sitebar__tab {
-    position: relative;
     display: inline-flex;
     align-items: center;
-    min-height: 40px;
-    padding: 0 10px;
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: var(--r-pill);
     font-size: var(--t-s);
-    font-weight: 700;
+    font-weight: 500;
     white-space: nowrap;
+    color: var(--c-muted);
+    transition: background-color var(--d-s) var(--ease-soft), color var(--d-s) var(--ease-soft);
   }
-  .sitebar__tab[aria-current='page']::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 2px;
-    width: 8px;
-    height: 8px;
-    margin-left: -4px;
-    background: var(--c-mark);
-    box-shadow: 0 0 0 2px var(--on-field);
-  }
-  @media (hover: hover) { .sitebar__tab:hover { text-decoration: underline; text-underline-offset: 0.35em; text-decoration-thickness: 2px; } }
+  /* The current page: a tint of the site's accent, ink text. */
+  .sitebar__tab[aria-current='page'] { background: var(--tint-strong); color: var(--c-fg); }
+  @media (hover: hover) { .sitebar__tab:not([aria-current='page']):hover { background: var(--c-soft); color: var(--c-fg); } }
   .sitebar__action { margin-left: auto; flex: none; }
   @media (max-width: 599px) {
     .sitebar__action { display: none; }
+    .sitebar__home { padding-right: 2px; }
   }
 </style>

@@ -106,6 +106,13 @@ export interface Principle {
   body: string;
 }
 
+export interface HomeRow {
+  headline: string;
+  body: string[];
+  link: string;
+  imageAlt: string;
+}
+
 export interface Site {
   name: 'REZICS';
   url: string;
@@ -125,20 +132,19 @@ export interface Site {
     engineIntro: { title: string; body: string; all: string };
     groups: { works: string; agents: string };
   };
+  /**
+   * The home page (DESIGN.md "Direction v2", Rhythm): the centred intro over the hero image,
+   * text-and-image rows, one statement, the products as a card row, the commitments and the
+   * closing panel. It names no specific work.
+   */
   home: {
-    hero: { headline: string; lede: string; primary: string; secondary: string; caption: string };
-    index: { headline: string; body: string; nextKind: string };
-    identity: {
-      headline: string;
-      body: string;
-      /** Chapters that follow one public-domain work across kinds; the first is the source. */
-      chapters: { kind: KindId; title: string; body: string }[];
-      /** The relation drawn from each later chapter back to the first, e.g. 改編自. */
-      link: string;
-    };
-    community: { headline: string; body: string; points: Item[] };
-    engine: { headline: string; body: string };
-    agents: { headline: string; body: string; facts: Item[] };
+    hero: { headline: string; lede: string; primary: string; secondary: string; imageAlt: string };
+    /** A text-and-image row: heading, one or two paragraphs, a link deeper, the image's alt. */
+    index: HomeRow;
+    community: HomeRow;
+    statement: { text: string; body: string; link: string };
+    products: { headline: string; lede: string };
+    agents: HomeRow;
     principles: { headline: string; items: Principle[] };
     finale: { headline: string; body: string };
   };
@@ -170,7 +176,7 @@ export interface Site {
     steps: Item[];
     statement: string;
   };
-  /** The action square that ends every page and leads into the product. */
+  /** The closing panel that ends every page and leads into the product. */
   product: { headline: string; body: string };
   notFound: { meta: Meta; headline: string; body: string; back: string };
   /** Shared control labels (kit primitives such as the composing square). */
@@ -181,7 +187,7 @@ export interface Site {
     /** Group label for the row of kind buttons under a composing square. */
     pick: string;
   };
-  footer: { tagline: string; source: string; sourceUrl: string; colophon: string; copyright: string };
+  footer: { tagline: string; sitemap: string; source: string; sourceUrl: string; colophon: string; copyright: string };
 }
 
 /** One page of a mini-site: a tab in its site bar. */

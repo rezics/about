@@ -1,7 +1,8 @@
 ---
 /**
- * Global header (DESIGN.md "Navigation"): logo left, four tabs centred, one action right.
- * 產品 and 引擎 are disclosure buttons for full-width panels. The panels are native popovers, so
+ * Global header (DESIGN.md "Navigation", restyled for "Direction v2"): logo left, four pill tabs
+ * centred, one pill action right. 產品 and 模組 are disclosure buttons for the two dropdown
+ * panels: floating sheets that hold the flat square tiles, the one place squares stay. The panels are native popovers, so
  * they open, close on Escape and light-dismiss without script; src/kit/motion/nav.ts adds the
  * pointer intent delay, the grace period and the safe area, and keeps aria-expanded in step.
  * Phones get a 選單 button that opens a modal sheet (native <dialog> through invoker commands,
@@ -38,18 +39,17 @@ const agents = kinds.filter((k) => k.group === 'agents');
       <ul role="list">
         <li>
           <button type="button" class="tab" popovertarget="panel-products" aria-controls="panel-products" data-panel-button="panel-products" aria-current={section === 'products' ? 'true' : undefined}>
-            <span>{nav.products}</span><span class="tab__caret" aria-hidden="true"></span><span class="tab__line" aria-hidden="true"></span>
+            <span>{nav.products}</span><span class="tab__caret" aria-hidden="true"></span>
           </button>
         </li>
         <li>
           <button type="button" class="tab" popovertarget="panel-engine" aria-controls="panel-engine" data-panel-button="panel-engine" aria-current={section === 'engine' ? 'true' : undefined}>
-            <span>{nav.engine}</span><span class="tab__caret" aria-hidden="true"></span><span class="tab__line" aria-hidden="true"></span>
+            <span>{nav.engine}</span><span class="tab__caret" aria-hidden="true"></span>
           </button>
         </li>
-        <li><a class="tab" href="/developers/" aria-current={section === 'developers' ? 'page' : undefined}><span>{nav.developers}</span><span class="tab__line" aria-hidden="true"></span></a></li>
-        <li><a class="tab" href="/roadmap/" aria-current={section === 'roadmap' ? 'page' : undefined}><span>{nav.roadmap}</span><span class="tab__line" aria-hidden="true"></span></a></li>
+        <li><a class="tab" href="/developers/" aria-current={section === 'developers' ? 'page' : undefined}><span>{nav.developers}</span></a></li>
+        <li><a class="tab" href="/roadmap/" aria-current={section === 'roadmap' ? 'page' : undefined}><span>{nav.roadmap}</span></a></li>
       </ul>
-      <span class="tabs__marker" aria-hidden="true" data-tabs-marker></span>
     </nav>
     <div class="header__end">
       <ProductCall size="small" class="header__action" />
@@ -67,7 +67,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
         <a class="panel__all link-draw" href="/#kinds">{nav.productsIntro.all}<Arrow /></a>
       </div>
       <div class="panel__group panel__group--works">
-        <p class="panel__label mono">{nav.groups.works}</p>
+        <p class="panel__label label">{nav.groups.works}</p>
         <ul class="panel__squares" role="list">
           {works.map((k) => (
             <li>
@@ -78,7 +78,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
         </ul>
       </div>
       <div class="panel__group panel__group--agents">
-        <p class="panel__label mono">{nav.groups.agents}</p>
+        <p class="panel__label label">{nav.groups.agents}</p>
         <ul class="panel__squares" role="list">
           {agents.map((k) => (
             <li>
@@ -115,7 +115,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
       <button type="button" class="header__menu" command="close" commandfor="menu" data-menu-close>{nav.close}</button>
     </div>
     <div class="sheet__body">
-      <p class="sheet__label mono">{nav.products}</p>
+      <p class="sheet__label label">{nav.products}</p>
       <ul class="sheet__squares" role="list">
         {kinds.map((k) => (
           <li>
@@ -123,7 +123,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
           </li>
         ))}
       </ul>
-      <p class="sheet__label mono">{nav.engine}</p>
+      <p class="sheet__label label">{nav.engine}</p>
       <ul class="sheet__list" role="list">
         <li><a href="/engine/">{nav.engineIntro.all}</a></li>
         {modules.map((m) => (
@@ -143,39 +143,43 @@ const agents = kinds.filter((k) => k.group === 'agents');
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    background: var(--c-bg);
+    background: color-mix(in oklab, var(--c-bg) 88%, transparent);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    backdrop-filter: saturate(1.4) blur(14px);
     color: var(--c-fg);
-    border-bottom: 1px solid var(--c-line);
     transition: translate var(--d-m) var(--ease-snap);
   }
   :global(html.frame-away) .header { translate: 0 -100%; }
   .header__bar {
     height: var(--header-h);
+    max-width: calc(var(--container) + 2 * var(--page-pad));
+    margin-inline: auto;
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: var(--gutter);
-    padding-inline: var(--gutter);
+    padding-inline: var(--page-pad);
   }
-  .header__end { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+  .header__end { display: flex; justify-content: flex-end; align-items: center; gap: 8px; }
 
-  /* Tabs: the current section carries a filled red square (drawn from aria-current, which
-     nav.ts recomputes on every page load, Back included); hover and focus get their own
-     outlined square, which slides between tabs (nav.ts). */
-  .header__tabs { position: relative; }
-  .header__tabs ul { display: flex; gap: clamp(8px, 2vw, 28px); }
+  /* Tabs: quiet pills. The current section reads in ink on the muted panel; the others are
+     muted and take the panel on hover, focus or while their dropdown is open. */
+  .header__tabs ul { display: flex; gap: 2px; }
   .tab {
-    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    min-height: 44px;
-    padding: 0 6px;
-    font-size: var(--t-s);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: var(--c-fg);
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 14px;
+    border-radius: var(--r-pill);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--c-muted);
+    transition: background-color var(--d-s) var(--ease-soft), color var(--d-s) var(--ease-soft);
   }
+  .tab[aria-current], .tab[aria-expanded='true'] { color: var(--c-fg); background: var(--c-soft); }
+  @media (hover: hover) { .tab:hover { color: var(--c-fg); background: var(--c-soft); } }
+  .tab:focus-visible { color: var(--c-fg); }
   .tab__caret {
     width: 6px;
     height: 6px;
@@ -185,50 +189,18 @@ const agents = kinds.filter((k) => k.group === 'agents');
     translate: 0 -2px;
     transition: rotate var(--d-s) var(--ease-snap), translate var(--d-s) var(--ease-snap);
   }
-  .tab[aria-expanded='true'] .tab__caret { rotate: 225deg; translate: 0 2px; }
-  .tab[aria-current]::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: 2px;
-    width: 8px;
-    height: 8px;
-    margin-left: -4px;
-    background: var(--c-mark);
-  }
-  /* The label answers too: a red line draws out from the square under it. */
-  .tab__line {
-    position: absolute;
-    left: 6px;
-    right: 6px;
-    bottom: 5px;
-    height: 2px;
-    background: var(--c-mark);
-    scale: 0 1;
-    transition: scale var(--d-m) var(--ease-snap);
-  }
-  @media (hover: hover) { .tab:hover .tab__line { scale: 1 1; } }
-  .tab:focus-visible .tab__line, .tab[aria-expanded='true'] .tab__line { scale: 1 1; }
-  .tabs__marker {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 12px;
-    height: 12px;
-    margin-left: -6px;
-    border: 1.5px solid var(--c-mark);
-    opacity: 0;
-    pointer-events: none;
-  }
+  .tab[aria-expanded='true'] .tab__caret { rotate: 225deg; translate: 0 1px; }
   .header__menu {
     display: none;
-    min-height: 44px;
-    padding: 0 12px;
-    border: 2px solid var(--c-fg);
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: var(--r-pill);
+    background: var(--c-soft);
+    color: var(--c-fg);
     font-size: var(--t-s);
-    font-weight: 700;
+    font-weight: 500;
   }
-  @media (hover: hover) { .header__menu:hover { background: var(--c-fg); color: var(--c-bg); } }
+  @media (hover: hover) { .header__menu:hover { background: color-mix(in oklab, var(--c-fg) 9%, var(--c-soft)); } }
 
   @media (max-width: 899px) {
     .header__bar { grid-template-columns: auto 1fr; }
@@ -236,33 +208,40 @@ const agents = kinds.filter((k) => k.group === 'agents');
     .header__menu { display: inline-flex; align-items: center; }
   }
   @media (max-width: 420px) {
-    .header__end :global(.header__action) { --btn-sq: 4px; padding-left: 12px; }
     .header__end :global(.header__action .btn__icon) { display: none; }
-    .header__end :global(.header__action .btn__label) { margin-left: 0; }
   }
 
-  /* Panels: full width below the bar. */
+  /* Panels: floating sheets under the bar (the sheet radius and the float shadow), opening
+     with a short fade. Inside, the flat square tiles keep their kind pictures. */
   .panel {
     position: fixed;
-    inset: var(--header-h) 0 auto 0;
-    width: 100%;
+    inset: calc(var(--header-h) + 6px) auto auto 50%;
+    width: min(calc(100vw - 2 * var(--page-pad)), calc(var(--container) + 2 * var(--page-pad)));
     max-width: none;
-    max-height: calc(100dvh - var(--header-h));
+    max-height: calc(100dvh - var(--header-h) - 18px);
     margin: 0;
     padding: 0;
-    border: 0;
-    border-bottom: 1px solid var(--c-line-strong);
-    background: var(--c-bg);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-sheet);
+    background: var(--c-surface);
     color: var(--c-fg);
+    box-shadow: var(--shadow-float);
     overflow: auto;
     overscroll-behavior: contain;
+    translate: -50% 0;
+    opacity: 1;
+    transition: opacity 0.2s var(--ease-soft), translate 0.28s var(--ease-snap), overlay 0.28s allow-discrete, display 0.28s allow-discrete;
   }
-  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 18%, transparent); }
-  .panel__inner { padding-block: clamp(24px, 3vw, 40px) clamp(32px, 4vw, 56px); row-gap: 24px; }
-  .panel__intro { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 12px; }
-  .panel__title { font-size: var(--t-m); font-weight: 900; line-height: 1.3; }
-  .panel__body { color: var(--c-muted); font-size: var(--t-s); }
-  .panel__all { align-self: flex-start; font-weight: 700; margin-top: 8px; min-height: 24px; }
+  .panel:not(:popover-open) { opacity: 0; translate: -50% -8px; }
+  @starting-style {
+    .panel:popover-open { opacity: 0; translate: -50% -8px; }
+  }
+  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 8%, transparent); }
+  .panel__inner { padding: clamp(24px, 3vw, 36px); row-gap: 24px; }
+  .panel__intro { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 10px; }
+  .panel__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.4; }
+  .panel__body { color: var(--c-muted); font-size: var(--t-s); line-height: 1.7; }
+  .panel__all { align-self: flex-start; margin-top: 6px; font-size: var(--t-s); }
   .panel__label { color: var(--c-muted); margin-bottom: 12px; }
   .panel__group--works { grid-column: 5 / span 5; }
   .panel__group--agents { grid-column: 10 / span 3; }
@@ -283,14 +262,14 @@ const agents = kinds.filter((k) => k.group === 'agents');
     height: 100dvh;
     max-height: none;
     margin: 0;
-    padding: 0 var(--gutter) 32px;
+    padding: 0 var(--page-pad) 32px;
     border: 0;
     background: var(--c-bg);
     color: var(--c-fg);
     overflow: auto;
     overscroll-behavior: contain;
   }
-  .sheet::backdrop { background: var(--c-fg); }
+  .sheet::backdrop { background: var(--c-bg); }
   .sheet__top { display: flex; justify-content: space-between; align-items: center; height: var(--header-h); }
   .sheet__top .header__menu { display: inline-flex; align-items: center; }
   .sheet__label { color: var(--c-muted); margin: 24px 0 12px; }
@@ -301,8 +280,8 @@ const agents = kinds.filter((k) => k.group === 'agents');
     align-items: center;
     min-height: 52px;
     border-bottom: 1px solid var(--c-line);
-    font-size: var(--t-m);
-    font-weight: 700;
+    font-size: var(--t-h3);
+    font-weight: 500;
   }
   .sheet__list--main { margin-top: 24px; }
 </style>

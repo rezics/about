@@ -1,0 +1,87 @@
+---
+/**
+ * A row of cards (DESIGN.md "Direction v2", Rhythm): a heading on the left with an optional line
+ * and link (slot "link"), then three or four cards with art and a one-line caption, each linking
+ * deeper. More items wrap into further rows. Phones: a sideways scroll-snap row (`phone="scroll"`,
+ * default) or a stack.
+ */
+import Card, { type CardArt } from './Card.astro';
+import { idFor } from '../ids';
+import Clauses from '../Clauses.astro';
+
+export interface CardItem {
+  title: string;
+  body?: string;
+  href?: string;
+  label?: string;
+  art?: CardArt;
+}
+
+interface Props {
+  title?: string;
+  lede?: string;
+  items: CardItem[];
+  cols?: 2 | 3 | 4 | 5;
+  ratio?: number;
+  phone?: 'scroll' | 'stack';
+  /** Heading level of the row's title; the cards take the next level. */
+  level?: 'h2' | 'h3';
+  id?: string;
+  /** Inside another section: no section padding of its own. */
+  bare?: boolean;
+  class?: string;
+}
+const { title, lede, items, cols = 3, ratio, phone = 'scroll', level: Tag = 'h2', id: given, bare = false, class: className } = Astro.props;
+const id = title ? (given ?? idFor('cards', title)) : undefined;
+const cardLevel = Tag === 'h2' ? 'h3' : 'h4';
+---
+<section class:list={['cards', bare && 'cards--bare', `cards--${phone}`, className]} aria-labelledby={id} style={`--card-cols:${cols}`}>
+  <div class="container">
+    {(title || Astro.slots.has('link')) && (
+      <div class="cards__head" data-reveal="up">
+        <div class="cards__intro">
+          {title && <Tag id={id} class="t-h2 cards__title"><Clauses text={title} /></Tag>}
+          {lede && <p class="cards__lede">{lede}</p>}
+        </div>
+        {Astro.slots.has('link') && <div class="cards__link"><slot name="link" /></div>}
+      </div>
+    )}
+    <ul class="cards__list" role="list" data-reveal="slot">
+      {items.map((item) => (
+        <li class="cards__item">
+          <Card title={item.title} body={item.body} href={item.href} label={item.label} art={item.art} ratio={ratio} level={cardLevel} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+<style>
+  .cards { padding-block: calc(var(--space-section) / 2); }
+  .cards--bare { padding-block: 0; }
+  .cards__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px 32px; flex-wrap: wrap; margin-bottom: clamp(24px, 3vw, 40px); }
+  .cards__intro { display: flex; flex-direction: column; gap: 12px; max-width: 38em; }
+  .cards__lede { color: var(--c-muted); }
+  .cards__list { display: grid; grid-template-columns: repeat(var(--card-cols), minmax(0, 1fr)); gap: var(--gutter); }
+  .cards__item { display: flex; min-width: 0; }
+  .cards__item > :global(.card) { flex: 1 1 auto; }
+  @media (max-width: 1023px) {
+    .cards__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 599px) {
+    .cards--stack .cards__list { grid-template-columns: minmax(0, 1fr); }
+    /* A sideways row: about one and a fifth cards in view, snapping to each. */
+    .cards--scroll .cards__list {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 78%;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * var(--page-pad));
+      padding: 4px var(--page-pad) 20px;
+      scroll-padding-inline: var(--page-pad);
+    }
+    .cards--scroll .cards__item { scroll-snap-align: start; }
+  }
+</style>

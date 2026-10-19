@@ -1,100 +1,68 @@
 ---
 /**
- * "Next page / next site": a band in the next thing's field colour across the grid (inside the
- * outer margins), its name set as large as the band allows. The whole band is the link. On hover or focus three ink steps rise
- * from the bottom-left (歸位, one grid step each), the name slides right by an arrow's width and
- * the small label grows while its arrow travels. The footer's action square (「前往 REZICS」)
- * follows it on every page, so a finale needs no action of its own.
+ * "Next page / next site" (DESIGN.md "Direction v2"): a calm card across the container on a soft
+ * tint of the next thing's field, its small label and its name at heading size, with an arrow
+ * that steps forward on hover or focus. The whole card is the link. The footer's closing panel
+ * (「前往 REZICS」) follows it on every page, so a finale needs no action of its own.
  */
 import type { Field } from '../theme';
 import { fieldStyle } from '../theme';
-import Arrow from './Arrow.astro';
 
 interface Props {
   label: string;
   name: string;
   href: string;
   field: Field;
+  /** One line under the name (what the next page or site is about). */
+  body?: string;
 }
-const { label, name, href, field } = Astro.props;
-const size = Math.min(22, 92 / Math.max(2, [...name].length * (/^[\x20-\x7e]+$/.test(name) ? 0.62 : 1)));
+const { label, name, href, field, body } = Astro.props;
 ---
-<a class="finale" href={href} style={`${fieldStyle(field)};--size:${size}`}>
-  <span class="finale__steps" aria-hidden="true"><span></span><span></span><span></span></span>
-  <span class="finale__label mono">{label}<Arrow /></span>
-  <span class="finale__name">
-    <span class="finale__face">{name}</span>
-  </span>
-</a>
+<div class="finale-wrap container">
+  <a class="finale" href={href} style={fieldStyle(field)}>
+    <span class="finale__text">
+      <span class="finale__label label">{label}</span>
+      <span class="finale__name">{name}</span>
+      {body && <span class="finale__body">{body}</span>}
+    </span>
+    <span class="finale__go" aria-hidden="true">
+      <svg viewBox="0 0 16 16" focusable="false"><path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+    </span>
+  </a>
+</div>
 <style>
+  .finale-wrap { padding-top: calc(var(--space-section) / 2); }
   .finale {
-    position: relative;
-    isolation: isolate;
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     gap: 24px;
-    min-height: min(70svh, 640px);
-    /* Set on the grid's outer margins like every block, so the page edge stays ground. */
-    margin-inline: var(--gutter);
-    padding: var(--gutter);
-    padding-top: clamp(24px, 4vw, 48px);
-    overflow: clip;
-    background: var(--field);
-    color: var(--on-field);
-    --focus: var(--on-field);
+    padding: clamp(24px, 3vw, 40px) clamp(24px, 4vw, 48px);
+    border-radius: var(--r-card);
+    background: var(--tint);
+    color: var(--c-fg);
+    transition: background-color var(--d-m) var(--ease-soft);
   }
-  .finale:focus-visible { outline-offset: -8px; }
-  .finale__steps {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    z-index: -1;
-    display: flex;
-    align-items: flex-end;
-    --step: clamp(56px, 11vw, 160px);
-  }
-  .finale__steps span {
-    width: var(--step);
-    background: color-mix(in srgb, var(--field) 72%, #0e1420);
-    translate: 0 101%;
-    transition: translate var(--d-m) var(--ease-snap);
-  }
-  .finale__steps span:nth-child(1) { height: calc(var(--step) * 3); }
-  .finale__steps span:nth-child(2) { height: calc(var(--step) * 2); transition-delay: 40ms; }
-  .finale__steps span:nth-child(3) { height: var(--step); transition-delay: 80ms; }
-  .finale__label {
-    display: inline-flex;
-    align-items: center;
-    align-self: flex-start;
-    font-size: var(--t-s);
-    transform-origin: left center;
-    transition: scale var(--d-m) var(--ease-snap);
-  }
-  .finale__name {
+  .finale__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .finale__label { color: var(--c-muted); }
+  .finale__name { font-size: var(--t-h2); font-weight: 500; line-height: 1.3; }
+  .finale__body { color: var(--c-muted); font-size: var(--t-s); }
+  .finale__go {
     display: grid;
-    font-weight: 900;
-    font-size: calc(var(--size) * 1vw);
-    line-height: 1;
-    letter-spacing: var(--track-display);
-    font-stretch: 125%;
-    transition: translate var(--d-m) var(--ease-snap);
+    place-items: center;
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--c-surface);
+    box-shadow: var(--shadow-card);
+    transition: translate var(--d-s) var(--ease-soft);
   }
-  .finale__face { grid-area: 1 / 1; white-space: nowrap; }
+  .finale__go svg { width: 18px; height: 18px; }
   @media (hover: hover) {
-    .finale:hover .finale__steps span { translate: 0 0; }
-    .finale:hover .finale__name { translate: 0.35em 0; }
-    .finale:hover .finale__label { scale: 1.25; }
-    .finale:hover :global(.arrow) { translate: 0.4em 0; }
+    .finale:hover { background: var(--tint-strong); }
+    .finale:hover .finale__go { translate: 4px 0; }
   }
-  .finale:focus-visible .finale__steps span { translate: 0 0; }
-  .finale:focus-visible .finale__name { translate: 0.35em 0; }
-  .finale:focus-visible .finale__label { scale: 1.25; }
-  /* Phones: the band stays a band, not a screen of colour. */
-  @media (max-width: 599px) {
-    .finale { min-height: min(56svh, 420px); max-height: 60svh; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .finale:hover .finale__name, .finale:focus-visible .finale__name { text-decoration: underline; text-decoration-thickness: 0.04em; }
-  }
+  .finale:focus-visible { background: var(--tint-strong); }
+  .finale:focus-visible .finale__go { translate: 4px 0; }
 </style>

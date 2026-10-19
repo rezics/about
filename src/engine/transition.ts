@@ -1,125 +1,27 @@
-// Page transitions (DESIGN.md "Transitions"). Clicking a link that holds a square
-// ([data-flip-src]) grows that square to fill the viewport in its field colour, then the next
-// page's [data-flip-target] square settles from full size into place. Any other navigation closes
-// an ink curtain in 12 columns. Reduced motion: instant. Adapters run leave() while the next page
-// loads, so the transition adds little or no latency.
+// Page transitions (DESIGN.md "Direction v2", Motion): a veil in the page's ground fades over the
+// old page while the next one loads, then fades away from the new one. No wipes, no growing
+// squares. Reduced motion: instant. Adapters run leave() while the next page loads, so the
+// transition adds little or no latency.
 import { gsap } from 'gsap';
-import { dur, ease, prefersReducedMotion } from './env';
+import { prefersReducedMotion } from './env';
 
-let source: HTMLElement | null = null;
-let destination = '';
+const veil = () => document.getElementById('curtain');
 
-/** Remember the square inside the clicked link (capture phase, before the router acts), and the
- *  link's name for the curtain's middle frame. */
-export function trackSource() {
-  document.addEventListener(
-    'click',
-    (e) => {
-      const link = (e.target as HTMLElement | null)?.closest?.('a');
-      source = link?.querySelector<HTMLElement>('[data-flip-src]') ?? (link?.matches('[data-flip-src]') ? link : null);
-      const name = (link?.dataset.transitionLabel ?? link?.innerText ?? '').replace(/\s+/g, ' ').trim();
-      destination = [...name].length <= 16 ? name : '';
-    },
-    true,
-  );
-}
-
-const curtain = () => document.getElementById('curtain') as HTMLElement;
-const columns = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>('.curtain__col')];
-
-const inset = (r: DOMRect) =>
-  `inset(${r.top}px ${innerWidth - r.right}px ${innerHeight - r.bottom}px ${r.left}px)`;
-const insetX = (r: DOMRect) => `inset(${r.top}px 0px ${innerHeight - r.bottom}px 0px)`;
-const insetY = (r: DOMRect) => `inset(0px ${innerWidth - r.right}px 0px ${r.left}px)`;
-const full = 'inset(0px 0px 0px 0px)';
-
-function leaveSquare(c: HTMLElement, from: HTMLElement) {
-  const r = from.getBoundingClientRect();
-  const field = getComputedStyle(from).getPropertyValue('--field').trim() || getComputedStyle(from).backgroundColor;
-  const ghost = document.createElement('div');
-  ghost.className = 'curtain__ghost';
-  Object.assign(ghost.style, { inset: '0', background: field, clipPath: inset(r) });
-  const copy = from.cloneNode(true) as HTMLElement;
-  copy.removeAttribute('data-flip-src');
-  Object.assign(copy.style, { position: 'fixed', left: `${r.left}px`, top: `${r.top}px`, width: `${r.width}px`, height: `${r.height}px`, margin: '0' });
-  ghost.appendChild(copy);
-  c.appendChild(ghost);
-  // Along the grid: first across, then down.
-  return gsap
-    .timeline()
-    .set(c, { autoAlpha: 1 })
-    .to(copy, { autoAlpha: 0, duration: dur.s, ease: ease.soft }, 0.12)
-    .to(ghost, { clipPath: insetX(r), duration: dur.m, ease: ease.out }, 0)
-    .to(ghost, { clipPath: full, duration: dur.m, ease: ease.out }, dur.m * 0.7)
-    .add(() => copy.remove());
-}
-
-function enterSquare(c: HTMLElement, ghost: HTMLElement) {
-  const target = document.querySelector<HTMLElement>('[data-flip-target]');
-  const tl = gsap.timeline();
-  if (target) {
-    const r = target.getBoundingClientRect();
-    tl.to(ghost, { clipPath: insetY(r), duration: dur.m, ease: ease.out })
-      .to(ghost, { clipPath: inset(r), duration: dur.m, ease: ease.settle }, dur.m * 0.7)
-      .to(ghost, { autoAlpha: 0, duration: dur.s, ease: ease.soft });
-  } else {
-    tl.to(ghost, { clipPath: 'inset(0px 0px 100% 0px)', duration: dur.l, ease: ease.inOut });
-  }
-  return tl.add(() => ghost.remove()).set(c, { autoAlpha: 0 });
-}
-
-// The curtain's middle frame names where you are going: a paper chip with the red cursor and the
-// link's name slots in at the centre once the columns have closed.
-function leaveCurtain(c: HTMLElement) {
-  const tl = gsap
-    .timeline()
-    .set(c, { autoAlpha: 1 })
-    .fromTo(columns(c), { yPercent: -101 }, { yPercent: 0, duration: dur.m, ease: ease.out, stagger: 0.03 });
-  if (destination) {
-    const chip = document.createElement('div');
-    chip.className = 'curtain__chip';
-    const cursor = document.createElement('span');
-    cursor.className = 'curtain__cursor';
-    const name = document.createElement('span');
-    name.textContent = destination;
-    chip.append(cursor, name);
-    c.appendChild(chip);
-    tl.fromTo(chip, { autoAlpha: 0, yPercent: 40 }, { autoAlpha: 1, yPercent: 0, duration: dur.s, ease: ease.settle }, dur.m * 0.75);
-  }
-  destination = '';
-  return tl;
-}
-
-function enterCurtain(c: HTMLElement) {
-  const chip = c.querySelector<HTMLElement>('.curtain__chip');
-  const tl = gsap.timeline();
-  if (chip) tl.to(chip, { autoAlpha: 0, yPercent: -40, duration: dur.s, ease: ease.out }).add(() => chip.remove());
-  return tl
-    .to(columns(c), { yPercent: 101, duration: dur.m, ease: ease.out, stagger: 0.03 }, chip ? '-=0.12' : 0)
-    .set(c, { autoAlpha: 0 })
-    .set(columns(c), { yPercent: -101 });
-}
+/** Kept for adapters: links no longer carry a transition source. */
+export function trackSource() {}
 
 export function playLeave(): Promise<unknown> {
-  const c = curtain();
-  if (!c) return Promise.resolve();
-  const from = source;
-  source = null;
-  if (prefersReducedMotion()) {
-    destination = '';
-    return Promise.resolve();
-  }
-  return Promise.resolve(from && from.isConnected ? leaveSquare(c, from) : leaveCurtain(c));
+  const c = veil();
+  if (!c || prefersReducedMotion()) return Promise.resolve();
+  return Promise.resolve(gsap.fromTo(c, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.22, ease: 'power1.out' }));
 }
 
 export function playEnter(): Promise<unknown> {
-  const c = curtain();
-  if (!c || prefersReducedMotion()) {
-    if (c) gsap.set(c, { autoAlpha: 0 });
+  const c = veil();
+  if (!c) return Promise.resolve();
+  if (prefersReducedMotion() || getComputedStyle(c).visibility === 'hidden') {
+    gsap.set(c, { autoAlpha: 0 });
     return Promise.resolve();
   }
-  const ghost = c.querySelector<HTMLElement>('.curtain__ghost');
-  if (ghost) return Promise.resolve(enterSquare(c, ghost));
-  if (getComputedStyle(c).visibility === 'hidden') return Promise.resolve();
-  return Promise.resolve(enterCurtain(c));
+  return Promise.resolve(gsap.to(c, { autoAlpha: 0, duration: 0.42, ease: 'power2.out' }));
 }

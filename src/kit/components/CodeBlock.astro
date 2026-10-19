@@ -19,9 +19,10 @@ const { code, language, caption, label, class: className } = Astro.props;
 <style>
   .code { min-width: 0; }
   .code pre {
-    padding: 16px 20px;
-    border: 1px solid var(--c-line-strong);
-    background: color-mix(in srgb, var(--c-fg) 5%, var(--c-bg));
+    padding: 18px 22px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-lg);
+    background: var(--c-surface);
     color: var(--c-fg);
   }
   .code__caption { margin-top: 10px; font-size: var(--t-s); color: var(--c-muted); }

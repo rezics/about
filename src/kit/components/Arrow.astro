@@ -8,8 +8,8 @@ interface Props {
 const { dir = 'right', class: className } = Astro.props;
 ---
 <svg class:list={['arrow', 'arrow-svg', className]} viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false" style={dir === 'down' ? 'rotate: 90deg' : undefined}>
-  <path d="M1 8h12M8.5 3.5 13 8l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" />
+  <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
 </svg>
 <style>
-  .arrow-svg { display: inline-block; width: 0.9em; height: 0.9em; margin-left: 0.35em; vertical-align: -0.08em; flex: none; }
+  .arrow-svg { display: inline-block; width: 0.9em; height: 0.9em; margin-left: 0.3em; vertical-align: -0.08em; flex: none; transition: translate var(--d-s) var(--ease-soft); }
 </style>

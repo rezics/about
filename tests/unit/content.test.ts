@@ -68,8 +68,9 @@ describe('kinds, modules and parts', () => {
     expect(site.nav.action).toContain('REZICS');
   });
 
-  test('the home story follows real kinds', () => {
-    for (const c of site.home.identity.chapters) expect(kindSet.has(c.kind), c.kind).toBe(true);
+  test('the home page names no specific work', () => {
+    const text = JSON.stringify(site.home);
+    expect(text).not.toMatch(/《[^》]+》/);
   });
 
   test('page metadata: titles at most 24 characters, descriptions 50 to 80', () => {

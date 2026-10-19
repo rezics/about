@@ -1,530 +1,73 @@
 ---
-// Home (DESIGN.md "Composition plan", phones first): the statement and the strip of nine kind
-// squares first, then the parts picker, then each remaining layout family once.
+// Home (DESIGN.md "Direction v2", Rhythm): the centred intro over a large painted image, two
+// text-and-image rows, one statement, the nine products as a calm card row, a third row, the
+// commitments, and the closing panel into REZICS. It names no specific work.
 import PageLayout from '../kit/layouts/PageLayout.astro';
-import Section from '../kit/components/Section.astro';
-import KindSquare from '../kit/components/KindSquare.astro';
-import ModuleSquare from '../kit/components/ModuleSquare.astro';
-import SquareName from '../kit/components/SquareName.astro';
-import PartsList from '../kit/components/PartsList.astro';
+import PageIntro from '../kit/components/PageIntro.astro';
+import MediaRow from '../kit/components/MediaRow.astro';
+import Statement from '../kit/components/Statement.astro';
+import SectionHead from '../kit/components/SectionHead.astro';
+import CardRow, { type CardItem } from '../kit/components/CardRow.astro';
+import ItemList from '../kit/components/ItemList.astro';
+import ClosingPanel from '../kit/components/ClosingPanel.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
 import Arrow from '../kit/components/Arrow.astro';
-import { kinds, modules, partById, site, moduleHref, kindById } from '../kit/content';
-import { kindFields, fieldStyle } from '../kit/theme';
+import { kinds, site, kindHref } from '../kit/content';
+import { kindFields } from '../kit/theme';
 
 const h = site.home;
-const identity = partById('identity');
-// The 西遊記 graph: the first chapter is the source at the centre; later chapters take the
-// slots right, below, left and above, each linked back to the source. One rule set per state
-// (the chapter in view) shows the nodes and links reached so far and lights the current node.
-const chapters = h.identity.chapters;
-const slots = ['hub', 'right', 'bottom', 'left', 'top'] as const;
-const graphCss = chapters
-  .map((_, s) =>
-    [
-      ...chapters.slice(0, s + 1).map((__, k) => `.graph[data-state="${s}"] [data-node="${k}"]{opacity:1;translate:0 0}`),
-      ...chapters.slice(1, s + 1).map((__, k) => `.graph[data-state="${s}"] [data-link="${k + 1}"]{--drawn:1}`),
-      `.graph[data-state="${s}"] [data-node="${s}"] .sq__img{clip-path:inset(0 0 0 0)}`,
-      `.graph[data-state="${s}"] [data-node="${s}"]{--sqname-trap:0.08em;--lit:1}`,
-    ].join(''),
-  )
-  .join('');
-// The parts picker works without script: radio buttons, and one rule per kind shows its panel.
-const pickCss = kinds
-  .map((k) => `.pick:has(input[value="${k.id}"]:checked) [data-pick-panel="${k.id}"]{display:block}`)
-  .join('');
+const card = (group: 'works' | 'agents'): CardItem[] =>
+  kinds
+    .filter((k) => k.group === group)
+    .map((k, i) => ({ title: k.name, body: k.summary, href: kindHref(k.id), art: { field: kindFields[k.id].field, variant: i } }));
 ---
 <PageLayout meta={site.meta} home action={false}>
-  <!-- 1 Hero: the statement, the action, and the strip of nine kind squares (the signature) -->
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__text grid">
-      <h1 id="hero-title" class="t-xl hero__title">{h.hero.headline.split(/(?<=，)/).map((clause) => <span class="hero__clause nw">{clause}</span>)}</h1>
-      <p class="lede hero__lede">{h.hero.lede}</p>
-      <div class="hero__actions">
-        <ProductCall label={h.hero.primary} />
-        <a class="link-draw hero__secondary" href="#kinds">{h.hero.secondary}<Arrow dir="down" /></a>
-      </div>
+  <PageIntro
+    title={h.hero.headline}
+    lede={h.hero.lede}
+    image={{ base: '/images/home/hero', alt: h.hero.imageAlt, widths: [640, 1024, 1536], ratio: 16 / 9 }}
+  >
+    <ProductCall label={h.hero.primary} />
+    <a class="link-draw" href="#products">{h.hero.secondary}<Arrow dir="down" /></a>
+  </PageIntro>
+
+  <MediaRow title={h.index.headline} body={h.index.body} image={{ base: '/images/home/index', alt: h.index.imageAlt }}>
+    <a class="link-draw" href="/engine/universal-index/">{h.index.link}<Arrow /></a>
+  </MediaRow>
+
+  <MediaRow title={h.community.headline} body={h.community.body} image={{ base: '/images/home/community', alt: h.community.imageAlt }} reverse>
+    <a class="link-draw" href="/engine/community/">{h.community.link}<Arrow /></a>
+  </MediaRow>
+
+  <Statement text={h.statement.text} sub={h.statement.body}>
+    <a class="link-draw" href="/engine/">{h.statement.link}<Arrow /></a>
+  </Statement>
+
+  <section id="products" class="products" aria-labelledby="products-title">
+    <div class="container">
+      <SectionHead id="products-title" title={h.products.headline} lede={h.products.lede} />
     </div>
-    <div class="strip" id="kinds" data-strip>
-      <ul class="strip__row" role="list">
-        {kinds.map((k) => (
-          <li class="strip__item">
-            <KindSquare kind={k.id} mode="flood" describe sizes="(max-width: 599px) 40vw, calc((100vw - 64px) / 9)" />
-            <span class="strip__dot" aria-hidden="true"></span>
-          </li>
-        ))}
-      </ul>
-      <div class="strip__foot">
-        <p class="strip__caption mono">{h.hero.caption}</p>
-        <button type="button" class="strip__toggle mono" data-strip-toggle data-pause={site.ui.pause} data-play={site.ui.play} aria-pressed="false" hidden>{site.ui.pause}</button>
-      </div>
+    <div class="products__group">
+      <p class="container products__label label">{site.nav.groups.works}</p>
+      <CardRow items={card('works')} cols={3} ratio={16 / 9} bare />
+    </div>
+    <div class="products__group">
+      <p class="container products__label label">{site.nav.groups.agents}</p>
+      <CardRow items={card('agents')} cols={3} ratio={16 / 9} bare />
     </div>
   </section>
 
-  <!-- 2 Parts: pick a kind, see its eight parts as a list -->
-  <Section id="parts" mood="normal" labelledby="parts-title" class="parts">
-    <div class="col-1-4 parts__text">
-      <h2 id="parts-title" class="t-l">{h.index.headline}</h2>
-      <p class="muted">{h.index.body}</p>
-    </div>
-    <fieldset class="col-5-12 pick" data-pick>
-      <legend class="pick__legend mono">{site.ui.pick}</legend>
-      <div class="pick__tabs">
-        {kinds.map((k, i) => (
-          <label class="pick__tab" style={fieldStyle(kindFields[k.id])}>
-            <input class="sr-only" type="radio" name="pick-kind" value={k.id} checked={i === 0} aria-label={k.name} />
-            <span class="pick__sq"><SquareName name={k.name} /></span>
-          </label>
-        ))}
-      </div>
-      {kinds.map((k) => (
-        <div class="pick__panel" data-pick-panel={k.id} style={fieldStyle(kindFields[k.id])}>
-          <p class="pick__name t-m">{k.name}</p>
-          <PartsList parts={k.parts} notes={k.partNotes} />
-        </div>
-      ))}
-      <p class="pick__caption mono">{site.kindPage.partsCaption}</p>
-    </fieldset>
-    <Fragment set:html={`<style>${pickCss}</style>`} />
-  </Section>
+  <MediaRow title={h.agents.headline} body={h.agents.body} image={{ base: '/images/home/open', alt: h.agents.imageAlt }}>
+    <a class="link-draw" href="/developers/">{h.agents.link}<Arrow /></a>
+  </MediaRow>
 
-  <!-- 3 One identity: the chapters on the right grow a graph on the left, one node at a time,
-       each later form linked back to the source, until the squares form 同一張圖. Phones show
-       the same edges inline, one per chapter. -->
-  <Section mood="normal" labelledby="identity-title" class="identity" data-chapters>
-    <div class="col-1-5 identity__stage-wrap">
-      <div class="graph" data-stage data-state="0" aria-hidden="true">
-        {chapters.map((c, i) => (
-          <div class:list={['graph__node', `graph__node--${slots[i] ?? 'top'}`]} data-node={i}>
-            <KindSquare kind={c.kind} mode="flood" link={false} sizes="(max-width: 767px) 1px, 12vw" />
-            {i === 0 && <span class="graph__id"><span>{identity.name}</span><span class="mono">{identity.id}</span></span>}
-          </div>
-        ))}
-        {chapters.slice(1).map((_, i) => (
-          <span class:list={['graph__link', `graph__link--${slots[i + 1] ?? 'top'}`]} data-link={i + 1}>
-            <span class="graph__line"></span>
-            <span class="graph__label">{h.identity.link}</span>
-          </span>
-        ))}
-      </div>
-      <Fragment set:html={`<style>${graphCss}</style>`} />
-    </div>
-    <div class="col-7-12 identity__text">
-      <h2 id="identity-title" class="t-l">{h.identity.headline}</h2>
-      <p class="lede">{h.identity.body}</p>
-      <ol class="identity__chapters" role="list">
-        {chapters.map((c, i) => (
-          <li class="identity__chapter" data-chapter data-active={i === 0 ? '' : undefined}>
-            <div class="edge" aria-hidden="true">
-              <span class="edge__sq" style={fieldStyle(kindFields[c.kind])}><SquareName name={kindById(c.kind).name} /></span>
-              {i === 0 ? (
-                <span class="edge__id"><span>{identity.name}</span><span class="mono">{identity.id}</span></span>
-              ) : (
-                <>
-                  <span class="edge__link"><span class="edge__label">{h.identity.link}</span><span class="edge__line"></span></span>
-                  <span class="edge__sq edge__sq--small" style={fieldStyle(kindFields[chapters[0]!.kind])}><SquareName name={kindById(chapters[0]!.kind).name} /></span>
-                </>
-              )}
-            </div>
-            <span class="identity__kind mono">{kindById(c.kind).name}</span>
-            <h3 class="t-l">{c.title}</h3>
-            <p class="identity__body">{c.body}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </Section>
+  <ItemList title={h.principles.headline} items={h.principles.items} class="principles" />
 
-  <!-- 4 Community: asymmetric pair -->
-  <Section mood="normal" labelledby="community-title" class="community">
-    <div class="col-1-6 community__square">
-      <ModuleSquare module="community" />
-    </div>
-    <div class="community__text">
-      <h2 id="community-title" class="t-l">{h.community.headline}</h2>
-      <p class="muted">{h.community.body}</p>
-      <dl class="community__points">
-        {h.community.points.map((p) => (
-          <div>
-            <dt class="t-m">{p.title}</dt>
-            <dd>{p.body}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-  </Section>
-
-  <!-- 5 Engine: index list with a preview square -->
-  <Section mood="normal" labelledby="engine-title" class="engine" data-preview-list>
-    <div class="col-1-4 engine__aside">
-      <h2 id="engine-title" class="t-l">{h.engine.headline}</h2>
-      <p class="muted">{h.engine.body}</p>
-      <div class="engine__preview" data-preview aria-hidden="true">
-        {modules.map((m, i) => (
-          <div class="engine__preview-item" data-preview-item={m.id} data-active={i === 0 ? '' : undefined}>
-            <ModuleSquare module={m.id} link={false} />
-          </div>
-        ))}
-      </div>
-    </div>
-    <ol class="col-5-12 engine__list" role="list">
-      {modules.map((m, i) => (
-        <li>
-          <a class="engine__row" href={moduleHref(m.id)} data-preview-key={m.id} data-active={i === 0 ? '' : undefined}>
-            <span class="engine__name t-l">{m.name}</span>
-            <span class="engine__summary">{m.summary}</span>
-            <Arrow class="engine__arrow" />
-          </a>
-        </li>
-      ))}
-    </ol>
-  </Section>
-
-  <!-- 6 Agents and developers: facts on an ink band -->
-  <Section mood="normal" band="ink" labelledby="agents-title" class="agents">
-    <div class="col-1-5 agents__text">
-      <h2 id="agents-title" class="t-l">{h.agents.headline}</h2>
-      <p class="muted">{h.agents.body}</p>
-      <p><a class="link-draw agents__more" href="/developers/">{site.nav.developers}<Arrow /></a></p>
-    </div>
-    <dl class="col-7-12 agents__facts">
-      {h.agents.facts.map((f) => (
-        <div class="agents__fact">
-          <dt class="t-m">{f.title}</dt>
-          <dd class="muted">{f.body}</dd>
-        </div>
-      ))}
-    </dl>
-  </Section>
-
-  <!-- 7 Principles: statement -->
-  <Section mood="airy" labelledby="principles-title" class="principles">
-    <h2 id="principles-title" class="col-1-4 principles__title mono">{h.principles.headline}</h2>
-    <ol class="col-5-12 principles__list" role="list">
-      {h.principles.items.map((p) => (
-        <li>
-          <p class="principles__item" data-split="lines">{p.title}</p>
-          <p class="muted principles__body">{p.body}</p>
-        </li>
-      ))}
-    </ol>
-  </Section>
-
-  <!-- 8 Finale: the last square, the action into REZICS (the footer adds no second one here) -->
-  <Section mood="normal" labelledby="finale-title" class="finale-cta">
-    <h2 id="finale-title" class="col-1-7 finale-cta__title">{h.finale.headline}</h2>
-    <div class="finale-cta__square">
-      <p class="finale-cta__body"><span class="finale-cta__cursor" aria-hidden="true" data-cursor></span>{h.finale.body}</p>
-      <ProductCall />
-    </div>
-  </Section>
+  <ClosingPanel title={h.finale.headline} body={h.finale.body} />
 </PageLayout>
 
-<script>
-  import { initStrip } from '../home/strip';
-  initStrip();
-</script>
-
 <style>
-  /* 1 Hero */
-  .hero { padding-block: clamp(24px, 4vw, 56px) clamp(32px, 4vw, 64px); }
-  .hero__text { row-gap: 24px; }
-  .hero__title { grid-column: 1 / span 10; max-width: 15em; margin-left: -0.04em; }
-  /* Each clause holds together: the headline breaks only at its commas. */
-  .hero__clause { white-space: nowrap; }
-  .hero__lede { grid-column: 1 / span 7; }
-  .hero__actions { grid-column: 1 / span 7; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; }
-  .hero__secondary { font-weight: 700; }
-  @media (max-width: 767px) {
-    .hero__title, .hero__lede, .hero__actions { grid-column: 1 / -1; }
-  }
-  /* Phones: sized so the longest clause fills the line. */
-  @media (max-width: 599px) {
-    .hero__title { font-size: 8.2vw; max-width: none; }
-  }
-
-  /* The strip: nine squares in one row on desktop, a scroll-snap row on phones. */
-  .strip { margin-top: clamp(28px, 4vw, 56px); }
-  .strip__row {
-    display: grid;
-    grid-template-columns: repeat(9, minmax(0, 1fr));
-    gap: clamp(6px, 0.8vw, 12px);
-    padding-inline: var(--gutter);
-  }
-  .strip__item { position: relative; min-width: 0; }
-  .strip__dot {
-    position: absolute;
-    left: 50%;
-    bottom: -14px;
-    width: 8px;
-    height: 8px;
-    margin-left: -4px;
-    background: var(--c-mark);
-    opacity: 0;
-    transition: opacity var(--d-s) var(--ease-snap);
-  }
-  .strip__item:has(.is-lit) .strip__dot { opacity: 1; }
-  .strip__foot {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-top: 22px;
-    padding-inline: var(--gutter);
-  }
-  .strip__caption { color: var(--c-muted); font-size: var(--t-s); }
-  .strip__toggle {
-    min-height: 32px;
-    padding: 0 10px;
-    border: 1px solid var(--c-line-strong);
-    color: var(--c-fg);
-    transition: background-color var(--d-s), color var(--d-s);
-  }
-  @media (hover: hover) { .strip__toggle:hover { background: var(--c-fg); color: var(--c-bg); } }
-  .strip__toggle:focus-visible { background: var(--c-fg); color: var(--c-bg); }
-  @media (max-width: 599px) {
-    .strip__row {
-      grid-template-columns: none;
-      grid-auto-flow: column;
-      grid-auto-columns: 40vw;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--gutter);
-      scrollbar-width: none;
-      padding-bottom: 18px;
-      mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
-    }
-    .strip__item { scroll-snap-align: start; }
-    .strip__dot { bottom: 2px; }
-    .strip__foot { margin-top: 8px; }
-  }
-
-  /* 2 Parts picker */
-  .parts__text { display: flex; flex-direction: column; gap: 16px; align-self: start; }
-  .pick { border: 0; padding: 0; margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 20px; }
-  .pick__legend { color: var(--c-muted); margin-bottom: 12px; padding: 0; font-size: var(--t-s); }
-  .pick__tabs { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 6px; }
-  .pick__tab { position: relative; cursor: pointer; }
-  .pick__sq {
-    position: relative;
-    display: block;
-    aspect-ratio: 1;
-    container-type: inline-size;
-    background: var(--field);
-    transition: translate var(--d-s) var(--ease-snap);
-  }
-  /* The chosen kind steps up one notch and carries the red mark. */
-  .pick__tab:has(input:checked) .pick__sq { translate: 0 -6px; }
-  .pick__tab:has(input:checked)::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -12px;
-    width: 8px;
-    height: 8px;
-    margin-left: -4px;
-    background: var(--c-mark);
-  }
-  @media (hover: hover) { .pick__tab:hover .pick__sq { translate: 0 -6px; } }
-  .pick__tab:has(input:focus-visible) .pick__sq { outline: 2px solid var(--focus); outline-offset: 3px; }
-  .pick__panel { display: none; margin-top: 8px; }
-  .pick__name { margin-bottom: 12px; }
-  /* Chips slot into place, one after another, whenever a panel opens. */
-  .pick__panel :global(.chip) { animation: rz-slot var(--d-m) cubic-bezier(0.16, 0.84, 0.3, 1.02) both; animation-delay: calc(var(--i) * 40ms); }
-  .pick__caption { color: var(--c-muted); font-size: var(--t-s); }
-
-  /* 3 Identity: the graph (desktop) */
-  .identity__stage-wrap { align-self: stretch; }
-  .graph {
-    --node: 26%;
-    --gap: calc((100% - 3 * var(--node)) / 2);
-    position: sticky;
-    top: calc(var(--header-h) + 64px);
-    aspect-ratio: 1;
-    container-type: inline-size;
-  }
-  .graph__node {
-    position: absolute;
-    width: var(--node);
-    opacity: 0;
-    transition: opacity var(--d-m) var(--ease-snap), translate var(--d-m) var(--ease-snap);
-  }
-  .graph__node :global(.sq) { box-shadow: 0 0 0 calc(var(--lit, 0) * 3px) var(--c-bg), 0 0 0 calc(var(--lit, 0) * 5px) var(--c-mark); transition: box-shadow var(--d-s) var(--ease-snap); }
-  .graph__node--hub { left: calc(var(--node) + var(--gap)); top: calc(var(--node) + var(--gap)); }
-  /* Later forms slot in from beyond their side, along the grid. */
-  .graph__node--right { left: calc(2 * (var(--node) + var(--gap))); top: calc(var(--node) + var(--gap)); translate: 12% 0; }
-  .graph__node--bottom { left: calc(var(--node) + var(--gap)); top: calc(2 * (var(--node) + var(--gap))); translate: 0 12%; }
-  .graph__node--left { left: 0; top: calc(var(--node) + var(--gap)); translate: -12% 0; }
-  .graph__node--top { left: calc(var(--node) + var(--gap)); top: 0; translate: 0 -12%; }
-  .graph__id {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: calc(100% + 10px);
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
-    padding: 8px 10px;
-    border: 1px solid var(--c-line-strong);
-    background: var(--c-bg);
-    font-weight: 700;
-    font-size: var(--t-s);
-  }
-  .graph__id .mono { color: var(--c-muted); }
-  /* Links run from each later form back to the source: a line that draws from the form's side,
-     with its relation written beside it. */
-  .graph__link { position: absolute; --drawn: 0; }
-  .graph__line { position: absolute; background: var(--c-fg); transition: scale var(--d-m) var(--ease-snap) 0.12s; }
-  .graph__label {
-    position: absolute;
-    font-size: var(--t-s);
-    font-weight: 700;
-    white-space: nowrap;
-    opacity: var(--drawn);
-    transition: opacity var(--d-s) var(--ease-snap) 0.3s;
-  }
-  .graph__link--right, .graph__link--left { top: calc(var(--node) + var(--gap)); height: var(--node); width: var(--gap); }
-  .graph__link--right { left: calc(2 * var(--node) + var(--gap)); }
-  .graph__link--left { left: var(--node); }
-  .graph__link--right .graph__line, .graph__link--left .graph__line { left: 0; right: 0; top: 50%; height: 2px; scale: var(--drawn) 1; }
-  .graph__link--right .graph__line { transform-origin: right center; }
-  .graph__link--left .graph__line { transform-origin: left center; }
-  .graph__link--right .graph__label, .graph__link--left .graph__label { left: 50%; top: calc(50% - 1.9em); translate: -50% 0; }
-  .graph__link--bottom, .graph__link--top { left: calc(var(--node) + var(--gap)); width: var(--node); height: var(--gap); }
-  .graph__link--bottom { top: calc(2 * var(--node) + var(--gap)); }
-  .graph__link--top { top: var(--node); }
-  .graph__link--bottom .graph__line, .graph__link--top .graph__line { top: 0; bottom: 0; left: 50%; width: 2px; scale: 1 var(--drawn); }
-  .graph__link--bottom .graph__line { transform-origin: center bottom; }
-  .graph__link--top .graph__line { transform-origin: center top; }
-  .graph__link--bottom .graph__label, .graph__link--top .graph__label { left: calc(50% + 10px); top: 50%; translate: 0 -50%; }
-  /* Arrowhead at the source's end of each link. */
-  .graph__line::after { content: ''; position: absolute; width: 8px; height: 8px; background: var(--c-fg); }
-  .graph__link--right .graph__line::after { left: -1px; top: -3px; }
-  .graph__link--left .graph__line::after { right: -1px; top: -3px; }
-  .graph__link--bottom .graph__line::after { top: -1px; left: -3px; }
-  .graph__link--top .graph__line::after { bottom: -1px; left: -3px; }
-  /* Without motion (reduced motion or no script): the finished graph. */
-  :global(html:not(.motion)) .graph__node { opacity: 1; translate: 0 0; }
-  :global(html:not(.motion)) .graph__link { --drawn: 1; }
-
-  .identity__text { display: flex; flex-direction: column; gap: 24px; }
-  .identity__chapters { margin-top: 24px; }
-  .identity__chapter {
-    min-height: 62svh;
-    padding-block: 32px;
-    border-top: 1px solid var(--c-line);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: var(--measure);
-    color: var(--c-muted);
-    transition: color var(--d-m) var(--ease-snap);
-  }
-  .identity__chapter:last-child { min-height: 40svh; }
-  /* The chapter in view is ink, the others muted (still AA on paper). */
-  .identity__chapter[data-active], :global(html:not(.js)) .identity__chapter { color: var(--c-fg); }
-  .identity__kind { color: var(--c-muted); }
-  .identity__body { font-size: var(--t-m); line-height: 1.65; }
-
-  /* Phones: each chapter shows its own edge of the graph inline. */
-  .edge { display: none; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .edge__sq { position: relative; display: block; flex: none; width: 72px; aspect-ratio: 1; container-type: inline-size; background: var(--field); }
-  .edge__sq--small { width: 44px; }
-  .edge__link { flex: 1 1 auto; max-width: 140px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-  .edge__label { font-size: var(--t-s); font-weight: 700; white-space: nowrap; }
-  .edge__line { position: relative; align-self: stretch; height: 2px; background: var(--c-fg); }
-  .edge__line::after { content: ''; position: absolute; right: -1px; top: -3px; width: 8px; height: 8px; background: var(--c-fg); }
-  .edge__id { display: inline-flex; gap: 8px; align-items: baseline; padding: 6px 10px; border: 1px solid var(--c-line-strong); font-weight: 700; font-size: var(--t-s); }
-  .edge__id .mono { color: var(--c-muted); }
-  @media (max-width: 767px) {
-    .identity__stage-wrap { display: none; }
-    .identity__chapter, .identity__chapter:last-child { min-height: 0; color: var(--c-fg); }
-    .edge { display: flex; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .identity__chapter { color: var(--c-fg); }
-  }
-
-  /* 4 Community */
-  .community__text { grid-column: 8 / span 5; align-self: end; display: flex; flex-direction: column; gap: 20px; }
-  .community__points { display: grid; gap: 20px; margin-top: 12px; }
-  .community__points div { border-top: 1px solid var(--c-line); padding-top: 14px; }
-  .community__points dd { color: var(--c-muted); margin-top: 6px; }
-  @media (max-width: 767px) {
-    .community__text { grid-column: 1 / -1; }
-  }
-
-  /* 5 Engine */
-  .engine__aside { display: flex; flex-direction: column; gap: 16px; align-self: start; position: sticky; top: calc(var(--header-h) + 32px); }
-  .engine__preview { position: relative; aspect-ratio: 1; margin-top: 16px; overflow: clip; }
-  /* Inactive squares slide out below and then leave the rendering (no stacked hidden text). */
-  .engine__preview-item { position: absolute; inset: 0; translate: 0 101%; visibility: hidden; transition: translate var(--d-m) var(--ease-snap), visibility 0s linear var(--d-m); }
-  .engine__preview-item[data-active] { translate: 0 0; z-index: 1; visibility: visible; transition-delay: 0s; }
-  .engine__list { border-top: 1px solid var(--c-line-strong); }
-  .engine__row {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr) auto;
-    align-items: center;
-    gap: var(--gutter);
-    min-height: clamp(88px, 9vw, 128px);
-    padding-inline: 12px;
-    border-bottom: 1px solid var(--c-line-strong);
-    /* Hover and focus: the row floods with ink from the left in one step and its text inverts,
-       the primary button's verb. */
-    box-shadow: inset 0 0 0 0 var(--c-ink);
-    transition: box-shadow var(--d-m) var(--ease-snap), color var(--d-s) var(--ease-snap);
-  }
-  .engine__name { line-height: 1.1; }
-  .engine__summary { color: var(--c-muted); transition: color var(--d-s) var(--ease-snap); }
-  .engine__row :global(.engine__arrow) { width: 1.25em; height: 1.25em; font-size: var(--t-m); }
-  @media (hover: hover) {
-    .engine__row:hover { box-shadow: inset 60em 0 0 0 var(--c-ink); color: var(--c-paper); }
-    .engine__row:hover .engine__summary { color: #c4cbd6; }
-    .engine__row:hover :global(.engine__arrow) { translate: 0.4em 0; }
-  }
-  .engine__row:focus-visible { box-shadow: inset 60em 0 0 0 var(--c-ink); color: var(--c-paper); }
-  .engine__row:focus-visible .engine__summary { color: #c4cbd6; }
-  @media (max-width: 767px) {
-    .engine__aside { position: static; }
-    .engine__preview { display: none; }
-    .engine__row { grid-template-columns: 1fr auto; padding-block: 16px; row-gap: 4px; }
-    .engine__summary { grid-column: 1; grid-row: 2; }
-    .engine__row :global(.engine__arrow) { grid-row: 1 / span 2; grid-column: 2; }
-  }
-
-  /* 6 Agents */
-  .agents__text { display: flex; flex-direction: column; gap: 20px; }
-  .agents__more { font-weight: 700; }
-  .agents__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--c-line-strong); border-left: 1px solid var(--c-line-strong); }
-  .agents__fact { padding: clamp(16px, 2vw, 28px); border-right: 1px solid var(--c-line-strong); border-bottom: 1px solid var(--c-line-strong); display: flex; flex-direction: column; gap: 10px; }
-  /* Phones: one column, so each fact reads as full lines. */
-  @media (max-width: 599px) {
-    .agents__facts { grid-template-columns: minmax(0, 1fr); }
-  }
-
-  /* 7 Principles */
-  .principles__title { color: var(--c-muted); align-self: start; padding-top: 1.2em; font-size: var(--t-s); }
-  .principles__list { display: flex; flex-direction: column; gap: clamp(40px, 6vw, 88px); }
-  .principles__item { font-weight: 900; font-size: clamp(2rem, 1rem + 4vw, 4.5rem); line-height: 1.1; letter-spacing: var(--track-display); }
-  .principles__body { margin-top: 12px; font-size: var(--t-m); }
-
-  /* 8 Finale */
-  .finale-cta { border-top: 1px solid var(--c-line); }
-  .finale-cta__title { font-weight: 900; font-size: clamp(3rem, 0.8rem + 8.6vw, 10rem); line-height: 1.04; letter-spacing: var(--track-display); margin-left: -0.05em; align-self: end; }
-  .finale-cta__square {
-    grid-column: 9 / span 4;
-    align-self: end;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-    padding: clamp(20px, 3vw, 40px);
-    border: 1px solid var(--c-line-strong);
-  }
-  .finale-cta__body { font-size: var(--t-m); font-weight: 700; line-height: 1.5; }
-  .finale-cta__cursor { display: inline-block; width: 4px; height: 1.25em; margin-right: 0.4em; vertical-align: -0.2em; background: var(--c-mark); }
-  @media (max-width: 767px) {
-    .finale-cta__square { grid-column: 1 / -1; }
-  }
+  .products { padding-block: calc(var(--space-section) / 2); }
+  .products__group { margin-top: clamp(32px, 4vw, 56px); }
+  .products__label { color: var(--c-muted); margin-bottom: 16px; }
 </style>

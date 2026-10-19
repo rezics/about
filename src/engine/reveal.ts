@@ -1,7 +1,9 @@
-// Declarative motion through data attributes:
-//   data-split="lines|words|chars"   masked text reveal (SplitText), on scroll or on intro
-//   data-reveal="up|fade|clip|slot"  block reveal; `slot` slides the element's children into
-//                                    place one by one along the grid (squares in a grid)
+// Declarative motion through data attributes (DESIGN.md "Direction v2", Motion: quiet):
+//   data-split="lines|words|chars"   text fades and rises a few pixels, line by line
+//   data-reveal="up|fade|image|slot" block reveal: `up` fades and rises a few pixels, `fade`
+//                                    fades, `image` fades while its picture settles from a
+//                                    slight scale, `slot` brings the children in one by one
+//                                    (`clip` is the older name of `image`)
 //   data-intro                        play with the page intro instead of on scroll
 //   data-delay="0.2"                  extra delay (seconds)
 // Every effect is skipped under reduced motion and on phones (< 600 px); CSS keeps content
@@ -9,12 +11,13 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { dur, ease, prefersReducedMotion } from './env';
+import { dur, prefersReducedMotion } from './env';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const durations = { lines: 1.0, words: 0.9, chars: 0.8 } as const;
-const staggers = { lines: 0.08, words: 0.035, chars: 0.02 } as const;
+const durations = { lines: 0.9, words: 0.8, chars: 0.7 } as const;
+const staggers = { lines: 0.07, words: 0.03, chars: 0.015 } as const;
+const calm = 'power3.out';
 
 function splitTween(el: HTMLElement, isIntro: boolean) {
   const type = (el.dataset.split || 'lines') as keyof typeof durations;
@@ -22,7 +25,6 @@ function splitTween(el: HTMLElement, isIntro: boolean) {
   const s = { tween: undefined as gsap.core.Tween | undefined, done: false, requested: false };
   SplitText.create(el, {
     type: type === 'lines' ? 'lines' : `lines,${type}`,
-    mask: 'lines',
     autoSplit: true,
     linesClass: 'split-line',
     onSplit(self) {
@@ -30,10 +32,11 @@ function splitTween(el: HTMLElement, isIntro: boolean) {
       if (s.done) return;
       const targets = type === 'lines' ? self.lines : type === 'words' ? self.words : self.chars;
       s.tween = gsap.from(targets, {
-        yPercent: 110,
+        y: 12,
+        autoAlpha: 0,
         duration: durations[type],
         stagger: staggers[type],
-        ease: ease.out,
+        ease: calm,
         delay,
         paused: isIntro && !s.requested,
         onComplete: () => {
@@ -57,27 +60,29 @@ function blockTween(el: HTMLElement, paused: boolean) {
   const trigger = paused ? undefined : { trigger: el, start: 'top 90%', once: true };
   if (kind === 'slot') {
     return gsap.from(el.children, {
-      yPercent: 24,
+      y: 16,
       autoAlpha: 0,
-      duration: dur.m,
-      ease: ease.settle,
-      stagger: dur.stagger,
+      duration: dur.l,
+      ease: calm,
+      stagger: 0.07,
       delay,
       paused,
       scrollTrigger: trigger,
     });
   }
-  const from: gsap.TweenVars =
-    kind === 'fade' ? { autoAlpha: 0 }
-    : kind === 'clip' ? { clipPath: 'inset(100% 0% 0% 0%)', autoAlpha: 1 }
-    : { y: 40, autoAlpha: 0 };
-  const to: gsap.TweenVars = kind === 'clip' ? { clipPath: 'inset(0% 0% 0% 0%)' } : {};
+  if (kind === 'image' || kind === 'clip') {
+    const img = el.querySelector('img');
+    const tl = gsap.timeline({ delay, paused, scrollTrigger: trigger });
+    tl.fromTo(el, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.9, ease: 'power2.out' }, 0);
+    if (img) tl.fromTo(img, { scale: 1.06 }, { scale: 1, duration: 1.6, ease: calm }, 0);
+    return tl;
+  }
+  const from: gsap.TweenVars = kind === 'fade' ? { autoAlpha: 0 } : { y: 16, autoAlpha: 0 };
   return gsap.fromTo(el, from, {
-    ...to,
     y: 0,
     autoAlpha: 1,
-    duration: kind === 'fade' ? dur.l : 1.1,
-    ease: ease.out,
+    duration: kind === 'fade' ? dur.l : 0.9,
+    ease: calm,
     delay,
     paused,
     scrollTrigger: trigger,

@@ -1,0 +1,64 @@
+---
+/**
+ * Titled items in two to four columns, each under a hairline (DESIGN.md "Direction v2": inner
+ * pages use the same parts with more text). `numbered` sets a small step number in the accent
+ * tint before each title, for sequences. `cards` sets each item on a tinted card instead.
+ * Phones: one column.
+ */
+interface Item {
+  title: string;
+  body?: string;
+  /** A short line above the title (a platform, a chapter). */
+  label?: string;
+}
+interface Props {
+  items: Item[];
+  cols?: 2 | 3 | 4 | 5;
+  numbered?: boolean;
+  look?: 'lines' | 'cards';
+  level?: 'h3' | 'h4';
+  class?: string;
+}
+const { items, cols = 3, numbered = false, look = 'lines', level: Tag = 'h3', class: className } = Astro.props;
+const List = numbered ? 'ol' : 'ul';
+---
+<List class:list={['items', `items--${look}`, numbered && 'items--numbered', className]} role="list" style={`--item-cols:${cols}`} data-reveal="slot">
+  {items.map((item, i) => (
+    <li class="items__item">
+      {numbered && <span class="items__n" aria-hidden="true">{i + 1}</span>}
+      {item.label && <p class="items__label label">{item.label}</p>}
+      <Tag class="items__title">{item.title}</Tag>
+      {item.body && <p class="items__body">{item.body}</p>}
+    </li>
+  ))}
+</List>
+<style>
+  .items { display: grid; grid-template-columns: repeat(var(--item-cols), minmax(0, 1fr)); gap: clamp(28px, 3vw, 40px) var(--gutter); }
+  .items__item { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .items--lines .items__item { padding-top: 20px; border-top: 1px solid var(--c-line-strong); }
+  .items--cards { gap: var(--gutter); }
+  .items--cards .items__item { padding: 24px; border-radius: var(--r-card); background: var(--tint); }
+  .items__n {
+    display: inline-grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 6px;
+    border-radius: 50%;
+    background: var(--tint-strong);
+    color: var(--c-fg);
+    font-size: var(--t-s);
+    font-weight: 600;
+    font-family: var(--f-latin), var(--f-cjk);
+  }
+  .items--cards .items__n { background: var(--c-surface); }
+  .items__label { color: var(--c-muted); }
+  .items__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.45; }
+  .items__body { color: var(--c-muted); font-size: var(--t-body); line-height: 1.75; }
+  @media (max-width: 1023px) {
+    .items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 599px) {
+    .items { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  }
+</style>

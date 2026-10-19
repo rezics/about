@@ -1,12 +1,14 @@
 ---
 /**
- * Section shell: spacing mood, ground band and the 12-column grid. Place children with the
- * .col-* classes (base.css). Each layout family appears at most once per page (DESIGN.md).
+ * Section shell: spacing mood, ground and the 12-column grid inside the container. Place
+ * children with the .col-* classes (base.css). `band`: `soft` (the muted panel) or `tint` (a soft
+ * tint of the site's accent); `field` is the tint too, `ink` an ink band kept for older pages.
+ * `grid={false}` renders the slot inside the container only.
  */
 interface Props {
   id?: string;
   mood?: 'tight' | 'normal' | 'airy' | 'full' | 'none';
-  band?: 'paper' | 'ink' | 'field';
+  band?: 'paper' | 'soft' | 'tint' | 'ink' | 'field';
   grid?: boolean;
   labelledby?: string;
   class?: string;
@@ -20,7 +22,7 @@ const { id, mood = 'normal', band = 'paper', grid = true, labelledby, class: cla
   aria-labelledby={labelledby}
   {...rest}
 >
-  {grid ? <div class="grid sec__grid"><slot /></div> : <slot />}
+  {grid ? <div class="grid container sec__grid"><slot /></div> : <div class="container"><slot /></div>}
 </section>
 <style>
   .sec { position: relative; }

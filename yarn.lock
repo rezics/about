@@ -760,6 +760,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/manrope@npm:5.3.0":
+  version: 5.3.0
+  resolution: "@fontsource-variable/manrope@npm:5.3.0"
+  checksum: 10c0/8b760dff605c6d43c64e39243568c89f7806e59e86ac80e83a0dab42dfadfb1498d8f1816c78c24875e2f743b5340653c8bdd33cd75d051a1af56ed3802bfd0d
+  languageName: node
+  linkType: hard
+
 "@img/colour@npm:^1.1.0":
   version: 1.1.0
   resolution: "@img/colour@npm:1.1.0"
@@ -3598,6 +3605,7 @@ __metadata:
     "@axe-core/playwright": "npm:4.14.0"
     "@emnapi/core": "npm:1.11.3"
     "@emnapi/runtime": "npm:1.11.3"
+    "@fontsource-variable/manrope": "npm:5.3.0"
     "@playwright/test": "npm:1.64.1"
     "@resvg/resvg-js": "npm:2.6.2"
     "@types/node": "npm:26.6.5"

@@ -1,31 +1,17 @@
 ---
-// 404: one empty square in the grid, the cursor waiting in it, and a way home.
+// 404 (DESIGN.md "Direction v2"): the centred intro and a way home.
 import PageLayout from '../kit/layouts/PageLayout.astro';
-import EmptySquare from '../kit/components/EmptySquare.astro';
+import PageIntro from '../kit/components/PageIntro.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
-import Section from '../kit/components/Section.astro';
-import { kinds, site } from '../kit/content';
-import { kindFields } from '../kit/theme';
+import { site } from '../kit/content';
 
 const nf = site.notFound;
 ---
 <PageLayout meta={nf.meta} noindex>
-  <Section mood="normal" class="nf">
-    <div class="col-1-5 nf__text">
-      <h1 class="t-xl">{nf.headline}</h1>
-      <p class="lede">{nf.body}</p>
-      <p><ProductCall href="/" label={nf.back} /></p>
-    </div>
-    <div class="col-7-12 nf__grid" aria-hidden="true">
-      {kinds.slice(0, 4).map((k) => <span class="nf__cell" style={`background:${kindFields[k.id].field}`}></span>)}
-      <EmptySquare class="nf__empty" />
-      {kinds.slice(4, 8).map((k) => <span class="nf__cell" style={`background:${kindFields[k.id].field}`}></span>)}
-    </div>
-  </Section>
+  <PageIntro title={nf.headline} lede={nf.body} class="nf">
+    <ProductCall href="/" label={nf.back} />
+  </PageIntro>
 </PageLayout>
 <style>
-  .nf { min-height: calc(100svh - var(--header-h)); display: grid; align-content: center; }
-  .nf__text { display: flex; flex-direction: column; gap: 24px; align-self: center; }
-  .nf__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-  .nf__cell { aspect-ratio: 1; opacity: 0.16; }
+  .nf { min-height: 50svh; }
 </style>

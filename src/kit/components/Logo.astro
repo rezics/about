@@ -21,15 +21,12 @@ const { href = '/', label, wordmark = true } = Astro.props;
     min-height: 44px;
     color: var(--c-fg);
   }
-  .logo svg { width: 28px; height: 20px; fill: var(--c-mark); flex: none; transition: translate var(--d-s) var(--ease-snap); }
-  /* The mark steps one notch along the grid. */
-  @media (hover: hover) { .logo:hover svg { translate: 4px 0; } }
-  .logo:focus-visible svg { translate: 4px 0; }
+  .logo svg { width: 25px; height: 18px; fill: var(--c-mark); flex: none; }
+  /* The wordmark in the interface face, as in the product. */
   .logo__word {
-    font-family: 'Archivo', sans-serif;
-    font-weight: 800;
-    font-stretch: 125%;
-    font-size: 15px;
-    letter-spacing: 0.2em;
+    font-family: var(--f-latin), sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.12em;
   }
 </style>

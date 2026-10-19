@@ -1,7 +1,13 @@
-/* Design tokens (DESIGN.md "Phase 2: art direction"). Colour values are repeated in
-   src/kit/theme.ts; tests/unit/theme.test.ts keeps them equal and checks AA contrast. */
+/* Design tokens (DESIGN.md "Direction v2"): the product's own Aura design (rezics-next
+   packages/ui/src/styles.css), copied here because the site carries no package of the app.
+   Colour values are repeated in src/kit/theme.ts; tests/unit/theme.test.ts keeps them equal and
+   checks AA contrast. */
 
-/* Latin: Archivo (variable width 100 to 125, weight 400 to 900), subset to Latin. */
+/* Latin interface face: Manrope (OFL, @fontsource-variable/manrope), declared and preloaded in
+   BaseLayout.astro from the package's Latin file. */
+
+/* Archivo stays only for the square tiles of the header panels (SquareName), whose names are
+   fitted to Archivo's advances (src/kit/fit.ts). Not preloaded: the panels are hidden until opened. */
 @font-face {
   font-family: 'Archivo';
   src: url('/fonts/archivo.woff2') format('woff2');
@@ -10,28 +16,13 @@
   font-display: swap;
   unicode-range: U+0020-007E, U+00A0-00FF, U+2018-201D, U+2026, U+2190-2193;
 }
-/* Until Archivo arrives, Latin text is set in the local Arial-compatible face scaled to
-   Archivo's widths (measured: 98 % at 400 and 700, 108 % at 900), so lines do not rewrap when
-   it swaps in. */
-@font-face {
-  font-family: 'Archivo Fallback';
-  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans'), local('Helvetica');
-  font-weight: 100 600;
-  size-adjust: 98.2%;
-}
 @font-face {
   font-family: 'Archivo Fallback';
   src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Helvetica Bold');
-  font-weight: 700 800;
-  size-adjust: 98.3%;
-}
-@font-face {
-  font-family: 'Archivo Fallback';
-  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Helvetica Bold');
-  font-weight: 900;
+  font-weight: 700 900;
   size-adjust: 108%;
 }
-/* Mono: Martian Mono, for part ids, real counts and code. */
+/* Mono: Martian Mono, for code samples only. */
 @font-face {
   font-family: 'Martian Mono';
   src: url('/fonts/martian-mono.woff2') format('woff2');
@@ -44,72 +35,112 @@
    absent and the local Noto Sans CJK TC or the system face stands in. */
 
 :root {
-  /* Colour roles */
-  --c-paper: #f4f5f2;
-  --c-ink: #0e1420;
-  --c-muted: #566070;
-  --c-line: rgb(14 20 32 / 0.12);
-  --c-line-strong: rgb(14 20 32 / 0.28);
+  /* Aura palette */
+  --c-paper: #f9f6f2;
+  --c-ink: #2b343d;
+  --c-muted: #5d646c;
   --c-link: #2f63ad;
   --c-mark: #df3d35;
+  --c-card: #fefcf9;
+  --c-panel: #efece7;
+  --c-accent-bg: #e4ecf7;
+  --c-accent-fg: #1f4a85;
+  --c-border: #dad7d0;
 
   /* Semantic tokens: everything in the kit reads these, never the palette names above, so a
      site may set its own theme on [data-site='<id>'] (src/kit/README.md "Themes"). */
   --c-bg: var(--c-paper);
   --c-fg: var(--c-ink);
+  --c-surface: var(--c-card);
+  --c-soft: var(--c-panel);
+  --c-line: rgb(43 52 61 / 0.1);
+  --c-line-strong: rgb(43 52 61 / 0.18);
   --c-accent: var(--c-link);
-  --c-curtain: var(--c-ink);
-  /* Focus: an outline in the ink, with the red square at its corner (src/kit/motion/page.ts). */
-  --focus: var(--c-fg);
-  /* The inverted band (.band-ink, the footer) of the theme. */
+  --c-curtain: var(--c-bg);
+  --focus: var(--c-link);
+  /* The inverted band (.band-ink), kept for sites that still use one. */
   --c-band-bg: var(--c-ink);
   --c-band-fg: var(--c-paper);
-  --c-band-muted: #a9b2c1;
-  --c-band-line: rgb(244 245 242 / 0.16);
-  --c-band-line-strong: rgb(244 245 242 / 0.34);
+  --c-band-muted: #b9bfc6;
+  --c-band-line: rgb(249 246 242 / 0.16);
+  --c-band-line-strong: rgb(249 246 242 / 0.32);
   --c-band-link: #9ab8e6;
 
-  /* A field: set per element from src/kit/theme.ts (style="--field:…;--on-field:…"). */
-  --field: var(--c-ink);
-  --on-field: var(--c-paper);
+  /* A field: set per element from src/kit/theme.ts (style="--field:…;--on-field:…"). On a
+     mini-site it is the site's accent: its art, tinted panels and sub-navigation marker. */
+  --field: var(--c-link);
+  --on-field: #ffffff;
+  /* Soft tints of the accent for panels and the current tab; text on them stays --c-fg. */
+  --tint: color-mix(in oklab, var(--field) 8%, var(--c-bg));
+  --tint-strong: color-mix(in oklab, var(--field) 15%, var(--c-bg));
 
   /* Type families: Latin first so CJK falls through to the CJK face glyph by glyph. */
   --f-cjk: 'REZICS Sans', 'Noto Sans TC', 'Noto Sans CJK TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-  --f-body: 'Archivo', 'Archivo Fallback', var(--f-cjk);
-  --f-display: 'Archivo', 'Archivo Fallback', var(--f-cjk);
+  --f-latin: 'Manrope Variable', 'Manrope';
+  --f-body: var(--f-latin), var(--f-cjk);
+  --f-display: var(--f-latin), var(--f-cjk);
+  /* Square tiles only (header panels): Archivo for Latin names, set expanded and heavy. */
+  --f-square: 'Archivo', 'Archivo Fallback', var(--f-cjk);
   --f-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* Fluid scale (390 px → 1440 px) */
-  --t-mega: clamp(3.5rem, 0.9rem + 12vw, 14rem);
-  --t-xl: clamp(2.25rem, 1.2rem + 4.3vw, 5.25rem);
-  --t-l: clamp(1.625rem, 1.2rem + 1.75vw, 2.75rem);
-  --t-m: clamp(1.1875rem, 1.05rem + 0.55vw, 1.5rem);
-  --t-body: clamp(1.0625rem, 1.02rem + 0.18vw, 1.125rem);
+  /* Type scale (390 px → 1440 px). Quiet: page titles 30 to 48 px, section headings 24 to
+     32 px, body 16 to 18 px. Weights 400 and 500; 700 at most. */
+  --t-title: clamp(1.875rem, 1.45rem + 1.75vw, 3rem);
+  --t-h2: clamp(1.5rem, 1.3rem + 0.75vw, 2rem);
+  --t-h3: clamp(1.125rem, 1.06rem + 0.25vw, 1.3125rem);
+  --t-statement: clamp(1.375rem, 1.1rem + 1.1vw, 2.125rem);
+  --t-lede: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --t-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
   --t-s: 0.875rem;
-  --t-xs: 0.75rem;
-  --lh-display: 1.1;
-  --lh-text: 1.7;
-  --track-display: -0.02em;
+  --t-xs: 0.8125rem;
+  /* Older names, mapped onto the quiet scale so pages not yet rebuilt follow it. */
+  --t-mega: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  --t-xl: var(--t-title);
+  --t-l: var(--t-h2);
+  --t-m: var(--t-h3);
+  --lh-title: 1.3;
+  --lh-text: 1.75;
+  --lh-display: 1.3;
+  --track-display: -0.005em;
   --measure: 36em; /* 34 to 40 CJK characters */
 
-  /* Space and grid */
+  /* Space */
   --gutter: clamp(16px, 2vw, 32px);
+  --page-pad: clamp(20px, 5vw, 64px);
+  --container: 1120px;
+  --container-narrow: 760px;
   --cols: 12;
   --u: clamp(0.5rem, 0.35rem + 0.6vw, 1rem);
-  --space-tight: 64px;
-  --space-normal: clamp(80px, 6rem + 2vw, 128px);
-  --space-airy: clamp(128px, 8rem + 6vw, 224px);
+  --space-tight: clamp(48px, 3rem + 2vw, 80px);
+  --space-normal: clamp(64px, 3rem + 5vw, 128px);
+  --space-airy: clamp(72px, 3rem + 7vw, 160px);
+  /* The gap between two v2 sections; each section pads half of it on either side. */
+  --space-section: clamp(64px, 2rem + 6.5vw, 136px);
   --header-h: 64px;
-  --bar-h: 52px;
+  --bar-h: 56px;
 
-  /* Shape: squares only */
-  --radius: 0px;
+  /* Shape: the Aura radius scale. Images and cards 24 px, sheets and the closing panel 30 px,
+     buttons and tabs pills. */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-card: 24px;
+  --r-sheet: 30px;
+  --r-pill: 999px;
+  --radius: var(--r-card);
 
-  /* Motion (DESIGN.md "Motion language") */
-  --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
-  --d-s: 0.32s;
-  --d-m: 0.56s;
-  --d-l: 0.9s;
+  /* Aura shadows, on cards only. */
+  --shadow-card: 0 1px 0 0 rgb(43 52 61 / 0.07), 0 22px 48px -36px rgb(43 52 61 / 0.4);
+  --shadow-card-hover: 0 1px 0 0 rgb(43 52 61 / 0.08), 0 30px 72px -44px rgb(43 52 61 / 0.45);
+  --shadow-float: 0 2px 4px -1px rgb(43 52 61 / 0.08), 0 12px 24px -4px rgb(43 52 61 / 0.12), 0 32px 64px -12px rgb(43 52 61 / 0.16);
+
+  /* Motion: quiet. Content fades and rises a few pixels; images settle from a slight scale. */
+  --ease-snap: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --d-s: 0.24s;
+  --d-m: 0.45s;
+  --d-l: 0.8s;
 
   /* Layers */
   --z-content: 1;
@@ -122,14 +153,15 @@
 @media (max-width: 767px) {
   :root {
     --header-h: 56px;
-    --bar-h: 48px;
+    --bar-h: 52px;
   }
 }
-/* Phones: one section rhythm, about 64 px, so no section leaves a dead band. */
+/* Phones: 48 to 64 px between sections. */
 @media (max-width: 599px) {
   :root {
     --space-tight: 48px;
-    --space-normal: 64px;
+    --space-normal: 56px;
     --space-airy: 64px;
+    --space-section: 56px;
   }
 }

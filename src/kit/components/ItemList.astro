@@ -1,0 +1,64 @@
+---
+/**
+ * A heading beside a list of titled rows (DESIGN.md "Direction v2": inner pages, more text). The
+ * heading block holds its column (sticky on wide screens) while the rows run beside it under
+ * hairlines. Phones: the heading, then the rows. The default slot follows the heading's line.
+ */
+import { idFor } from '../ids';
+import Clauses from '../Clauses.astro';
+
+interface Row {
+  title: string;
+  body: string;
+}
+interface Props {
+  title: string;
+  lede?: string;
+  items: Row[];
+  id?: string;
+  class?: string;
+}
+const { title, lede, items, id: given, class: className } = Astro.props;
+const id = given ?? idFor('list', title);
+---
+<section class:list={['ilist', className]} aria-labelledby={id}>
+  <div class="container ilist__inner">
+    <div class="ilist__head" data-reveal="up">
+      <h2 id={id} class="t-h2"><Clauses text={title} /></h2>
+      {lede && <p class="ilist__lede">{lede}</p>}
+      {Astro.slots.has('default') && <div class="ilist__more"><slot /></div>}
+    </div>
+    <ul class="ilist__rows" role="list" data-reveal="slot">
+      {items.map((row) => (
+        <li class="ilist__row">
+          <h3 class="ilist__title">{row.title}</h3>
+          <p class="ilist__body">{row.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+<style>
+  .ilist { padding-block: calc(var(--space-section) / 2); }
+  .ilist__inner { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 32px; }
+  .ilist__head { grid-column: 1 / span 4; align-self: start; position: sticky; top: calc(var(--header-h) + var(--bar-h) + 32px); display: flex; flex-direction: column; gap: 14px; }
+  .ilist__lede { color: var(--c-muted); }
+  .ilist__more { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 4px; }
+  .ilist__rows { grid-column: 6 / span 7; border-top: 1px solid var(--c-line-strong); }
+  .ilist__row {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 8px var(--gutter);
+    padding-block: 24px;
+    border-bottom: 1px solid var(--c-line-strong);
+  }
+  .ilist__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.45; }
+  .ilist__body { color: var(--c-muted); }
+  @media (max-width: 1023px) {
+    .ilist__head { grid-column: 1 / -1; position: static; }
+    .ilist__rows { grid-column: 1 / -1; }
+  }
+  @media (max-width: 599px) {
+    .ilist__row { grid-template-columns: minmax(0, 1fr); padding-block: 18px; }
+  }
+</style>
