@@ -200,6 +200,12 @@ Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus
   its product tiles.
 - The creators page uses the kit's default two-column phone masonry, with its third link on a
   full row. Three narrow phone tiles were outside the v3 composition rule.
+- The landing's `hero.css` extends the copy-first composition through 768 to 1023 px. On a tall
+  tablet, covering the hero with the 3:2 photograph would crop its empty left side away and put
+  the dark sheet behind the copy. This override stays in the manga paths; the kit is unchanged.
+- `PhotoPreload.astro` starts each inner page's first responsive AVIF while its opening copy
+  loads. `PhotoRow` does not expose `Picture.priority`, and `MiniSiteLayout` does not forward
+  a head slot; the body-permitted preload link avoids copying or changing either shared part.
 - Copy distinguishes an original-language edition from its translations, and the identity of
   each adaptation from its source. The landing promises language availability, without implying
   that REZICS predicts a future translation date. The community module tile has its own line

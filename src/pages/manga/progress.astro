@@ -5,6 +5,7 @@
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
 import PhotoRow from '../../kit/components/PhotoRow.astro';
+import PhotoPreload from '../../sites/manga/PhotoPreload.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
@@ -18,6 +19,7 @@ import site from '../../content/sites/manga';
 const s = site.strings.progress;
 ---
 <MiniSiteLayout>
+  <PhotoPreload picture={s.language.picture} />
   <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
 
   <PhotoRow side="left" eyebrow={s.language.eyebrow} title={s.language.heading} body={s.language.lead} image={photo(s.language.picture)} />

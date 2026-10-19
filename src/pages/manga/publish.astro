@@ -5,6 +5,7 @@
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
 import PhotoRow from '../../kit/components/PhotoRow.astro';
+import PhotoPreload from '../../sites/manga/PhotoPreload.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Closing from '../../kit/components/Closing.astro';
@@ -17,6 +18,7 @@ import site from '../../content/sites/manga';
 const s = site.strings.publish;
 ---
 <MiniSiteLayout>
+  <PhotoPreload picture={s.steps.picture} />
   <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
 
   <PhotoRow eyebrow={s.steps.eyebrow} title={s.steps.heading} body={s.steps.lead} image={photo(s.steps.picture)} />

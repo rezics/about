@@ -18,6 +18,7 @@ import { accentRamp } from '../../kit/color';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/manga';
 import type { PartId } from '../../content/schema';
+import '../../sites/manga/hero.css';
 
 const s = site.strings.landing;
 const kind = kindById('manga');
@@ -56,7 +57,7 @@ const neighbours: MasonryItem[] = s.neighbours.tiles.map((t) => ({
 const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <PhotoHero bar title={s.hero.headline} lede={s.hero.lede} image={hero(s.hero.picture)}>
+  <PhotoHero class="manga-hero" bar title={s.hero.headline} lede={s.hero.lede} image={hero(s.hero.picture)}>
     <ProductCall label={site.strings.action} />
   </PhotoHero>
 
