@@ -120,6 +120,8 @@ is itself, never as a ground for a section:
 
 Links, focus and the pill's hover stay `--c-link` on every site. Text on any colour: pass `on`
 and let `inkOn(bg, on)` (`src/kit/theme.ts`) choose the exact shade; never hard-code white.
+`Tile` passes its `grain` flag as the optional third argument, so dark text remains AA over
+the texture's darkest pixels as well as on the plain field.
 
 ### Pictures
 

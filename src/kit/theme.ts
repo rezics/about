@@ -84,8 +84,13 @@ function ratio(a: string, b: string): number {
   return (x! + 0.05) / (y! + 0.05);
 }
 
-/** The exact text colour on `bg`: light or dark as `on` says, the first shade that passes AA. */
-export function inkOn(bg: string, on: OnField): string {
+/** The first AA text shade. Grain can darken the field by at most .55 × .16 (tokens/base.css);
+ * dark text is checked against that darkest paper. Light text only gains contrast from grain.
+ * The optional third argument keeps existing flat-field callers unchanged. */
+export function inkOn(bg: string, on: OnField, grain = false): string {
+  if (grain && on === 'ink') {
+    bg = `#${[1, 3, 5].map((i) => Math.round(parseInt(bg.slice(i, i + 2), 16) * (1 - 0.55 * 0.16)).toString(16).padStart(2, '0')).join('')}`;
+  }
   const list = on === 'paper' ? LIGHT : DARK;
   return list.find((c) => ratio(c, bg) >= 4.5) ?? list[list.length - 1]!;
 }
