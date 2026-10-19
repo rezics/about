@@ -174,3 +174,25 @@ The two section pictures added during completion use the built-in image generati
 - AA: paper `#efe9e0` on every module tint and on the kind colours with paper text; ink on the
   light kind colours (V3-SPEC brackets).
 - 《魔法禁書目錄》: text only; facts and sources in `facts.md`.
+
+#### Final route QA, 2026-10-20
+
+`task check` passes with no Astro errors, warnings or hints; all 184 tests pass. `task build`
+passes. `task qa -- /engine/ /engine/universal-index/ /engine/zones/ /roadmap/` was run, then
+the two module pages were recaptured after increasing their phone tile heights. These are the
+latest clean phone measurements, with 4× CPU slowdown and slow 4G:
+
+| Route | Phone LCP | CLS | axe violations | Console / request errors |
+|---|---:|---:|---:|---:|
+| `/engine/` | 2072 ms | 0 | 0 | 0 |
+| `/engine/universal-index/` | 1924 ms | 0 | 0 | 0 |
+| `/engine/zones/` | 1856 ms | 0 | 0 | 0 |
+| `/roadmap/` | 2264 ms | 0 | 0 | 0 |
+
+Reports and all desktop/phone/reduced-motion/keyboard/hover screenshots are in `.shots/<route>/`;
+all have been opened and compared with the approved mock. Earlier interrupted browser captures
+with `ERR_NETWORK_CHANGED` are excluded from these measurements. Static audits have zero FAILs;
+the index and zones warnings are duplicate module-navigation labels from the kit's separate
+desktop and phone markup. The kit's skip-link flag does not recognise the Chinese label; the
+first keyboard screenshot visibly focuses 「跳到主要內容」. The roadmap's shared current-page
+SiteBar link changes colour only; shared source remains unchanged as required.
