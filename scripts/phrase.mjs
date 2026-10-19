@@ -84,7 +84,7 @@ function breakInner(inner) {
 }
 
 const HEADING = /<(h[1-4])(\s[^>]*)?>([\s\S]*?)<\/\1>/g;
-const DISPLAY_P = /<p(\s[^>]*\bclass="[^"]*\b(?:t-mega|t-xl|t-l|t-m|lede)\b[^"]*"[^>]*)>([\s\S]*?)<\/p>/g;
+const DISPLAY_P = /<p(\s[^>]*\bclass="[^"]*\b(?:t-mega|t-xl|t-l|t-m|t-big|t-statement|serif|lede|lead)\b[^"]*"[^>]*)>([\s\S]*?)<\/p>/g;
 
 // No orphans: the last few characters of a paragraph stay together, so a line never ends a
 // paragraph with one or two characters (圖。). Phrase breaks inside that tail are dropped.
