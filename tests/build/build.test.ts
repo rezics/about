@@ -46,6 +46,8 @@ describe.skipIf(!built)('build output', () => {
     expect(p.html).toContain('application/ld+json');
     expect(p.html, 'font slices were written by scripts/postbuild.mjs').not.toContain('name="rezics:fonts"');
     expect(p.html).toContain('"REZICS Sans"');
+    expect(p.html).toContain('"REZICS Serif"');
+    expect(p.html, 'the serif that sets the h1 is preloaded').toMatch(/<link rel="preload" href="\/fonts\/rezics-serif-/);
     expect(p.html).toMatch(/<a class="skip-link" href="#main">/);
   });
 
