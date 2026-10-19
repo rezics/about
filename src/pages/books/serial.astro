@@ -1,0 +1,205 @@
+---
+// 連載 (src/sites/books/SITE.md, page 5): the headline set vertically in manuscript squares, the
+// manuscript kept safe, writer and reader mirrored, the AI declaration, the world beside the
+// manuscript, the backup.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import Section from '../../kit/components/Section.astro';
+import Finale from '../../kit/components/Finale.astro';
+import { kindFields } from '../../kit/theme';
+import { pageHref } from '../../kit/sites';
+import Picture from '../../sites/books/Picture.astro';
+import site from '../../content/sites/books';
+import '../../sites/books/books.css';
+
+const s = site.strings.serial;
+const next = site.pages.find((p) => p.slug === 'publish')!;
+// The headline in manuscript columns: one column per clause, one character per square.
+const columns = s.hero.headline.split(/(?<=，)/);
+---
+<MiniSiteLayout>
+  <!-- S1 Hero: vertical headline in manuscript squares -->
+  <section class="srh grid" aria-labelledby="sr-title">
+    <div class="srh__text">
+      <p class="lede">{s.hero.lede}</p>
+    </div>
+    <div class="srh__sheet">
+      <h1 id="sr-title" class="srh__title">
+        {columns.map((col) => (
+          <span class="srh__col" data-reveal="slot" data-intro>
+            {[...col].map((ch) => <span class="srh__ch">{ch}</span>)}
+          </span>
+        ))}
+      </h1>
+    </div>
+  </section>
+
+  <!-- S2 The manuscript is safe: staggered pairs -->
+  <Section mood="normal" labelledby="sr-safe" class="srs">
+    <h2 id="sr-safe" class="col-1-8 t-l">{s.safe.headline}</h2>
+    <ol class="col-full srs__pairs" role="list">
+      {s.safe.pairs.map((pair, i) => (
+        <li class:list={['srs__pair', i % 2 === 1 && 'srs__pair--right']} data-reveal="up">
+          <h3 class="srs__title">{pair.title}</h3>
+          <p class="srs__body">{pair.body}</p>
+        </li>
+      ))}
+    </ol>
+  </Section>
+
+  <!-- S3 Writer and reader: mirror table -->
+  <Section mood="normal" band="ink" labelledby="sr-mirror" class="srm">
+    <h2 id="sr-mirror" class="col-1-8 t-l">{s.mirror.headline}</h2>
+    <div class="col-full srm__table" role="table" aria-labelledby="sr-mirror">
+      <div class="srm__row srm__row--head" role="row">
+        <span role="columnheader">{s.mirror.columns[0]}</span>
+        <span role="columnheader">{s.mirror.columns[1]}</span>
+      </div>
+      {s.mirror.rows.map(([writer, reader]) => (
+        <div class="srm__row" role="row" data-reveal="up">
+          <span class="srm__writer" role="cell">{writer}</span>
+          <span class="srm__reader" role="cell">{reader}</span>
+        </div>
+      ))}
+    </div>
+    <ul class="col-5-12 srm__notes" role="list">
+      {s.mirror.notes.map((n) => <li>{n}</li>)}
+    </ul>
+  </Section>
+
+  <!-- S4 AI declaration: three squares -->
+  <Section mood="normal" labelledby="sr-ai" class="sra">
+    <h2 id="sr-ai" class="col-1-8 t-l">{s.ai.headline}</h2>
+    <ul class="col-1-8 sra__squares" role="list" data-reveal="slot">
+      {s.ai.squares.map((sq, i) => (
+        <li class={`sra__sq sra__sq--${i + 1}`}>
+          <h3 class="sra__name">{sq.title}</h3>
+          <p class="sra__body">{sq.body}</p>
+        </li>
+      ))}
+    </ul>
+    <ul class="col-9-12 sra__notes" role="list">
+      {s.ai.notes.map((n) => <li>{n}</li>)}
+    </ul>
+  </Section>
+
+  <!-- S5 World beside the manuscript: picture, six squares, notes -->
+  <Section mood="normal" labelledby="sr-world" class="srw">
+    <h2 id="sr-world" class="col-full t-l">{s.world.headline}</h2>
+    <div class="col-1-4"><Picture name="books-serial" alt={s.world.alt} sizes="(max-width: 767px) 92vw, 28vw" /></div>
+    <ul class="col-5-8 srw__chips" role="list" data-reveal="slot">
+      {s.world.squares.map((w) => <li class="srw__chip">{w}</li>)}
+    </ul>
+    <div class="col-9-12 srw__text">
+      <p>{s.world.body}</p>
+      <ul role="list" class="srw__items">{s.world.items.map((it) => <li>{it}</li>)}</ul>
+    </div>
+  </Section>
+
+  <!-- S6 Backup: statement -->
+  <Section mood="airy" labelledby="sr-backup" class="srb">
+    <h2 id="sr-backup" class="col-1-10 t-xl" data-split="lines">{s.backup.statement}</h2>
+    <p class="col-5-8 srb__body">{s.backup.body}</p>
+  </Section>
+
+  <Finale label={s.finaleLead} name={next.label} href={pageHref(site, next)} field={kindFields.books} />
+</MiniSiteLayout>
+
+<style>
+  /* S1 */
+  .srh {
+    min-height: calc(100svh - var(--header-h) - var(--bar-h));
+    padding-block: clamp(24px, 4vw, 56px);
+    align-items: end;
+    row-gap: 32px;
+  }
+  .srh__text { grid-column: 1 / span 5; padding-bottom: clamp(8px, 2vw, 32px); }
+  .srh__sheet {
+    grid-column: 7 / span 6;
+    justify-self: end;
+    --sq: clamp(2.75rem, 1.5rem + 4.4vw, 5.5rem);
+    padding: calc(var(--sq) * 0.4);
+    background:
+      repeating-linear-gradient(to right, var(--bk-t32) 0 1px, transparent 1px var(--sq)),
+      repeating-linear-gradient(to bottom, var(--bk-t32) 0 1px, transparent 1px var(--sq)),
+      var(--bk-t08);
+    border: 2px solid var(--field);
+  }
+  .srh__title {
+    writing-mode: vertical-rl;
+    display: block;
+    font-weight: 900;
+    font-size: calc(var(--sq) * 0.72);
+    line-height: 1;
+    color: var(--c-fg);
+  }
+  /* In vertical-rl the flex row runs top to bottom; columns stack right to left. */
+  .srh__col { display: flex; }
+  .srh__col + .srh__col { margin-block-start: calc(var(--sq) * 0.5); }
+  .srh__ch {
+    display: grid;
+    place-items: center;
+    width: var(--sq);
+    height: var(--sq);
+    background: var(--bk-paper);
+    border: 1px solid var(--field);
+    margin-inline-end: -1px;
+  }
+  @media (max-width: 767px) {
+    .srh { min-height: 0; align-items: start; }
+    .srh__text, .srh__sheet { grid-column: 1 / -1; }
+    .srh__sheet { order: -1; justify-self: center; --sq: min(13vw, 3.25rem); }
+  }
+
+  /* S2 */
+  .srs__pairs { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 56px); }
+  .srs__pair { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gutter); align-items: baseline; padding-top: 18px; border-top: 1px solid var(--c-line-strong); }
+  .srs__title { grid-column: 1 / span 4; font-weight: 900; font-size: var(--t-l); line-height: 1.2; }
+  .srs__body { grid-column: 5 / span 4; }
+  .srs__pair--right .srs__title { grid-column: 5 / span 4; }
+  .srs__pair--right .srs__body { grid-column: 9 / span 4; }
+  @media (max-width: 767px) {
+    .srs__pair { grid-template-columns: 1fr; }
+    .srs__title, .srs__body, .srs__pair--right .srs__title, .srs__pair--right .srs__body { grid-column: 1; }
+  }
+
+  /* S3 */
+  .srm__table { display: flex; flex-direction: column; }
+  .srm__row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0; border-bottom: 1px solid var(--c-line-strong); }
+  .srm__row > * { padding: 18px var(--gutter) 18px 0; }
+  .srm__row > * + * { padding-left: var(--gutter); border-left: 1px solid var(--c-line-strong); }
+  .srm__row--head { font-size: var(--t-s); color: var(--c-muted); font-weight: 700; border-bottom: 2px solid var(--c-fg); }
+  .srm__writer { font-weight: 900; font-size: var(--t-m); }
+  .srm__notes { display: flex; flex-direction: column; gap: 12px; }
+  .srm__notes li { padding-left: 16px; border-left: 3px solid var(--c-line-strong); }
+  @media (max-width: 767px) {
+    .srm__row { grid-template-columns: 1fr; }
+    .srm__row > * + * { border-left: 0; padding-left: 0; padding-top: 0; }
+    .srm__row--head { display: none; }
+  }
+
+  /* S4 */
+  .sra__squares { display: grid; grid-template-columns: 3fr 4fr 5fr; gap: clamp(8px, 1vw, 14px); align-items: end; }
+  .sra__sq { aspect-ratio: 1; container-type: inline-size; padding: 8cqi; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
+  .sra__sq--1 { border: 2px solid var(--field); }
+  .sra__sq--2 { background: var(--bk-t16); }
+  .sra__sq--3 { background: var(--field); color: var(--on-field); }
+  .sra__name { font-weight: 900; font-size: clamp(1.25rem, 15cqi, 3rem); line-height: 1; }
+  .sra__body { font-size: clamp(0.8125rem, 6.2cqi, 1rem); line-height: 1.6; }
+  .sra__notes { display: flex; flex-direction: column; gap: 12px; align-self: end; }
+  .sra__notes li { padding-left: 16px; border-left: 3px solid var(--field); }
+  @media (max-width: 767px) {
+    .sra__squares { grid-template-columns: 1fr; }
+    .sra__sq { aspect-ratio: auto; min-height: 140px; }
+  }
+
+  /* S5 */
+  .srw__chips { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+  .srw__chip { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 16px; border: 1.5px solid var(--field); background: var(--bk-paper); font-weight: 900; font-size: var(--t-m); }
+  .srw__chip::before { content: ''; width: 0.5em; height: 0.5em; background: var(--field); }
+  .srw__text { display: flex; flex-direction: column; gap: 16px; }
+  .srw__items { display: flex; flex-direction: column; gap: 10px; }
+  .srw__items li { padding-left: 16px; border-left: 3px solid var(--field); }
+
+  /* S6 */
+  .srb__body { max-width: var(--measure); }
+</style>
