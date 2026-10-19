@@ -7,7 +7,8 @@
  *                the name rolls one line (index tiles)
  *       'image'  picture visible, name over it (hero squares, navigation tiles)
  *       'plain'  field and name only (modules, anything without a picture)
- * href  makes the square a link; linked squares are page-transition sources ([data-flip-src])
+ * href  makes the square a link; linked squares are page-transition sources ([data-flip-src]).
+ *       Its accessible name is the name unsplit (plus the description), not the set lines.
  * flip  'target' marks the square a transition lands on (one per page, the hero square)
  * facets up to five short captions set in mono under the name (plain squares: a module's
  *       points, a site's sections), so a square without a picture still fills its frame. They
@@ -59,6 +60,7 @@ const showPicture = mode !== 'plain' && image;
 <Tag
   class:list={['sq', `sq--${mode}`, shownFacets.length > 0 && 'sq--facets', className]}
   href={href}
+  aria-label={href ? (description ? `${name} ${description}` : name) : undefined}
   style={fieldStyle(field)}
   data-flip-src={href ? '' : undefined}
   data-flip-target={flip === 'target' ? '' : undefined}
@@ -81,7 +83,7 @@ const showPicture = mode !== 'plain' && image;
       {shownFacets.map((f) => <li><span class="sq__dot" aria-hidden="true"></span>{f}</li>)}
     </ul>
   )}
-  {description && <span class="sr-only">{description}</span>}
+  {description && !href && <span class="sr-only">{description}</span>}
   <slot />
 </Tag>
 <style>

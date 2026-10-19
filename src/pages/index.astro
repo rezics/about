@@ -72,7 +72,7 @@ const pickCss = kinds
       <div class="pick__tabs">
         {kinds.map((k, i) => (
           <label class="pick__tab" style={fieldStyle(kindFields[k.id])}>
-            <input class="sr-only" type="radio" name="pick-kind" value={k.id} checked={i === 0} />
+            <input class="sr-only" type="radio" name="pick-kind" value={k.id} checked={i === 0} aria-label={k.name} />
             <span class="pick__sq"><SquareName name={k.name} /></span>
           </label>
         ))}

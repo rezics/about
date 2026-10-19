@@ -22,7 +22,7 @@ const initial = [...site.name][0];
 <nav class="sitebar" aria-label={site.name} data-sitebar>
   <div class="sitebar__inner">
     <a class="sitebar__home" href={site.base} aria-current={page.slug === '' ? 'page' : undefined}>
-      <span class="sitebar__sq" aria-hidden="true">{initial}</span>
+      <span class="sitebar__sq" aria-hidden="true" data-initial={initial}></span>
       <span class="sitebar__name">{site.name}</span>
     </a>
     {site.pages.length > 1 && (
@@ -73,6 +73,8 @@ const initial = [...site.name][0];
     line-height: 1;
     transition: box-shadow var(--d-m) var(--ease-snap), color var(--d-s) var(--ease-snap);
   }
+  /* The badge's glyph is generated content, so it is neither read out nor part of the link's text. */
+  .sitebar__sq::before { content: attr(data-initial) / ''; }
   .sitebar__name {
     font-weight: 900;
     font-size: var(--t-s);

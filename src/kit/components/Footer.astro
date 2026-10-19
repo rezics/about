@@ -41,6 +41,10 @@ const f = site.footer;
   .footer__action { --sq-pad: clamp(20px, 3vw, 40px); padding-block: var(--space-normal); row-gap: 32px; }
   /* The heading sits level with the action at the bottom of the square. */
   .footer__lead { grid-column: 1 / span 7; align-self: end; padding-bottom: var(--sq-pad); }
+  /* A page that ends on a finale band has already said where to go: the card keeps its line
+     and the action, and the statement is not repeated. */
+  :global(main:has(.finale)) ~ .footer .footer__lead { display: none; }
+  :global(main:has(.finale)) ~ .footer .footer__square { grid-column: 1 / span 6; }
   .footer__square {
     grid-column: 9 / span 4;
     position: relative;

@@ -45,5 +45,6 @@ const short = height === undefined ? fit.size : fitName(name, 88, height).size;
   .sqname__roll { display: grid; }
   .sqname__face { grid-area: 1 / 1; display: block; }
   .sqname__line { display: block; white-space: nowrap; }
-  .sqname__line--minor { font-size: calc(var(--minor) * 1em); line-height: 1.2; padding-left: 0.08em; }
+  /* The connective stays legible in small squares: at least 10 px. */
+  .sqname__line--minor { font-size: max(10px, calc(var(--minor) * 1em)); line-height: 1.2; padding-left: 0.08em; }
 </style>

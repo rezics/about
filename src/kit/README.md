@@ -176,6 +176,18 @@ Breaking changes to the kit, newest first. Merge `main`, then fix what the build
   link to choose a shorter one (16 characters at most, else nothing is shown).
 - The build keeps the last four characters of every `<p>` and `<dd>` together (no one- or
   two-character last lines) and never breaks text inside a `.nw` span.
+- Phrase breaks never put closing punctuation (；：，、。」』）》…) at a line start or an
+  opening bracket (「『（《) at a line end.
+- A linked square's accessible name is its name unsplit plus its description (`aria-label`);
+  the site bar's badge glyph is generated content and is not read out. If you put a
+  `SquareName` inside your own link or label, give that element `aria-label={name}`.
+- The small connective in names such as 創作與發行 is at least 10 px.
+- On a page that ends on a `Finale`, the footer's action card drops its statement (the card's
+  line and 「前往 REZICS」 remain), so the sentence is not on every page.
+- Back and Forward show a page's intro finished instead of replaying it.
+- Fonts: every CJK slice a page uses is preloaded; Latin text waits for Archivo in a local face
+  scaled to its widths (`Archivo Fallback`), so headlines do not rewrap when fonts arrive. Keep
+  `var(--f-body)` / `var(--f-display)` in your font stacks rather than naming Archivo alone.
 
 ### 2026-10-19: REZICS is live
 

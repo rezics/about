@@ -89,14 +89,18 @@ export function cleanup() {
   ctx = null;
 }
 
-/** Init the new page. `scrollTop: false` keeps the position (back/forward, or a #hash). */
-export async function enter({ scrollTop = true, hash = '' } = {}) {
+/**
+ * Init the new page. `scrollTop: false` keeps the position (back/forward, or a #hash).
+ * `settled`: the page was visited before (back/forward), so its intro is shown finished.
+ */
+export async function enter({ scrollTop = true, hash = '', settled = false } = {}) {
   if (!booted) return;
   cleanup();
   if (scrollTop) resetScroll();
   initPage();
   if (hash) scrollToTarget(decodeURIComponent(hash), true);
+  if (settled) intro?.progress(1);
   await playEnter();
   startScroll();
-  intro?.play();
+  if (!settled) intro?.play();
 }

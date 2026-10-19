@@ -20,7 +20,7 @@ export function start(setup?: () => void) {
     if (!navigating) return void boot(setup);
     navigating = false;
     const hash = location.hash.length > 1 ? location.hash : '';
-    void enter({ scrollTop: !traverse && !hash, hash: traverse ? '' : hash });
+    void enter({ scrollTop: !traverse && !hash, hash: traverse ? '' : hash, settled: traverse });
   });
   // Module scripts run after parsing: boot now instead of waiting for the first astro:page-load.
   void boot(setup);
