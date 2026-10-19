@@ -2,3 +2,7 @@
    photographs and tiles only. Captions and the opening picture of inner pages. */
 [data-site='games'] .g-cap { margin-top: 18px; font-size: 14px; line-height: 1.7; color: var(--c-muted); }
 [data-site='games'] .g-note { margin-top: 28px; max-width: 34em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+/* Work around the kit: `.link-draw` is an inline flex box with a gap, so the build's
+   unbreakable tail span (`.nw`) becomes a flex item and opens a gap inside the words
+   (看商店與購 買的流程). Text-only links inside paragraphs need no gap. */
+[data-site='games'] p > .link-draw { gap: 0; }

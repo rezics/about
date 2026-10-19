@@ -11,11 +11,11 @@ is not a claim about REZICS.
 | --- | --- |
 | One identity per game across languages and platforms | `product/goal.md#three-values-one-bet` (one graph); `product/platform-thesis.md#one-graph-many-language-fronts` |
 | Games show platforms, stores, requirements and DLC | `plan/frontend.md#work-page` (kind overrides paragraph) |
-| The eight parts of games (identity, editions, credits, relations, specs, ratings, discussion, offers) and that other kinds reuse them | `about/DESIGN.md` "Shared capability parts"; `product/platform-thesis.md#capabilities` (each capability implemented once) |
 | Unknown stays unknown; no borrowed values | `product/platform-thesis.md#capabilities` ("absent data never produces a misleading map, score or availability claim"); `research/reference-stores.md#what-rezics-should-adopt` ("distinguish unknown, incompatible, stale and unavailable") |
 | REZICS records no download counts and never sorts or shows them | `plan/frontend.md#zones` ("REZICS counts no downloads, so nothing sorts or shows them") |
 | Ratings are tied to the version they rate | `contracts/ratings.md#scoped-targets-and-roll-ups` ("Version pins") |
 | Store files are DRM-free | `contracts/distribution.md#creator-distribution` |
+| Store: contracted independent creators, games and VNs, no launcher, creators keep copyright, itemised statements, ratings, discussion and Wiki+ on the same page (landing photo row) | see `/games/store/` and `/games/creators/` below |
 
 ## `/games/` landing
 
@@ -23,19 +23,9 @@ is not a claim about REZICS.
 | --- | --- |
 | Releases by platform, region and edition are separate records | `contracts/work-and-release.md#explicit-identities-targets-and-units` ("editions/releases and coverage (omnibus, partial, region, platform)") |
 | Text, voice and subtitle languages kept apart; a translated title never implies a translation | `plan/frontend.md#work-page` ("release language … and voice or subtitle language stay distinct, and a translated title never implies an available translation") |
-| A soundtrack in a deluxe release keeps its own page and rating | inference from `contracts/work-and-release.md#release-and-translation-grain` ("Membership in an album or anthology does not absorb a child Work's identity, rights, ratings") and `#work-levels-realizations-and-versions` ("one release may cover several Works") |
-| One digital release in several stores is one release with several locations | `contracts/distribution.md#release-kinds-and-status` |
 | Complete edition covers base game and expansions; each keeps its rating | `contracts/work-and-release.md#work-levels-realizations-and-versions` (release coverage; omnibus covers Works without duplicating them) |
 | Region decides the release; filtering 繁中 finds only the release that has it | `contracts/work-and-release.md#explicit-identities-targets-and-units`; `research/reference-stores.md#what-rezics-should-adopt` (conditions bound to one release) |
-| Versions carry changelogs; ratings name the version | `product/platform-thesis.md#capabilities` (Versioned: changelogs); `contracts/ratings.md#scoped-targets-and-roll-ups` |
-| Announced, dated, changed or cancelled: every change kept | `product/markets-and-growth.md#release-to-return-loop` ("Announcements, scheduled dates, confirmed availability, postponements and withdrawals remain distinct"); `contracts/distribution.md#release-kinds-and-status` (status incl. cancelled) |
-| A demo is its own release stating its coverage | `product/platform-thesis.md#first-manifests-and-proof` ("complete, partial or trial coverage", VN manifest); `product/markets-and-growth.md#release-to-return-loop` (creators' demos) |
 | A fan translation credits its group, names its source version and coverage, never shown as official | `contracts/work-and-release.md#work-levels-realizations-and-versions` ("A fan translation is a realization pinned to its source version and never presented as official"); `contracts/content-languages.md#translations-are-new-content-versions` |
-| Credits: people linked to their portfolios | `product/platform-thesis.md#capabilities` (Credited: "Credits sections and portfolios") |
-| Relations visible on both pages | `product/platform-thesis.md#what-the-semantic-web-supplies` (generic page shows "relations in both directions") |
-| Official requirements and player measurements shown apart with conditions and date | `product/platform-thesis.md#capabilities` (Measured: metric, method, conditions, unit and time); `research/reference-stores.md#mac-app-store` (claims "with who supplied them") |
-| Discussion attached to the game, a release or a chapter | `plan/frontend.md#work-page` ("active Work, part and release threads") |
-| Offers: store, region, price, with date | `product/platform-thesis.md#capabilities` (Offered: seller, price, territory and validity) |
 | Connections: visual novels, books, anime, manga, software | `product/goal.md#three-values-one-bet` ("A light novel, its manga, anime and game"); `product/markets-and-growth.md#cross-domain-promises` 1; software dependencies: `product/platform-thesis.md#capabilities` (relations "dependencies" via parts); mods/engines as Software Works: `research/reference-stores.md#which-site-should-lead-each-vertical` |
 | Progress of a novel and its game are recorded separately | `contracts/work-and-release.md#work-levels-realizations-and-versions` ("Correspondence alone transfers no progress") |
 
