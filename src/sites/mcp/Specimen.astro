@@ -1,0 +1,41 @@
+---
+/** One illustrative record, kept together on the paper ground with its date and result. */
+import FactList from '../../kit/components/FactList.astro';
+import Note from './Note.astro';
+import type { McpStrings } from '../../content/sites/mcp';
+
+type Props = Pick<McpStrings['evidence']['specimen'], 'label' | 'fields' | 'caption'>;
+const { label, fields, caption } = Astro.props;
+const { server, client, task, language, result, date, submitter, review } = fields;
+const details = [server, client, task, language, submitter].map((f) => ({
+  title: f.label,
+  body: `${f.value}。${f.note}`,
+}));
+---
+<section class="record" aria-label={label}>
+  <header class="record__summary">
+    <p class="record__date">
+      <span class="eyebrow">{date.label}</span>
+      <time class="serif" datetime={date.value.replaceAll('/', '-')}>{date.value}</time>
+    </p>
+    <p class="record__result">
+      <span class="eyebrow">{result.label}</span>
+      <strong class="serif">{result.value}</strong>
+      <span class="record__review">{review.value}</span>
+    </p>
+  </header>
+  <FactList items={details} level="p" />
+  <Note text={caption} />
+</section>
+<style>
+  .record { border-block: 1px solid var(--c-line); padding-bottom: 28px; }
+  .record__summary { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 20px 32px; padding: 24px 0 28px; }
+  .record__date, .record__result { display: flex; align-items: baseline; gap: 16px; }
+  .record__date time, .record__result strong { font-size: 30px; line-height: 1.5; font-weight: 600; }
+  .record__review { font-size: 14px; color: var(--c-muted); }
+  @media (max-width: 767px) {
+    .record__summary { gap: 16px 24px; padding: 20px 0 24px; }
+    .record__date, .record__result { gap: 12px; }
+    .record__date time, .record__result strong { font-size: 24px; }
+  }
+</style>

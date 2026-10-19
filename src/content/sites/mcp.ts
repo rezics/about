@@ -15,6 +15,7 @@ export type McpPage = 'directory' | 'evidence' | 'versions' | 'community' | 'mai
 type Head = { label: string; headline: string; body: string };
 /** A statement: the first half in ink, the continuation muted. */
 type Statement = { text: string; sub: string; note?: string };
+type RecordField = { label: string; value: string; note: string };
 
 export type McpStrings = {
   next: { page: string; site: string };
@@ -45,7 +46,12 @@ export type McpStrings = {
   };
   evidence: {
     hero: { headline: string; lede: string };
-    specimen: { label: string; headline: string; fields: { label: string; value: string; note: string }[]; caption: string };
+    specimen: {
+      label: string;
+      headline: string;
+      fields: Record<'server' | 'client' | 'task' | 'language' | 'result' | 'date' | 'submitter' | 'review', RecordField>;
+      caption: string;
+    };
     compare: { label: string; headline: string; says: { heading: string; items: string[] }; not: { heading: string; items: string[] } };
     states: Head & { names: Record<McpState, string>; items: Record<McpState, string> };
     statement: Statement;
@@ -226,17 +232,17 @@ const strings: McpStrings = {
     specimen: {
       label: '示意紀錄',
       headline: '把一筆紀錄攤開來看。',
-      fields: [
-        { label: '伺服器', value: '筆記伺服器 1.4.0', note: '精確到版本號。' },
-        { label: '用戶端', value: '程式編輯器 3.2', note: '用戶端也記版本。' },
-        { label: '任務', value: '把會議紀錄整理成待辦清單', note: '做的是哪件事，用一句話寫明。' },
-        { label: '語言', value: '繁體中文', note: '任務用哪種語言下達。' },
-        { label: '結果', value: '成功', note: '做成或沒做成，都記。' },
-        { label: '日期', value: '2026/10/12', note: '這筆紀錄只代表這一天。' },
-        { label: '提交者', value: '一位使用者', note: '人或 AI 代理都能提交，代理會標明由誰操作。' },
-        { label: '審核', value: '已審核', note: '經人審核過，紀錄才會公開。' },
-      ],
-      caption: '示意紀錄。欄位是真的，內容是範例。',
+      fields: {
+        server: { label: '伺服器', value: '筆記伺服器 1.4.0', note: '精確到版本號。' },
+        client: { label: '用戶端', value: '程式編輯器 3.2', note: '用戶端也記版本。' },
+        task: { label: '任務', value: '把會議紀錄整理成待辦清單', note: '做的是哪件事，用一句話寫明。' },
+        language: { label: '語言', value: '繁體中文', note: '任務用哪種語言下達。' },
+        result: { label: '結果', value: '成功', note: '做成或沒做成，都記。' },
+        date: { label: '日期', value: '2026/10/12', note: '這筆紀錄只代表這一天。' },
+        submitter: { label: '提交者', value: '一位使用者', note: '人或 AI 代理都能提交，代理會標明由誰操作。' },
+        review: { label: '審核', value: '已審核', note: '經人審核過，紀錄才會公開。' },
+      },
+      caption: '示意紀錄。欄位是真的，內容是範例；經人審核過的紀錄才會公開。',
     },
     compare: {
       label: '範圍',
@@ -371,7 +377,7 @@ const strings: McpStrings = {
         { title: '量表', body: '幾分制、每一分代表什麼，寫在分數旁邊。' },
         { title: '版本', body: '評的是哪一版，分數就留在哪一版。' },
         { title: '筆數與分布', body: '評分還太少時，只顯示筆數與分布，不算平均。' },
-        { title: '人群', body: '全站的評分和某個 Realm 的評分，分開標示。' },
+        { title: '人群', body: '全站的評分和某個社群（Realm）的評分，分開標示。' },
       ],
       note: '示意問題。',
     },
@@ -395,9 +401,9 @@ const strings: McpStrings = {
       caption: '示意清單。',
     },
     zone: {
-      label: 'Zone',
+      label: '站點',
       headline: '社群可以有自己的伺服器目錄。',
-      body: 'Realm 可以用 Zone 架出完整的網站：首頁、導覽、篩選好的目錄與說明頁。網站上的條目仍是同一批身分，在那裡做的修正，每個看得到這筆條目的地方都會跟著更新。',
+      body: '社群可以用站點（Zone）架出完整的網站：首頁、導覽、篩選好的目錄與說明頁。網站上的條目仍是同一批身分，在那裡做的修正，每個看得到這筆條目的地方都會跟著更新。',
       routes: '示意網站地圖：首頁、目錄、新手指南、紀錄、討論。',
     },
     next: '登錄伺服器、認領身分、寫下宣告。',

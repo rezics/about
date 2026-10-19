@@ -7,6 +7,7 @@ import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
+import Arrow from '../../kit/components/Arrow.astro';
 import Next from '../../sites/mcp/Next.astro';
 import TwoLists from '../../sites/mcp/TwoLists.astro';
 import Words from '../../sites/mcp/Words.astro';
@@ -33,7 +34,7 @@ const m = s.maintainers;
     </Section>
 
     <Statement text={m.agent.text} sub={m.agent.sub} note={m.agent.note} level="p">
-      <p class="mcp-agent"><a class="link-draw" href={m.agent.href}>{m.agent.link}</a></p>
+      <p class="mcp-agent"><a class="link-draw" href={m.agent.href}>{m.agent.link}<Arrow /></a></p>
     </Statement>
 
     <Next eyebrow={s.next.site} title={m.next.headline} masonry={nextSite()} />

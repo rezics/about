@@ -153,8 +153,10 @@ page head (eyebrow, serif h1, lede) and no photograph; at most one photo row per
 **`/mcp/evidence/`**
 
 1. Page head: 「一筆紀錄，寫明日期與組合。」
-2. Photo row `records` beside the specimen record as a facts list (field left, value and
-   note right; 示意).
+2. Photo row `records` beside the specimen heading. The flat, hairline-bounded record below
+   starts with its date, result and review state together, then the server/client versions,
+   task, language and submitter in the shared facts list (field left, value and note right;
+   示意). No separate background or card treatment.
 3. Section 範圍: 「它說明了什麼，沒說明什麼。」 two hairline lists side by side (stacked on
    phones, the 沒有說明 list second).
 4. Section 狀態: 「每個組合，只會是四種狀態之一。」 facts list with the state marks.
@@ -209,6 +211,9 @@ names and one word per cell) and scrolls nothing. No grid of text cells anywhere
 - REZICS is live: the only action is 「前往 REZICS」.
 - The landing no longer repeats the evidence page's states; each sentence appears once.
 - Motion is the kit's quiet reveal; no scrubbed or pinned scenes, no idle motion.
+- The illustrative record keeps date, result and review together; community terms introduce
+  社群（Realm） and 站點（Zone） in Chinese. The two chapter links reuse the kit's travelling
+  arrow, alongside the shared underline draw.
 
 ### Implementation notes
 

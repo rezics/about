@@ -9,7 +9,7 @@ import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import Next from '../../sites/mcp/Next.astro';
-import Note from '../../sites/mcp/Note.astro';
+import Specimen from '../../sites/mcp/Specimen.astro';
 import StateList from '../../sites/mcp/StateList.astro';
 import TwoLists from '../../sites/mcp/TwoLists.astro';
 import Words from '../../sites/mcp/Words.astro';
@@ -19,7 +19,6 @@ import { nextPages } from '../../sites/mcp/tiles';
 
 const s = site.strings;
 const e = s.evidence;
-const fields = e.specimen.fields.map((f) => ({ title: f.label, body: `${f.value}。${f.note}` }));
 ---
 <MiniSiteLayout>
   <Words>
@@ -33,8 +32,7 @@ const fields = e.specimen.fields.map((f) => ({ title: f.label, body: `${f.value}
     /></EagerPhoto>
     <div class="grid mcp-follow">
       <div class="mcp-follow__list">
-        <FactList items={fields} />
-        <Note text={e.specimen.caption} />
+        <Specimen label={e.specimen.label} fields={e.specimen.fields} caption={e.specimen.caption} />
       </div>
     </div>
 

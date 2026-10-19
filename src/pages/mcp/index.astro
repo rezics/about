@@ -9,6 +9,7 @@ import Statement from '../../kit/components/Statement.astro';
 import TileMasonry from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
+import Arrow from '../../kit/components/Arrow.astro';
 import Words from '../../sites/mcp/Words.astro';
 import site from '../../content/sites/mcp';
 import { landingPages, neighbours } from '../../sites/mcp/tiles';
@@ -39,7 +40,8 @@ const near = neighbours();
       <ProductCall />
     </PhotoHero>
 
-    <Section eyebrow={l.record.label} title={l.record.headline} lead={l.record.body} link={{ href: `${site.base}evidence/`, text: l.record.link }}>
+    <Section eyebrow={l.record.label} title={l.record.headline} lead={l.record.body}>
+      <p class="mcp-record-link"><a class="link-draw" href={`${site.base}evidence/`}>{l.record.link}<Arrow /></a></p>
       <FactList items={l.record.fields} />
     </Section>
 
@@ -58,6 +60,7 @@ const near = neighbours();
 </MiniSiteLayout>
 
 <style>
+  .mcp-record-link { margin-bottom: 44px; }
   /* Keep the photographed empty paper beside the copy on medium-width screens. */
   @media (min-width: 768px) and (max-width: 1279px) {
     :global(.mcp-hero .phero__copy) { grid-column: 1 / 7; }
