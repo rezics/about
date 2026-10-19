@@ -23,7 +23,6 @@ const ways = [
 <MiniSiteLayout>
   <PhotoHero
     bar
-    eyebrow={site.name}
     title={s.hero.headline}
     lede={s.hero.lede}
     image={{
@@ -31,7 +30,7 @@ const ways = [
       widths: [960, 1920],
       width: 1920,
       height: 1280,
-      alt: '',
+      alt: site.strings.alts.hero,
       position: '100% 50%',
       phone: { src: '/images/sites/developers/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
     }}

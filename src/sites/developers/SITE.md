@@ -97,124 +97,108 @@ photograph and then lets real code, set small and quiet, carry the proof.
 
 ### Theme
 
-Shared paper ground `#efe9e0`, ink `#26292d`, muted `#6b6f73`, hairline `rgb(38 41 45 / .14)`,
-link `#2f4fa3`; the kind colour is slate `#3b4a5a` with paper text (7.5:1 against the ground and
-7.8:1 for paper on slate). Set under `[data-site='developers']` through the semantic tokens.
+The shared v3 paper and type, unchanged: ground `#efe9e0`, ink `#26292d`, text `#4a4e52`, muted
+`#606468`, hairline, link `#2f4fa3`. The kind colour is slate `#3b4a5a` (`theme.field`, paper
+text 8.1:1); it appears in the site bar, the pictures, the tiles and the strings of code blocks,
+never as a ground for a section (`src/sites/developers/developers.css`).
 
-- **Code blocks** are this site's own material: small, flat, square-cornered sheets a shade
-  lighter than the ground (`#f6f2eb`) with a hairline edge, Martian Mono at 13.5 px (12.5 px on
-  phones) at line height 1.8, ink text. Highlighting is three quiet roles only: the verb or
-  command that starts a line at weight 600, strings and paths in slate, punctuation and
-  placeholders (`…`) in muted. A caption in 13 px muted sans under each block. No dark tiles, no
-  posters, no grid cells behind code, no caret. Each block is focusable and labelled and scrolls
-  sideways when a line is longer than the column; samples are written in short lines so a phone
-  rarely needs to.
-- **Tiles** (the site's own pages) use slate and its tints, paper text on the dark ones and ink
-  on the light ones; the neighbouring hubs keep their own kind colours.
-- Latin identifiers in running text are plain sans (no inline mono); field names, paths and
-  commands appear in mono only inside code blocks and in the left column of code facts.
+- **Code blocks** are the kit's `CodeTile`: small, flat, square-cornered, Martian Mono 13.5 px
+  (12.5 px on phones) on the deeper paper `#e7e0d5`, ink text, quoted strings in slate (6.9:1),
+  a 13 px muted caption under a hairline. No dark tiles, no posters, no grid cells, no caret.
+  Each block is focusable and labelled and scrolls sideways when a line is longer than its
+  column; blocks keep a reading measure (at most 640 px) inside the section body.
+- **Code facts** (`CodeFacts.astro`) are the kit's FactList with code: a serif title (or a mono
+  one when the title is a field name, path or tool), the field name under it, the text, a small
+  code block and a muted line of code (an operation and its scopes) on the right.
+- **Tiles** of the site's own pages are slate papers, dark and light alternating across the
+  masonry and along the phone rows: `#3b4a5a`, `#2c3743`, `#56677a` with paper text, `#9aa8b6`,
+  `#b7c2cd`, `#c9d1d9` with ink text (each passes AA through `inkOn`). The neighbouring hubs keep
+  their kind colours.
 
 ### Pictures (paper still-life series, `public/images/sites/developers/`)
 
 One hero and four section pictures, slate with pale sky (`#a9c3dc`) and, in the hero, amber
-(`#c9963f`). Each is used once.
+(`#c9963f`). Each is used once and carries a one-sentence description of the paper as its alt
+text (`strings.alts`), as the home page's pictures do. Generated with codex-2 against the v3 reference (prompts in
+`.temp/sites/developers/v3-art/`), 1536 × 1024 masters.
 
-| Name | Paper | Idea | Where |
-|---|---|---|---|
-| `hero` | Three strips from three directions (slate from the top, sky from the right, amber from the bottom) tuck under one slate sheet | Person, program and agent reach the same operation | Landing hero |
-| `mcp` | A sky strip woven through a row of punched holes in a slate sheet | MCP is an adapter threaded through the same openings, not a second door | MCP page hero |
-| `apps` | Four sheets nested, slate outermost, each smaller sheet inside the one below | An app's authority is always inside the user's | Apps page hero |
-| `wiki` | A tall stack of cream and sky sheets stays whole; three small slate slips lie apart | REZICS receives proposals with short quotations, never the full text | Wiki toolkit hero |
-| `zones` | A slate sheet folded into a small standing frame with a window, a sky sheet behind it | A Zone shapes its own frame; the platform's sheet stays behind it | Zones hero |
-
-The API and open-source pages open on text: their focal point is the h1 and, below it, the first
-code block. All pictures are decorative (`alt=""`); the copy beside them carries the meaning.
+| Name | Paper | Idea | Where | Files |
+|---|---|---|---|---|
+| `hero` | Three strips from three directions (slate from the top, sky from the right, amber from the bottom) tuck under one slate sheet | Person, program and agent reach the same operation | Landing hero | 1920 (174 / 164 KB), 960 (69 / 54 KB), phone crop 960 and 640 |
+| `mcp` | A sky strip woven through a row of punched holes in a slate sheet | MCP is threaded through the same openings, not a second door | MCP page, photo row | 1200 (106 / 107 KB), 640, phone crop |
+| `apps` | Four sheets nested, slate outermost, each smaller sheet inside the one below | An app's authority always lies inside the user's | Apps page, photo row | 1200 (107 / 100 KB), 640, phone crop |
+| `wiki` | A tall stack of cream and sky sheets stays whole; three small slate slips lie apart | REZICS receives proposals with short quotations, never the full text | Wiki toolkit page, photo row | 1200 (106 / 106 KB), 640, phone crop |
+| `zones` | A slate sheet folded into a small standing frame with a window, a sky sheet behind it | A Zone sets up its own frame on the platform's sheet | Zones page, photo row | 1200 (100 / 95 KB), 640, phone crop |
 
 ### Pages (one idea per section, slow rhythm)
 
-`F` = facts list (hairline rows, title left, text right), `C` = code block, `T` = tiles,
-`S` = statement. Every page ends on the next page (or, on the last page, the next site, 書庫)
-and the closing with 「前往 REZICS」.
+Inner pages open on `PageHead` (text: the h1 is the focal point) and, where the page has a
+picture, follow it at once with a `PhotoRow` that carries the page's key idea. Every inner page
+ends on 「其他頁面」 (the site's other pages as `IndexRows`; the last page adds the next site,
+書庫) and the closing with 「前往 REZICS」.
 
 **`/developers/` 開發者**
-1. Hero, `hero` photo: 「每個按鈕，背後都是一個 API 操作。」, one short paragraph, 「前往 REZICS」.
-2. 三種方式: h2 「三種方式進來，拿到同一份回應。」; F with three rows (人: the button; 程式: C
-   of the HTTP request; 代理: C of the MCP call) and a last row naming the shared operation and
-   answer. Phone: label above, block below.
-3. 六個部分: h2 「你會用到的六樣東西」; T of the six pages (API and MCP tallest), one line each.
-4. S: 「REZICS 的網站不直接碰資料庫，所有讀寫都經過 API；」 muted 「網站上做得到的事，API 一定
-   也做得到。」
-5. 規則: h2 「從哪裡進來，規則都一樣」; F of four rules with their field names.
-6. 別人做的工具: h2 and lead; T of MCP Hub, Skill Hub and API Hub in their kind colours.
+1. `PhotoHero` (`hero`): 「每個按鈕，背後都是一個 API 操作。」, one paragraph, 「前往 REZICS」.
+2. 三種方式: 「三種方式進來，拿到同一份回應。」; code facts: 人 (the button), 程式 (the HTTP
+   request), 代理 (the MCP call), 同一個操作 (operationId and profile).
+3. 六個部分: 「你會用到的六樣東西」; a three-column masonry of the six pages.
+4. Statement: 「REZICS 的網站不直接碰資料庫，所有讀寫都經過 API；」 muted 「網站上做得到的事，
+   API 一定也做得到。」
+5. 規則: 「從哪裡進來，規則都一樣」; code facts of four rules with their field names.
+6. 索引: 「別人做的工具，也有索引」; MCP Hub, Skill Hub and API Hub tiles.
 
-**`/developers/api/` API 與 SDK**
-1. Text hero: 「把一本書標成讀過，就是一個 API 操作。」
-2. 一個寫入: h2 「一個寫入請求，逐行看」; C of the write beside (desktop) or above (phone) an F
-   of its five parts.
-3. 重送: h2 「重送同一個請求，拿回同一個結果。」; three small C (200, 200 replayed, 409) in a row,
-   stacked on phones.
-4. 型別: h2 「API 和型別，來自同一份定義」; lead, C of the web's own call, the OpenAPI line.
-5. 讀取: h2 「讀取也有規矩」; F with the field names on the left.
+**`/developers/api/` API 與 SDK**: PageHead 「把一本書標成讀過，就是一個 API 操作。」; 寫入
+(the write as a code block, then code facts of its five parts); 重送 (three answers side by
+side: 200, the replay, 409); 型別 (the web's own typed call and the OpenAPI path); 讀取 (four
+read rules, field names on the left).
 
-**`/developers/mcp-server/` MCP 伺服器**
-1. Hero, `mcp` photo: 「你的 AI 代理，從 /mcp 進來。」
-2. 連線: h2 「連線的四個步驟」; numbered F, each title with its path or method.
-3. 同一個操作: h2 「代理的呼叫，轉送到同一個 HTTP 操作。」; two C (程式, 代理) with a neutral
-   query (`q=旅行`), the shared operation under them.
-4. S: 「MCP 只負責轉接，不是另一條寫入的路；」 muted continuation.
-5. 工具: h2 「工具清單」; three F groups (讀取目錄, 藏書庫, Wiki): tool name, what it does, scopes.
-6. 上限: F of the limits (30 秒, 1 MiB, 無狀態, retrieved text is data).
+**`/developers/mcp-server/` MCP 伺服器**: PageHead 「你的 AI 代理，從 /mcp 進來。」; photo row
+`mcp` 「MCP 只負責轉接，不是另一條寫入的路。」; 連線 (four numbered steps); 同一個操作 (one
+search sent as HTTP and as a tool call, the shared operation under them); 工具 (three groups:
+tool, what it does, operation and scopes); 上限.
 
-**`/developers/apps/` 連結應用**
-1. Hero, `apps` photo: 「應用拿到的權限，永遠不比你多。」
-2. 四層: h2 「一層比一層窄」; numbered F of the four layers.
-3. 授權: h2 「授權碼加上 PKCE」; C of the authorization request and its caption.
-4. 同意: h2 「同意畫面會寫明的事」; F (what it shows, field name) and the first-party note.
-5. 收回: h2 「隨時收回」; F of four rows.
+**`/developers/apps/` 連結應用**: PageHead 「應用拿到的權限，永遠不比你多。」; photo row `apps`
+「一層比一層窄」; 逐層 (four numbered layers); 授權 (the authorization request); 同意 (what the
+consent screen shows, with field names); 收回.
 
-**`/developers/wiki-toolkit/` 本機 Wiki 工具組**
-1. Hero, `wiki` photo: 「REZICS 收到的是提案，不是全文。」
-2. 界線: h2 「什麼留下，什麼送出」; two short lists side by side (stack on phones) and the note.
-3. 步驟: h2 「從一個檔案到一份提案」; C of the two commands, numbered F of five steps.
-4. 上限: F of formats, quotation length, file size.
-5. S: 「不解密，也不繞過；」 muted continuation, the licence line under it.
+**`/developers/wiki-toolkit/` Wiki 工具組**: PageHead 「REZICS 收到的是提案，不是全文。」;
+photo row `wiki` 「什麼留下，什麼送出」; 步驟 (the two commands, five numbered steps); 上限;
+statement 「不解密，也不繞過；」 with the licence line.
 
-**`/developers/zones/` Zone 主題**
-1. Hero, `zones` photo: 「版面歸 Zone，資料與規則歸平台。」
-2. 設定: h2 「先用設定，再寫程式」; lead and C of the tokens.
-3. 插槽: h2 「程式碼填進具名插槽」; the slot names as a compact chip list, C of the anime Zone's
-   package entry point.
-4. 界線: h2 「套件的界線」; F of six rules.
-5. 上線: h2 「從審查到上線」; numbered F of four steps.
-6. S: 「後端只有一套，前端隨你寫；」 muted continuation.
+**`/developers/zones/` Zone 主題**: PageHead 「版面歸 Zone，資料與規則歸平台。」; photo row
+`zones` 「先用設定，再寫程式」; 設定 (the tokens); 插槽 (the anime Zone's package entry point);
+界線 (five rules); 上線 (four numbered steps); statement 「後端只有一套，前端隨你寫；」.
 
-**`/developers/open-source/` 開放原始碼**
-1. Text hero: 「原始碼公開，獨立套件任你取用。」 and the text link 「前往原始碼」.
-2. 授權: h2 「兩種授權」; F (AGPL-3.0, Apache-2.0) with the folders each covers.
-3. 儲存庫: h2 「儲存庫裡有什麼」; F with the path on the left.
-4. 執行: h2 「在自己的電腦上執行」; two C with captions.
-5. S: 「規則寫進程式碼，理由寫進文件；」 muted continuation. Then the next site, 書庫.
+**`/developers/open-source/` 開放原始碼**: PageHead 「原始碼公開，獨立套件任你取用。」 with the
+text link 「前往原始碼」; 授權 (AGPL-3.0, Apache-2.0 and the folders each covers); 儲存庫 (paths
+on the left); 執行 (two code blocks); statement 「規則寫進程式碼，理由寫進文件；」; other pages
+and 書庫.
 
 ### Phones (390 px first)
 
-Copy and action first, the picture as a band after them. Facts lists stack title over text.
-Code blocks take the full width at 12.5 px; no block needs more than 34 characters a line except
-the request anatomy and the authorization request, which scroll sideways inside their block. Tile
-masonry runs in two columns.
+Copy and action first, the hero picture as a 260 px band from its phone crop; photo rows put the
+text first and the picture (its phone crop) after it. Fact rows stack title over text. Code
+blocks take the full width at 12.5 px; samples are written in short lines, and the few longer
+lines (the write request's identifier, the authorization request, the tokens) scroll sideways
+inside their block. Masonries run two tiles per row; side-by-side code blocks stack.
 
 ### Copy changes for v3
 
 - 《西遊記》 is gone (`.temp/sites/EXAMPLE-WORK.md`): the catalogue search uses the neutral query
-  `q=旅行`; the wiki commands use `作品.epub`; the title sample shows `"value": "…"`.
+  `q=旅行` (captioned 示意); the wiki commands use the toolkit README's `novel.epub`; the read
+  rules name fields without values.
 - No square-metaphor wording, no notify or waiting-list wording; every action is 「前往 REZICS」.
-- Fewer sections per page; the duplicated hands figures on the API and MCP pages became plain
-  code blocks.
+- Fewer sections per page; the hands figures became plain code blocks; the statements on the MCP
+  page and the wiki boundary lists became photo-row text.
 
 ## 4. Decisions
 
 - 2026-10-19 (v3): pictures return (one hero, four section pictures) because the v3 language
-  makes the paper still-life the site's shared material; code stays the developers' own material,
-  set small and light.
+  makes the paper still-life the shared material; code stays the developers' own material, set
+  small and light in the kit's CodeTile.
+- Inner pages open on text and show their picture in a photo row, not a second full-bleed hero:
+  the kit sizes section pictures at 1200 px, and one photograph hero per site keeps the landing
+  the site's single poster.
 - Slug `mcp-server`, not `mcp`, so it never reads as MCP Hub at `/mcp/`.
 - The last page hands over to 書庫 (site chain apis → developers → books).
 

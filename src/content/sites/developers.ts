@@ -52,6 +52,8 @@ export interface Photo {
 
 export type DevelopersStrings = {
   common: { nextSite: string; more: Head };
+  /** Descriptions of the paper still-lifes (SITE.md "Pictures"). */
+  alts: Record<'hero' | 'mcp' | 'apps' | 'wiki' | 'zones', string>;
   landing: {
     hero: Hero;
     ways: Head & {
@@ -119,6 +121,13 @@ const lines = (...l: string[]) => l.join('\n');
 
 const strings: DevelopersStrings = {
   common: { nextSite: '下一個站點', more: { label: '開發者', headline: '其他頁面' } },
+  alts: {
+    hero: '暖白紙面上，三條紙帶分別從上方、右側與下方伸過來，末端都壓在同一張深藍灰色的方形紙下。',
+    mcp: '一張深藍灰色的紙上打了一排圓孔，一條淺藍色紙帶在孔間一上一下穿過。',
+    apps: '四張方形紙由大到小疊在一起，最外層是深藍灰色，最上面是最小的一張淺藍色紙。',
+    wiki: '一疊厚厚的米白與淺藍紙張整齊疊好，旁邊另外放著三張細長的深藍灰色紙條。',
+    zones: '一張深藍灰色的紙摺成小小的立框，框上開了一扇窗，後面立著一張淺藍色的紙。',
+  },
 
   landing: {
     hero: {
