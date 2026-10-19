@@ -36,7 +36,7 @@ const stateRows = (Object.keys(s.states.body) as (keyof typeof states)[]).map((i
     <p class="lead sw-result">{s.conditions.result}</p>
   </Section>
 
-  <Statement text={s.statement.text} sub={s.statement.sub} />
+  <Statement text={s.statement.text} sub={s.statement.sub} note={s.statement.note} />
 
   <Next label={common.nextPage} items={nextTiles('compatibility')} />
   <Closing title={s.closing} />

@@ -55,7 +55,7 @@ export interface SoftwareStrings {
     anatomy: Head & { rows: Item[] };
     states: Head & { body: Record<StateId, string>; caption: string; corner: string };
     conditions: Head & { example: string; candidates: Item[]; result: string };
-    statement: { text: string; sub: string };
+    statement: { text: string; sub: string; note: string };
     closing: string;
   };
   reviews: {
@@ -80,7 +80,7 @@ export interface SoftwareStrings {
     steps: Head & { steps: Item[]; note: string };
     licence: Head & { points: Item[] };
     lock: Head & { points: Item[] };
-    statement: { text: string; sub: string };
+    statement: { text: string; sub: string; note: string };
     maintenance: Head & { rows: Item[] };
     closing: string;
   };
@@ -348,8 +348,9 @@ const site = {
         result: '條件分散在兩個發行，所以沒有符合的結果。REZICS 會直接回答沒有，不會悄悄放寬條件。',
       },
       statement: {
-        text: '每一個標示，都說得出證據與範圍。',
-        sub: '一個外部連結本身證明不了什麼；掃描結果只說明某一個檔案、某一次掃描。',
+        text: '每一個標示，都說得出證據與範圍；',
+        sub: '外部連結本身，證明不了什麼。',
+        note: '掃描結果也一樣，只說明某一個檔案、某一次掃描。',
       },
       closing: '能不能跑，留給實測回答。',
     },
@@ -496,8 +497,9 @@ const site = {
         ],
       },
       statement: {
-        text: '安裝，不等於允許執行。',
-        sub: 'REZICS 只接受驗證過的檔案，放在隔離的暫存區；套件裡的腳本，要你明確同意才會執行。',
+        text: '安裝，不等於允許執行；',
+        sub: '套件裡的腳本，要你明確同意才會執行。',
+        note: 'REZICS 的安裝流程只接受驗證過的檔案，並放在隔離的暫存區。',
       },
       maintenance: {
         label: '發布之後',
@@ -553,8 +555,8 @@ const site = {
         lead: '同一個人可以維護一套軟體、寫一本小說、評論一款遊戲，在 REZICS 都是同一個身分。製作人員欄位把這些連在一起；追蹤他，就跟得上他在每一個種類的新作品。',
       },
       statement: {
-        text: '名字相同不算數，關聯要有出處。',
-        sub: 'AI 代理可以提出關聯，但不會自己悄悄認定兩樣東西相同。',
+        text: '名字相同不算數，關聯要有出處；',
+        sub: 'AI 代理只提出，不會悄悄認定兩者相同。',
       },
       closing: '從任何一端，都找得到另一端。',
     },
