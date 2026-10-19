@@ -1,0 +1,39 @@
+---
+/**
+ * Short labels as soft pills (kinds of books, rating targets, states): a list that wraps. `tone`:
+ * `soft` (the muted panel, default) or `tint` (the site's accent tint). An optional label names
+ * the list for screen readers and shows above it.
+ */
+interface Props {
+  items: string[];
+  label?: string;
+  tone?: 'soft' | 'tint';
+  ordered?: boolean;
+  class?: string;
+}
+const { items, label, tone = 'soft', ordered = false, class: className } = Astro.props;
+const List = ordered ? 'ol' : 'ul';
+---
+<div class:list={['pills', className]}>
+  {label && <p class="pills__label label">{label}</p>}
+  <List class:list={['pills__list', `pills__list--${tone}`]} role="list">
+    {items.map((item) => <li class="pills__item">{item}</li>)}
+  </List>
+</div>
+<style>
+  .pills { display: flex; flex-direction: column; gap: 10px; }
+  .pills__label { color: var(--c-muted); }
+  .pills__list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pills__item {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
+    padding: 0 16px;
+    border-radius: var(--r-pill);
+    font-size: var(--t-s);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .pills__list--soft .pills__item { background: var(--c-soft); }
+  .pills__list--tint .pills__item { background: var(--tint-strong); }
+</style>

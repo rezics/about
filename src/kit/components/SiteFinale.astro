@@ -1,0 +1,30 @@
+---
+/**
+ * A mini-site page's finale: the next page of the site, and on the last page the next site (the
+ * navigation order, or the site's `next`), as the calm Finale card. Labels come from the site's
+ * own content; `body` is one line under the name.
+ *
+ *   <SiteFinale nextPage={s.common.nextPage} nextSite={s.common.nextSite} body={s.work.finaleLead} />
+ */
+import Finale from './Finale.astro';
+import { siteFor, nextSite as followingSite, pageHref } from '../sites';
+import { fieldOf } from '../theme';
+
+interface Props {
+  nextPage: string;
+  nextSite: string;
+  body?: string;
+}
+const { nextPage: pageLabel, nextSite: siteLabel, body } = Astro.props;
+const found = siteFor(Astro.url.pathname);
+if (!found) throw new Error(`${Astro.url.pathname}: no mini-site owns this path`);
+const { site, page } = found;
+const i = site.pages.findIndex((p) => p.slug === page.slug);
+const next = site.pages[i + 1];
+const other = followingSite(site);
+---
+{next ? (
+  <Finale label={pageLabel} name={next.label} href={pageHref(site, next)} field={fieldOf(site.theme)} body={body} />
+) : other ? (
+  <Finale label={siteLabel} name={other.name} href={other.base} field={fieldOf(other.theme)} body={body} />
+) : null}

@@ -2,7 +2,8 @@
 /**
  * A page's opening (DESIGN.md "Direction v2", Rhythm): a centred page title, one sentence under
  * it, the page's actions (slot), and optionally a large rounded image across the container. No
- * eyebrow. `align="start"` sets the title on the left for inner pages that open on more text.
+ * eyebrow. `align="start"` sets the title on the left for inner pages that open on more text. A
+ * square image (`ratio: 1`) sits beside the text instead of under it (inner pages).
  *
  *   <PageIntro title={…} lede={…} image={{ base: '/images/home/hero', alt: '…', widths: [640, 1024, 1536], ratio: 16 / 9 }}>
  *     <ProductCall />
@@ -23,14 +24,28 @@ interface Props {
 }
 const { title, lede, align = 'center', level: Tag = 'h1', id = 'intro-title', image, class: className } = Astro.props;
 const hasActions = Astro.slots.has('default');
+const split = !!image && (image.ratio ?? 16 / 9) === 1;
 ---
-<section class:list={['intro', `intro--${align}`, className]} aria-labelledby={id}>
+<section class:list={['intro', `intro--${split ? 'start' : align}`, split && 'intro--split', className]} aria-labelledby={id}>
+  {split && image ? (
+    <div class="container intro__split">
+      <div class="intro__text">
+        <Tag id={id} class="t-title intro__title"><Clauses text={title} /></Tag>
+        {lede && <p class="lede intro__lede">{lede}</p>}
+        {hasActions && <div class="intro__actions"><slot /></div>}
+      </div>
+      <div class="frame intro__square">
+        <Picture base={image.base} alt={image.alt} widths={image.widths ?? [640, 1024]} ratio={1} sizes="(max-width: 767px) 100vw, 520px" eager />
+      </div>
+    </div>
+  ) : (
   <div class:list={['container', align === 'center' && 'container--narrow', 'intro__text']}>
     <Tag id={id} class="t-title intro__title"><Clauses text={title} /></Tag>
     {lede && <p class="lede intro__lede">{lede}</p>}
     {hasActions && <div class="intro__actions"><slot /></div>}
   </div>
-  {image && (
+  )}
+  {image && !split && (
     <div class="container intro__media">
       <div class="frame intro__frame">
         <Picture base={image.base} alt={image.alt} widths={image.widths ?? [640, 1024, 1536]} ratio={image.ratio ?? 16 / 9} sizes="(max-width: 767px) 100vw, min(1120px, 92vw)" eager />
@@ -52,7 +67,13 @@ const hasActions = Astro.slots.has('default');
   .intro__frame { aspect-ratio: 16 / 9; }
   /* The picture settles from a slight scale as the page opens; it is never hidden, so it can be
      the page's largest paint. */
-  :global(.motion) .intro__frame :global(img) { animation: intro-settle 1.6s var(--ease-snap) both; }
+  :global(.motion) .intro__frame :global(img), :global(.motion) .intro__square :global(img) { animation: intro-settle 1.6s var(--ease-snap) both; }
+  .intro__split { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 32px; align-items: center; }
+  .intro__split .intro__text { grid-column: 1 / span 6; }
+  .intro__square { grid-column: 8 / span 5; aspect-ratio: 1; }
+  @media (max-width: 767px) {
+    .intro__split .intro__text, .intro__square { grid-column: 1 / -1; }
+  }
   @keyframes intro-settle { from { scale: 1.05; } }
   @media (max-width: 599px) {
     .intro__frame { aspect-ratio: 4 / 3; }

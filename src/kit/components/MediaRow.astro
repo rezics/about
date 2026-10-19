@@ -47,17 +47,13 @@ const headingId = id ?? idFor('row', title);
     column-gap: var(--gutter);
     align-items: center;
   }
-  .row__text { grid-column: 2 / span 4; grid-row: 1; display: flex; flex-direction: column; gap: 16px; }
+  .row__text { grid-column: 1 / span 5; grid-row: 1; display: flex; flex-direction: column; gap: 16px; }
   .row__frame { grid-column: 7 / span 6; grid-row: 1; aspect-ratio: 1; }
-  .row--reverse .row__text { grid-column: 8 / span 4; }
+  .row--reverse .row__text { grid-column: 8 / span 5; }
   .row--reverse .row__frame { grid-column: 1 / span 6; }
   .row__title { margin-bottom: 4px; }
   .row__body { color: var(--c-muted); }
   .row__more { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 8px; }
-  @media (max-width: 1023px) {
-    .row__text { grid-column: 1 / span 5; }
-    .row--reverse .row__text { grid-column: 8 / span 5; }
-  }
   @media (max-width: 767px) {
     .row__inner { grid-template-columns: minmax(0, 1fr); row-gap: 28px; }
     .row__text, .row--reverse .row__text { grid-column: 1; grid-row: 1; }
