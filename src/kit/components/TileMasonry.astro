@@ -45,12 +45,14 @@ interface Props {
   height?: number;
   phoneRow?: number;
   grain?: boolean;
+  /** Tile name size: `l` (default, 24 → 30 px) or `m` (20 → 24 px, for many narrow tiles). */
+  size?: 'l' | 'm';
   /** Heading level of the tile names (default p: the section's h2 names the group). */
   level?: 'h3' | 'p';
   label?: string;
   class?: string;
 }
-const { items, columns, phone, height = 560, phoneRow = 120, grain = false, level = 'p', label, class: className } = Astro.props;
+const { items, columns, phone, height = 560, phoneRow = 120, grain = false, size = 'l', level = 'p', label, class: className } = Astro.props;
 const ROWS = 120;
 const wide = new Map<string, { col: number; row: number; span: number; line: boolean }>();
 columns.forEach((col, c) => {
@@ -85,7 +87,7 @@ for (const it of items) {
     const lineOn = a.line && b.line ? 'both' : a.line ? 'wide' : b.line ? 'phone' : 'none';
     return (
       <li class="masonry__cell" style={`--c1:${a.col};--r1:${a.row};--s1:${a.span};--r2:${b.row};--c2:${b.col};--s2:${b.span}`}>
-        <Tile name={it.name} bg={it.bg} on={it.on} href={it.href} line={it.line} rel={it.rel} lineOn={lineOn} grain={grain} level={level} />
+        <Tile name={it.name} bg={it.bg} on={it.on} href={it.href} line={it.line} rel={it.rel} lineOn={lineOn} grain={grain} size={size} level={level} />
       </li>
     );
   })}

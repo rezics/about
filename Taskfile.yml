@@ -65,7 +65,7 @@ tasks:
       - scripts/slot.sh node scripts/qa.mjs {{.CLI_ARGS}}
 
   fonts:latin:
-    desc: Regenerate the committed Latin font subsets and Archivo advance widths
+    desc: Regenerate the committed Latin font subset (Martian Mono, for code)
     cmds:
       - node scripts/fonts.mjs latin
 

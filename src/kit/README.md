@@ -73,7 +73,7 @@ Import from `src/kit/components/`. Props are stable; new props will be optional.
 | `PhotoHero` | A landing's hero and its h1: one photograph, one sentence, one action. `title` (two short clauses), `eyebrow?`, `lede?` (about 60 characters), the ink pill in the slot, `image` = `{ src, widths, alt, width, height, position?, phone? }` (see `Picture`), `side` (`left` or `right`: where the picture's empty paper is), `align` (`end` or `center`), `phoneBand` (px, default 260), `bar` (true on a mini-site, so the site bar fits). Phones: copy first, the picture as a band from its phone crop. |
 | `PageHead` | An inner page's opening without a picture and its h1: `label` (the site's name, as the eyebrow), `title`, `lede?`, actions in the slot. |
 | `Section` | One idea on the 12-column grid: `eyebrow?` (columns 1 to 3), `title` (serif h2, a string or its lines, columns 4 to 11), `lead?` (one paragraph or several, columns 4 to 9), `link?` `{ href, text }`, the default slot across 4 to 12 (a `FactList`, `IndexRows`, `CodeTile`, more text), slot `wide` across the grid (a `TileMasonry`, a `Picture`), `id?`, `space` (`normal` or `none`). |
-| `TileMasonry` | Seamless flat tiles 3 px apart in columns that end level, heights by importance (products, a site's own pages, neighbouring kinds). `items` (`{ id, name, bg, on, href?, line?, rel? }`, in reading order), `columns` (the wide layout: columns of `{ id, h, line? }`), `phone?` (rows of `{ id, w?, line? }`; default two per row), `height` (px, default 560), `phoneRow` (px, default 120), `grain?`, `label?` (the list's accessible name). Every id must have a place in both layouts. |
+| `TileMasonry` | Seamless flat tiles 3 px apart in columns that end level, heights by importance (products, a site's own pages, neighbouring kinds). `items` (`{ id, name, bg, on, href?, line?, rel? }`, in reading order), `columns` (the wide layout: columns of `{ id, h, line? }`), `phone?` (rows of `{ id, w?, line? }`; default two per row), `height` (px, default 560), `phoneRow` (px, default 120), `size` (`l` or `m` for many narrow tiles), `grain?`, `label?` (the list's accessible name). Every id must have a place in both layouts. |
 | `Tile` | One flat tile: `name` (serif; a Latin name such as MCP Hub is set in Manrope), `bg`, `on` (`paper` or `ink`), `href?`, `line?`, `lineOn?`, `rel?` (a note at the top), `grain?`, `size` (`l` or `m`), `level?`. Hover: tone shifts away from the text, name rises, arrow slides in. |
 | `PhotoRow` | A still-life photograph beside a short text block: `image`, `title` (serif h2), `eyebrow?`, `body?` (one paragraph or several), `link?`, `side` (`right` or `left`: the picture's side). Picture seven columns, text four, feet level. Phones: text first. |
 | `Picture` | The responsive photograph: `src` (base path, files `${src}-${width}.avif|webp`), `widths`, `alt`, `width`, `height` (intrinsic ratio), `sizes?`, `phone?` (`{ src, widths, width, height, position? }`, an art-directed crop under 768 px), `cover?` (fill and crop the parent), `position?`, `priority?` (the page's largest picture). For a picture below a text block put it in a `Section`'s `wide` slot. |
@@ -152,9 +152,13 @@ yours as you rebuild:
 | `ItemGrid` (`look="cards"` above all), `Pills`, `TextCols` | `FactList`, plain `.lead` paragraphs |
 | `SiteFinale`, `Finale` | a `TileMasonry` of neighbouring kinds or your next pages, then `Closing` |
 | `.mlabel`, `.label`, `.mono` | `.eyebrow` (they now render as one) |
-| `Square`, `SquareName`, `KindSquare`, `ModuleSquare`, `EmptySquare`, `Composer`, `PartsGrid`, `NotifyCall`, `SectionHead`, `CodeBlock` | nothing; `Tile`, `CodeTile` |
 
 `Table` and `PartsList` follow the v3 tokens and stay usable where a page needs a table.
+
+Removed in v3 (nothing used them): `Square`, `SquareName`, `KindSquare`, `ModuleSquare`,
+`EmptySquare`, `Composer` (and its motion), `PartsGrid`, `NotifyCall`, `SectionHead`,
+`CodeBlock`, `src/kit/arrange.ts`, `src/kit/fit.ts`, the Archivo web font and the kind prints
+in `public/images/kinds/`. Use `Tile` and `CodeTile`.
 
 ## v2 reference (superseded by v3)
 
