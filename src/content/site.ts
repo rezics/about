@@ -40,6 +40,11 @@ export const site: Site = {
     kinds: {
       eyebrow: '九種東西',
       headline: ['每一種東西，都有自己的地方；', '背後是同一個索引，同一個帳號。'],
+      lines: {
+        anime: '季、集與播出日程',
+        manga: '單行本、每一話與譯本',
+        software: '能不能跑、去哪取得',
+      },
     },
     statement: {
       text: '一部小說、它的漫畫、動畫與遊戲，',
@@ -47,7 +52,7 @@ export const site: Site = {
     },
     identity: {
       eyebrow: '通用索引',
-      headline: '一個身分，不分種類與語言。',
+      headline: '不同語言的名字，指向同一個身分。',
       body: [
         '同一部作品在中文、日文與英文裡各有名稱，在 REZICS 都指向同一個身分。版本、譯本與改編各自分明，又彼此相連。',
         '你的書庫、評分與進度跟著這個身分走，換一種語言瀏覽，看到的仍是同一筆紀錄。',
@@ -57,10 +62,10 @@ export const site: Site = {
     },
     community: {
       eyebrow: '社群與站點',
-      headline: '社群就在作品旁邊，也能有自己的網站。',
+      headline: '圍著作品相聚，也有自己的網站。',
       body: [
-        '討論、評分與清單連到作品本身，不是貼文裡提到的一個名字。為一個故事、一種語言或一個想法成立的 Realm，有自己的成員、規則與管理。',
-        '社群需要更多空間時，可以用 Zone 架起完整的網站，頁面、導覽與主題自己決定，資料仍取自同一張圖。',
+        '討論、評分與清單都連到作品本身。Realm 讓人圍著故事、語言或共同興趣相聚，各有成員、規則與管理。',
+        '用 Zone 為社群建立完整網站，自訂頁面、導覽與主題，資料仍取自同一張圖。',
       ],
       link: '看社群與站點',
       imageAlt: '一張深青色的紙摺成一座小屋立在紙面上，旁邊散著幾張小小的彩色紙片。',
@@ -79,12 +84,12 @@ export const site: Site = {
     },
     agents: {
       eyebrow: '開發者與 AI 代理',
-      headline: '你在 REZICS 能做的事，AI 代理透過同一套 API 也能做。',
-      lead: '網頁與 MCP 伺服器走的是同一套操作與權限。代理代表人行事，能做的事不會超出授權給它的範圍；它提出的變更經人審核才套用。',
+      headline: '同一套 API，從網站到你的應用程式。',
+      lead: '用 API、MCP 伺服器與 SDK，讓你的應用程式或代理讀取資料、管理書庫與送出提案。代理依照你的授權行事，變更提案經人審核後才套用。',
       link: '看開發者資源',
-      code: ['# 搜尋目錄，不需要登入', 'curl -G "$REZICS_API/v1/search/catalogue" \\', '  --data-urlencode "q=輕小說" \\', '  -d language=zh-Hant -d limit=5'].join('\n'),
+      code: ['# 搜尋目錄，不需要登入', 'curl -G \\', '  "$REZICS_API/v1/search/catalogue" \\', '  --data-urlencode "q=輕小說" \\', '  -d language=zh-Hant -d limit=5'].join('\n'),
       codeLabel: '用 curl 搜尋 REZICS 目錄的請求範例',
-      caption: '每一條路徑與錯誤都寫在公開的 OpenAPI 文件裡。',
+      caption: '將 REZICS_API 設為 API 服務網址。language 指定搜尋結果的顯示語言。',
     },
     principles: {
       eyebrow: '原則',
@@ -159,7 +164,7 @@ export const site: Site = {
       },
       {
         title: '本機 Wiki 工具組',
-        body: '持有文本的人在自己的機器上，用自己選的代理讀 TXT、EPUB 與 Ren\'Py 腳本，逐章萃取人物、地點與事件，附上出處位置送出提案。工具組以 Apache-2.0 授權，不需要 REZICS 帳號，也不傳送遙測資料。',
+        body: '持有文本的人在自己的機器上，用自己選的 AI 代理讀 TXT、EPUB 與視覺小說腳本，逐章萃取人物、地點與事件，附上出處位置送出提案。工具組以 Apache-2.0 授權，不需要 REZICS 帳號，也不傳送遙測資料。',
       },
       {
         title: '開放原始碼',
@@ -167,11 +172,11 @@ export const site: Site = {
       },
     ],
     sample: {
-      caption: '公開搜尋不需要權杖。用《西遊記》找作品，回應附上排名結果、筆數的精確度與下一頁的游標。',
+      caption: '公開搜尋不需要權杖。以輕小說為關鍵字，回應附上排名結果、筆數的精確度與下一頁的游標。',
       language: 'sh',
       code: [
         'curl -G "$REZICS_API/v1/search/catalogue" \\',
-        '  --data-urlencode "q=西遊記" \\',
+        '  --data-urlencode "q=輕小說" \\',
         '  -d language=zh-Hant \\',
         '  -d limit=5',
       ].join('\n'),
@@ -234,6 +239,7 @@ export const site: Site = {
       description:
         '這個網址沒有對應的頁面，可能是網址打錯了字，或這個頁面已經移到別的地方。回到 REZICS 首頁，從九種東西與五個模組重新找起。',
     },
+    eyebrow: '404',
     headline: '這一頁不在這裡。',
     body: '網址可能打錯了字，或這個頁面已經搬到別處。回到首頁，或從九種東西重新找起。',
     back: '回到首頁',

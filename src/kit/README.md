@@ -74,6 +74,7 @@ Import from `src/kit/components/`. Props are stable; new props will be optional.
 | `PageHead` | An inner page's opening without a picture and its h1: `label` (the site's name, as the eyebrow), `title`, `lede?`, actions in the slot. |
 | `Section` | One idea on the 12-column grid: `eyebrow?` (columns 1 to 3), `title` (serif h2, a string or its lines, columns 4 to 11), `lead?` (one paragraph or several, columns 4 to 9), `link?` `{ href, text }`, the default slot across 4 to 12 (a `FactList`, `IndexRows`, `CodeTile`, more text), slot `wide` across the grid (a `TileMasonry`, a `Picture`), `id?`, `space` (`normal` or `none`). |
 | `TileMasonry` | Seamless flat tiles 3 px apart in columns that end level, heights by importance (products, a site's own pages, neighbouring kinds). `items` (`{ id, name, bg, on, href?, line?, rel? }`, in reading order), `columns` (the wide layout: columns of `{ id, h, line? }`), `phone?` (rows of `{ id, w?, line? }`; default two per row), `height` (px, default 560), `phoneRow` (px, default 120), `size` (`l` or `m` for many narrow tiles), `grain?`, `label?` (the list's accessible name). Every id must have a place in both layouts. |
+| `src/kit/tiles.ts` | Items for a masonry: `kindTiles(ids, lines?)` (kinds in their colours, linked, with their summaries), `pageTiles(site, field, rows)` (your own pages in `accentRamp` shades), `oneRow(items)` (columns for one level row). |
 | `Tile` | One flat tile: `name` (serif; a Latin name such as MCP Hub is set in Manrope), `bg`, `on` (`paper` or `ink`), `href?`, `line?`, `lineOn?`, `rel?` (a note at the top), `grain?`, `size` (`l` or `m`), `level?`. Hover: tone shifts away from the text, name rises, arrow slides in. |
 | `PhotoRow` | A still-life photograph beside a short text block: `image`, `title` (serif h2), `eyebrow?`, `body?` (one paragraph or several), `link?`, `side` (`right` or `left`: the picture's side). Picture seven columns, text four, feet level. Phones: text first. |
 | `Picture` | The responsive photograph: `src` (base path, files `${src}-${width}.avif|webp`), `widths`, `alt`, `width`, `height` (intrinsic ratio), `sizes?`, `phone?` (`{ src, widths, width, height, position? }`, an art-directed crop under 768 px), `cover?` (fill and crop the parent), `position?`, `priority?` (the page's largest picture). For a picture below a text block put it in a `Section`'s `wide` slot. |
@@ -135,7 +136,8 @@ direction"; `/home/edge/projects/rezics/about/.temp/images-v3/gen.sh <dir> <name
 Quiet: section headings and leads fade and rise a few pixels as they enter (`data-reveal`, set by
 the parts), tiles respond on hover and press, the dropdown panels fade open, pages cross-fade. No
 scroll-scrubbed scenes, no idle animation. Reveals do nothing below 600 px or under reduced
-motion. The rules in "Motion (engine)" below still hold.
+motion. Header tabs lift their label 2 px and underline it; standalone links draw a second
+hairline from the left on hover and focus. The rules in "Motion (engine)" below still hold.
 
 ### Deprecated (v2)
 
@@ -147,7 +149,7 @@ yours as you rebuild:
 | `HeroWall`, `TileWall` | `PhotoHero` (a landing) or `PageHead` (an inner page) |
 | `Sec` | `Section` |
 | `Band`, `.band-ink`, `.band-soft`, `.band-tint` | nothing: pages stay on paper (a `Statement` or a `PhotoRow`) |
-| `TileRow` | `TileMasonry` (a single row is one column per tile: `columns={items.map((i) => [{ id: i.id, h: 1 }])}`) |
+| `TileRow` | `TileMasonry` (a single row: `columns={oneRow(items)}` from `src/kit/tiles.ts`) |
 | `ItemList`, `HairList` | `Section` with a `FactList` |
 | `ItemGrid` (`look="cards"` above all), `Pills`, `TextCols` | `FactList`, plain `.lead` paragraphs |
 | `SiteFinale`, `Finale` | a `TileMasonry` of neighbouring kinds or your next pages, then `Closing` |

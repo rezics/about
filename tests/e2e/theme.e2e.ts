@@ -26,10 +26,17 @@ for (const route of ['/books/', '/developers/', '/engine/community/']) {
     expect(grounds.header).toBe('#0e1420');
     expect(grounds.body).toBe('rgb(14, 20, 32)');
     expect(grounds.footer).toBe('rgb(244, 245, 242)');
+    const contrast = async (include?: string) => {
+      const axe = new AxeBuilder({ page }).withRules(['color-contrast']);
+      const results = await (include ? axe.include(include) : axe).analyze();
+      return results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(' ')}: ${n.failureSummary?.split('\n')[1] ?? ''}`));
+    };
+    expect(await contrast()).toEqual([]);
+    // The open panel covers the page: check the panel itself (axe would read the page's text
+    // under it against the tiles' colours).
     await page.locator('[data-panel-button="panel-products"]').click();
     await expect(page.locator('#panel-products')).toBeVisible();
-    const results = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
-    expect(results.violations.flatMap((v) => v.nodes.map((n) => `${n.target.join(' ')}: ${n.failureSummary?.split('\n')[1] ?? ''}`))).toEqual([]);
+    expect(await contrast('#panel-products')).toEqual([]);
     await context.close();
   });
 }

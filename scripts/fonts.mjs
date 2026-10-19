@@ -130,7 +130,8 @@ const decodeEntities = (s) =>
 
 /** Text set in the serif on a page: h1 to h3 and every element carrying a serif class. */
 export function serifText(html) {
-  const body = html.slice(html.indexOf('<body'));
+  const at = html.indexOf('<body');
+  const body = at < 0 ? html : html.slice(at);
   const out = [];
   for (const m of body.matchAll(/<(h[1-3])\b[^>]*>([\s\S]*?)<\/\1>/g)) out.push(m[2]);
   const open = /<([a-z][a-z0-9-]*)\b[^>]*?\bclass="([^"]*)"[^>]*>/g;
