@@ -86,7 +86,7 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    min-height: 40px;
+    min-height: 44px;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: 0.02em;
@@ -117,6 +117,8 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
   .header__menu {
     display: none;
     min-height: 44px;
+    min-width: 44px;
+    justify-content: flex-end;
     padding: 0 2px;
     color: var(--c-fg);
     font-size: 14px;
