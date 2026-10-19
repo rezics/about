@@ -1,0 +1,81 @@
+---
+/**
+ * Flat colour tiles as a masonry (DESIGN.md "Direction v2", tiles): columns of tiles with varied
+ * heights, packed near seamlessly (4 px), square corners, flat; the block ends level. Used for
+ * the products on the home page, a site's own pages and its neighbouring kinds. Give each item
+ * its height in row units (`h`, deliberately: taller for the larger kinds or the more important
+ * pages) and, for the wide layout, its column (`col`); phones take two columns packed in the
+ * items' order (src/kit/masonry.ts), which is also the keyboard order. A heading block (`title`, `lede`, a link in slot `link`) is optional.
+ */
+import Tile from './Tile.astro';
+import SectionHead from './SectionHead.astro';
+import { place } from '../masonry';
+import { idFor } from '../ids';
+
+export interface TileItem {
+  title: string;
+  body?: string;
+  href: string;
+  bg: string;
+  on: 'paper' | 'ink';
+  label?: string;
+  /** Height in row units (about 34 px on wide screens, 30 px on phones). */
+  h: number;
+  /** Column in the wide layout (1-based). */
+  col?: number;
+}
+
+interface Props {
+  items: TileItem[];
+  cols?: 3 | 4;
+  title?: string;
+  lede?: string;
+  id?: string;
+  /** Inside your own section: no section padding of its own. */
+  bare?: boolean;
+  class?: string;
+}
+const { items, cols = 3, title, lede, id: given, bare = false, class: className } = Astro.props;
+// The document (and keyboard) order is the items' order; only the placement differs by width.
+const wide = place(items, cols);
+const narrow = place(items, 2, false);
+const id = title ? (given ?? idFor('tiles', title)) : undefined;
+const level = 'h3';
+---
+<section class:list={['masonry-sec', bare && 'masonry-sec--bare', className]} aria-labelledby={id}>
+  <div class="container">
+    {title && (
+      <div class="masonry__head">
+        <SectionHead id={id} title={title} lede={lede}><slot name="link" /></SectionHead>
+      </div>
+    )}
+    <ul class="masonry" role="list" style={`--cols:${cols}`} data-reveal="fade">
+      {items.map((it, i) => {
+        const w = wide[i]!;
+        const n = narrow[i]!;
+        return (
+          <li class="masonry__cell" style={`--c:${w.col};--r:${w.row};--h:${w.span};--pc:${n.col};--pr:${n.row};--ph:${n.span}`}>
+            <Tile title={it.title} body={it.body} href={it.href} bg={it.bg} on={it.on} label={it.label} level={level} />
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+<style>
+  .masonry-sec { padding-block: calc(var(--space-section) / 2); }
+  .masonry-sec--bare { padding-block: 0; }
+  .masonry__head { margin-bottom: clamp(24px, 3vw, 40px); }
+  .masonry {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    grid-auto-rows: 34px;
+    gap: 4px;
+  }
+  .masonry__cell { grid-column: var(--c); grid-row: var(--r) / span var(--h); min-width: 0; }
+  @media (max-width: 599px) {
+    .masonry { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 30px; }
+    .masonry__cell { grid-column: var(--pc); grid-row: var(--pr) / span var(--ph); }
+    .masonry :global(.tile) { --tile-name: 1.375rem; }
+  }
+</style>

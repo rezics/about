@@ -572,3 +572,10 @@ Voice (zh-Hant):
   its two most used CJK slices (the rest load as their text is laid out; CLS measured 0), the
   header's panels and phone sheet render at the end of the document, and wide intro images have
   a 4:3 phone crop at 720 px (art direction in `<picture>`).
+- 2026-10-19 (maintainer feedback on the pilot): tiles are near-seamless flat graphic design,
+  never floating rounded cards with gaps. The header panels are a full-width area under the bar
+  filled edge to edge with the square print tiles (3 px apart, no radius, no shadow); products,
+  a site's own pages and its neighbouring kinds are solid colour tiles in a masonry
+  (`TileMasonry`: the kind's field, or shades and tints of the site's accent, paper or ink text
+  at AA, varied heights, 4 px gaps, square corners), with the name, one line and an arrow on
+  the tile; gradient card art is dropped.

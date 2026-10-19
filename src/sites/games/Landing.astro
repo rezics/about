@@ -6,7 +6,7 @@ import PageIntro from '../../kit/components/PageIntro.astro';
 import MediaRow from '../../kit/components/MediaRow.astro';
 import Statement from '../../kit/components/Statement.astro';
 import SectionHead from '../../kit/components/SectionHead.astro';
-import CardRow, { type CardItem } from '../../kit/components/CardRow.astro';
+import TileMasonry, { type TileItem } from '../../kit/components/TileMasonry.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import PartsList from '../../kit/components/PartsList.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
@@ -14,6 +14,7 @@ import SiteFinale from '../../kit/components/SiteFinale.astro';
 import Arrow from '../../kit/components/Arrow.astro';
 import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
+import { accentRamp } from '../../kit/color';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/games';
 import './games.css';
@@ -21,17 +22,39 @@ import './games.css';
 const s = site.strings.landing;
 const kind = kindById('games');
 const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-const pages: CardItem[] = s.pages.rows.map((r, i) => ({
+// The six pages as flat tiles in shades and tints of the games field; releases (the question
+// players bring) and creators stand taller.
+const ramp = accentRamp(kindFields.games.field);
+const pageLayout: Record<string, { h: number; col: number }> = {
+  releases: { h: 7, col: 1 },
+  store: { h: 6, col: 2 },
+  library: { h: 5, col: 3 },
+  reviews: { h: 5, col: 1 },
+  guides: { h: 6, col: 2 },
+  creators: { h: 7, col: 3 },
+};
+const pages: TileItem[] = s.pages.rows.map((r, i) => ({
   title: pageBy(r.slug).label,
   body: r.body,
   href: pageHref(site, pageBy(r.slug)),
-  art: { field: kindFields.games.field, variant: i },
+  ...ramp[i % ramp.length]!,
+  ...pageLayout[r.slug]!,
 }));
-const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
+// The neighbouring kinds in their own fields; visual novels (the closest kin) and anime taller.
+const neighbourLayout: Record<string, { h: number; col: number }> = {
+  'visual-novels': { h: 7, col: 1 },
+  books: { h: 5, col: 2 },
+  anime: { h: 12, col: 3 },
+  manga: { h: 5, col: 1 },
+  software: { h: 7, col: 2 },
+};
+const neighbours: TileItem[] = s.connections.squares.map((c) => ({
   title: kindById(c.to).name,
   body: c.body,
   href: kindHref(c.to),
-  art: { field: kindFields[c.to].field, variant: i },
+  bg: kindFields[c.to].field,
+  on: kindFields[c.to].on,
+  ...neighbourLayout[c.to]!,
 }));
 const releases = s.releases.items.map((it) => ({ label: it.label[0], title: it.label[1], body: it.body }));
 ---
@@ -53,7 +76,7 @@ const releases = s.releases.items.map((it) => ({ label: it.label[0], title: it.l
 
 <Statement text={s.specifics.statement} sub={s.specifics.body} />
 
-<CardRow title={s.pages.headline} items={pages} cols={3} ratio={16 / 9} />
+<TileMasonry title={s.pages.headline} items={pages} />
 
 <MediaRow title={s.store.headline} body={s.store.body} image={{ base: '/images/sites/games/store', alt: s.store.alt }} reverse>
   <a class="link-draw" href={pageHref(site, pageBy('store'))}>{s.store.links[0]}<Arrow /></a>
@@ -68,6 +91,6 @@ const releases = s.releases.items.map((it) => ({ label: it.label[0], title: it.l
   </div>
 </section>
 
-<CardRow title={s.connections.headline} lede={s.connections.lede} items={neighbours} cols={5} ratio={4 / 3} />
+<TileMasonry title={s.connections.headline} lede={s.connections.lede} items={neighbours} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />

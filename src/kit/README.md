@@ -66,10 +66,13 @@ parts in their own order with more text: `PageIntro` with a square image beside 
 `<section class="…"><div class="container">…</div></section>` and pad them with
 `calc(var(--space-section) / 2)` so the gap between any two sections is `--space-section`.
 
-Never use squares in page bodies: flat square tiles live only in the header's dropdown panels
-(`Square`, `KindSquare`, `ModuleSquare`). No heavy display type (weights 400 and 500, 700 at
-most), no mono outside code, no saturated flat blocks of your field: use it in your art, in
-tints (`--tint`, `--tint-strong`) and as small marks (dots, the current tab).
+Tiles are flat graphic design, packed almost seamlessly, never floating rounded cards with gaps.
+The header's dropdown panels hold the square print tiles (`Square`, `KindSquare`,
+`ModuleSquare`); keep those out of page bodies. Products, a site's own pages and its neighbouring
+kinds are flat colour tiles in a masonry (`TileMasonry`): a kind's field, or shades and tints of
+your accent (`accentRamp` in `src/kit/color.ts`), with the name, one line and an arrow on the
+tile. No heavy display type (weights 400 and 500, 700 at most), no mono outside code; outside
+tiles, use your field in your art, in tints (`--tint`, `--tint-strong`) and as small marks.
 
 ## Themes
 
@@ -113,7 +116,8 @@ Import from `src/kit/components/`:
 | `PageIntro` | the page's opening and its h1: `title`, `lede`, actions in the slot, `image` (`{ base, alt, widths?, ratio?, phone? }`: a wide image under the text with its 4:3 phone crop, or with `ratio: 1` a square beside it), `align` (`center` default, `start`) |
 | `MediaRow` | a short text block beside a large rounded image: `title`, `body` (string or paragraphs), `image`, `reverse`, links in the slot. Phones: text, then image |
 | `Statement` | one centred statement set larger than body text, `sub` under it, a link in the slot; one per page at most |
-| `CardRow`, `Card` | a heading (`title`, `lede`, a link in slot `link`) and cards of art + name + one line linking deeper: `items` (`{ title, body, href, label, art }`, art `{ image: { base } }` or `{ field, variant }` for a soft gradient), `cols` (2 to 5), `ratio`, `phone` (`scroll` sideways row, or `stack`), `bare` inside your own section |
+| `TileMasonry`, `Tile` | flat colour tiles in a masonry, packed 4 px apart, square corners, flat, ending level: `items` (`{ title, body, href, bg, on, h, col }`: the ground and its AA text colour, the height in row units and the column on wide screens; vary heights deliberately, taller for the larger kinds or the more important pages), `cols` (3 or 4; phones take 2), `title`, `lede`, a link in slot `link`. On hover and focus a deeper tone rises through the tile, the name and the arrow step forward; a click presses it. Use it for products, your own pages and neighbouring kinds; colours from `kindFields` or `accentRamp(field)` |
+| `CardRow`, `Card` | cards of art + name + one line (kept; not for products or a site's pages, which are `TileMasonry`) |
 | `ItemGrid` | titled items in 2 to 5 columns under hairlines (`look="lines"`) or on tinted cards (`look="cards"`); `numbered` for sequences; items may carry a `label` |
 | `ItemList` | a heading beside rows of title + text under hairlines (rules, rights, refusals); the slot follows the heading |
 | `SectionHead` | an h2 (or h3) with a line and links, `align` start or center |
@@ -194,8 +198,11 @@ product's Aura design (DESIGN.md "Direction v2"). The pilot (home, books, games)
 - Buttons are pills (ink blue, white text); `ProductCall` puts its arrow after the label. Text
   links are ink blue with an underline on hover. Focus is the ink-blue ring; the red corner
   square is gone.
-- Header: quiet pill tabs and a pill action; the two dropdown panels are floating sheets that
-  keep the square tiles. Site bar: the site's name with a dot in its accent and pill tabs, the
+- Header: quiet pill tabs and a pill action; the two dropdown panels open as a full-width area
+  under the bar, filled edge to edge with the square tiles packed 3 px apart (prints with their
+  names; modules as flat colour). Hover settles the print closer or raises the colour, slides
+  the name and brings an arrow; a click presses the tile.
+- Products, a site's own pages and its neighbouring kinds are `TileMasonry` tiles, not cards. Site bar: the site's name with a dot in its accent and pill tabs, the
   current page on the accent tint.
 - Footer: the closing panel (`ClosingPanel`, from `site.product`) and link columns; no ink band.
   `Finale` is a calm tinted card; `SiteFinale` picks the next page or site for you.

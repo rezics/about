@@ -1,0 +1,83 @@
+---
+/**
+ * A flat colour tile (DESIGN.md "Direction v2", tiles): a solid ground (a kind's field, or a shade
+ * or tint of a site's accent) with the text set directly on it: the name large, one short line
+ * beneath, an arrow. No picture, no shadow, a tiny radius. On hover and focus a deeper tone of the
+ * ground rises through the tile, the name and the arrow step forward; a click presses it briefly.
+ * `on` is the text colour that passes AA on `bg` (src/kit/color.ts `textOn`).
+ */
+import { palette } from '../theme';
+
+interface Props {
+  title: string;
+  body?: string;
+  href: string;
+  bg: string;
+  on: 'paper' | 'ink';
+  /** A small line above the name. */
+  label?: string;
+  level?: 'h2' | 'h3' | 'h4';
+  class?: string;
+  style?: string;
+}
+const { title, body, href, bg, on, label, level: Tag = 'h3', class: className, style } = Astro.props;
+---
+<a class:list={['tile', className]} href={href} style={`--tile:${bg};--tile-on:${palette[on]};${style ?? ''}`}>
+  <span class="tile__shade" aria-hidden="true"></span>
+  <span class="tile__text">
+    {label && <span class="tile__label">{label}</span>}
+    <Tag class="tile__name">{title}</Tag>
+    {body && <span class="tile__body">{body}</span>}
+  </span>
+  <svg class="tile__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</a>
+<style>
+  .tile {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100%;
+    min-height: 0;
+    padding: clamp(18px, 1.6vw, 28px);
+    overflow: clip;
+    border-radius: 2px;
+    background: var(--tile);
+    color: var(--tile-on);
+    transition: scale 0.14s var(--ease-soft);
+  }
+  /* A deeper tone of the ground rises through the tile from its foot. */
+  .tile__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in oklab, var(--tile) 84%, var(--tile-on));
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path var(--d-m) var(--ease-snap);
+  }
+  .tile__text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .tile__label { font-size: var(--t-xs); font-weight: 500; letter-spacing: 0.01em; }
+  .tile__name {
+    font-size: var(--tile-name, clamp(1.375rem, 1rem + 1.25vw, 2.125rem));
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    transition: translate var(--d-m) var(--ease-snap);
+  }
+  .tile__body { max-width: 20em; font-size: var(--t-s); line-height: 1.6; transition: translate var(--d-m) var(--ease-snap) 0.03s; }
+  .tile__arrow { flex: none; width: 22px; height: 22px; transition: translate var(--d-m) var(--ease-snap); }
+  @media (hover: hover) {
+    .tile:hover .tile__shade { clip-path: inset(0 0 0 0); }
+    .tile:hover .tile__name, .tile:hover .tile__body { translate: 6px 0; }
+    .tile:hover .tile__arrow { translate: 8px 0; }
+  }
+  .tile:focus-visible { outline: 2px solid var(--tile-on); outline-offset: -6px; }
+  .tile:focus-visible .tile__shade { clip-path: inset(0 0 0 0); }
+  .tile:focus-visible .tile__name, .tile:focus-visible .tile__body { translate: 6px 0; }
+  .tile:focus-visible .tile__arrow { translate: 8px 0; }
+  .tile:active { scale: 0.985; }
+</style>

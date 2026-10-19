@@ -6,7 +6,7 @@ import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageIntro from '../../kit/components/PageIntro.astro';
 import MediaRow from '../../kit/components/MediaRow.astro';
 import SectionHead from '../../kit/components/SectionHead.astro';
-import CardRow, { type CardItem } from '../../kit/components/CardRow.astro';
+import TileMasonry, { type TileItem } from '../../kit/components/TileMasonry.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import PartsList from '../../kit/components/PartsList.astro';
 import Pills from '../../kit/components/Pills.astro';
@@ -15,6 +15,7 @@ import SiteFinale from '../../kit/components/SiteFinale.astro';
 import Arrow from '../../kit/components/Arrow.astro';
 import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
+import { accentRamp } from '../../kit/color';
 import { pageHref } from '../../kit/sites';
 import Progress from '../../sites/books/Progress.astro';
 import site from '../../content/sites/books';
@@ -23,17 +24,38 @@ import '../../sites/books/books.css';
 const s = site.strings.landing;
 const kind = kindById('books');
 const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-const pages: CardItem[] = s.pages.rows.map((r, i) => ({
+// The six pages as flat tiles in shades and tints of the books field; the work page and the
+// serial page (the hub and the writer's way in) stand taller.
+const ramp = accentRamp(kindFields.books.field);
+const pageLayout: Record<string, { h: number; col: number }> = {
+  work: { h: 7, col: 1 },
+  wiki: { h: 5, col: 2 },
+  editions: { h: 6, col: 3 },
+  library: { h: 5, col: 1 },
+  serial: { h: 7, col: 2 },
+  publish: { h: 6, col: 3 },
+};
+const pages: TileItem[] = s.pages.rows.map((r, i) => ({
   title: pageBy(r.slug).label,
   body: r.body,
   href: pageHref(site, pageBy(r.slug)),
-  art: { field: kindFields.books.field, variant: i },
+  ...ramp[i % ramp.length]!,
+  ...pageLayout[r.slug]!,
 }));
-const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
+// The neighbouring kinds in their own fields: the adaptations on either side, two kinds between.
+const neighbourLayout: Record<string, { h: number; col: number }> = {
+  anime: { h: 10, col: 1 },
+  manga: { h: 5, col: 2 },
+  'visual-novels': { h: 5, col: 2 },
+  games: { h: 10, col: 3 },
+};
+const neighbours: TileItem[] = s.connections.squares.map((c) => ({
   title: kindById(c.kind).name,
   body: c.label,
   href: kindHref(c.kind),
-  art: { field: kindFields[c.kind].field, variant: i + 1 },
+  bg: kindFields[c.kind].field,
+  on: kindFields[c.kind].on,
+  ...neighbourLayout[c.kind]!,
 }));
 ---
 <MiniSiteLayout>
@@ -61,7 +83,7 @@ const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
     <a class="link-draw" href={pageHref(site, pageBy('wiki'))}>{s.reading.link}<Arrow /></a>
   </MediaRow>
 
-  <CardRow title={s.pages.headline} items={pages} cols={3} ratio={16 / 9} />
+  <TileMasonry title={s.pages.headline} items={pages} />
 
   <MediaRow title={s.writing.headline} body={s.writing.body} image={{ base: '/images/sites/books/desk', alt: s.writing.alt }}>
     <a class="link-draw" href={pageHref(site, pageBy('serial'))}>{s.writing.links[0]}<Arrow /></a>
@@ -75,7 +97,7 @@ const neighbours: CardItem[] = s.connections.squares.map((c, i) => ({
     </div>
   </section>
 
-  <CardRow title={s.connections.headline} lede={s.connections.line} items={neighbours} cols={4} ratio={4 / 3} />
+  <TileMasonry title={s.connections.headline} lede={s.connections.line} items={neighbours} />
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
 </MiniSiteLayout>

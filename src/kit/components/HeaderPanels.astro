@@ -11,60 +11,39 @@ import { kindFields, moduleFields } from '../theme';
 import Logo from './Logo.astro';
 import Arrow from './Arrow.astro';
 import Square from './Square.astro';
+import Clauses from '../Clauses.astro';
 
 const nav = site.nav;
-const works = kinds.filter((k) => k.group === 'works');
-const agents = kinds.filter((k) => k.group === 'agents');
 ---
 <div class="nav-layers">
   <div id="panel-products" class="panel" popover data-panel>
-    <div class="panel__inner grid">
-      <div class="panel__intro">
-        <p class="panel__title">{nav.productsIntro.title}</p>
+    <ul class="ptiles ptiles--products" role="list">
+      <li class="ptiles__intro">
+        <p class="panel__title"><Clauses text={nav.productsIntro.title} /></p>
         <p class="panel__body">{nav.productsIntro.body}</p>
-        <a class="panel__all link-draw" href="/#kinds">{nav.productsIntro.all}<Arrow /></a>
-      </div>
-      <div class="panel__group panel__group--works">
-        <p class="panel__label label">{nav.groups.works}</p>
-        <ul class="panel__squares" role="list">
-          {works.map((k) => (
-            <li>
-              <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="160px" />
-              <span class="panel__summary">{k.summary}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div class="panel__group panel__group--agents">
-        <p class="panel__label label">{nav.groups.agents}</p>
-        <ul class="panel__squares" role="list">
-          {agents.map((k) => (
-            <li>
-              <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} sizes="160px" />
-              <span class="panel__summary">{k.summary}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+        <a class="panel__all link-draw" href="/#products">{nav.productsIntro.all}<Arrow /></a>
+      </li>
+      {kinds.map((k) => (
+        <li>
+          <Square name={k.name} field={kindFields[k.id]} mode="image" href={kindHref(k.id)} image={{ base: kindImage(k.id), alt: k.imageAlt }} description={k.summary} sizes="(min-width: 900px) 20vw, 33vw"><span class="ptile__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg></span></Square>
+        </li>
+      ))}
+    </ul>
   </div>
 
   <div id="panel-engine" class="panel" popover data-panel>
-    <div class="panel__inner grid">
-      <div class="panel__intro">
-        <p class="panel__title">{nav.engineIntro.title}</p>
+    <ul class="ptiles ptiles--engine" role="list">
+      <li class="ptiles__intro">
+        <p class="panel__title"><Clauses text={nav.engineIntro.title} /></p>
         <p class="panel__body">{nav.engineIntro.body}</p>
         <a class="panel__all link-draw" href="/engine/">{nav.engineIntro.all}<Arrow /></a>
-      </div>
-      <ul class="panel__squares panel__modules" role="list">
-        {modules.map((m) => (
-          <li>
-            <Square name={m.name} field={moduleFields[m.id]} mode="plain" href={moduleHref(m.id)} />
-            <span class="panel__summary">{m.summary}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+      </li>
+      {modules.map((m) => (
+        <li>
+          <Square name={m.name} field={moduleFields[m.id]} mode="plain" href={moduleHref(m.id)} description={m.summary}><span class="ptile__arrow" aria-hidden="true"><svg viewBox="0 0 16 16" focusable="false"><path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg></span></Square>
+        </li>
+      ))}
+    </ul>
   </div>
 
   <dialog id="menu" class="sheet" aria-label={nav.menu} data-menu>
@@ -96,48 +75,81 @@ const agents = kinds.filter((k) => k.group === 'agents');
   </dialog>
 </div>
 <style>
-  /* Panels: floating sheets under the bar (the sheet radius and the float shadow), opening
-     with a short fade. Inside, the flat square tiles keep their kind pictures. */
+  /* Panels: a full-width area that opens under the header bar, filled edge to edge with the
+     flat square tiles packed almost seamlessly (3 px), no radius, no shadow: the one place
+     squares stay. Each kind tile carries its print with the name on it; module tiles are flat
+     colour. On hover and focus the print settles closer or the colour rises, the name steps
+     forward and an arrow arrives; a click presses the tile briefly. */
   .panel {
     position: fixed;
-    inset: calc(var(--header-h) + 6px) auto auto 50%;
-    width: min(calc(100vw - 2 * var(--page-pad)), calc(var(--container) + 2 * var(--page-pad)));
+    inset: var(--header-h) 0 auto 0;
+    width: 100%;
     max-width: none;
-    max-height: calc(100dvh - var(--header-h) - 18px);
+    max-height: calc(100dvh - var(--header-h));
     margin: 0;
     padding: 0;
-    border: 1px solid var(--c-line);
-    border-radius: var(--r-sheet);
-    background: var(--c-surface);
+    border: 0;
+    border-radius: 0;
+    background: var(--c-bg);
     color: var(--c-fg);
-    box-shadow: var(--shadow-float);
     overflow: auto;
     overscroll-behavior: contain;
-    translate: -50% 0;
     opacity: 1;
-    transition: opacity 0.2s var(--ease-soft), translate 0.28s var(--ease-snap), overlay 0.28s allow-discrete, display 0.28s allow-discrete;
+    translate: 0 0;
+    transition: opacity 0.18s var(--ease-soft), translate 0.24s var(--ease-snap), overlay 0.24s allow-discrete, display 0.24s allow-discrete;
   }
-  .panel:not(:popover-open) { opacity: 0; translate: -50% -8px; }
+  .panel:not(:popover-open) { opacity: 0; translate: 0 -6px; }
   @starting-style {
-    .panel:popover-open { opacity: 0; translate: -50% -8px; }
+    .panel:popover-open { opacity: 0; translate: 0 -6px; }
   }
-  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 8%, transparent); }
-  .panel__inner { padding: clamp(24px, 3vw, 36px); row-gap: 24px; }
-  .panel__intro { grid-column: 1 / span 3; display: flex; flex-direction: column; gap: 10px; }
+  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 10%, transparent); }
+  .ptiles { display: grid; gap: 3px; padding: 0; margin: 0; list-style: none; }
+  .ptiles--products { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ptiles--engine { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .ptiles > li { min-width: 0; }
+  .ptiles__intro {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: clamp(18px, 2vw, 32px);
+    background: var(--c-soft);
+  }
   .panel__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.4; }
   .panel__body { color: var(--c-muted); font-size: var(--t-s); line-height: 1.7; }
-  .panel__all { align-self: flex-start; margin-top: 6px; font-size: var(--t-s); }
-  .panel__label { color: var(--c-muted); margin-bottom: 12px; }
-  .panel__group--works { grid-column: 5 / span 5; }
-  .panel__group--agents { grid-column: 10 / span 3; }
-  .panel__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 12px; }
-  .panel__group--agents .panel__squares { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .panel__modules { grid-column: 5 / span 8; grid-template-columns: repeat(5, minmax(0, 1fr)); align-self: start; }
-  .panel__summary { display: block; margin-top: 8px; font-size: var(--t-xs); line-height: 1.5; color: var(--c-muted); }
+  .panel__all { align-self: flex-start; margin-top: auto; font-size: var(--t-s); }
+  /* The tiles' own motion here: no name roll; the name steps forward instead. */
+  .ptiles :global(.sqname__face--roll) { animation: none !important; }
+  .ptiles :global(.sqname) { transition: translate var(--d-m) var(--ease-snap); }
+  .ptiles :global(.sq__img img) { transition: scale 0.7s var(--ease-snap); }
+  .ptiles :global(a.sq) { transition: scale 0.14s var(--ease-soft); }
+  .ptiles :global(a.sq:active) { scale: 0.985; }
+  .ptile__arrow {
+    position: absolute;
+    right: 6cqi;
+    bottom: 6cqi;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: max(28px, 12cqi);
+    height: max(28px, 12cqi);
+    background: var(--field);
+    color: var(--on-field);
+    opacity: 0;
+    translate: -8px 0;
+    transition: opacity var(--d-s) var(--ease-soft), translate var(--d-m) var(--ease-snap);
+  }
+  .ptile__arrow svg { width: 55%; height: 55%; }
+  @media (hover: hover) {
+    .ptiles :global(a.sq:hover .sq__img img) { scale: 1.06; }
+    .ptiles :global(a.sq:hover .sqname) { translate: 2.5cqi 0; }
+    .ptiles :global(a.sq:hover) .ptile__arrow { opacity: 1; translate: 0 0; }
+  }
+  .ptiles :global(a.sq:focus-visible) { outline: 2px solid var(--on-field); outline-offset: -6px; }
+  .ptiles :global(a.sq:focus-visible .sq__img img) { scale: 1.06; }
+  .ptiles :global(a.sq:focus-visible .sqname) { translate: 2.5cqi 0; }
+  .ptiles :global(a.sq:focus-visible) .ptile__arrow { opacity: 1; translate: 0 0; }
   @media (max-width: 1100px) {
-    .panel__intro { grid-column: 1 / span 4; }
-    .panel__group--works { grid-column: 5 / span 8; }
-    .panel__group--agents { grid-column: 5 / span 8; }
+    .ptiles--engine { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
 
   /* Phone sheet */
@@ -168,7 +180,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
     font-weight: 500;
   }
   .sheet__label { color: var(--c-muted); margin: 24px 0 12px; }
-  .sheet__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sheet__squares { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; }
   .sheet__list { border-top: 1px solid var(--c-line); }
   .sheet__list a {
     display: flex;

@@ -1,13 +1,12 @@
 ---
 // Home (DESIGN.md "Direction v2", Rhythm): the centred intro over a large painted image, two
-// text-and-image rows, one statement, the nine products as a calm card row, a third row, the
+// text-and-image rows, one statement, the nine products as flat colour tiles, a third row, the
 // commitments, and the closing panel into REZICS. It names no specific work.
 import PageLayout from '../kit/layouts/PageLayout.astro';
 import PageIntro from '../kit/components/PageIntro.astro';
 import MediaRow from '../kit/components/MediaRow.astro';
 import Statement from '../kit/components/Statement.astro';
-import SectionHead from '../kit/components/SectionHead.astro';
-import CardRow, { type CardItem } from '../kit/components/CardRow.astro';
+import TileMasonry, { type TileItem } from '../kit/components/TileMasonry.astro';
 import ItemList from '../kit/components/ItemList.astro';
 import ClosingPanel from '../kit/components/ClosingPanel.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
@@ -16,10 +15,27 @@ import { kinds, site, kindHref } from '../kit/content';
 import { kindFields } from '../kit/theme';
 
 const h = site.home;
-const card = (group: 'works' | 'agents'): CardItem[] =>
-  kinds
-    .filter((k) => k.group === group)
-    .map((k, i) => ({ title: k.name, body: k.summary, href: kindHref(k.id), art: { field: kindFields[k.id].field, variant: i } }));
+// The nine products as flat tiles in their fields, three columns; the larger kinds stand taller
+// (books, anime, visual novels, games), the three hubs shorter, and every column ends level.
+const layout: Record<string, { h: number; col: number }> = {
+  books: { h: 9, col: 1 },
+  anime: { h: 8, col: 2 },
+  manga: { h: 7, col: 3 },
+  games: { h: 7, col: 1 },
+  software: { h: 7, col: 2 },
+  'visual-novels': { h: 8, col: 3 },
+  mcp: { h: 5, col: 1 },
+  skills: { h: 6, col: 2 },
+  apis: { h: 6, col: 3 },
+};
+const products: TileItem[] = kinds.map((k) => ({
+  title: k.name,
+  body: k.summary,
+  href: kindHref(k.id),
+  bg: kindFields[k.id].field,
+  on: kindFields[k.id].on,
+  ...layout[k.id]!,
+}));
 ---
 <PageLayout meta={site.meta} home action={false}>
   <PageIntro
@@ -43,19 +59,7 @@ const card = (group: 'works' | 'agents'): CardItem[] =>
     <a class="link-draw" href="/engine/">{h.statement.link}<Arrow /></a>
   </Statement>
 
-  <section id="products" class="products" aria-labelledby="products-title">
-    <div class="container">
-      <SectionHead id="products-title" title={h.products.headline} lede={h.products.lede} />
-    </div>
-    <div class="products__group">
-      <p class="container products__label label">{site.nav.groups.works}</p>
-      <CardRow items={card('works')} cols={3} ratio={16 / 9} bare />
-    </div>
-    <div class="products__group">
-      <p class="container products__label label">{site.nav.groups.agents}</p>
-      <CardRow items={card('agents')} cols={3} ratio={16 / 9} bare />
-    </div>
-  </section>
+  <TileMasonry id="products" title={h.products.headline} lede={h.products.lede} items={products} />
 
   <MediaRow title={h.agents.headline} body={h.agents.body} image={{ base: '/images/home/open', alt: h.agents.imageAlt }}>
     <a class="link-draw" href="/developers/">{h.agents.link}<Arrow /></a>
@@ -65,9 +69,3 @@ const card = (group: 'works' | 'agents'): CardItem[] =>
 
   <ClosingPanel title={h.finale.headline} body={h.finale.body} />
 </PageLayout>
-
-<style>
-  .products { padding-block: calc(var(--space-section) / 2); }
-  .products__group { margin-top: clamp(32px, 4vw, 56px); }
-  .products__label { color: var(--c-muted); margin-bottom: 16px; }
-</style>
