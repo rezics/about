@@ -1,96 +1,80 @@
 ---
-// /games/ (DESIGN.md "Direction v2"): the centred intro over the games corner, the releases row
-// and the nine example releases (示意), a statement, the six pages as cards, the store row, the
-// eight parts, the neighbouring kinds, and the next page.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import MediaRow from '../../kit/components/MediaRow.astro';
+// /games/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the hero with the wall of the site's
+// own pages, the nine example releases as flat tiles (示意), the statement, the ink band on the
+// store, the eight parts, the neighbouring kinds, the next page and the closing block.
+import HeroWall from '../../kit/components/HeroWall.astro';
+import Sec from '../../kit/components/Sec.astro';
+import TileRow from '../../kit/components/TileRow.astro';
 import Statement from '../../kit/components/Statement.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
-import TileMasonry, { type TileItem } from '../../kit/components/TileMasonry.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
+import Band from '../../kit/components/Band.astro';
 import PartsList from '../../kit/components/PartsList.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
-import Arrow from '../../kit/components/Arrow.astro';
+import Closing from '../../kit/components/Closing.astro';
 import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
 import { accentRamp } from '../../kit/color';
+import { pageWall } from '../../kit/pageWall';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/games';
 import './games.css';
 
 const s = site.strings.landing;
+const L = s.labels;
 const kind = kindById('games');
+const accent = kindFields.games.field;
 const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-// The six pages as flat tiles in shades and tints of the games field; releases (the question
-// players bring) and creators stand taller.
-const ramp = accentRamp(kindFields.games.field);
-const pageLayout: Record<string, { h: number; col: number }> = {
-  releases: { h: 7, col: 1 },
-  store: { h: 6, col: 2 },
-  library: { h: 5, col: 3 },
-  reviews: { h: 5, col: 1 },
-  guides: { h: 6, col: 2 },
-  creators: { h: 7, col: 3 },
-};
-const pages: TileItem[] = s.pages.rows.map((r, i) => ({
-  title: pageBy(r.slug).label,
-  body: r.body,
-  href: pageHref(site, pageBy(r.slug)),
-  ...ramp[i % ramp.length]!,
-  ...pageLayout[r.slug]!,
-}));
-// The neighbouring kinds in their own fields; visual novels (the closest kin) and anime taller.
-const neighbourLayout: Record<string, { h: number; col: number }> = {
-  'visual-novels': { h: 7, col: 1 },
-  books: { h: 5, col: 2 },
-  anime: { h: 12, col: 3 },
-  manga: { h: 5, col: 1 },
-  software: { h: 7, col: 2 },
-};
-const neighbours: TileItem[] = s.connections.squares.map((c) => ({
-  title: kindById(c.to).name,
-  body: c.body,
+const wall = pageWall(site, accent, s.pages.rows);
+const ramp = accentRamp(accent);
+const releases = s.releases.items.map((it, i) => ({ name: it.label[1], rel: it.label[0], line: it.body, ...ramp[[0, 1, 2, 3, 4, 5, 0, 3, 2][i] ?? 0]! }));
+const neighbours = s.connections.squares.map((c) => ({
+  name: kindById(c.to).name,
+  tag: kindById(c.to).tag,
+  line: c.body,
   href: kindHref(c.to),
   bg: kindFields[c.to].field,
   on: kindFields[c.to].on,
-  ...neighbourLayout[c.to]!,
 }));
-const releases = s.releases.items.map((it) => ({ label: it.label[0], title: it.label[1], body: it.body }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/hero', alt: s.hero.alt, phone: '/images/sites/games/hero-m' }}>
+<HeroWall label={site.name} title={s.hero.headline} lede={s.hero.lede} items={wall.items} wide={wall.wide} phone={wall.phone} phoneHeight={860} bar>
   <ProductCall />
-  <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.hero.secondary}<Arrow /></a>
-</PageIntro>
+  <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.hero.secondary}</a>
+</HeroWall>
 
-<MediaRow title={s.releases.headline} body={s.releases.lede} image={{ base: '/images/sites/games/releases', alt: s.releases.alt }}>
-  <a class="link-draw" href={pageHref(site, pageBy('releases'))}>{s.releases.link}<Arrow /></a>
-</MediaRow>
-
-<section class="g-sec" aria-label={s.releases.caption}>
-  <div class="container g-stack">
-    <ItemGrid items={releases} cols={3} />
+<Sec label={L.releases} title={s.releases.headline} link={{ href: pageHref(site, pageBy('releases')), text: s.releases.link }}>
+  <p class="text">{s.releases.lede}</p>
+  <div slot="wide" class="g-stack">
+    <TileRow items={releases} cols={3} height={230} phoneHeight={200} label={s.releases.caption} class="g-releases" />
     <p class="g-cap">{s.releases.caption}</p>
   </div>
-</section>
+</Sec>
 
-<Statement text={s.specifics.statement} sub={s.specifics.body} />
+<Statement text={s.specifics.statement} note={s.specifics.body} />
 
-<TileMasonry title={s.pages.headline} items={pages} />
+<Band label={L.store} title={s.store.headline} text={s.store.body.join('')}>
+  <p class="g-band-links">
+    <a class="link-draw" href={pageHref(site, pageBy('store'))}>{s.store.links[0]}</a>
+    <a class="link-draw" href={pageHref(site, pageBy('creators'))}>{s.store.links[1]}</a>
+  </p>
+</Band>
 
-<MediaRow title={s.store.headline} body={s.store.body} image={{ base: '/images/sites/games/store', alt: s.store.alt }} reverse>
-  <a class="link-draw" href={pageHref(site, pageBy('store'))}>{s.store.links[0]}<Arrow /></a>
-  <a class="link-draw" href={pageHref(site, pageBy('creators'))}>{s.store.links[1]}<Arrow /></a>
-</MediaRow>
-
-<section class="g-sec" aria-labelledby="parts-title">
-  <div class="container g-stack">
-    <SectionHead id="parts-title" title={s.parts.headline} lede={s.parts.lede} />
+<Sec label={L.parts} title={s.parts.headline}>
+  <div class="g-stack">
+    <p class="text">{s.parts.lede}</p>
     <PartsList parts={kind.parts} notes={s.parts.notes} level="h3" />
     <p class="g-cap">{s.parts.caption}</p>
   </div>
-</section>
+</Sec>
 
-<TileMasonry title={s.connections.headline} lede={s.connections.lede} items={neighbours} />
+<Sec label={L.connections} title={s.connections.headline}>
+  <p class="text">{s.connections.lede}</p>
+  <TileRow slot="wide" items={neighbours} cols={5} label={s.connections.headline} />
+</Sec>
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />
+
+<style>
+  .g-band-links { grid-column: 8 / 13; margin-top: 28px; display: flex; flex-wrap: wrap; gap: 16px 28px; }
+  @media (max-width: 767px) { :global(.g-releases) { grid-template-columns: minmax(0, 1fr) !important; } }
+</style>

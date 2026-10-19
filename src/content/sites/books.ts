@@ -12,7 +12,11 @@ export type BooksStrings = {
   /** Shared labels across the site's pages. */
   common: { nextPage: string; nextSite: string };
   landing: {
-    hero: { headline: string; lede: string; secondary: string; alt: string };
+    hero: { headline: string; lede: string; secondary: string };
+    /** Meta-column labels of the landing's sections. */
+    labels: { bookmark: string; editions: string; reading: string; writing: string; parts: string; connections: string };
+    /** One work's editions as flat example tiles (示意). */
+    editions: { headline: string; lede: string; tiles: { name: string; line: string }[]; caption: string };
     bookmark: {
       headline: string;
       intro: string;
@@ -25,8 +29,8 @@ export type BooksStrings = {
       legend: { read: string; published: string; bookmark: string };
     };
     /** Text-and-image rows (DESIGN.md "Direction v2"). */
-    reading: { headline: string; body: string[]; link: string; alt: string };
-    writing: { headline: string; body: string[]; links: [string, string]; alt: string };
+    reading: { headline: string; body: string[]; link: string };
+    writing: { headline: string; body: string[]; links: [string, string] };
     shelf: { headline: string; words: string[]; caption: string };
     parts: { headline: string; caption: string };
     pages: { headline: string; rows: { slug: string; body: string }[] };
@@ -47,7 +51,7 @@ export type BooksStrings = {
     finaleLead: string;
   };
   wiki: {
-    hero: { headline: string; lede: string; alt: string };
+    hero: { headline: string; lede: string };
     flow: { headline: string; frames: TitledText[] };
     position: {
       headline: string;
@@ -69,7 +73,7 @@ export type BooksStrings = {
     finaleLead: string;
   };
   editions: {
-    hero: { headline: string; lede: string; alt: string };
+    hero: { headline: string; lede: string };
     releases: { headline: string; quarters: TitledText[]; caption: string };
     translations: { headline: string; rows: TitledText[]; stateLabel: string; states: string[]; notes: string[] };
     sameWork: { headline: string; intro: string; columns: [string, string]; rows: [string, string][]; caption: string };
@@ -85,7 +89,7 @@ export type BooksStrings = {
     finaleLead: string;
   };
   library: {
-    hero: { headline: string; lede: string; alt: string };
+    hero: { headline: string; lede: string };
     reads: { headline: string; columns: [string, string, string]; rows: [string, string, string][]; body: string; caption: string };
     move: { headline: string; steps: TitledText[]; statement: string };
     shelf: { headline: string; squares: TitledText[] };
@@ -98,12 +102,12 @@ export type BooksStrings = {
     safe: { headline: string; pairs: TitledText[] };
     mirror: { headline: string; columns: [string, string]; rows: [string, string][]; notes: string[] };
     ai: { headline: string; squares: TitledText[]; notes: string[] };
-    world: { headline: string; squares: string[]; body: string; items: string[]; alt: string };
+    world: { headline: string; squares: string[]; body: string; items: string[] };
     backup: { statement: string; body: string };
     finaleLead: string;
   };
   publish: {
-    hero: { headline: string; lede: string; alt: string };
+    hero: { headline: string; lede: string };
     buy: { headline: string; words: string[]; steps: TitledText[]; caption: string };
     statement: { headline: string; rows: TitledText[]; note: string };
     distributed: { headline: string; rows: TitledText[]; policy: string[] };
@@ -123,7 +127,18 @@ const strings: BooksStrings = {
       headline: '一部作品，所有版本，和你讀到的那一頁。',
       lede: 'REZICS 書庫為每部作品建一個頁面。原文與譯本、單行本與合訂本、網路連載與出版版本各自分明，又都連回同一部作品。你的書籤放在哪裡，下一本、Wiki 與討論就跟到哪裡。',
       secondary: '看書籤怎麼走',
-      alt: '油畫風格的插圖：晨光裡的閱覽室，整面書架、綠色扶手椅與一張閱讀桌。',
+    },
+    labels: { bookmark: '閱讀進度', editions: '版本', reading: 'Wiki+', writing: '寫作與出版', parts: '部件', connections: '相關的種類' },
+    editions: {
+      headline: '一部作品的四次出版，各自分明。',
+      lede: '同一套輕小說，日文原版、繁體中文版、英文版與繁中合訂本各是一次出版，收錄的集數不同，都指回同一部作品。',
+      tiles: [
+        { name: '日文原版', line: '第 1 到 12 集' },
+        { name: '繁體中文版', line: '第 1 到 6 集' },
+        { name: '英文版', line: '第 1 到 9 集' },
+        { name: '合訂本', line: '繁中，收錄第 1 到 3 集' },
+      ],
+      caption: '示意：一套虛構的十二集輕小說。',
     },
     bookmark: {
       headline: '書籤放在哪裡，下一本就從那裡算。',
@@ -168,7 +183,6 @@ const strings: BooksStrings = {
         '想先看全部，也能一次打開；位置只在同一條故事脈絡裡有效。',
       ],
       link: '看 Wiki+ 怎麼建',
-      alt: '油畫風格的插圖：午後陽光照著窗邊的閱讀座，靠墊、毛毯和一本攤開倒放的書。',
     },
     writing: {
       headline: '寫書的人，也在同一個書庫。',
@@ -177,7 +191,6 @@ const strings: BooksStrings = {
         '簽約創作者把已取得授權的無 DRM 電子書直接賣給讀者，商店頁就在作品的討論旁邊。',
       ],
       links: ['看連載', '看出版'],
-      alt: '油畫風格的插圖：開著的窗邊有一張書桌，桌上攤著筆記本、一支鋼筆、幾本書和一杯茶。',
     },
     shelf: {
       headline: '書庫收的書',
@@ -303,7 +316,6 @@ const strings: BooksStrings = {
     hero: {
       headline: '每一本書，都能有一部讀到哪、看到哪的 Wiki。',
       lede: '有這本書的人，在自己的電腦上讓 AI 代理一章一章讀，把人物、地點與發生的事件一條條列出來，每一條都標明出自原文哪裡。經人審核的內容才會出現在 Wiki 上，而每位讀者看到的，只到他讀過的那一章。',
-      alt: '油畫風格的插圖：窗邊的閱讀座擺著靠墊與毛毯，旁邊疊著幾本書，窗外是花園。',
     },
     flow: {
       headline: '從一個檔案，到一部 Wiki。',
@@ -396,7 +408,6 @@ const strings: BooksStrings = {
     hero: {
       headline: '一部作品，可以有一整排書。',
       lede: '原文與譯本、平裝與電子版、合訂本與特裝版、網路連載與後來的出版版本。REZICS 把每一種分開記下，再讓它們指回同一部作品，你知道手上是哪一本，系列進度也不會亂。',
-      alt: '油畫風格的插圖：晨光照進家中書房的一角，整面書架靠著一架木梯。',
     },
     releases: {
       headline: '每一次出版，都說清楚自己是什麼。',
@@ -466,7 +477,6 @@ const strings: BooksStrings = {
     hero: {
       headline: '你怎麼讀，紀錄就怎麼記。',
       lede: '讀到一半放下、隔了兩年重讀、通勤時改聽有聲書、借給朋友的書還沒還。REZICS 的閱讀紀錄照實記下每一種情況，預設只有你看得到，想搬走時整份帶走。',
-      alt: '油畫風格的插圖：圖書館的借還書桌上疊著幾本書，一條書籤帶垂下，旁邊有一個桌鈴。',
     },
     reads: {
       headline: '同一本書讀三次，就是三筆紀錄。',
@@ -572,7 +582,6 @@ const strings: BooksStrings = {
         '用故事裡的曆法排時間線，日期不確定也能記。',
         '連貫性助手只標出筆記和稿子裡互相矛盾的地方，不會替你寫任何一章。',
       ],
-      alt: '油畫風格的插圖：窗邊書桌上攤開一本筆記本，旁邊擱著一支鋼筆。',
     },
     backup: {
       statement: '整部稿子，隨時完整帶走。',
@@ -585,7 +594,6 @@ const strings: BooksStrings = {
     hero: {
       headline: '書賣出去，檔案留在讀者手上。',
       lede: '簽約創作者可以在 REZICS 直接販售已取得授權的電子書、小型遊戲與視覺小說。讀者買到的是無 DRM 的檔案，商店頁就在作品的討論與 Wiki 旁邊。',
-      alt: '油畫風格的插圖：黃昏的小書店裡，桌上疊著新書，一盞綠色小燈亮著。',
     },
     buy: {
       headline: '讀者買一本書，從選版本開始。',

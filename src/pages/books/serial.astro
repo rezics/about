@@ -1,68 +1,53 @@
 ---
-// 書庫 連載 (DESIGN.md "Direction v2"): the intro beside the writing desk, drafts that do not get
-// lost, the writer and the reader side by side, AI disclosure, the world beside the draft, the
-// backup statement, and the next page.
+// 書庫 連載 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, drafts that do not
+// get lost, the writer and the reader side by side, AI disclosure as flat tiles, the world beside
+// the draft, the ink band on backup, the next page and the closing block.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import Pills from '../../kit/components/Pills.astro';
 import Table from '../../kit/components/Table.astro';
-import Statement from '../../kit/components/Statement.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.serial;
+const accent = kindFields.books.field;
+const page = site.pages.find((p) => p.slug === 'serial')!;
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/desk', alt: s.world.alt, ratio: 1 }} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <section class="bk-sec" aria-labelledby="safe-title">
-    <div class="container bk-stack">
-      <SectionHead id="safe-title" title={s.safe.headline} />
-      <ItemGrid items={s.safe.pairs} cols={2} />
-    </div>
-  </section>
+  <Sec label="01" title={s.safe.headline}>
+    <ItemGrid slot="wide" items={s.safe.pairs} cols={4} />
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="mirror-title">
-    <div class="container bk-stack">
-      <SectionHead id="mirror-title" title={s.mirror.headline} />
+  <Sec label="02" title={s.mirror.headline}>
+    <div class="bk-stack">
       <Table columns={s.mirror.columns} rows={s.mirror.rows} label={s.mirror.headline} />
-      <ul class="bk-notes">
-        {s.mirror.notes.map((n) => <li>{n}</li>)}
-      </ul>
+      <ul class="bk-notes">{s.mirror.notes.map((n) => <li>{n}</li>)}</ul>
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="ai-title">
-    <div class="container bk-stack">
-      <SectionHead id="ai-title" title={s.ai.headline} />
-      <ItemGrid items={s.ai.squares} cols={3} look="cards" />
-      <ul class="bk-notes">
-        {s.ai.notes.map((n) => <li>{n}</li>)}
-      </ul>
+  <Sec label="03" title={s.ai.headline}>
+    <ul class="bk-notes">{s.ai.notes.map((n) => <li>{n}</li>)}</ul>
+    <ItemGrid slot="wide" items={s.ai.squares} cols={3} look="cards" />
+  </Sec>
+
+  <Sec label="04" title={s.world.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.world.body}</p>
+      <Pills items={s.world.squares} tone="tint" />
+      <ul class="bk-notes">{s.world.items.map((n) => <li>{n}</li>)}</ul>
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="world-title">
-    <div class="container bk-two sr-world">
-      <div class="bk-stack">
-        <SectionHead id="world-title" title={s.world.headline} lede={s.world.body} />
-        <Pills items={s.world.squares} tone="tint" />
-      </div>
-      <ul class="bk-notes sr-world__items" data-reveal="up">
-        {s.world.items.map((n) => <li>{n}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <Statement text={s.backup.statement} sub={s.backup.body} />
+  <Band label={page.label} title={s.backup.statement} text={s.backup.body} />
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
-
-<style>
-  .sr-world { align-items: start; }
-  .sr-world__items { color: var(--c-fg); padding: 28px 28px 28px 2.6em; border-radius: var(--r-card); background: var(--tint); display: flex; flex-direction: column; gap: 12px; }
-</style>

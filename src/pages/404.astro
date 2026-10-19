@@ -1,17 +1,17 @@
 ---
-// 404 (DESIGN.md "Direction v2"): the centred intro and a way home.
+// 404 (DESIGN.md "Direction v2"): the page head on the Swiss grid and a way home.
 import PageLayout from '../kit/layouts/PageLayout.astro';
-import PageIntro from '../kit/components/PageIntro.astro';
+import PageHead from '../kit/components/PageHead.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
 import { site } from '../kit/content';
 
 const nf = site.notFound;
 ---
 <PageLayout meta={nf.meta} noindex>
-  <PageIntro title={nf.headline} lede={nf.body} class="nf">
+  <PageHead label={site.name} title={nf.headline} lede={nf.body} class="nf">
     <ProductCall href="/" label={nf.back} />
-  </PageIntro>
+  </PageHead>
 </PageLayout>
 <style>
-  .nf { min-height: 50svh; }
+  .nf { min-height: 60svh; }
 </style>

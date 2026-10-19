@@ -1,48 +1,49 @@
 ---
-// 書庫 出版 (DESIGN.md "Direction v2"): the intro beside the bookshop table, buying a book in four
-// steps, the creator's statement line by line, what is distributed here, the shop beside the
-// community, and the next site.
+// 書庫 出版 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, buying a book in
+// four steps, the creator's statement line by line, what is distributed here as flat tiles, the
+// ink band on the shop beside the community, the next site and the closing block.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import ItemList from '../../kit/components/ItemList.astro';
-import Statement from '../../kit/components/Statement.astro';
+import Band from '../../kit/components/Band.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.publish;
+const accent = kindFields.books.field;
+const page = site.pages.find((p) => p.slug === 'publish')!;
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/shop', alt: s.hero.alt, ratio: 1 }} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
+    <ProductCall />
+  </PageHead>
 
-  <section class="bk-sec" aria-labelledby="buy-title">
-    <div class="container bk-stack">
-      <SectionHead id="buy-title" title={s.buy.headline} lede={s.buy.caption} />
-      <ItemGrid items={s.buy.steps} cols={4} numbered />
-    </div>
-  </section>
+  <Sec label="01" title={s.buy.headline}>
+    <p class="text">{s.buy.caption}</p>
+    <ItemGrid slot="wide" items={s.buy.steps} cols={4} numbered />
+  </Sec>
 
-  <ItemList title={s.statement.headline} lede={s.statement.note} items={s.statement.rows} />
+  <ItemList label="02" title={s.statement.headline} lede={s.statement.note} items={s.statement.rows} />
 
-  <section class="bk-sec" aria-labelledby="dist-title">
-    <div class="container bk-stack">
-      <SectionHead id="dist-title" title={s.distributed.headline} />
-      <ItemGrid items={s.distributed.rows} cols={4} look="cards" />
-      <ul class="bk-notes">
-        {s.distributed.policy.map((n) => <li>{n}</li>)}
-      </ul>
-    </div>
-  </section>
+  <Sec label="03" title={s.distributed.headline}>
+    <ul class="bk-notes">{s.distributed.policy.map((n) => <li>{n}</li>)}</ul>
+    <ItemGrid slot="wide" items={s.distributed.rows} cols={4} look="cards" />
+  </Sec>
 
-  <Statement text={s.community.headline} sub={s.community.body}>
-    <p class="bk-note pb-privacy">{s.community.privacy}</p>
-  </Statement>
+  <Band label={page.label} title={s.community.headline} text={s.community.body}>
+    <p class="pb-privacy">{s.community.privacy}</p>
+  </Band>
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
 
 <style>
-  .pb-privacy { max-width: 34em; }
+  .pb-privacy { grid-column: 8 / 13; margin-top: 24px; font-size: 15px; line-height: 1.8; color: rgb(249 246 242 / 0.8); }
 </style>

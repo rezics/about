@@ -1,54 +1,50 @@
 ---
-// /games/releases/ (DESIGN.md "Direction v2"): the intro beside the sorted releases, the table
-// that binds language and platform to one release (示意), release states, languages,
-// requirements, bundles, the offers statement, and the next page.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+// /games/releases/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head with the
+// table that binds language and platform to one release (示意), release states, languages as
+// flat tiles, the ink band on requirements, bundles, the offers statement, the next page and the
+// closing block.
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
+import Band from '../../kit/components/Band.astro';
 import Statement from '../../kit/components/Statement.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
 import ReleaseTable from './ReleaseTable.astro';
 import './games.css';
 
 const s = site.strings.releases;
+const accent = kindFields.games.field;
+const page = site.pages.find((p) => p.slug === 'releases')!;
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/releases', alt: s.languages.imageAlt, ratio: 1 }} />
+<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
+  <div class="rel-table"><ReleaseTable copy={s.hero} example={site.strings.example} /></div>
+</PageHead>
 
-<section class="g-sec" aria-label={s.hero.caption}>
-  <div class="container">
-    <ReleaseTable copy={s.hero} example={site.strings.example} />
-  </div>
-</section>
+<Sec label="01" title={s.states.headline}>
+  <p class="text">{s.states.lede}</p>
+  <ItemGrid slot="wide" items={s.states.steps} cols={5} numbered />
+</Sec>
 
-<section class="g-sec" aria-labelledby="states-title">
-  <div class="container g-stack">
-    <SectionHead id="states-title" title={s.states.headline} lede={s.states.lede} />
-    <ItemGrid items={s.states.steps} cols={5} numbered />
-  </div>
-</section>
+<Sec label="02" title={s.languages.headline}>
+  <p class="text">{s.languages.body}</p>
+  <ItemGrid slot="wide" items={s.languages.items} cols={3} look="cards" />
+</Sec>
 
-<section class="g-sec" aria-labelledby="lang-title">
-  <div class="container g-stack">
-    <SectionHead id="lang-title" title={s.languages.headline} lede={s.languages.body} />
-    <ItemGrid items={s.languages.items} cols={3} look="cards" />
-  </div>
-</section>
+<Band label={page.label} title={s.requirements.headline} text={s.requirements.lede} items={s.requirements.columns} />
 
-<section class="g-sec" aria-labelledby="req-title">
-  <div class="container g-stack">
-    <SectionHead id="req-title" title={s.requirements.headline} lede={s.requirements.lede} />
-    <ItemGrid items={s.requirements.columns} cols={3} />
-  </div>
-</section>
+<Sec label="03" title={s.bundles.headline}>
+  <p class="text">{s.bundles.lede}</p>
+  <ItemGrid slot="wide" items={s.bundles.tiles} cols={3} />
+</Sec>
 
-<section class="g-sec" aria-labelledby="bundle-title">
-  <div class="container g-stack">
-    <SectionHead id="bundle-title" title={s.bundles.headline} lede={s.bundles.lede} />
-    <ItemGrid items={s.bundles.tiles} cols={3} look="cards" />
-  </div>
-</section>
-
-<Statement text={s.offers.statement} sub={s.offers.body} />
+<Statement text={s.offers.statement} note={s.offers.body} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />
+
+<style>
+  .rel-table { flex: 1 1 100%; margin-top: 24px; min-width: 0; }
+</style>

@@ -47,7 +47,7 @@ const rows: { label: string; published: number; span?: [number, number]; waiting
 </figure>
 <style>
   .prog { min-width: 0; }
-  .prog__card { padding: clamp(20px, 3vw, 36px); border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
+  .prog__card { padding: 28px 0; border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line); }
   .prog__grid {
     position: relative;
     display: grid;
@@ -58,7 +58,7 @@ const rows: { label: string; published: number; span?: [number, number]; waiting
   .prog__num { text-align: center; font-size: var(--t-xs); color: var(--c-muted); font-family: var(--f-latin), var(--f-cjk); }
   .prog__label { font-size: var(--t-s); color: var(--c-muted); white-space: nowrap; }
   .prog__label--work { color: var(--c-fg); font-weight: 500; }
-  .prog__cap { height: 22px; border-radius: var(--r-pill); }
+  .prog__cap { height: 22px; }
   .prog__cap.is-read { background: var(--field); }
   .prog__cap.is-next { box-shadow: inset 0 0 0 2px var(--field); }
   .prog__cap.is-ahead { background: var(--c-soft); }
@@ -68,11 +68,11 @@ const rows: { label: string; published: number; span?: [number, number]; waiting
   .prog__cap--span { display: grid; place-items: center; font-size: var(--t-xs); font-weight: 500; color: var(--c-fg); }
   /* The bookmark: a line in the accent after the last volume read, through every row. */
   /* Absolutely placed in its grid area, so it takes no cell from the volumes. */
-  .prog__mark { position: absolute; grid-row: 2 / span 5; top: -2px; bottom: -2px; left: -4px; width: 2px; background: var(--field); border-radius: 2px; }
-  .prog__mark::before { content: ''; position: absolute; top: -6px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--field); }
+  .prog__mark { position: absolute; grid-row: 2 / span 5; top: -2px; bottom: -2px; left: -4px; width: 2px; background: var(--field); }
+  .prog__mark::before { content: ''; position: absolute; top: -6px; left: -4px; width: 10px; height: 10px; background: var(--field); }
   .prog__legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 22px; font-size: var(--t-xs); color: var(--c-muted); }
   .prog__legend li { display: inline-flex; align-items: center; gap: 8px; }
-  .prog__key { width: 22px; height: 10px; border-radius: var(--r-pill); }
+  .prog__key { width: 22px; height: 10px; }
   .prog__key.is-read { background: var(--field); }
   .prog__key.is-pub { background: var(--tint-strong); }
   .prog__key--mark { width: 2px; height: 14px; background: var(--field); }

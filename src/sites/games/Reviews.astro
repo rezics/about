@@ -1,50 +1,54 @@
 ---
-// /games/reviews/ (DESIGN.md "Direction v2"): the intro, a score per version (示意), whose score
-// it is, what a review is about, how ranking works, the talk statement, and the next page.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+// /games/reviews/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, a score per
+// version as flat tiles (示意), whose score it is, what a review is about, how ranking works, the
+// ink band on where talk goes, the next page and the closing block.
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import ItemList from '../../kit/components/ItemList.astro';
+import TileRow from '../../kit/components/TileRow.astro';
 import Pills from '../../kit/components/Pills.astro';
-import Statement from '../../kit/components/Statement.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
+import { accentRamp } from '../../kit/color';
 import site from '../../content/sites/games';
 import './games.css';
 
 const s = site.strings.reviews;
+const accent = kindFields.games.field;
+const page = site.pages.find((p) => p.slug === 'reviews')!;
+const ramp = accentRamp(accent);
+const versions = s.versions.frames.map((f, i) => ({ name: f.title, line: f.body, ...ramp[[0, 2, 4, 1, 3][i] ?? 0]! }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} align="start" />
+<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-<section class="g-sec" aria-labelledby="versions-title">
-  <div class="container g-stack">
-    <SectionHead id="versions-title" title={s.versions.headline} lede={s.versions.lede} />
-    <ItemGrid items={s.versions.frames} cols={5} look="cards" />
+<Sec label="01" title={s.versions.headline}>
+  <p class="text">{s.versions.lede}</p>
+  <div slot="wide" class="g-stack">
+    <TileRow items={versions} cols={5} height={200} label={s.versions.headline} />
     <p class="g-cap">{s.versions.caption}</p>
   </div>
-</section>
+</Sec>
 
-<section class="g-sec" aria-labelledby="who-title">
-  <div class="container g-two">
-    <SectionHead id="who-title" title={s.who.headline} lede={s.who.body} />
-    <div class="g-panel" data-reveal="up">
-      <Pills items={s.who.tabs} label={s.who.tabsLabel} tone="tint" />
-      <Pills items={s.who.toggle} label={s.who.periodLabel} />
-      <ul class="g-notes">
-        {s.who.items.map((it) => <li>{it}</li>)}
-      </ul>
-    </div>
+<Sec label="02" title={s.who.headline}>
+  <div class="g-stack">
+    <p class="text">{s.who.body}</p>
+    <Pills items={s.who.tabs} label={s.who.tabsLabel} tone="tint" />
+    <Pills items={s.who.toggle} label={s.who.periodLabel} />
+    <ul class="g-notes">{s.who.items.map((it) => <li>{it}</li>)}</ul>
   </div>
-</section>
+</Sec>
 
-<section class="g-sec" aria-labelledby="targets-title">
-  <div class="container g-stack">
-    <SectionHead id="targets-title" title={s.targets.headline} lede={s.targets.lede} />
-    <ItemGrid items={s.targets.tiles} cols={5} />
-  </div>
-</section>
+<Sec label="03" title={s.targets.headline}>
+  <p class="text">{s.targets.lede}</p>
+  <ItemGrid slot="wide" items={s.targets.tiles} cols={5} />
+</Sec>
 
-<ItemList title={s.rules.headline} items={s.rules.rows} />
+<ItemList label="04" title={s.rules.headline} items={s.rules.rows} />
 
-<Statement text={s.talk.poster} sub={s.talk.body} />
+<Band label={page.label} title={s.talk.poster} text={s.talk.body} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />

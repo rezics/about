@@ -21,7 +21,7 @@ const css = [
   ...platforms.map((p) => `.rt:has(input[value='p-${p}']:checked) .rt__rel:not([data-on='${p}']){--dim:1}`),
 ].join('');
 ---
-<div class="rt g-panel" data-release-table>
+<div class="rt" data-release-table>
   <style is:inline set:html={css}></style>
   <form class="rt__filters">
     <fieldset class="rt__group">
@@ -83,9 +83,9 @@ const css = [
 </div>
 
 <style>
-  .rt { gap: 20px; }
+  .rt { display: flex; flex-direction: column; gap: 20px; padding: 24px 0; border-top: 1px solid var(--c-line); border-bottom: 1px solid var(--c-line); }
   .rt__filters { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; }
-  .rt__group { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .rt__group { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 3px; align-items: center; }
   .rt__legend { float: left; margin-right: 8px; color: var(--c-muted); }
   .rt__pill {
     position: relative;
@@ -93,7 +93,6 @@ const css = [
     align-items: center;
     min-height: 40px;
     padding: 0 16px;
-    border-radius: var(--r-pill);
     background: var(--c-soft);
     font-size: var(--t-s);
     font-weight: 500;
@@ -107,11 +106,11 @@ const css = [
   .rt__pill:has(:focus-visible) { outline: 2px solid var(--focus); outline-offset: 2px; }
   .rt__clear { font-size: var(--t-s); min-height: 40px; }
   .rt__wrap { position: relative; margin-top: 4px; overflow-x: auto; }
-  .rt__table { table-layout: fixed; border-collapse: separate; border-spacing: 6px; margin: -6px; width: calc(100% + 12px); }
+  .rt__table { table-layout: fixed; border-collapse: separate; border-spacing: 3px; margin: -3px; width: calc(100% + 6px); }
   .rt__corner, .rt__col, .rt__row { text-align: left; font-weight: 500; font-size: var(--t-s); color: var(--c-muted); padding: 4px 2px; vertical-align: bottom; }
   .rt__corner { width: 16%; }
   .rt__row { vertical-align: middle; color: var(--c-fg); font-size: var(--t-body); }
-  .rt__cell { height: clamp(68px, 8vw, 104px); padding: 0; vertical-align: top; border-radius: var(--r-lg); background: var(--c-bg); }
+  .rt__cell { height: clamp(68px, 8vw, 104px); padding: 0; vertical-align: top; background: var(--c-soft); }
   .rt__cell--none { background: transparent; box-shadow: inset 0 0 0 1px var(--c-line); }
   .rt__rel {
     --dim: 0;
@@ -121,7 +120,6 @@ const css = [
     height: 100%;
     min-height: 60px;
     padding: 12px;
-    border-radius: var(--r-lg);
     background: color-mix(in oklab, var(--field) calc((1 - var(--dim)) * 100%), var(--c-bg));
     color: color-mix(in oklab, #ffffff calc((1 - var(--dim)) * 100%), var(--c-muted));
     transition: background-color var(--d-m) var(--ease-soft), color var(--d-m) var(--ease-soft);
@@ -131,7 +129,7 @@ const css = [
   .rt__region { font-size: var(--t-s); font-weight: 500; }
   .rt__state { font-size: var(--t-s); }
   .rt__langs { display: flex; flex-wrap: wrap; gap: 4px; }
-  .rt__lang { font-size: var(--t-xs); font-weight: 500; padding: 1px 8px; border-radius: var(--r-pill); box-shadow: inset 0 0 0 1px currentColor; line-height: 1.5; }
+  .rt__lang { font-size: var(--t-xs); font-weight: 600; padding: 1px 8px; box-shadow: inset 0 0 0 1px currentColor; line-height: 1.5; }
   .rt__result { min-height: 1.5em; font-weight: 500; }
   .rt__ed { display: none; }
   /* Phone: the matrix becomes a stack, one platform after another, each release a card with

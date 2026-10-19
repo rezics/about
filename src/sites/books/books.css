@@ -1,12 +1,8 @@
-/* 書庫 (books), DESIGN.md "Direction v2": the shared Aura ground and ink; the site's accent is
-   the books field (#1d5a47, set on <body> as --field by the kit), used in its art, its tinted
-   panels and the site bar's marker. Shared rules for the books pages only. */
-[data-site='books'] .bk-stack { display: flex; flex-direction: column; gap: clamp(28px, 3vw, 44px); }
-[data-site='books'] .bk-note { color: var(--c-muted); font-size: var(--t-s); line-height: 1.7; }
-[data-site='books'] .bk-notes { display: flex; flex-direction: column; gap: 10px; padding-left: 1.2em; color: var(--c-muted); }
+/* 書庫 (books), DESIGN.md "Direction v2" (Swiss grid, flat tiles): the shared ground and ink;
+   the site's accent is the books field (#1d5a47, set on <body> as --field by the kit), used in
+   its tiles, its closing block and the site bar's marker. Shared rules for the books pages. */
+[data-site='books'] .bk-note { color: var(--c-muted); font-size: 14px; line-height: 1.7; }
+[data-site='books'] .bk-notes { display: flex; flex-direction: column; gap: 10px; padding-left: 1.2em; color: var(--c-text); font-size: 16px; line-height: 1.8; max-width: 46em; }
 [data-site='books'] .bk-notes li::marker { color: var(--field); }
-[data-site='books'] .bk-sec { padding-block: calc(var(--space-section) / 2); }
-[data-site='books'] .bk-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
-@media (max-width: 767px) {
-  [data-site='books'] .bk-two { grid-template-columns: minmax(0, 1fr); }
-}
+[data-site='books'] .bk-stack { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
+[data-site='books'] .bk-links { display: flex; flex-wrap: wrap; gap: 16px 28px; margin-top: 28px; }

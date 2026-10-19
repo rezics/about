@@ -1,70 +1,59 @@
 ---
-// /games/library/ (DESIGN.md "Direction v2"): the intro beside the shelf, five states, every
-// playthrough its own record (示意), one library across kinds, playtime, the takeout statement,
-// and the next page.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+// /games/library/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, five states,
+// every playthrough its own record (示意), one library across kinds as flat tiles in their fields,
+// playtime, the ink band on takeout, the next page and the closing block.
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import Table from '../../kit/components/Table.astro';
-import Statement from '../../kit/components/Statement.astro';
+import TileRow from '../../kit/components/TileRow.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
 import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
 import './games.css';
 
 const s = site.strings.library;
+const accent = kindFields.games.field;
+const page = site.pages.find((p) => p.slug === 'library')!;
+const together = s.together.tiles.map((t) => ({ name: t.at, rel: t.name, bg: kindFields[t.to].field, on: kindFields[t.to].on }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/library', alt: s.hero.imageAlt, ratio: 1 }} />
+<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-<section class="g-sec" aria-labelledby="status-title">
-  <div class="container g-stack">
-    <SectionHead id="status-title" title={s.status.headline} />
-    <ItemGrid items={s.status.chapters} cols={5} numbered />
-  </div>
-</section>
+<Sec label="01" title={s.status.headline}>
+  <ItemGrid slot="wide" items={s.status.chapters} cols={5} numbered />
+</Sec>
 
-<section class="g-sec" aria-labelledby="slots-title">
-  <div class="container g-two">
-    <SectionHead id="slots-title" title={s.slots.headline} lede={s.slots.lede} />
+<Sec label="02" title={s.slots.headline}>
+  <div class="g-stack">
+    <p class="text">{s.slots.lede}</p>
     <Table columns={s.slots.columns} rows={s.slots.rows.map((r) => [r.slot, r.release, r.state])} caption={s.slots.caption} label={s.slots.headline} />
   </div>
-</section>
+</Sec>
 
-<section class="g-sec" aria-labelledby="together-title">
-  <div class="container g-stack">
-    <SectionHead id="together-title" title={s.together.headline} lede={s.together.lede} />
-    <ul class="lib-tiles" role="list" data-reveal="slot">
-      {s.together.tiles.map((t) => (
-        <li class="lib-tile" style={`--dot:${kindFields[t.to].field}`}>
-          <span class="lib-tile__dot" aria-hidden="true"></span>
-          <span class="lib-tile__name">{t.name}</span>
-          <span class="lib-tile__at">{t.at}</span>
-        </li>
-      ))}
-    </ul>
+<Sec label="03" title={s.together.headline}>
+  <p class="text">{s.together.lede}</p>
+  <div slot="wide" class="g-stack">
+    <TileRow items={together} cols={5} height={180} label={s.together.headline} />
     <p class="g-cap">{s.together.caption}</p>
-    <p class="g-note">{s.together.lists}</p>
+    <p class="text g-lists">{s.together.lists}</p>
   </div>
-</section>
+</Sec>
 
-<section class="g-sec" aria-labelledby="playtime-title">
-  <div class="container g-stack">
-    <SectionHead id="playtime-title" title={s.playtime.headline} lede={s.playtime.lede} />
-    <ItemGrid items={s.playtime.facts} cols={4} look="cards" />
+<Sec label="04" title={s.playtime.headline}>
+  <div class="g-stack">
+    <p class="text">{s.playtime.lede}</p>
     <p class="g-cap">{s.playtime.note}</p>
   </div>
-</section>
+  <ItemGrid slot="wide" items={s.playtime.facts} cols={4} look="cards" />
+</Sec>
 
-<Statement text={s.takeout.statement} sub={s.takeout.body} />
+<Band label={page.label} title={s.takeout.statement} text={s.takeout.body} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />
 
 <style>
-  .lib-tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-  .lib-tile { display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
-  .lib-tile__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--dot); margin-bottom: 6px; }
-  .lib-tile__name { color: var(--c-muted); font-size: var(--t-s); }
-  .lib-tile__at { font-size: var(--t-h3); font-weight: 500; }
-  @media (max-width: 1023px) { .lib-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-  @media (max-width: 599px) { .lib-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .g-lists { max-width: 46em; }
 </style>

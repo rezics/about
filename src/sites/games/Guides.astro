@@ -1,31 +1,36 @@
 ---
-// /games/guides/ (DESIGN.md "Direction v2"): the intro beside the map, the Wiki+ that follows
-// your progress (示意), guides pinned to versions, the rules of Wiki+, adaptations (示意), the
-// Zone statement, and the next page.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+// /games/guides/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, the Wiki+
+// that follows your progress (示意), guides pinned to versions, the rules of Wiki+, adaptations as
+// flat tiles in their fields (示意), the ink band on Zones, the next page and the closing block.
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import ItemList from '../../kit/components/ItemList.astro';
-import Statement from '../../kit/components/Statement.astro';
+import TileRow from '../../kit/components/TileRow.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
 import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
 import './games.css';
 
 const s = site.strings.guides;
+const accent = kindFields.games.field;
+const page = site.pages.find((p) => p.slug === 'guides')!;
+const chain = s.adaptations.chain.map((c) => ({ name: c.name, rel: c.relation ?? '原作', line: c.body, bg: kindFields[c.to].field, on: kindFields[c.to].on }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/guides', alt: s.guides.imageAlt, ratio: 1 }} />
+<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-<section class="g-sec" aria-labelledby="fog-title">
-  <div class="container g-stack">
-    <SectionHead id="fog-title" title={s.fog.headline} lede={s.fog.lede} />
-    <div class="gd-groups" data-reveal="slot">
+<Sec label="01" title={s.fog.headline}>
+  <p class="text">{s.fog.lede}</p>
+  <div slot="wide" class="g-stack">
+    <div class="gd-groups">
       {s.fog.groups.map((g) => (
-        <div class="g-panel gd-group">
-          <h3 class="t-h3">{g.title}</h3>
+        <div class="gd-group">
+          <h3 class="gd-title">{g.title}</h3>
           <ul role="list" class="gd-list">
             {g.cells.map((c) => (
-              <li><span>{c.name}</span><span class="label gd-from">{s.fog.from.replace('{n}', String(c.from))}</span></li>
+              <li><span>{c.name}</span><span class="label">{s.fog.from.replace('{n}', String(c.from))}</span></li>
             ))}
           </ul>
         </div>
@@ -33,53 +38,35 @@ const s = site.strings.guides;
     </div>
     <p class="g-cap">{s.fog.caption}</p>
   </div>
-</section>
+</Sec>
 
-<section class="g-sec" aria-labelledby="guides-title">
-  <div class="container g-stack">
-    <SectionHead id="guides-title" title={s.guides.headline} lede={s.guides.body} />
-    <ItemGrid items={s.guides.items} cols={2} />
+<Sec label="02" title={s.guides.headline}>
+  <p class="text">{s.guides.body}</p>
+  <ItemGrid slot="wide" items={s.guides.items} cols={2} />
+</Sec>
+
+<ItemList label="03" title={s.rules.headline} items={s.rules.rows} />
+
+<Sec label="04" title={s.adaptations.headline}>
+  <div class="g-stack">
+    <p class="text">{s.adaptations.lede}</p>
+    <p class="g-cap">{s.adaptations.note}</p>
   </div>
-</section>
-
-<ItemList title={s.rules.headline} items={s.rules.rows} />
-
-<section class="g-sec" aria-labelledby="adapt-title">
-  <div class="container g-stack">
-    <SectionHead id="adapt-title" title={s.adaptations.headline} lede={s.adaptations.lede} />
-    <ol class="gd-chain" role="list" data-reveal="slot">
-      {s.adaptations.chain.map((c) => (
-        <li class="gd-link" style={`--dot:${kindFields[c.to].field}`}>
-          {c.relation ? <span class="label gd-rel">{c.relation}</span> : <span class="label gd-rel gd-rel--none" aria-hidden="true">·</span>}
-          <span class="gd-name"><span class="gd-dot" aria-hidden="true"></span>{c.name}</span>
-          <span class="gd-body">{c.body}</span>
-        </li>
-      ))}
-    </ol>
-    <p class="g-note">{s.adaptations.note}</p>
+  <div slot="wide" class="g-stack">
+    <TileRow items={chain} cols={5} height={240} label={s.adaptations.headline} />
     <p class="g-cap">{s.adaptations.caption}</p>
   </div>
-</section>
+</Sec>
 
-<Statement text={s.zone.statement} sub={s.zone.body} />
+<Band label={page.label} title={s.zone.statement} text={s.zone.body} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />
 
 <style>
-  .gd-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
-  .gd-list { display: flex; flex-direction: column; }
-  .gd-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-block: 12px; border-top: 1px solid var(--c-line); }
-  .gd-from { color: var(--c-muted); white-space: nowrap; }
-  .gd-chain { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
-  .gd-link { display: flex; flex-direction: column; gap: 8px; padding: 20px; border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
-  .gd-rel { color: var(--c-muted); }
-  .gd-rel--none { visibility: hidden; }
-  .gd-name { display: flex; align-items: center; gap: 8px; font-size: var(--t-h3); font-weight: 500; }
-  .gd-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--dot); flex: none; }
-  .gd-body { color: var(--c-muted); font-size: var(--t-s); line-height: 1.7; }
-  @media (max-width: 1023px) {
-    .gd-groups { grid-template-columns: minmax(0, 1fr); }
-    .gd-chain { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 599px) { .gd-chain { grid-template-columns: minmax(0, 1fr); } }
+  .gd-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px var(--gutter); }
+  .gd-title { font-size: 18px; font-weight: 600; padding-bottom: 12px; }
+  .gd-list { border-top: 1px solid var(--c-line); }
+  .gd-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
+  @media (max-width: 767px) { .gd-groups { grid-template-columns: minmax(0, 1fr); } }
 </style>

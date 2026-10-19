@@ -32,12 +32,11 @@ export interface ExampleItem {
   body: string;
 }
 
-/** A text-and-image row on the landing page (DESIGN.md "Direction v2"). */
+/** A section of the landing page with its text and links. */
 export interface Row {
   headline: string;
   body: string[];
   links: string[];
-  alt: string;
 }
 
 export type GamesStrings = {
@@ -48,12 +47,13 @@ export type GamesStrings = {
     releases: ExampleRelease[];
   };
   landing: {
-    hero: { headline: string; lede: string; secondary: string; alt: string };
+    hero: { headline: string; lede: string; secondary: string };
+    /** Meta-column labels of the landing's sections. */
+    labels: { releases: string; store: string; parts: string; connections: string };
     releases: {
       headline: string;
       lede: string;
       link: string;
-      alt: string;
       caption: string;
       items: ExampleItem[];
     };
@@ -76,13 +76,13 @@ export type GamesStrings = {
       caption: string;
     };
     states: { headline: string; lede: string; steps: Titled[] };
-    languages: { headline: string; body: string; items: Titled[]; imageAlt: string };
+    languages: { headline: string; body: string; items: Titled[] };
     requirements: { headline: string; lede: string; columns: Titled[] };
     bundles: { headline: string; lede: string; tiles: Titled[] };
     offers: { statement: string; body: string };
   };
   store: {
-    hero: { headline: string; lede: string; secondary: string; imageAlt: string };
+    hero: { headline: string; lede: string; secondary: string };
     checkout: { headline: string; caption: string; cells: Titled[] };
     purchase: { headline: string; lede: string; steps: Titled[] };
     keep: { headline: string; body: string; squares: Titled[] };
@@ -90,7 +90,7 @@ export type GamesStrings = {
     refuses: { headline: string; rows: Titled[] };
   };
   library: {
-    hero: { headline: string; lede: string; imageAlt: string };
+    hero: { headline: string; lede: string };
     status: { headline: string; chapters: Titled[] };
     slots: { headline: string; lede: string; columns: [string, string, string]; rows: { slot: string; release: string; state: string }[]; caption: string };
     together: { headline: string; lede: string; tiles: { to: KindId; name: string; at: string }[]; caption: string; lists: string };
@@ -115,7 +115,7 @@ export type GamesStrings = {
       groups: { title: string; cells: { name: string; from: number }[] }[];
       caption: string;
     };
-    guides: { headline: string; body: string; items: Titled[]; imageAlt: string };
+    guides: { headline: string; body: string; items: Titled[] };
     rules: { headline: string; rows: Titled[] };
     adaptations: {
       headline: string;
@@ -127,7 +127,7 @@ export type GamesStrings = {
     zone: { statement: string; body: string };
   };
   creators: {
-    hero: { headline: string; lede: string; imageAlt: string };
+    hero: { headline: string; lede: string };
     rights: { headline: string; rows: Titled[] };
     ledger: { headline: string; rows: { label: string; op?: string; total?: boolean }[]; note: string; reserve: string; caption: string };
     name: { headline: string; lede: string; tiles: { to?: KindId; name: string; role: string }[]; caption: string };
@@ -159,13 +159,12 @@ const strings: GamesStrings = {
       headline: '每一款遊戲，每一個版本，都記得清楚。',
       lede: 'REZICS 為每款遊戲建立一個身分。各平台的發行、版本、語言與需求分開記錄，評分寫明針對哪一版，攻略與 Wiki+ 掛在同一款遊戲上。獨立創作者也在這裡直接賣出能留著的遊戲檔案。',
       secondary: '看平台與版本',
-      alt: '油畫風格的插圖：傍晚的客廳一角，矮桌上放著遊戲手把與幾個素面的遊戲盒，窗外是鈷藍色的天空。',
     },
+    labels: { releases: '發行', store: '商店', parts: '部件', connections: '相關的種類' },
     releases: {
       headline: '同一款遊戲的每一種發行，分開記錄。',
       lede: '電腦、家用主機、掌機與手機各有發行，地區版、豪華版與完整版也各算一筆。每一筆都寫明自己的語言、需求與上架紀錄。',
       link: '看怎麼找出能玩的那一版',
-      alt: '油畫風格的插圖：晨光裡的木桌上，幾排素面的遊戲卡匣、光碟與盒子正在整理。',
       caption: '示意：一款虛構冒險遊戲的九筆發行。',
       items: [
         { id: 'pc-std', label: ['電腦版', '標準版'], body: '文字與字幕有繁中、日文和英文，配音只有日文。三種語言分開記，不會混成一句「支援中文」。' },
@@ -186,7 +185,6 @@ const strings: GamesStrings = {
         '創作者保有著作權，結算單逐項列出每一筆扣除；玩家在同一頁看得到評分、討論與 Wiki+。',
       ],
       links: ['看商店', '給創作者'],
-      alt: '油畫風格的插圖：黃昏的街邊，一家小店的櫥窗裡亮著暖光，木架上擺著素面的盒子。',
     },
     pages: {
       headline: '六件事，各有一頁。',
@@ -262,7 +260,6 @@ const strings: GamesStrings = {
         { title: '玩家中文化', body: '署名團隊，寫明依據的版本與涵蓋範圍，永遠不標成官方。' },
         { title: '後來加入的語言', body: '更新才加入的語言是新的語言版本，指回它的來源，不改寫原本的發行紀錄。' },
       ],
-      imageAlt: '油畫風格的插圖：明亮的木桌上排著幾排素面的卡匣與光碟，像一份正在分類的收藏。',
     },
     requirements: {
       headline: '需求，要寫明是誰說的。',
@@ -296,7 +293,6 @@ const strings: GamesStrings = {
       headline: '買一次，檔案留在你手上。',
       lede: '這裡的遊戲與視覺小說，來自與 REZICS 簽約的獨立創作者。沒有 DRM，不需要啟動器，買過的遊戲登入後隨時能重新下載。',
       secondary: '看一次購買的流程',
-      imageAlt: '油畫風格的插圖：傍晚的小店櫥窗透出暖光，玻璃上映著鈷藍色的天空。',
     },
     checkout: {
       headline: '結帳之前，這八件事都寫在頁面上。',
@@ -352,7 +348,6 @@ const strings: GamesStrings = {
     hero: {
       headline: '你的遊戲庫，跨平台，也跨種類。',
       lede: '電腦、主機、掌機與手機上的遊戲，記在同一個地方。每一輪遊玩記得用的是哪個平台的哪一版，你讀的書、追的動畫也在旁邊。',
-      imageAlt: '油畫風格的插圖：午後的窗邊，一座木架上整齊排著藍白色書背的遊戲盒，架上留著一個空位。',
     },
     status: {
       headline: '從想玩到破關，每個狀態分開記。',
@@ -484,7 +479,6 @@ const strings: GamesStrings = {
         { title: '模組合集寫明目標', body: '社群整理的模組合集，寫明對應的遊戲版本，以及有沒有檢查過相容性。' },
         { title: '每一筆修改都有紀錄', body: '看得到誰改了什麼，可以比對兩個版本，也可以還原。' },
       ],
-      imageAlt: '油畫風格的插圖：木桌上攤開一張手繪的奇幻地圖，旁邊有黃銅指南針、幾根圖釘和一盞小燈。',
     },
     rules: {
       headline: 'Wiki+ 的五條規則',
@@ -519,7 +513,6 @@ const strings: GamesStrings = {
     hero: {
       headline: '發行你的遊戲，著作權留在你身上。',
       lede: 'REZICS 與獨立創作者簽約，代為發行遊戲與視覺小說。玩家買到沒有 DRM 的檔案與後續更新；你拿到逐項列明的結算單，以及一個連起所有作品的身分。',
-      imageAlt: '油畫風格的插圖：傍晚窗邊的工作桌，素描本上畫著關卡草圖，旁邊是彩色鉛筆、繪圖板與半打包的紙箱。',
     },
     rights: {
       headline: '你保留的，和你授權的',

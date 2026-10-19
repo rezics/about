@@ -1,48 +1,50 @@
 ---
-// /games/store/ (DESIGN.md "Direction v2"): the intro beside the shop window, what is on the page
-// before you pay, one purchase in six steps, what you keep, the privacy statement, what this store
-// does not do, and the next page.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+// /games/store/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, what is on the
+// page before you pay, one purchase in six steps, what you keep as flat tiles, the ink band on
+// privacy, what this store does not do, the next page and the closing block.
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import ItemList from '../../kit/components/ItemList.astro';
-import Statement from '../../kit/components/Statement.astro';
+import TileRow from '../../kit/components/TileRow.astro';
+import Band from '../../kit/components/Band.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
-import Arrow from '../../kit/components/Arrow.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
+import { accentRamp } from '../../kit/color';
 import site from '../../content/sites/games';
 import './games.css';
 
 const s = site.strings.store;
+const accent = kindFields.games.field;
+const page = site.pages.find((p) => p.slug === 'store')!;
+const ramp = accentRamp(accent);
+const keep = s.keep.squares.map((q, i) => ({ name: q.title, line: q.body, ...ramp[[0, 2, 4][i] ?? 0]! }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/store', alt: s.hero.imageAlt, ratio: 1 }}>
+<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
   <ProductCall />
-  <a class="link-draw" href="#purchase">{s.hero.secondary}<Arrow dir="down" /></a>
-</PageIntro>
+  <a class="link-draw" href="#purchase">{s.hero.secondary}</a>
+</PageHead>
 
-<section class="g-sec" aria-labelledby="checkout-title">
-  <div class="container g-stack">
-    <SectionHead id="checkout-title" title={s.checkout.headline} lede={s.checkout.caption} />
-    <ItemGrid items={s.checkout.cells} cols={4} />
-  </div>
-</section>
+<Sec label="01" title={s.checkout.headline}>
+  <p class="text">{s.checkout.caption}</p>
+  <ItemGrid slot="wide" items={s.checkout.cells} cols={4} />
+</Sec>
 
-<section id="purchase" class="g-sec" aria-labelledby="purchase-title">
-  <div class="container g-stack">
-    <SectionHead id="purchase-title" title={s.purchase.headline} lede={s.purchase.lede} />
-    <ItemGrid items={s.purchase.steps} cols={3} numbered />
-  </div>
-</section>
+<Sec id="purchase" label="02" title={s.purchase.headline}>
+  <p class="text">{s.purchase.lede}</p>
+  <ItemGrid slot="wide" items={s.purchase.steps} cols={3} numbered />
+</Sec>
 
-<section class="g-sec" aria-labelledby="keep-title">
-  <div class="container g-stack">
-    <SectionHead id="keep-title" title={s.keep.headline} lede={s.keep.body} />
-    <ItemGrid items={s.keep.squares} cols={3} look="cards" />
-  </div>
-</section>
+<Sec label="03" title={s.keep.headline}>
+  <p class="text">{s.keep.body}</p>
+  <TileRow slot="wide" items={keep} cols={3} height={200} label={s.keep.headline} />
+</Sec>
 
-<Statement text={s.privacy.statement} sub={s.privacy.body} />
+<Band label={page.label} title={s.privacy.statement} text={s.privacy.body} />
 
-<ItemList title={s.refuses.headline} items={s.refuses.rows} />
+<ItemList label="04" title={s.refuses.headline} items={s.refuses.rows} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />

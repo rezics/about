@@ -1,80 +1,65 @@
 ---
-// /games/creators/ (DESIGN.md "Direction v2"): the intro beside the studio desk, what you keep and
-// what you license, the statement line by line, one name across everything you make, a home for
-// the game after release, the rules statement, and the next site.
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+// /games/creators/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, what you keep
+// and what you license, the statement line by line, one name across everything you make as flat
+// tiles, a home for the game after release, the ink band on the rules, the next site and the
+// closing block.
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import ItemList from '../../kit/components/ItemList.astro';
-import Statement from '../../kit/components/Statement.astro';
+import TileRow from '../../kit/components/TileRow.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
-import { kindFields } from '../../kit/theme';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields, palette } from '../../kit/theme';
 import site from '../../content/sites/games';
 import './games.css';
 
 const s = site.strings.creators;
+const accent = kindFields.games.field;
+const page = site.pages.find((p) => p.slug === 'creators')!;
+const names = s.name.tiles.map((t) => ({ name: t.name, line: t.role, bg: t.to ? kindFields[t.to].field : palette.ink, on: t.to ? kindFields[t.to].on : ('paper' as const) }));
 ---
-<PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/games/creators', alt: s.hero.imageAlt, ratio: 1 }} />
+<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-<ItemList title={s.rights.headline} items={s.rights.rows} />
+<ItemList label="01" title={s.rights.headline} items={s.rights.rows} />
 
-<section class="g-sec" aria-labelledby="ledger-title">
-  <div class="container g-two">
-    <div class="g-stack">
-      <SectionHead id="ledger-title" title={s.ledger.headline} lede={s.ledger.note} />
-      <p class="g-cap">{s.ledger.reserve}</p>
-    </div>
-    <div class="g-panel" data-reveal="up">
-      <ol class="cr-ledger" role="list">
-        {s.ledger.rows.map((r) => (
-          <li class:list={['cr-row', r.total && 'cr-row--total']}>
-            <span class="cr-op label">{r.op ?? ''}</span>
-            <span class="cr-label">{r.label}</span>
-          </li>
-        ))}
-      </ol>
-      <p class="g-cap">{s.ledger.caption}</p>
-    </div>
-  </div>
-</section>
-
-<section class="g-sec" aria-labelledby="name-title">
-  <div class="container g-stack">
-    <SectionHead id="name-title" title={s.name.headline} lede={s.name.lede} />
-    <ul class="cr-tiles" role="list" data-reveal="slot">
-      {s.name.tiles.map((t) => (
-        <li class="cr-tile" style={`--dot:${t.to ? kindFields[t.to].field : 'var(--c-muted)'}`}>
-          <span class="cr-tile__dot" aria-hidden="true"></span>
-          <span class="cr-tile__name">{t.name}</span>
-          <span class="cr-tile__role">{t.role}</span>
+<Sec label="02" title={s.ledger.headline}>
+  <div class="g-stack">
+    <p class="text">{s.ledger.note}</p>
+    <ol class="cr-ledger" role="list">
+      {s.ledger.rows.map((r) => (
+        <li class:list={['cr-row', r.total && 'cr-row--total']}>
+          <span class="cr-op label">{r.op ?? ''}</span>
+          <span>{r.label}</span>
         </li>
       ))}
-    </ul>
+    </ol>
+    <p class="g-cap">{s.ledger.reserve}</p>
+    <p class="g-cap">{s.ledger.caption}</p>
+  </div>
+</Sec>
+
+<Sec label="03" title={s.name.headline}>
+  <p class="text">{s.name.lede}</p>
+  <div slot="wide" class="g-stack">
+    <TileRow items={names} cols={4} height={200} label={s.name.headline} />
     <p class="g-cap">{s.name.caption}</p>
   </div>
-</section>
+</Sec>
 
-<section class="g-sec" aria-labelledby="home-title">
-  <div class="container g-stack">
-    <SectionHead id="home-title" title={s.home.headline} lede={s.home.body} />
-    <ItemGrid items={s.home.items} cols={2} look="cards" />
-  </div>
-</section>
+<Sec label="04" title={s.home.headline}>
+  <p class="text">{s.home.body}</p>
+  <ItemGrid slot="wide" items={s.home.items} cols={2} look="cards" />
+</Sec>
 
-<Statement text={s.rules.statement} sub={s.rules.body} />
+<Band label={page.label} title={s.rules.statement} text={s.rules.body} />
 
 <SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
+<Closing bg={accent} />
 
 <style>
-  .cr-ledger { display: flex; flex-direction: column; }
-  .cr-row { display: grid; grid-template-columns: 3.5em minmax(0, 1fr); align-items: baseline; gap: 12px; padding-block: 12px; border-top: 1px solid var(--c-line); }
-  .cr-row:first-child { border-top: 0; }
-  .cr-row--total { border-top: 1.5px solid var(--c-fg); font-weight: 500; }
-  .cr-op { color: var(--c-muted); }
-  .cr-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-  .cr-tile { display: flex; flex-direction: column; gap: 6px; padding: 20px; border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
-  .cr-tile__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--dot); margin-bottom: 6px; }
-  .cr-tile__name { font-size: var(--t-h3); font-weight: 500; }
-  .cr-tile__role { color: var(--c-muted); font-size: var(--t-s); }
-  @media (max-width: 767px) { .cr-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .cr-ledger { border-top: 1px solid var(--c-line); }
+  .cr-row { display: grid; grid-template-columns: 4em minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
+  .cr-row--total { border-top: 1.5px solid var(--c-fg); font-weight: 600; }
 </style>

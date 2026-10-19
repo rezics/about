@@ -63,6 +63,8 @@ export interface Kind {
   id: KindId;
   /** The name set inside the square, e.g. 書庫, 視覺小說, MCP Hub. */
   name: string;
+  /** The Latin id set small on tiles, e.g. Books, Visual novels, MCP. */
+  tag: string;
   group: 'works' | 'agents';
   /** The navigation tile's line beneath the square: at most 16 CJK characters. */
   summary: string;
@@ -106,12 +108,6 @@ export interface Principle {
   body: string;
 }
 
-export interface HomeRow {
-  headline: string;
-  body: string[];
-  link: string;
-  imageAlt: string;
-}
 
 export interface Site {
   name: 'REZICS';
@@ -133,18 +129,25 @@ export interface Site {
     groups: { works: string; agents: string };
   };
   /**
-   * The home page (DESIGN.md "Direction v2", Rhythm): the centred intro over the hero image,
-   * text-and-image rows, one statement, the products as a card row, the commitments and the
-   * closing panel. It names no specific work.
+   * The home page (DESIGN.md "Direction v2"; the reference mock .temp/mocks/home.html): the hero
+   * with the wall of the nine kinds, the index section and its adaptation chain, the community
+   * band, the platform statement over the module index, developers and agents with a real
+   * request, the principles, the closing block. It names no specific work.
    */
   home: {
-    hero: { headline: string; lede: string; primary: string; secondary: string; imageAlt: string };
-    /** A text-and-image row: heading, one or two paragraphs, a link deeper, the image's alt. */
-    index: HomeRow;
-    community: HomeRow;
-    statement: { text: string; body: string; link: string };
-    products: { headline: string; lede: string };
-    agents: HomeRow;
+    hero: { label: string; headline: string; lede: string; primary: string; secondary: string };
+    index: {
+      label: string;
+      link: string;
+      /** Two lines. */
+      headline: [string, string];
+      body: [string, string];
+      /** The adaptation chain: a relation over each name (示意, no work named). */
+      chain: { kind: KindId; rel: string; name: string }[];
+    };
+    community: { label: string; headline: string; body: string; items: Item[] };
+    platform: { headline: string; more: string; modules: Record<ModuleId, string> };
+    agents: { label: string; headline: string; body: string; link: string; code: string; codeLabel: string; caption: string };
     principles: { headline: string; items: Principle[] };
     finale: { headline: string; body: string };
   };
@@ -187,7 +190,7 @@ export interface Site {
     /** Group label for the row of kind buttons under a composing square. */
     pick: string;
   };
-  footer: { tagline: string; sitemap: string; source: string; sourceUrl: string; colophon: string; copyright: string };
+  footer: { tagline: string; sitemap: string; agents: string; source: string; sourceUrl: string; colophon: string; copyright: string };
 }
 
 /** One page of a mini-site: a tab in its site bar. */

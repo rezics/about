@@ -1,74 +1,64 @@
 ---
-// 書庫 版本與系列 (DESIGN.md "Direction v2"): the intro beside the shelves, four kinds of
-// release, translations and their states, what stays the same work, publication and reading
-// order, the ISBN statement, and the next page.
+// 書庫 版本與系列 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, four kinds of
+// release as flat tiles, translations and their states, what stays the same work, publication
+// and reading order, the ink band on ISBNs, the next page and the closing block.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import Pills from '../../kit/components/Pills.astro';
 import Table from '../../kit/components/Table.astro';
-import Statement from '../../kit/components/Statement.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.editions;
+const accent = kindFields.books.field;
+const page = site.pages.find((p) => p.slug === 'editions')!;
 const reading = s.orders.reading.map((i) => s.orders.squares[i]!);
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/shelves', alt: s.hero.alt, ratio: 1 }} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <section class="bk-sec" aria-labelledby="releases-title">
-    <div class="container bk-stack">
-      <SectionHead id="releases-title" title={s.releases.headline} lede={s.releases.caption} />
-      <ItemGrid items={s.releases.quarters} cols={4} look="cards" />
+  <Sec label="01" title={s.releases.headline}>
+    <p class="text">{s.releases.caption}</p>
+    <ItemGrid slot="wide" items={s.releases.quarters} cols={4} look="cards" />
+  </Sec>
+
+  <Sec label="02" title={s.translations.headline}>
+    <div class="bk-stack">
+      <Pills items={s.translations.states} label={s.translations.stateLabel} tone="tint" ordered />
+      <ul class="bk-notes">{s.translations.notes.map((n) => <li>{n}</li>)}</ul>
     </div>
-  </section>
+    <ItemGrid slot="wide" items={s.translations.rows} cols={4} />
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="tr-title">
-    <div class="container bk-stack">
-      <SectionHead id="tr-title" title={s.translations.headline} />
-      <ItemGrid items={s.translations.rows} cols={4} />
-      <div class="bk-two ed-states">
-        <Pills items={s.translations.states} label={s.translations.stateLabel} tone="tint" ordered />
-        <ul class="bk-notes">
-          {s.translations.notes.map((n) => <li>{n}</li>)}
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section class="bk-sec" aria-labelledby="same-title">
-    <div class="container bk-stack">
-      <SectionHead id="same-title" title={s.sameWork.headline} lede={s.sameWork.intro} />
+  <Sec label="03" title={s.sameWork.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.sameWork.intro}</p>
       <Table columns={s.sameWork.columns} rows={s.sameWork.rows} caption={s.sameWork.caption} label={s.sameWork.headline} />
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="orders-title">
-    <div class="container bk-stack">
-      <SectionHead id="orders-title" title={s.orders.headline} />
-      <div class="bk-two ed-orders" data-reveal="slot">
-        <div class="ed-order"><Pills items={s.orders.squares} label={s.orders.rows[0]} ordered /></div>
-        <div class="ed-order"><Pills items={reading} label={s.orders.rows[1]} tone="tint" ordered /></div>
-      </div>
-      <ul class="bk-notes">
-        {s.orders.notes.map((n) => <li>{n}</li>)}
-      </ul>
+  <Sec label="04" title={s.orders.headline}>
+    <div class="bk-stack">
+      <Pills items={s.orders.squares} label={s.orders.rows[0]} ordered />
+      <Pills items={reading} label={s.orders.rows[1]} tone="tint" ordered />
+      <ul class="bk-notes">{s.orders.notes.map((n) => <li>{n}</li>)}</ul>
     </div>
-  </section>
+  </Sec>
 
-  <Statement text={s.isbn.poster} sub={s.isbn.body}>
-    <p class="bk-note ed-example">{s.isbn.example}</p>
-  </Statement>
+  <Band label={page.label} title={s.isbn.poster} text={s.isbn.body}>
+    <p class="ed-example">{s.isbn.example}</p>
+  </Band>
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
 
 <style>
-  .ed-states { align-items: start; }
-  .ed-order { padding: 24px; border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
-  .ed-order :global(.pills__list) { counter-reset: vol; }
-  .ed-example { max-width: 34em; }
+  .ed-example { grid-column: 8 / 13; margin-top: 24px; font-size: 15px; line-height: 1.8; color: rgb(249 246 242 / 0.8); }
 </style>

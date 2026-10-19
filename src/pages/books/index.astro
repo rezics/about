@@ -1,108 +1,103 @@
 ---
-// 書庫 landing (DESIGN.md "Direction v2"; src/sites/books/SITE.md): the centred intro over the
-// reading room, the kinds of books, the reading figure and its six steps, a reading row, the six
-// pages as cards, the writing row, the eight parts, the neighbouring kinds, and the next page.
+// 書庫 landing (DESIGN.md "Direction v2": Swiss grid, flat tiles): the hero with the wall of the
+// site's own pages, the reading figure and its six steps, one work's editions as tiles (示意),
+// the ink band on reading position, the kinds of books, writing and publishing, the eight parts,
+// the neighbouring kinds, the next page and the closing block in the books field.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import MediaRow from '../../kit/components/MediaRow.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
-import TileMasonry, { type TileItem } from '../../kit/components/TileMasonry.astro';
+import HeroWall from '../../kit/components/HeroWall.astro';
+import Sec from '../../kit/components/Sec.astro';
+import TextCols from '../../kit/components/TextCols.astro';
+import TileRow from '../../kit/components/TileRow.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
+import Band from '../../kit/components/Band.astro';
 import PartsList from '../../kit/components/PartsList.astro';
 import Pills from '../../kit/components/Pills.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
-import Arrow from '../../kit/components/Arrow.astro';
+import Closing from '../../kit/components/Closing.astro';
 import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
 import { accentRamp } from '../../kit/color';
+import { pageWall } from '../../kit/pageWall';
 import { pageHref } from '../../kit/sites';
 import Progress from '../../sites/books/Progress.astro';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.landing;
+const L = s.labels;
 const kind = kindById('books');
+const accent = kindFields.books.field;
 const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-// The six pages as flat tiles in shades and tints of the books field; the work page and the
-// serial page (the hub and the writer's way in) stand taller.
-const ramp = accentRamp(kindFields.books.field);
-const pageLayout: Record<string, { h: number; col: number }> = {
-  work: { h: 7, col: 1 },
-  wiki: { h: 5, col: 2 },
-  editions: { h: 6, col: 3 },
-  library: { h: 5, col: 1 },
-  serial: { h: 7, col: 2 },
-  publish: { h: 6, col: 3 },
-};
-const pages: TileItem[] = s.pages.rows.map((r, i) => ({
-  title: pageBy(r.slug).label,
-  body: r.body,
-  href: pageHref(site, pageBy(r.slug)),
-  ...ramp[i % ramp.length]!,
-  ...pageLayout[r.slug]!,
-}));
-// The neighbouring kinds in their own fields: the adaptations on either side, two kinds between.
-const neighbourLayout: Record<string, { h: number; col: number }> = {
-  anime: { h: 10, col: 1 },
-  manga: { h: 5, col: 2 },
-  'visual-novels': { h: 5, col: 2 },
-  games: { h: 10, col: 3 },
-};
-const neighbours: TileItem[] = s.connections.squares.map((c) => ({
-  title: kindById(c.kind).name,
-  body: c.label,
+const wall = pageWall(site, accent, s.pages.rows);
+const ramp = accentRamp(accent);
+const editions = s.editions.tiles.map((t, i) => ({ name: t.name, line: t.line, rel: '示意', ...ramp[[0, 2, 4, 1][i] ?? 0]! }));
+const neighbours = s.connections.squares.map((c) => ({
+  name: kindById(c.kind).name,
+  tag: kindById(c.kind).tag,
+  line: c.label,
   href: kindHref(c.kind),
   bg: kindFields[c.kind].field,
   on: kindFields[c.kind].on,
-  ...neighbourLayout[c.kind]!,
 }));
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/hero', alt: s.hero.alt, phone: '/images/sites/books/hero-m' }}>
+  <HeroWall label={site.name} title={s.hero.headline} lede={s.hero.lede} items={wall.items} wide={wall.wide} phone={wall.phone} phoneHeight={860} bar>
     <ProductCall />
-    <a class="link-draw" href="#bookmark">{s.hero.secondary}<Arrow dir="down" /></a>
-  </PageIntro>
+    <a class="link-draw" href="#bookmark">{s.hero.secondary}</a>
+  </HeroWall>
 
-  <section class="bk-sec" aria-labelledby="shelf-title">
-    <div class="container bk-shelf">
-      <SectionHead id="shelf-title" title={s.shelf.headline} lede={s.shelf.caption} align="center" />
-      <Pills items={s.shelf.words} tone="tint" class="bk-shelf__pills" />
-    </div>
-  </section>
-
-  <section id="bookmark" class="bk-sec" aria-labelledby="bm-title">
-    <div class="container bk-stack">
-      <SectionHead id="bm-title" title={s.bookmark.headline} lede={s.bookmark.intro} />
+  <Sec id="bookmark" label={L.bookmark} title={s.bookmark.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.bookmark.intro}</p>
       <Progress />
-      <ItemGrid items={s.bookmark.steps} cols={3} numbered />
     </div>
-  </section>
+    <ItemGrid slot="wide" items={s.bookmark.steps} cols={3} numbered />
+  </Sec>
 
-  <MediaRow title={s.reading.headline} body={s.reading.body} image={{ base: '/images/sites/books/nook', alt: s.reading.alt }} reverse>
-    <a class="link-draw" href={pageHref(site, pageBy('wiki'))}>{s.reading.link}<Arrow /></a>
-  </MediaRow>
+  <Sec label={L.editions} title={s.editions.headline}>
+    <p class="text">{s.editions.lede}</p>
+    <div slot="wide" class="bk-stack">
+      <TileRow items={editions} cols={4} label={s.editions.headline} />
+      <p class="bk-note">{s.editions.caption}</p>
+    </div>
+  </Sec>
 
-  <TileMasonry title={s.pages.headline} items={pages} />
+  <Band label={L.reading} title={s.reading.headline} text={s.reading.body.join('')}>
+    <p class="bk-band-link"><a class="link-draw" href={pageHref(site, pageBy('wiki'))}>{s.reading.link}</a></p>
+  </Band>
 
-  <MediaRow title={s.writing.headline} body={s.writing.body} image={{ base: '/images/sites/books/desk', alt: s.writing.alt }}>
-    <a class="link-draw" href={pageHref(site, pageBy('serial'))}>{s.writing.links[0]}<Arrow /></a>
-    <a class="link-draw" href={pageHref(site, pageBy('publish'))}>{s.writing.links[1]}<Arrow /></a>
-  </MediaRow>
+  <Sec label={s.shelf.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.shelf.caption}</p>
+      <Pills items={s.shelf.words} tone="tint" />
+    </div>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="parts-title">
-    <div class="container bk-stack">
-      <SectionHead id="parts-title" title={s.parts.headline} lede={s.parts.caption} />
+  <Sec label={L.writing} title={s.writing.headline}>
+    <TextCols paragraphs={s.writing.body} />
+    <div class="bk-links">
+      <a class="link-draw" href={pageHref(site, pageBy('serial'))}>{s.writing.links[0]}</a>
+      <a class="link-draw" href={pageHref(site, pageBy('publish'))}>{s.writing.links[1]}</a>
+    </div>
+  </Sec>
+
+  <Sec label={L.parts} title={s.parts.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.parts.caption}</p>
       <PartsList parts={kind.parts} notes={kind.partNotes} level="h3" />
     </div>
-  </section>
+  </Sec>
 
-  <TileMasonry title={s.connections.headline} lede={s.connections.line} items={neighbours} />
+  <Sec label={L.connections} title={s.connections.headline}>
+    <p class="text">{s.connections.line}</p>
+    <TileRow slot="wide" items={neighbours} cols={4} label={s.connections.headline} />
+  </Sec>
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
 
 <style>
-  .bk-shelf { display: flex; flex-direction: column; align-items: center; gap: 28px; }
-  .bk-shelf :global(.pills__list) { justify-content: center; }
+  .bk-band-link { grid-column: 8 / 13; margin-top: 28px; }
 </style>

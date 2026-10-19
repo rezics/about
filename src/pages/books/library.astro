@@ -1,59 +1,48 @@
 ---
-// 書庫 閱讀紀錄 (DESIGN.md "Direction v2"): the intro beside the lending desk, three readings of
-// one book, moving in and out, the shelf, the "continue" statement, privacy, and the next page.
+// 書庫 閱讀紀錄 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, three readings
+// of one book, moving in and out, the shelf as flat tiles, the ink band on "continue", privacy,
+// the next page and the closing block.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import Table from '../../kit/components/Table.astro';
-import Statement from '../../kit/components/Statement.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.library;
+const accent = kindFields.books.field;
+const page = site.pages.find((p) => p.slug === 'library')!;
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/lending', alt: s.hero.alt, ratio: 1 }} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <section class="bk-sec" aria-labelledby="reads-title">
-    <div class="container bk-two lb-reads">
-      <SectionHead id="reads-title" title={s.reads.headline} lede={s.reads.body} />
+  <Sec label="01" title={s.reads.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.reads.body}</p>
       <Table columns={s.reads.columns} rows={s.reads.rows} caption={s.reads.caption} label={s.reads.headline} />
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="move-title">
-    <div class="container bk-stack">
-      <SectionHead id="move-title" title={s.move.headline} />
-      <ItemGrid items={s.move.steps} cols={4} numbered />
-      <p class="lb-note" data-reveal="up">{s.move.statement}</p>
-    </div>
-  </section>
+  <Sec label="02" title={s.move.headline}>
+    <p class="text">{s.move.statement}</p>
+    <ItemGrid slot="wide" items={s.move.steps} cols={4} numbered />
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="shelf-title">
-    <div class="container bk-stack">
-      <SectionHead id="shelf-title" title={s.shelf.headline} />
-      <ItemGrid items={s.shelf.squares} cols={3} look="cards" />
-    </div>
-  </section>
+  <Band label={page.label} title={s.continue.poster} text={s.continue.body} />
 
-  <Statement text={s.continue.poster} sub={s.continue.body} />
+  <Sec label="03" title={s.shelf.headline}>
+    <ItemGrid slot="wide" items={s.shelf.squares} cols={3} look="cards" />
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="privacy-title">
-    <div class="container bk-two lb-privacy">
-      <SectionHead id="privacy-title" title={s.privacy.statement} />
-      <ul class="bk-notes" data-reveal="up">
-        {s.privacy.facts.map((f) => <li>{f}</li>)}
-      </ul>
-    </div>
-  </section>
+  <Sec label="04" title={s.privacy.statement}>
+    <ul class="bk-notes">{s.privacy.facts.map((f) => <li>{f}</li>)}</ul>
+  </Sec>
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
-
-<style>
-  .lb-reads, .lb-privacy { align-items: start; }
-  .lb-privacy :global(.bk-notes) { color: var(--c-fg); }
-  .lb-note { max-width: 46em; padding: 18px 22px; border-radius: var(--r-lg); background: var(--tint); }
-</style>

@@ -5,6 +5,7 @@ export const kinds: Kind[] = [
   {
     id: 'books',
     name: '書庫',
+    tag: 'Books',
     group: 'works',
     summary: '一部作品，所有版本與譯本',
     meta: {
@@ -67,6 +68,7 @@ export const kinds: Kind[] = [
   {
     id: 'anime',
     name: '動畫',
+    tag: 'Anime',
     group: 'works',
     summary: '季、集、播出日程與原作',
     meta: {
@@ -129,6 +131,7 @@ export const kinds: Kind[] = [
   {
     id: 'manga',
     name: '漫畫',
+    tag: 'Manga',
     group: 'works',
     summary: '單行本、每一話與各語言譯本',
     meta: {
@@ -190,6 +193,7 @@ export const kinds: Kind[] = [
   {
     id: 'games',
     name: '遊戲',
+    tag: 'Games',
     group: 'works',
     summary: '平台、版本、評價與購買',
     meta: {
@@ -252,6 +256,7 @@ export const kinds: Kind[] = [
   {
     id: 'software',
     name: '軟體',
+    tag: 'Software',
     group: 'works',
     summary: '能不能跑、去哪取得、有何替代',
     meta: {
@@ -314,6 +319,7 @@ export const kinds: Kind[] = [
   {
     id: 'visual-novels',
     name: '視覺小說',
+    tag: 'Visual novels',
     group: 'works',
     summary: '語言、平台與譯者都對的版本',
     meta: {
@@ -372,6 +378,7 @@ export const kinds: Kind[] = [
   {
     id: 'mcp',
     name: 'MCP Hub',
+    tag: 'MCP',
     group: 'agents',
     summary: 'MCP 伺服器的版本與相容紀錄',
     meta: {
@@ -434,6 +441,7 @@ export const kinds: Kind[] = [
   {
     id: 'skills',
     name: 'Skill Hub',
+    tag: 'Skills',
     group: 'agents',
     summary: '技能的檔案、依賴與相容紀錄',
     meta: {
@@ -491,6 +499,7 @@ export const kinds: Kind[] = [
   {
     id: 'apis',
     name: 'API Hub',
+    tag: 'APIs',
     group: 'agents',
     summary: '公開 API 的版本、規格與評價',
     meta: {

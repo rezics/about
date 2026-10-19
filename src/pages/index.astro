@@ -1,71 +1,91 @@
 ---
-// Home (DESIGN.md "Direction v2", Rhythm): the centred intro over a large painted image, two
-// text-and-image rows, one statement, the nine products as flat colour tiles, a third row, the
-// commitments, and the closing panel into REZICS. It names no specific work.
+// Home (DESIGN.md "Direction v2"; the reference mock .temp/mocks/home.html, section for section):
+// the hero with the wall of the nine kinds, the index section and its adaptation chain, the
+// community band, the platform statement over the module index, developers and agents with a
+// real request, the principles, the closing block. It names no specific work.
 import PageLayout from '../kit/layouts/PageLayout.astro';
-import PageIntro from '../kit/components/PageIntro.astro';
-import MediaRow from '../kit/components/MediaRow.astro';
+import HeroWall from '../kit/components/HeroWall.astro';
+import type { WallItem, WallPlace } from '../kit/components/TileWall.astro';
+import Sec from '../kit/components/Sec.astro';
+import TextCols from '../kit/components/TextCols.astro';
+import TileRow from '../kit/components/TileRow.astro';
+import Band from '../kit/components/Band.astro';
 import Statement from '../kit/components/Statement.astro';
-import TileMasonry, { type TileItem } from '../kit/components/TileMasonry.astro';
+import IndexRows from '../kit/components/IndexRows.astro';
+import CodeTile from '../kit/components/CodeTile.astro';
 import ItemList from '../kit/components/ItemList.astro';
-import ClosingPanel from '../kit/components/ClosingPanel.astro';
+import Closing from '../kit/components/Closing.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
-import Arrow from '../kit/components/Arrow.astro';
-import { kinds, site, kindHref } from '../kit/content';
+import Clauses from '../kit/Clauses.astro';
+import { kinds, modules, site, kindHref, moduleHref } from '../kit/content';
 import { kindFields } from '../kit/theme';
 
 const h = site.home;
-// The nine products as flat tiles in their fields, three columns; the larger kinds stand taller
-// (books, anime, visual novels, games), the three hubs shorter, and every column ends level.
-const layout: Record<string, { h: number; col: number }> = {
-  books: { h: 9, col: 1 },
-  anime: { h: 8, col: 2 },
-  manga: { h: 7, col: 3 },
-  games: { h: 7, col: 1 },
-  software: { h: 7, col: 2 },
-  'visual-novels': { h: 8, col: 3 },
-  mcp: { h: 5, col: 1 },
-  skills: { h: 6, col: 2 },
-  apis: { h: 6, col: 3 },
-};
-const products: TileItem[] = kinds.map((k) => ({
-  title: k.name,
-  body: k.summary,
+const wall: WallItem[] = kinds.map((k) => ({
+  id: k.id,
+  name: k.name,
+  tag: k.tag,
+  line: k.summary,
   href: kindHref(k.id),
   bg: kindFields[k.id].field,
   on: kindFields[k.id].on,
-  ...layout[k.id]!,
 }));
+// The wall as in the mock: three columns, the larger kinds taller; small tiles carry no line.
+const wide: WallPlace[][] = [
+  [{ id: 'books', h: 5 }, { id: 'visual-novels', h: 3 }, { id: 'software', h: 2.4, line: false }],
+  [{ id: 'anime', h: 3.2 }, { id: 'manga', h: 3.4 }, { id: 'skills', h: 2, line: false }],
+  [{ id: 'mcp', h: 2.4 }, { id: 'games', h: 4.4 }, { id: 'apis', h: 2, line: false }],
+];
+const phone: WallPlace[][] = [
+  [{ id: 'books', h: 5 }, { id: 'visual-novels', h: 3 }, { id: 'software', h: 2.4, line: false }, { id: 'mcp', h: 2.2, line: false }],
+  [{ id: 'anime', h: 3.2 }, { id: 'manga', h: 3.4 }, { id: 'skills', h: 2, line: false }, { id: 'games', h: 3.6 }, { id: 'apis', h: 2, line: false }],
+];
+const chain = h.index.chain.map((c) => ({ name: c.name, rel: c.rel, bg: kindFields[c.kind].field, on: kindFields[c.kind].on }));
+const moduleRows = modules.map((m) => ({ name: m.name, desc: h.platform.modules[m.id], href: moduleHref(m.id) }));
 ---
 <PageLayout meta={site.meta} home action={false}>
-  <PageIntro
-    title={h.hero.headline}
-    lede={h.hero.lede}
-    image={{ base: '/images/home/hero', alt: h.hero.imageAlt, widths: [640, 1024, 1536], ratio: 16 / 9, phone: '/images/home/hero-m' }}
-  >
+  <HeroWall label={h.hero.label} title={h.hero.headline} lede={h.hero.lede} items={wall} wide={wide} phone={phone} phoneHeight={980}>
     <ProductCall label={h.hero.primary} />
-    <a class="link-draw" href="#products">{h.hero.secondary}<Arrow dir="down" /></a>
-  </PageIntro>
+    <a class="link-draw" href="#index">{h.hero.secondary}</a>
+  </HeroWall>
 
-  <MediaRow title={h.index.headline} body={h.index.body} image={{ base: '/images/home/index', alt: h.index.imageAlt }}>
-    <a class="link-draw" href="/engine/universal-index/">{h.index.link}<Arrow /></a>
-  </MediaRow>
+  <Sec id="index" label={h.index.label} title={h.index.headline} link={{ href: '/engine/universal-index/', text: h.index.link }}>
+    <TextCols paragraphs={h.index.body} />
+    <TileRow slot="wide" items={chain} cols={4} label={h.index.label} />
+  </Sec>
 
-  <MediaRow title={h.community.headline} body={h.community.body} image={{ base: '/images/home/community', alt: h.community.imageAlt }} reverse>
-    <a class="link-draw" href="/engine/community/">{h.community.link}<Arrow /></a>
-  </MediaRow>
+  <Band label={h.community.label} title={h.community.headline} text={h.community.body} items={h.community.items} />
 
-  <Statement text={h.statement.text} sub={h.statement.body}>
-    <a class="link-draw" href="/engine/">{h.statement.link}<Arrow /></a>
+  <Statement text={h.platform.headline} sub={h.platform.more}>
+    <IndexRows rows={moduleRows} />
   </Statement>
 
-  <TileMasonry id="products" title={h.products.headline} lede={h.products.lede} items={products} />
+  <section class="agents" aria-labelledby="agents-title">
+    <div class="grid">
+      <div class="agents__text">
+        <p class="mlabel">{h.agents.label}</p>
+        <h2 id="agents-title" class="agents__title"><Clauses text={h.agents.headline} /></h2>
+        <p class="text agents__body">{h.agents.body}</p>
+        <a class="link-draw agents__link" href="/developers/">{h.agents.link}</a>
+      </div>
+      <CodeTile code={h.agents.code} caption={h.agents.caption} label={h.agents.codeLabel} class="agents__code" />
+    </div>
+  </section>
 
-  <MediaRow title={h.agents.headline} body={h.agents.body} image={{ base: '/images/home/open', alt: h.agents.imageAlt }}>
-    <a class="link-draw" href="/developers/">{h.agents.link}<Arrow /></a>
-  </MediaRow>
+  <ItemList label={h.principles.headline} items={h.principles.items} />
 
-  <ItemList title={h.principles.headline} items={h.principles.items} class="principles" />
-
-  <ClosingPanel title={h.finale.headline} body={h.finale.body} />
+  <Closing title={h.finale.headline} body={h.finale.body} />
 </PageLayout>
+
+<style>
+  .agents { padding-top: var(--space-section); }
+  .agents .grid { align-items: start; }
+  .agents__text { grid-column: 1 / 6; }
+  .agents__title { margin-top: 22px; font-size: clamp(1.75rem, 2.8vw, 2.5rem); font-weight: 600; line-height: 1.3; }
+  .agents__body { margin-top: 22px; }
+  .agents__link { margin-top: 28px; }
+  :global(.agents__code) { grid-column: 7 / 13; }
+  @media (max-width: 767px) {
+    :global(.agents__code) { margin-top: 32px; }
+  }
+</style>

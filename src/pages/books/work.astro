@@ -1,39 +1,37 @@
 ---
-// 書庫 作品頁 (DESIGN.md "Direction v2"): the intro and the example work (text only), the eight
-// blocks of a work page, the one main button, ratings with their targets, own records and shared
-// facts, a statement on languages, and the next page.
+// 書庫 作品頁 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, the example work
+// as one flat tile (text only) over the eight blocks of a work page, the one main button, ratings
+// and their targets, own records and shared facts, the ink band on languages, the next page and
+// the closing block.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
-import Statement from '../../kit/components/Statement.astro';
-import Pills from '../../kit/components/Pills.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
+import TileRow from '../../kit/components/TileRow.astro';
 import Table from '../../kit/components/Table.astro';
+import Pills from '../../kit/components/Pills.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.work;
+const accent = kindFields.books.field;
+const page = site.pages.find((p) => p.slug === 'work')!;
+const example = [{ name: s.hero.title, rel: `${s.hero.original} · ${s.hero.author}`, line: s.hero.caption, bg: accent, on: 'paper' as const }];
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} align="start" />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <section class="bk-sec" aria-label={s.hero.title}>
-    <div class="container">
-      <div class="wk-example" data-reveal="up">
-        <p class="wk-example__title">{s.hero.title}</p>
-        <p class="wk-example__meta"><span lang="ja">{s.hero.original}</span><span aria-hidden="true">·</span><span>{s.hero.author}</span></p>
-        <p class="wk-example__caption">{s.hero.caption}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="bk-sec" aria-labelledby="sections-title">
-    <div class="container bk-stack">
-      <SectionHead id="sections-title" title={s.sections.headline} lede={s.sections.intro} />
-      <ol class="wk-blocks" role="list" data-reveal="slot">
+  <Sec label="01" title={s.sections.headline}>
+    <p class="text">{s.sections.intro}</p>
+    <div slot="wide" class="bk-stack">
+      <TileRow items={example} cols={1} height={240} label={s.hero.title} />
+      <ol class="wk-blocks" role="list">
         {s.sections.rows.map((row, i) => (
           <li class="wk-block">
-            <span class="wk-block__n" aria-hidden="true">{i + 1}</span>
+            <span class="wk-block__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <h3 class="wk-block__title">{row.title}</h3>
             <p class="wk-block__body">{row.body}</p>
             <p class="wk-block__example">{row.example}</p>
@@ -41,76 +39,51 @@ const s = site.strings.work;
         ))}
       </ol>
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="action-title">
-    <div class="container bk-two wk-split">
-      <SectionHead id="action-title" title={s.action.headline} lede={s.action.body} />
+  <Sec label="02" title={s.action.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.action.body}</p>
       <Table columns={[s.action.control, s.action.column]} rows={s.action.states.map((st) => [st.tab, st.button])} caption={s.action.caption} label={s.action.headline} />
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="ratings-title">
-    <div class="container bk-two wk-split">
-      <SectionHead id="ratings-title" title={s.ratings.headline} lede={s.ratings.body} />
-      <div class="wk-panel" data-reveal="up">
-        <Pills items={s.ratings.targets} tone="tint" />
-        <Pills items={s.ratings.scopes} />
-        <p class="bk-note">{s.ratings.caption}</p>
+  <Sec label="03" title={s.ratings.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.ratings.body}</p>
+      <Pills items={s.ratings.targets} tone="tint" />
+      <Pills items={s.ratings.scopes} />
+      <p class="bk-note">{s.ratings.caption}</p>
+    </div>
+  </Sec>
+
+  <Sec label="04" title={s.edit.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.edit.caption}</p>
+      <div class="wk-edit">
+        <div><h3 class="wk-edit__title">{s.edit.direct.title}</h3><Pills items={s.edit.direct.items} tone="tint" /></div>
+        <div><h3 class="wk-edit__title">{s.edit.propose.title}</h3><Pills items={s.edit.propose.items} /></div>
       </div>
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="edit-title">
-    <div class="container bk-stack">
-      <SectionHead id="edit-title" title={s.edit.headline} lede={s.edit.caption} />
-      <div class="bk-two" data-reveal="slot">
-        <div class="wk-panel">
-          <h3 class="t-h3">{s.edit.direct.title}</h3>
-          <Pills items={s.edit.direct.items} tone="tint" />
-        </div>
-        <div class="wk-panel">
-          <h3 class="t-h3">{s.edit.propose.title}</h3>
-          <Pills items={s.edit.propose.items} />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <Statement text={s.languages.statement} sub={s.languages.body} />
+  <Band label={page.label} title={s.languages.statement} text={s.languages.body} />
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
 
 <style>
-  .wk-example {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: clamp(28px, 4vw, 56px);
-    border-radius: var(--r-card);
-    background: var(--tint);
-  }
-  .wk-example__title { font-size: var(--t-h2); font-weight: 500; line-height: 1.3; }
-  .wk-example__meta { display: flex; flex-wrap: wrap; gap: 10px; color: var(--c-muted); }
-  .wk-example__caption { color: var(--c-muted); font-size: var(--t-s); }
-  .wk-blocks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 3vw, 40px) var(--gutter); counter-reset: none; }
-  .wk-block {
-    display: grid;
-    grid-template-columns: 30px minmax(0, 1fr);
-    column-gap: 16px;
-    row-gap: 8px;
-    padding-top: 20px;
-    border-top: 1px solid var(--c-line-strong);
-  }
+  .wk-blocks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); border-top: 1px solid var(--c-line); }
+  .wk-block { display: grid; grid-template-columns: 3em minmax(0, 1fr); column-gap: 12px; row-gap: 8px; padding: 22px 0; border-bottom: 1px solid var(--c-line); }
   .wk-block > :not(.wk-block__n) { grid-column: 2; }
-  .wk-block__n { grid-row: 1 / span 3; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--tint-strong); font-size: var(--t-s); font-weight: 600; font-family: var(--f-latin), var(--f-cjk); }
-  .wk-block__title { font-size: var(--t-h3); font-weight: 500; line-height: 1.45; }
-  .wk-block__body { color: var(--c-muted); }
-  .wk-block__example { font-size: var(--t-s); line-height: 1.7; padding: 10px 14px; border-radius: var(--r-sm); background: var(--tint); }
-  .wk-split { align-items: start; }
-  .wk-panel { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
+  .wk-block__n { grid-row: 1 / span 3; font-family: var(--f-latin), var(--f-cjk); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--c-muted); padding-top: 4px; }
+  .wk-block__title { font-size: 18px; font-weight: 600; line-height: 1.5; }
+  .wk-block__body { color: var(--c-text); font-size: 16px; line-height: 1.8; }
+  .wk-block__example { font-size: 15px; line-height: 1.7; padding: 10px 14px; background: var(--tint-strong); }
+  .wk-edit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px var(--gutter); }
+  .wk-edit__title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
   @media (max-width: 767px) {
-    .wk-blocks { grid-template-columns: minmax(0, 1fr); }
+    .wk-blocks, .wk-edit { grid-template-columns: minmax(0, 1fr); }
   }
 </style>

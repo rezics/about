@@ -1,81 +1,64 @@
 ---
-// 書庫 Wiki+ (DESIGN.md "Direction v2"): the intro beside the reading nook, from a file to a
-// Wiki in four steps, the reading position (示意), what REZICS never receives, the Wiki as a
-// Zone, review, and the next page.
+// 書庫 Wiki+ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, from a file to a
+// Wiki in four steps, the reading position (示意), the ink band on what REZICS never receives,
+// the Wiki as a Zone, review, the next page and the closing block.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageIntro from '../../kit/components/PageIntro.astro';
-import SectionHead from '../../kit/components/SectionHead.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Sec from '../../kit/components/Sec.astro';
 import ItemGrid from '../../kit/components/ItemGrid.astro';
 import Pills from '../../kit/components/Pills.astro';
+import Band from '../../kit/components/Band.astro';
 import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Closing from '../../kit/components/Closing.astro';
+import { kindFields } from '../../kit/theme';
 import Position from '../../sites/books/Position.astro';
 import site from '../../content/sites/books';
 import '../../sites/books/books.css';
 
 const s = site.strings.wiki;
+const accent = kindFields.books.field;
+const page = site.pages.find((p) => p.slug === 'wiki')!;
 ---
 <MiniSiteLayout>
-  <PageIntro title={s.hero.headline} lede={s.hero.lede} image={{ base: '/images/sites/books/nook', alt: s.hero.alt, ratio: 1 }} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <section class="bk-sec" aria-labelledby="flow-title">
-    <div class="container bk-stack">
-      <SectionHead id="flow-title" title={s.flow.headline} />
-      <ItemGrid items={s.flow.frames} cols={4} numbered />
-    </div>
-  </section>
+  <Sec label="01" title={s.flow.headline}>
+    <ItemGrid slot="wide" items={s.flow.frames} cols={4} numbered />
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="position-title">
-    <div class="container bk-stack">
-      <SectionHead id="position-title" title={s.position.headline} lede={s.position.intro} />
+  <Sec label="02" title={s.position.headline}>
+    <p class="text">{s.position.intro}</p>
+    <div slot="wide" class="bk-stack">
       <Position />
-      <ul class="bk-notes wk-rules">
-        {s.position.rules.map((r) => <li>{r}</li>)}
-      </ul>
+      <ul class="bk-notes">{s.position.rules.map((r) => <li>{r}</li>)}</ul>
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="text-title">
-    <div class="container">
-      <div class="wk-text" data-reveal="up">
-        <h2 id="text-title" class="t-statement">{s.text.statement}</h2>
-        <ul class="bk-notes wk-text__facts">
-          {s.text.facts.map((f) => <li>{f}</li>)}
-        </ul>
-      </div>
+  <Band label={page.label} title={s.text.statement}>
+    <ul class="wk-facts" role="list">{s.text.facts.map((f) => <li>{f}</li>)}</ul>
+  </Band>
+
+  <Sec label="03" title={s.zone.headline}>
+    <div class="bk-stack">
+      <p class="text">{s.zone.body}</p>
+      <Pills items={s.zone.squares} tone="tint" />
+      <p class="bk-note">{s.zone.hub}</p>
     </div>
-  </section>
+  </Sec>
 
-  <section class="bk-sec" aria-labelledby="zone-title">
-    <div class="container bk-two wk-zone">
-      <SectionHead id="zone-title" title={s.zone.headline} lede={s.zone.body} />
-      <div class="wk-zone__map" data-reveal="up">
-        <Pills items={s.zone.squares} tone="tint" />
-        <p class="bk-note">{s.zone.hub}</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="bk-sec" aria-labelledby="review-title">
-    <div class="container bk-stack">
-      <SectionHead id="review-title" title={s.review.headline} />
+  <Sec label="04" title={s.review.headline}>
+    <div slot="wide" class="bk-stack">
       <ItemGrid items={s.review.states} cols={4} look="cards" />
-      <ul class="bk-notes wk-rules">
-        {s.review.rules.map((r) => <li>{r}</li>)}
-      </ul>
+      <ul class="bk-notes">{s.review.rules.map((r) => <li>{r}</li>)}</ul>
     </div>
-  </section>
+  </Sec>
 
   <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
+  <Closing bg={accent} />
 </MiniSiteLayout>
 
 <style>
-  .wk-rules { max-width: 46em; }
-  .wk-text { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px var(--gutter); padding: clamp(28px, 4vw, 64px); border-radius: var(--r-sheet); background: var(--tint); }
-  .wk-text h2 { grid-column: 1 / span 4; }
-  .wk-text__facts { grid-column: 6 / span 7; color: var(--c-fg); }
-  .wk-zone { align-items: center; }
-  .wk-zone__map { display: flex; flex-direction: column; gap: 16px; padding: 28px; border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
-  @media (max-width: 767px) {
-    .wk-text h2, .wk-text__facts { grid-column: 1 / -1; }
-  }
+  .wk-facts { grid-column: 1 / 13; margin-top: 56px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); }
+  .wk-facts li { padding: 18px 0; border-top: 1px solid rgb(249 246 242 / 0.22); font-size: 16px; line-height: 1.8; color: rgb(249 246 242 / 0.86); }
+  @media (max-width: 767px) { .wk-facts { grid-template-columns: minmax(0, 1fr); margin-top: 32px; } }
 </style>
