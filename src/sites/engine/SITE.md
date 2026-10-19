@@ -1,6 +1,6 @@
 # modules-a: design record
 
-Pages built by modules agent A in the v3 language (`.temp/sites/V3-SPEC.md`, which wins over this
+Pages built by modules agent A in the v3 language (`.temp/ref/V3-SPEC.md`, which wins over this
 file and DESIGN.md):
 
 | Site id | Route | Content | Code | Picture |
@@ -42,7 +42,7 @@ family below.
 - **Roadmap scope.** The about site presents everything as available, so the nine kinds (and
   recipes, which are in the first public scope) are written as on REZICS now; the roadmap is the
   order and what comes after the nine: more kinds, new capabilities, one community at a time.
-  The 《康熙字典》 statement went with the dictionary concept.
+  The dictionary statement went with the earlier concept.
 - **Square-metaphor copy** (「一格」) is rewritten in plain words.
 
 ### Theme
