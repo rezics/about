@@ -1,0 +1,32 @@
+---
+// 製作與演出 (v3, src/sites/anime/SITE.md "Pages"): one credit and its five parts, one voice
+// actor across kinds beside the threaded sheets, a studio's years.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Onward from '../../sites/anime/Onward.astro';
+import site from '../../content/sites/anime';
+import { sectionPhoto } from '../../sites/anime/pictures';
+import { kindTile, pageTile } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.credits;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
+
+  <Section eyebrow={s.record.eyebrow} title={s.record.headline}>
+    <FactList items={s.record.rows} />
+  </Section>
+
+  <PhotoRow side="left" eyebrow={s.voice.eyebrow} title={s.voice.headline} body={s.voice.body} image={sectionPhoto(s.voice.photo)} />
+
+  <Section eyebrow={s.studio.eyebrow} title={s.studio.headline} lead={s.studio.lead} />
+
+  <Onward title={s.next} tiles={[pageTile('adaptations', 0), kindTile('manga')]} />
+
+  <Closing title={site.strings.common.closing} />
+</MiniSiteLayout>

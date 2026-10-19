@@ -1,0 +1,58 @@
+---
+// 每集討論 (v3, src/sites/anime/SITE.md "Pages"): three conversations, the spoiler line beside
+// the covered strip, your position, Realm and Zone, the statement. The conversations come first
+// so the photograph is not in the phone's first screen (PhotoRow loads lazily; see SITE.md).
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Onward from '../../sites/anime/Onward.astro';
+import { moduleHref } from '../../kit/content';
+import { moduleFields } from '../../kit/theme';
+import site from '../../content/sites/anime';
+import { sectionPhoto } from '../../sites/anime/pictures';
+import { pageTile } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.discussion;
+// Realm is the community module, Zone the Zones module: each tile in its module's ink tint.
+const modulesFor = ['community', 'zones'] as const;
+const spaces: MasonryItem[] = s.spaces.tiles.map((t, i) => {
+  const id = modulesFor[i]!;
+  return { id, name: t.title, line: t.body, href: moduleHref(id), bg: moduleFields[id].field, on: moduleFields[id].on };
+});
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
+
+  <Section eyebrow={s.conversations.eyebrow} title={s.conversations.headline} lead={s.conversations.lead}>
+    <FactList items={s.conversations.rows} />
+  </Section>
+
+  <PhotoRow side="right" eyebrow={s.spoiler.eyebrow} title={s.spoiler.headline} body={s.spoiler.body} image={sectionPhoto(s.spoiler.photo)} />
+
+  <Section eyebrow={s.position.eyebrow} title={s.position.headline}>
+    <FactList items={s.position.rows} />
+  </Section>
+
+  <Section eyebrow={s.spaces.eyebrow} title={s.spaces.headline} lead={s.spaces.lead}>
+    <TileMasonry
+      slot="wide"
+      items={spaces}
+      columns={[[{ id: 'community', h: 1 }], [{ id: 'zones', h: 1 }]]}
+      phone={[[{ id: 'community' }], [{ id: 'zones' }]]}
+      height={260}
+      label={s.spaces.eyebrow}
+    />
+  </Section>
+
+  <Statement text={s.unseen.text} sub={s.unseen.muted} />
+
+  <Onward title={s.next} tiles={[pageTile('ratings', 0), pageTile('credits', 3)]} />
+
+  <Closing title={site.strings.common.closing} />
+</MiniSiteLayout>

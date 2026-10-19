@@ -1,0 +1,30 @@
+---
+/**
+ * The end of an inner page before the closing: the next page previewed in one line (the h2) and
+ * the next two places as tiles (the next pages in reading order; after the last page, the
+ * neighbouring kinds). The v3 replacement of the old 「下集預告」 finale.
+ */
+import Section from '../../kit/components/Section.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import site from '../../content/sites/anime';
+
+interface Props {
+  /** The preview line, set as the section's h2. */
+  title: string;
+  /** Two tiles, the next place first. */
+  tiles: [MasonryItem, MasonryItem];
+}
+const { title, tiles } = Astro.props;
+const [a, b] = tiles;
+---
+<Section eyebrow={site.strings.common.onward} title={title}>
+  <TileMasonry
+    slot="wide"
+    items={tiles}
+    columns={[[{ id: a.id, h: 1 }], [{ id: b.id, h: 1 }]]}
+    phone={[[{ id: a.id }], [{ id: b.id }]]}
+    height={240}
+    phoneRow={132}
+    label={site.strings.common.onward}
+  />
+</Section>

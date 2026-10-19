@@ -39,23 +39,25 @@ export interface Statement {
 export type AnimeStrings = {
   common: {
     /** The closing statement above 「前往 REZICS」 on every page. */
-    closing: Statement;
+    closing: string;
+    /** Eyebrow of the section that leads to the next pages. */
+    onward: string;
     /** Caption under generic example data. */
     example: string;
   };
   landing: {
     hero: Head & { photo: Photo };
     pages: Section & { lines: { slug: string; line: string }[] };
-    schedule: Section & { photo: Photo };
+    schedule: { eyebrow: string; headline: string; body: string; link: string; photo: Photo };
     next: Statement;
-    spoilers: Section & { photo: Photo };
+    spoilers: { eyebrow: string; headline: string; body: string; link: string; photo: Photo };
     parts: Section & { notes: Partial<Record<PartId, string>> };
     neighbours: Section & { tiles: { to: KindId; label: string }[] };
   };
   seasons: {
     head: Head;
     marks: Section & { rows: Row[] };
-    zones: Section & { photo: Photo; rows: Row[] };
+    zones: { eyebrow: string; headline: string; body: string[]; photo: Photo };
     known: Section & { rows: Row[] };
     years: Section;
     /** One line that previews the next page. */
@@ -71,7 +73,8 @@ export type AnimeStrings = {
   };
   discussion: {
     head: Head;
-    spoiler: Section & { photo: Photo; rows: Row[] };
+    spoiler: { eyebrow: string; headline: string; body: string; photo: Photo };
+    position: Section & { rows: Row[] };
     conversations: Section & { rows: Row[] };
     spaces: Section & { tiles: Row[] };
     unseen: Statement;
@@ -88,13 +91,13 @@ export type AnimeStrings = {
   credits: {
     head: Head;
     record: Section & { rows: Row[] };
-    voice: Section & { photo: Photo };
+    voice: { eyebrow: string; headline: string; body: string; photo: Photo };
     studio: Section;
     next: string;
   };
   adaptations: {
     head: Head;
-    example: Section & { photo: Photo };
+    example: { eyebrow: string; headline: string; body: string; photo: Photo };
     /** Generic family: each tile in the colour of its kind (null: a relation still to confirm). */
     family: Section & { tiles: { kind: KindId | null; relation: string; name: string }[] };
     scoped: Section;
@@ -176,7 +179,8 @@ const site: MiniSite<AnimeStrings> = {
   ],
   strings: {
     common: {
-      closing: { text: '這一季追的每一部，', muted: '都排進你自己的日程。' },
+      closing: '這一季追的每一部，都排進你自己的日程。',
+      onward: '接著看',
       example: '示意。',
     },
     landing: {
@@ -193,17 +197,18 @@ const site: MiniSite<AnimeStrings> = {
         headline: '從播出表走到原作；一部動畫的六個面向，各有一頁。',
         lines: [
           { slug: 'seasons', line: '每一季的播出表，照你的時區' },
-          { slug: 'tracking', line: '五種狀態，下一集跨季也找得到' },
-          { slug: 'discussion', line: '一集一串，沒看到的先遮住' },
+          { slug: 'tracking', line: '下一集跨季也找得到' },
+          { slug: 'discussion', line: '沒看到的劇情先遮住' },
           { slug: 'ratings', line: '單集和整部，分開計分' },
-          { slug: 'credits', line: '每個名字，都是一個身分' },
+          { slug: 'credits', line: '每個名字一個身分' },
           { slug: 'adaptations', line: '原作、續季與外傳，連成一張關係圖' },
         ],
       },
       schedule: {
         eyebrow: '播出日程',
         headline: '深夜一點的首播，照你那裡的時鐘排。',
-        lead: '日本的播出表把深夜寫成「週二 25:00」，指的是週三凌晨一點。REZICS 把它換成你所在時區的時間；來源只給了日期，就只寫日期。',
+        body: '日本的播出表把深夜寫成「週二 25:00」，指的是週三凌晨一點。REZICS 把它換成你所在時區的時間；來源只給了日期，就只寫日期。',
+        link: '季度與播出日程',
         photo: {
           src: 'weeks',
           alt: '玫瑰色的窄紙條排成四行，像一週一週的日程；其中一條是灰紫色，一處空著。',
@@ -213,7 +218,8 @@ const site: MiniSite<AnimeStrings> = {
       spoilers: {
         eyebrow: '每集討論',
         headline: '每一集一串討論，沒看到的先遮住。',
-        lead: '討論串掛在每一集上。比你進度新的劇情先遮起來，要看再自己點開；Wiki+ 預設也只顯示到你看過的那一集。',
+        body: '討論串掛在每一集上。比你進度新的劇情先遮起來，要看再自己點開；Wiki+ 預設也只顯示到你看過的那一集。',
+        link: '暴雷線怎麼畫',
         photo: {
           src: 'covered',
           alt: '一條摺成數面的玫瑰色紙帶平放著，後段被一張邊角微微翻起的炭黑紙蓋住。',
@@ -236,8 +242,8 @@ const site: MiniSite<AnimeStrings> = {
       },
       neighbours: {
         eyebrow: '鄰居',
-        headline: '原作來自小說、漫畫或視覺小說，改編也可能走向遊戲。',
-        lead: '每一部都有自己的頁面，關係把它們接在一起；同一位聲優，在每一種裡也都是同一個人。',
+        headline: '原作與改編，各在自己的地方。',
+        lead: '原作可能是小說、漫畫或視覺小說，動畫也可能再改編成遊戲。每一部都有自己的頁面，關係把它們接在一起；同一位聲優，在每一種裡也都是同一個人。',
         tiles: [
           { to: 'books', label: '小說原作' },
           { to: 'manga', label: '漫畫原作與漫畫版' },
@@ -265,16 +271,14 @@ const site: MiniSite<AnimeStrings> = {
       zones: {
         eyebrow: '你的時區',
         headline: '同一集的播出時間，換到你的時區。',
-        lead: '播出時間依你所在的時區顯示。同一集在三個地方，是三個不同的日子與時刻。',
+        body: [
+          '播出時間依你所在的時區顯示，同一集在不同的地方，是不同的日子與時刻。',
+          '日本播出表上的「週二 25:00」是週三凌晨一點；換到台北是週三午夜零點，換到洛杉磯是週二上午。',
+        ],
         photo: {
           src: 'weeks',
           alt: '玫瑰色的窄紙條排成四行，像一週一週的日程；其中一條是灰紫色，一處空著。',
         },
-        rows: [
-          { title: '日本', body: '播出表寫「週二 25:00」，也就是週三凌晨一點。' },
-          { title: '台北', body: '週三午夜零點。' },
-          { title: '洛杉磯', body: '週二上午。' },
-        ],
       },
       known: {
         eyebrow: '只寫知道的事',
@@ -323,9 +327,9 @@ const site: MiniSite<AnimeStrings> = {
         headline: '下一集，跨季也找得到。',
         lead: '第一季、第二季和特別篇排成一條。正篇看完才算完結；特別篇這類額外內容，看不看都不影響完結。',
         tiles: [
-          { title: '第一季', body: '十二集看完，下一集跳到第二季的開頭。' },
-          { title: '第二季', body: '播到第六集，你也看到第六集，已經追上。' },
-          { title: '特別篇', body: '可以留到最後，不擋完結。' },
+          { title: '第一季', body: '十二集看完，下一集跳到第二季的開頭' },
+          { title: '第二季', body: '播到第六集，你也看到第六集，已經追上' },
+          { title: '特別篇', body: '可以留到最後，不擋完結' },
         ],
       },
       rewatch: {
@@ -347,15 +351,16 @@ const site: MiniSite<AnimeStrings> = {
       spoiler: {
         eyebrow: '暴雷線',
         headline: '你看到第幾集，暴雷線就畫在第幾集。',
+        body: '標了暴雷的內容先遮起來，要你自己點開才顯示。點開只是你自己要看，不算替它投下暴雷票。',
         photo: {
           src: 'covered',
           alt: '一條摺成數面的玫瑰色紙帶平放著，後段被一張邊角微微翻起的炭黑紙蓋住。',
         },
+      },
+      position: {
+        eyebrow: '你的位置',
+        headline: '暴雷位置由你決定，換頁也跟著走。',
         rows: [
-          {
-            title: '先遮住',
-            body: '標了暴雷的內容先遮起來，要你自己點開才顯示。點開只是你自己要看，不算替它投下暴雷票。',
-          },
           { title: '位置由你決定', body: '登入之後，Wiki+ 預設顯示到你看完的最後一集。你也可以自己選一集，或者全部打開。' },
           { title: '沒登入也不暴雷', body: '沒有登入的訪客，看到的內容停在第一個劇情揭露之前。' },
           { title: '換頁也記得', body: '從討論走到評論，再走到 Wiki+，你選好的版本和暴雷位置都跟著走。' },
@@ -376,8 +381,8 @@ const site: MiniSite<AnimeStrings> = {
         headline: '社群聚在一起，也能有自己的網站。',
         lead: 'Zone 上的資訊框，讀的就是作品頁上的同一筆事實。',
         tiles: [
-          { title: 'Realm', body: '社群本身，有成員、規則與管理。' },
-          { title: 'Zone', body: '社群的網站：角色頁、集數指南、時間線與關係圖，網址由社群自己安排。' },
+          { title: 'Realm', body: '社群本身，有成員、規則與管理' },
+          { title: 'Zone', body: '社群的網站：角色頁、集數指南、時間線與關係圖，網址由社群安排' },
         ],
       },
       unseen: { text: '沒看到的，', muted: '不必先知道。' },
@@ -443,7 +448,7 @@ const site: MiniSite<AnimeStrings> = {
       voice: {
         eyebrow: '聲優',
         headline: '一個聲優，一個身分。',
-        lead: '他在動畫裡配過的角色，和在遊戲、視覺小說裡的配音，都列在同一頁。追蹤他，有新作品公布時會通知你。',
+        body: '他在動畫裡配過的角色，和在遊戲、視覺小說裡的配音，都列在同一頁。追蹤他，有新作品公布時會通知你。',
         photo: {
           src: 'threads',
           alt: '一張玫瑰色的紙沿邊打了一排小孔，三條棉線從孔裡拉出，各繫著一張藍、灰紫與玫瑰色的小紙片。',
@@ -463,8 +468,8 @@ const site: MiniSite<AnimeStrings> = {
       },
       example: {
         eyebrow: '例如',
-        headline: '一個故事的每一種樣子。',
-        lead: '例如《魔法禁書目錄》：原作是鎌池和馬的輕小說，改編成漫畫，也改編成三季動畫與一部電影；外傳《科學超電磁砲》另有自己的漫畫與動畫。在 REZICS，它們各是一部作品，關係寫明是改編、續作還是外傳。',
+        headline: '一個故事，有好幾種樣子。',
+        body: '例如《魔法禁書目錄》：原作是鎌池和馬的輕小說，改編成漫畫，也改編成三季動畫與一部電影；外傳《科學超電磁砲》另有自己的漫畫與動畫。在 REZICS，它們各是一部作品，關係寫明是改編、續作還是外傳。',
         photo: {
           src: 'sources',
           alt: '一張直式的深綠紙、一張較小的炭黑紙與一張橫式的玫瑰色紙層層錯開疊放，旁邊另有一張藍色小紙。',
@@ -476,13 +481,13 @@ const site: MiniSite<AnimeStrings> = {
         lead: '還沒確認的關係也照樣列出，標明待確認，不會先藏起來。',
         tiles: [
           { kind: 'books', relation: '原作', name: '原作小說' },
-          { kind: 'manga', relation: '改編', name: '漫畫版' },
-          { kind: 'anime', relation: '改編', name: '動畫第一季' },
-          { kind: 'anime', relation: '續作', name: '動畫第二季' },
-          { kind: 'manga', relation: '外傳', name: '外傳漫畫' },
-          { kind: 'games', relation: '改編', name: '改編遊戲' },
-          { kind: 'visual-novels', relation: '改編', name: '改編視覺小說' },
-          { kind: null, relation: '待確認', name: '還在等出處的一筆' },
+          { kind: 'manga', relation: '改編自原作', name: '漫畫版' },
+          { kind: 'anime', relation: '改編自原作', name: '動畫第一季' },
+          { kind: 'anime', relation: '第一季的續作', name: '動畫第二季' },
+          { kind: 'books', relation: '外傳', name: '外傳小說' },
+          { kind: 'games', relation: '改編自動畫', name: '改編遊戲' },
+          { kind: 'visual-novels', relation: '改編自原作', name: '改編視覺小說' },
+          { kind: null, relation: '關係待確認', name: '另一部改編' },
         ],
       },
       scoped: {

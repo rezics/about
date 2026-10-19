@@ -41,17 +41,22 @@ the ink-blue hover). No site ground of its own: the dark 深夜 theme of the old
 retired, because v3 is one paper language and the site's identity now lives in its
 photographs and tiles.
 
-| Pair | Ratio | Use |
-|---|---|---|
-| ink on paper | 12.1:1 | all text |
-| muted on paper | 4.20:1 | the kit's eyebrows (13 px); below 4.5:1, raised as a kit issue |
-| ink on rose `#b77d77` | 4.32:1 | large serif names only (24 px and up); small text never sits on pure rose |
-| ink on rose tint `#d3b3ac` (rose 50 % to paper) | 7.5:1 | tiles that carry a small line |
-| paper on rose shade `#7d5b59` (rose 40 % to ink) | 4.95:1 | dark tiles in the page masonry |
+Tiles for the site's own pages take the kit's ramp of the accent (`accentRamp('#b77d77')`,
+`src/sites/anime/tiles.ts`); the kit's `inkOn` picks the text shade, so every pair passes AA:
 
-Tiles for the site's own pages use rose shades and tints (the kit's ramp of the accent, every
-stop AA for its text); tiles for neighbours and for the adaptations family use each kind's own
-colour from V3-SPEC, so the family reads as several kinds of work.
+| Stop | Ground | Text | Ratio | Used for |
+|---|---|---|---|---|
+| 0 | `#b77d77` (the kind) | `#1c1e21` | 4.94:1 | the lead tile (季度與播出, the next page in 接著看, 第二季) |
+| 1 | `#dfcbc3` | ink | 9.37:1 | light tiles |
+| 2 | `#7b5856` | `#f6f1ea` | 5.54:1 | deep tiles (追蹤進度, 第一季) |
+| 3 | `#e7dad1` | ink | 10.68:1 | light tiles (特別篇, the second tile in 接著看) |
+| 4 | `#564140` | `#f6f1ea` | 8.40:1 | the deepest tile (製作與演出) |
+| 5 | `#d7bcb4` | ink | 8.17:1 | 原作與改編 |
+
+Tiles for neighbours and the adaptations family use each kind's own colour from V3-SPEC, so
+the family reads as several kinds of work; a relation still to confirm sits on a deeper paper
+`#e2dace` with ink text. Realm and Zone (discussion) take the community and Zones modules' ink
+tints.
 
 ### Pages
 
@@ -63,15 +68,22 @@ eyebrow, serif h1, one line), runs three to five sections, previews the next pag
 | Route | Leave with | Sections (part: idea) |
 |---|---|---|
 | `/anime/` | Every episode has its place, in my time, and nothing ahead of me is spoiled. | hero (photo `hero`): 一集一集，從開播追到完結 → tile masonry: the six pages → photo row (`weeks`, picture right): 25:00 in your time zone → statement: the next episode across seasons → photo row (`covered`, picture left): one thread per episode, later plot covered → facts: the eight parts → tile masonry: four neighbouring kinds |
-| `/anime/seasons/` | Airing times in my own time, and only what is known. | head → facts: five marks → photo row (`weeks`) with a three-row facts list: one episode in Japan, Taipei, Los Angeles → facts: date only, airing is not availability, reminders and calendar → section: browse by year |
+| `/anime/seasons/` | Airing times in my own time, and only what is known. | head → facts: five marks → photo row (`weeks`): one episode in Japan, Taipei, Los Angeles → facts: date only, airing is not availability, reminders and calendar → section: browse by year |
 | `/anime/tracking/` | My list always knows the next episode, and it is mine to take. | head → facts: five statuses (private by default) → section and three tiles (rose ramp): across seasons, specials optional → section: a rewatch is a new session → statement: import and export |
-| `/anime/discussion/` | I can talk about the episode I just watched and see nothing beyond it. | head → photo row (`covered`) with a four-row facts list: the spoiler line → facts: three conversations → section and two tiles: Realm and Zone → statement: 沒看到的，不必先知道 |
+| `/anime/discussion/` | I can talk about the episode I just watched and see nothing beyond it. | head → facts: three conversations → photo row (`covered`): the spoiler line → facts: your position, signed out, across pages → section and two tiles: Realm and Zone → statement: 沒看到的，不必先知道 |
 | `/anime/ratings/` | A score says what it rates and who rated it; my lists are mine. | head → facts: five parts of a score → statement with note: episode versus whole → facts: review targets → section and four tiles (示意 list names): lists |
 | `/anime/credits/` | Every name in the credits is a person or company I can open and follow. | head → facts: one credit, five things → photo row (`threads`): one voice actor across kinds → section: a studio's years |
 | `/anime/adaptations/` | The anime and its source are linked, yet each keeps its own progress and facts. | head → photo row (`sources`): 《魔法禁書目錄》 as the text example → tile masonry in kind colours (示意): the family with relation labels and one 待確認 → section: progress and facts kept apart → facts: named relations → statement with note: airing order and viewing order |
 
 Section rhythm on a page alternates text-led parts (facts, sections) with at most one picture
-or tile part between them, so no screen holds two focal points.
+or tile part between them, so no screen holds two focal points. Every inner page then ends on
+接著看: its preview line as the h2 and the next two places as tiles (`Onward.astro`; after the
+last page the 漫畫 and 書庫 kinds), the v3 form of the old 「下集預告」.
+
+The kit's `PhotoRow` loads its picture lazily. Where a photo row's picture reaches the phone's
+first screen it becomes the LCP late (4.5 s on the discussion page when the spoiler row came
+right after the short head), so a text section comes first there; on the adaptations page the
+longer head keeps the picture below the first screen.
 
 ### Pictures (the paper still-life series)
 

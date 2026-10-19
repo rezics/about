@@ -1,0 +1,36 @@
+---
+// 季度與播出 (v3, src/sites/anime/SITE.md "Pages"): five marks, one episode in your time zone
+// beside the weekly strips, only what is known, browse by year.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Onward from '../../sites/anime/Onward.astro';
+import site from '../../content/sites/anime';
+import { sectionPhoto } from '../../sites/anime/pictures';
+import { pageTile } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.seasons;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
+
+  <Section eyebrow={s.marks.eyebrow} title={s.marks.headline}>
+    <FactList items={s.marks.rows} />
+  </Section>
+
+  <PhotoRow side="right" eyebrow={s.zones.eyebrow} title={s.zones.headline} body={s.zones.body} image={sectionPhoto(s.zones.photo)} />
+
+  <Section eyebrow={s.known.eyebrow} title={s.known.headline}>
+    <FactList items={s.known.rows} />
+  </Section>
+
+  <Section eyebrow={s.years.eyebrow} title={s.years.headline} lead={s.years.lead} />
+
+  <Onward title={s.next} tiles={[pageTile('tracking', 0), pageTile('discussion', 3)]} />
+
+  <Closing title={site.strings.common.closing} />
+</MiniSiteLayout>

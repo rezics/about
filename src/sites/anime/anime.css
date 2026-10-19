@@ -1,0 +1,7 @@
+/* The anime site (SITE.md "v3"): the shared paper language; only a caption under example tiles. */
+.anime-caption {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
