@@ -131,8 +131,10 @@ export interface Site {
     identity: {
       headline: string;
       body: string;
-      /** Chapters that follow one public-domain work across kinds. */
+      /** Chapters that follow one public-domain work across kinds; the first is the source. */
       chapters: { kind: KindId; title: string; body: string }[];
+      /** The relation drawn from each later chapter back to the first, e.g. 改編自. */
+      link: string;
     };
     community: { headline: string; body: string; points: Item[] };
     engine: { headline: string; body: string };

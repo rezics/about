@@ -12,7 +12,7 @@ html {
 }
 body {
   /* A site theme set on [data-site] (html and body carry it) restyles everything from here. */
-  --focus: var(--c-link);
+  --focus: var(--c-fg);
   background: var(--c-bg);
   color: var(--c-fg);
   min-height: 100dvh;
@@ -36,6 +36,19 @@ ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
 
 /* Accessibility */
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 0; }
+/* The red square at the focused element's top-left corner (positioned by src/kit/motion/page.ts). */
+#focus-mark {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: calc(var(--z-curtain) - 1);
+  width: 8px;
+  height: 8px;
+  background: var(--c-mark);
+  pointer-events: none;
+  visibility: hidden;
+}
+#focus-mark.is-on { visibility: visible; }
 #main:focus { outline: none; }
 .skip-link {
   position: fixed; left: var(--gutter); top: 8px; z-index: calc(var(--z-curtain) + 1);
@@ -73,6 +86,25 @@ html.lenis, html.lenis body { height: auto; }
 /* No CSS transform here: GSAP owns it. */
 .curtain__col { background: var(--c-curtain); margin-right: -1px; }
 .curtain__ghost { position: fixed; z-index: 2; }
+.curtain__chip {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  translate: -50% -50%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--f-display);
+  font-weight: 900;
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.curtain__cursor { width: 5px; height: 1.1em; background: var(--c-mark); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

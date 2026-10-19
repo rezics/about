@@ -485,3 +485,11 @@ Voice (zh-Hant):
   `--field` / `--on-field`) set on `[data-site]`, which sits on `<html>` and `<body>`; the chrome
   reads nothing else. Buttons draw their square as an inset shadow and arrows are shapes, not
   glyphs, so contrast checkers can judge every text.
+- 2026-10-19 (builder): focus is drawn in the brand rather than link blue: a 2 px ink outline
+  and the red square at the focused element's corner (the same mark as the current page and the
+  empty-square cursor). Link blue stays for links.
+- 2026-10-19 (builder): the 西遊記 section shows the graph its copy promises: on desktop the
+  sticky stage grows as the chapters advance (書庫 at the centre, each adaptation slotting in
+  beside it with a drawn 改編自 link back to it, the current one lit and ringed in red), ending
+  as one graph; phones show each chapter's edge inline (its square, 改編自, the source square);
+  reduced motion and no script show the finished graph.
