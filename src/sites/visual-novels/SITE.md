@@ -79,7 +79,11 @@ meaning.
 ### Pages
 
 One idea per section, sections 120 to 200 px apart, at most one picture per inner page.
-Inner pages open with the kit's page intro (no photograph); the photo row comes after.
+Inner pages open with the kit's page intro (no photograph); the photo row comes after. Every
+inner page ends with `NextPages.astro` (the v3 kit retired the finale row): the page's lead-in
+line as the heading, the next page as the tall tile and four more of the site's pages beside it
+(on 社群與站點 the next site, MCP Hub, takes the tall tile), then the closing. Each page keeps
+one colour from `accentRamp` wherever its tile appears.
 
 **`/visual-novels/` 總覽**
 
@@ -95,7 +99,8 @@ Inner pages open with the kit's page intro (no photograph); the photo row comes 
    violet tints (releases tallest).
 6. Section 「相鄰的種類」: h2 「改編與原作之間，是一條真正的連結。」; lead with the
    《魔法禁書目錄》 example; four neighbouring kinds as tiles in their own colours.
-7. Closing: 「把每一版放在一起比。」 and 「前往 REZICS」.
+7. Closing: 「下一部視覺小說，從能玩的那一版開始。」 and 「前往 REZICS」 (the same closing on
+   every page of the site).
 
 **`/releases/` 發行版本**
 
@@ -113,8 +118,8 @@ Inner pages open with the kit's page intro (no photograph); the photo row comes 
 **`/translations/` 翻譯與譯者**
 
 1. Intro: h1 「每份翻譯，都寫明從哪一版翻過來。」
-2. Photo row `thread` with the record's opening sentence.
-3. Section 「一份翻譯的紀錄」: facts list 譯者, 依據, 範圍, 身分, 更新.
+2. Photo row `thread`: 「同好就是同好，官方就是官方。」
+3. Section 「一份翻譯的紀錄」: facts list 譯者, 依據, 範圍, 更新.
 4. Statement: 「翻譯的好壞，」 muted 「單獨評。」 with the three review targets as a note.
 5. Section 「好幾份翻譯」: h2 and lead.
 6. Section 「給翻譯團隊」: facts list.
@@ -123,8 +128,8 @@ Inner pages open with the kit's page intro (no photograph); the photo row comes 
 **`/characters/` 角色與製作**
 
 1. Intro: h1 「一個角色，到哪裡都是同一個。」
-2. Section 「變體」: h2 「另一個人格，另一條世界線。」; a three-row facts list (主角色, 人格,
-   對應) and the rule.
+2. Section 「變體」: h2 「另一個人格，另一條世界線。」; a three-row facts list (角色 A and its two
+   variants) and the rule.
 3. Section 「名稱」: h2; hairline table of names, the true name folded away with
    「讀到路線二後半才顯示」.
 4. Section 「製作人員」: h2 「配音署名，連到角色。」; the five roles; the cross-medium author line.
@@ -134,10 +139,10 @@ Inner pages open with the kit's page intro (no photograph); the photo row comes 
 **`/spoilers/` 分類與暴雷**
 
 1. Intro: h1 「還沒讀到的路線，先不告訴你。」
-2. Photo row `fold`.
-3. Section 「進度」: h2 「讀到哪裡，頁面就打開到哪裡。」; the route as an ordered hairline list
-   with the reader at 路線一; later nodes and their facts stay folded (「尚未讀到」); the four
-   rules as a facts list.
+2. Photo row `fold` (picture on the left): 「讀到哪裡，頁面就打開到哪裡。」
+3. Section 「一條路線」: h2 「你讀到路線一，後面的事先摺著。」; the route as an ordered hairline
+   list with the reader's row tinted; facts of later rows folded (a tint bar, 「尚未讀到」 for
+   assistive tech); the four rules as a facts list.
 4. Section 「兩張票」: h2; the votes table, the spoiling tag folded.
 5. Section 「篩選」: include and exclude.
 6. Statement: 「暴雷、分級、遮罩，」 muted 「各管各的。」 with the body as a note.
@@ -157,7 +162,8 @@ Inner pages open with the kit's page intro (no photograph); the photo row comes 
 **`/zones/` 社群與站點**
 
 1. Intro: h1 「兩個語言的站，同一批身分。」
-2. Photo row `sites`; a two-column table (中文站, 日文站) of name, introduction and order.
+2. Photo row `sites`: 「任何一邊修正一筆，兩邊同時變正確。」; under it a table (中文站, 日文站) of
+   name, introduction, order and the shared identity.
 3. Section 「Zone」: facts list of what a Zone has.
 4. Section 「空間」: h2 「站是門面，社群是聚會的地方。」; facts list.
 5. Section 「社群」: facts list of discussion, ratings, lists, library.

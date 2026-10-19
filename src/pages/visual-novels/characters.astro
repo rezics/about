@@ -1,0 +1,60 @@
+---
+// 角色與製作 (SITE.md "v3"): variants, names with spoiler levels (the true name folded), credits,
+// the correlated character query, the next pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/visual-novels/NextPages.astro';
+import site from '../../content/sites/visual-novels';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.characters;
+const sh = site.strings.shared;
+const n = s.names;
+const cols = [n.columns.language, n.columns.where, n.columns.spoiler];
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.variants.label} title={s.variants.headline} lead={s.variants.body}>
+    <FactList items={s.variants.items} />
+    <p class="vn-caption">{s.variants.caption}</p>
+  </Section>
+
+  <Section eyebrow={n.label} title={n.headline} lead={n.body}>
+    <table class="vn-table">
+      <caption>{n.caption}</caption>
+      <thead>
+        <tr><th scope="col">{n.columns.kind}</th>{cols.map((c) => <th scope="col">{c}</th>)}</tr>
+      </thead>
+      <tbody>
+        {n.rows.map((r) => (
+          <tr>
+            <th scope="row">{r.kind}</th>
+            <td data-col={n.columns.language}>{r.language}</td>
+            <td data-col={n.columns.where}>{r.where}</td>
+            <td data-col={n.columns.spoiler}>{r.spoiler}</td>
+          </tr>
+        ))}
+        <tr data-folded>
+          <th scope="row">{n.hidden.kind}</th>
+          <td data-col={n.columns.language}><span class="vn-fold" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></td>
+          <td data-col={n.columns.where}><span class="vn-fold" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></td>
+          <td data-col={n.columns.spoiler}>{n.hidden.spoiler}</td>
+        </tr>
+      </tbody>
+    </table>
+  </Section>
+
+  <Section eyebrow={s.credits.label} title={s.credits.headline} lead={s.credits.body} />
+
+  <Section eyebrow={s.query.label} title={s.query.headline} lead={s.query.body}>
+    <FactList items={s.query.items} />
+    <p class="vn-caption">{s.query.caption}</p>
+  </Section>
+
+  <NextPages line={s.finale} />
+  <Closing title={sh.closing} />
+</MiniSiteLayout>

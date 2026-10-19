@@ -1,0 +1,37 @@
+---
+// 翻譯與譯者 (SITE.md "v3"): the thread photograph beside the lineage rule, the record of one
+// translation, reviews by target, several translations, translation teams, the next pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/visual-novels/NextPages.astro';
+import site from '../../content/sites/visual-novels';
+import { pictures } from '../../sites/visual-novels/pictures';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.translations;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="right" eyebrow={s.lineage.label} title={s.lineage.headline} body={s.lineage.body} image={pictures.thread} />
+
+  <Section eyebrow={s.record.label} title={s.record.headline}>
+    <FactList items={s.record.items} />
+  </Section>
+
+  <Statement text={s.reviews.text} sub={s.reviews.more} note={s.reviews.body} />
+
+  <Section eyebrow={s.several.label} title={s.several.headline} lead={s.several.body} />
+
+  <Section eyebrow={s.teams.label} title={s.teams.headline}>
+    <FactList items={s.teams.items} />
+  </Section>
+
+  <NextPages line={s.finale} />
+  <Closing title={site.strings.shared.closing} />
+</MiniSiteLayout>

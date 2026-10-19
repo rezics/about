@@ -1,8 +1,102 @@
 ---
-// STUB: the visual-novels site's builder replaces this page (src/kit/README.md).
+// 視覺小說, the landing (SITE.md "v3"): the routes photograph, the one-release idea with its
+// picture and three queries, the statement, the eight parts, the site's pages, the neighbouring
+// kinds and the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import { kindById, kindHref, partById } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
+import { accentRamp } from '../../kit/color';
+import { pageHref } from '../../kit/sites';
+import site from '../../content/sites/visual-novels';
+import { exampleSelections, matches } from '../../sites/visual-novels/releases';
+import { pictures } from '../../sites/visual-novels/pictures';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.landing;
+const sh = site.strings.shared;
+const kind = kindById('visual-novels');
+
+// The three queries, answered by the same rule as the releases page.
+const queries = exampleSelections.map((sel) => {
+  const title = (['language', 'platform', 'coverage'] as const).map((d) => sh.options[d]![sel[d]!]).join('・');
+  const [hit] = matches(sh.releases, sel);
+  const body = hit
+    ? s.match.answer.replace('{name}', hit.name).replace('{translator}', hit.translator).replace('{source}', hit.source)
+    : s.match.none;
+  return { title, body };
+});
+
+const parts = kind.parts.map((id) => ({ title: partById(id).name, body: s.parts.notes[id]! }));
+
+// The six inner pages as violet tiles, the releases page tallest.
+const ramp = accentRamp(kindFields['visual-novels'].field);
+const inner = site.pages.filter((p) => p.slug);
+const pageTiles: MasonryItem[] = inner.map((p, i) => ({
+  id: p.slug,
+  name: p.label,
+  line: s.pagesIndex.rows[p.slug],
+  href: pageHref(site, p),
+  bg: ramp[i]!.bg,
+  on: ramp[i]!.on,
+}));
+const pageColumns: MasonryPlace[][] = [
+  [{ id: 'releases', h: 5 }, { id: 'translations', h: 3 }],
+  [{ id: 'characters', h: 3 }, { id: 'spoilers', h: 5 }],
+  [{ id: 'wiki', h: 4 }, { id: 'zones', h: 4 }],
+];
+const pagePhone: MasonryRowPlace[][] = [
+  [{ id: 'releases' }, { id: 'translations' }],
+  [{ id: 'characters' }, { id: 'spoilers' }],
+  [{ id: 'wiki' }, { id: 'zones' }],
+];
+
+const neighbourTiles: MasonryItem[] = s.neighbours.items.map((n) => ({
+  id: n.kind,
+  name: kindById(n.kind).name,
+  line: n.label,
+  href: kindHref(n.kind),
+  bg: kindFields[n.kind].field,
+  on: kindFields[n.kind].on,
+}));
+const neighbourColumns: MasonryPlace[][] = s.neighbours.items.map((n) => [{ id: n.kind, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero title={s.hero.headline} lede={s.hero.lede} image={pictures.routes} bar>
+    <ProductCall />
+  </PhotoHero>
+
+  <PhotoRow side="right" eyebrow={s.match.label} title={s.match.headline} body={s.match.body} image={pictures.window} />
+  <div class="vn-after">
+    <div class="grid">
+      <div class="vn-after__body">
+        <p class="eyebrow vn-after__label">{s.match.queriesLabel}</p>
+        <FactList items={queries} level="p" />
+        <p class="vn-caption">{s.match.caption}</p>
+      </div>
+    </div>
+  </div>
+
+  <Statement text={s.statement.text} sub={s.statement.more} />
+
+  <Section eyebrow={s.parts.label} title={s.parts.headline} lead={s.parts.body}>
+    <FactList items={parts} />
+  </Section>
+
+  <Section eyebrow={s.pagesIndex.label} title={s.pagesIndex.headline}>
+    <TileMasonry slot="wide" items={pageTiles} columns={pageColumns} phone={pagePhone} height={520} label={s.pagesIndex.label} />
+  </Section>
+
+  <Section eyebrow={s.neighbours.label} title={s.neighbours.headline} lead={s.neighbours.body}>
+    <TileMasonry slot="wide" items={neighbourTiles} columns={neighbourColumns} height={240} label={s.neighbours.label} />
+  </Section>
+
+  <Closing title={sh.closing} />
 </MiniSiteLayout>

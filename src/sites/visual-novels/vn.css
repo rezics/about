@@ -1,0 +1,67 @@
+/* The 視覺小說 site's own rules (SITE.md "Theme"): the v3 tokens unchanged; the accent violet
+   only as a flat field and as a light tint behind the one release that matches. */
+body[data-site='visual-novels'] {
+  --vn-tint: color-mix(in srgb, var(--field) 14%, var(--c-bg));
+}
+
+/* A block that continues the section above it (the landing's three queries after the photo row). */
+.vn-after { padding-top: 72px; }
+.vn-after__body { grid-column: 4 / 13; min-width: 0; }
+.vn-after__label { margin-bottom: 20px; }
+.vn-caption { margin-top: 14px; font-size: 14px; line-height: 1.7; color: var(--c-muted); }
+
+/* A data table on paper (names, votes, two sites): hairlines, the first column as row headers. */
+.vn-table { width: 100%; border-collapse: collapse; }
+.vn-table caption { caption-side: bottom; text-align: left; margin-top: 14px; font-size: 14px; line-height: 1.7; color: var(--c-muted); }
+.vn-table thead th { text-align: left; font-size: 13px; font-weight: 400; color: var(--c-muted); padding: 0 16px 12px 0; }
+.vn-table tbody tr { border-top: 1px solid var(--c-line); }
+.vn-table tbody tr:last-child { border-bottom: 1px solid var(--c-line); }
+.vn-table tbody th, .vn-table td { text-align: left; vertical-align: top; padding: 18px 16px 18px 0; font-size: 16px; line-height: 1.7; color: var(--c-text); }
+.vn-table tbody th { font-weight: 600; color: var(--c-fg); }
+/* A row withheld by reading position: its cells stay folded, one line says when it opens. */
+.vn-table tr[data-folded] td { color: var(--c-muted); }
+.vn-fold { display: inline-block; width: 4.5em; height: 0.7em; vertical-align: -0.05em; background: var(--vn-tint); }
+
+@media (max-width: 767px) {
+  .vn-after { padding-top: 44px; }
+  .vn-table thead { display: none; }
+  .vn-table tbody tr { display: block; padding: 16px 0; }
+  .vn-table tbody th, .vn-table td { display: block; padding: 0; }
+  .vn-table td { margin-top: 4px; font-size: 15px; }
+  .vn-table td::before { content: attr(data-col) '　'; display: inline-block; min-width: 5em; font-size: 13px; color: var(--c-muted); }
+  .vn-table td[data-col='']::before { content: none; }
+}
+
+/* One route read to a position (spoilers page): rows behind the reader open, the reader's row
+   marked with the accent rule, the facts of later rows folded. */
+.vn-route { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--c-line); }
+.vn-route__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 4px var(--gutter); padding: 20px 0 22px; border-bottom: 1px solid var(--c-line); }
+.vn-route__node { font-size: 19px; line-height: 1.6; font-weight: 600; }
+.vn-route__fact { font-size: 16px; line-height: 1.8; color: var(--c-text); display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; }
+.vn-route__row[data-state='here'] { background: var(--vn-tint); box-shadow: inset 3px 0 0 var(--field); padding-inline: 16px; }
+.vn-route__here { font-size: 13px; font-weight: 600; color: var(--c-fg); }
+.vn-route__row[data-state='ahead'] .vn-route__node { color: var(--c-muted); }
+.vn-fold--long { width: 9em; }
+.vn-route__rules { margin-top: 64px; }
+@media (max-width: 767px) {
+  .vn-route__row { grid-template-columns: minmax(0, 1fr); padding: 16px 0 18px; }
+  .vn-route__row[data-state='here'] { padding-inline: 14px; }
+  .vn-route__node { font-size: 17px; }
+  .vn-route__rules { margin-top: 44px; }
+}
+
+/* The Wiki+ locator: four hairline rows, the hash and the label in code. */
+.vn-locator { margin: 0; border-top: 1px solid var(--c-line); }
+.vn-locator__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 4px var(--gutter); padding: 18px 0; border-bottom: 1px solid var(--c-line); }
+.vn-locator__label { font-size: 15px; color: var(--c-muted); }
+.vn-locator__value { margin: 0; font-size: 16px; color: var(--c-fg); }
+.vn-locator__value code { font-family: var(--f-mono); font-size: 15px; }
+/* Notes under a statement, in the statement's columns. */
+.vn-notes { display: grid; grid-template-columns: subgrid; row-gap: 1em; }
+.vn-notes > .text { grid-column: 2 / 8; max-width: 34em; }
+/* The two sites side by side. */
+.vn-table--sites thead th { color: var(--c-fg); font-weight: 600; font-size: 15px; }
+@media (max-width: 767px) {
+  .vn-locator__row { grid-template-columns: minmax(0, 1fr); padding: 14px 0; }
+  .vn-notes > .text { grid-column: 1 / -1; }
+}

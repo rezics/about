@@ -1,0 +1,64 @@
+---
+// 社群與站點 (SITE.md "v3"): the sites photograph beside the shared-identity rule and the two
+// sites side by side, what a Zone has, Space, community, the script statement, creators, the next
+// site.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/visual-novels/NextPages.astro';
+import site from '../../content/sites/visual-novels';
+import { pictures } from '../../sites/visual-novels/pictures';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.zones;
+const m = s.mirror;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="right" eyebrow={m.label} title={m.headline} body={m.body} image={pictures.sites} />
+  <div class="vn-after">
+    <div class="grid">
+      <div class="vn-after__body">
+        <table class="vn-table vn-table--sites">
+          <caption>{m.caption}</caption>
+          <thead>
+            <tr><td></td><th scope="col">{m.columns.zh}</th><th scope="col">{m.columns.ja}</th></tr>
+          </thead>
+          <tbody>
+            {m.rows.map((r) => (
+              <tr>
+                <th scope="row">{r.field}</th>
+                <td data-col={m.columns.zh}>{r.zh}</td>
+                <td data-col={m.columns.ja} lang={r.field === '名稱' ? 'ja' : undefined}>{r.ja}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <Section eyebrow={s.zone.label} title={s.zone.headline}>
+    <FactList items={s.zone.items} />
+  </Section>
+
+  <Section eyebrow={s.space.label} title={s.space.headline}>
+    <FactList items={s.space.items} />
+  </Section>
+
+  <Section eyebrow={s.community.label} title={s.community.headline}>
+    <FactList items={s.community.items} />
+  </Section>
+
+  <Statement text={s.script.text} sub={s.script.more} note={s.script.body} />
+
+  <Section eyebrow={s.creators.label} title={s.creators.headline} lead={s.creators.body} />
+
+  <NextPages line={s.finale} />
+  <Closing title={site.strings.shared.closing} />
+</MiniSiteLayout>

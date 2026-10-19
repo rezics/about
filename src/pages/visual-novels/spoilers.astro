@@ -1,0 +1,79 @@
+---
+// 分類與暴雷 (SITE.md "v3"): the fold photograph, one route read to 路線一 with the later facts
+// folded, the reading rules, the two votes, include and exclude, the statement, Realm readings,
+// the next pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/visual-novels/NextPages.astro';
+import site from '../../content/sites/visual-novels';
+import { pictures } from '../../sites/visual-novels/pictures';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.spoilers;
+const sh = site.strings.shared;
+const r = s.route;
+const v = s.votes;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="left" eyebrow={s.fold.label} title={s.fold.headline} body={s.fold.body} image={pictures.fold} />
+
+  <Section eyebrow={r.label} title={r.headline}>
+    <ol class="vn-route" role="list">
+      {r.nodes.map((node, i) => {
+        const state = i < r.at ? 'read' : i === r.at ? 'here' : 'ahead';
+        return (
+          <li class="vn-route__row" data-state={state}>
+            <p class="vn-route__node serif">{node.name}</p>
+            <p class="vn-route__fact">
+              {state === 'here' && <span class="vn-route__here">{r.here}</span>}
+              {node.fact && (state === 'ahead'
+                ? <><span class="vn-fold vn-fold--long" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></>
+                : <span>{node.fact}</span>)}
+            </p>
+          </li>
+        );
+      })}
+    </ol>
+    <p class="vn-caption">{r.caption}</p>
+    <FactList items={r.rules} class="vn-route__rules" />
+  </Section>
+
+  <Section eyebrow={v.label} title={v.headline} lead={v.body}>
+    <table class="vn-table">
+      <caption>{v.caption}</caption>
+      <thead>
+        <tr><th scope="col">{v.columns.tag}</th><th scope="col">{v.columns.fit}</th><th scope="col">{v.columns.spoiler}</th></tr>
+      </thead>
+      <tbody>
+        {v.rows.map((row) => (
+          <tr>
+            <th scope="row">{row.tag}</th>
+            <td data-col={v.columns.fit}>{row.fit}</td>
+            <td data-col={v.columns.spoiler}>{row.spoiler}</td>
+          </tr>
+        ))}
+        <tr data-folded>
+          <th scope="row"><span class="vn-fold" aria-hidden="true"></span><span class="sr-only">{sh.closed}</span></th>
+          <td data-col={v.columns.fit}>{v.hidden.fit}</td>
+          <td data-col={v.columns.spoiler}>{v.hidden.spoiler}</td>
+        </tr>
+      </tbody>
+    </table>
+  </Section>
+
+  <Section eyebrow={s.filters.label} title={s.filters.headline} lead={s.filters.body} />
+
+  <Statement text={s.apart.text} sub={s.apart.more} note={s.apart.body} />
+
+  <Section eyebrow={s.readings.label} title={s.readings.headline} lead={s.readings.body} />
+
+  <NextPages line={s.finale} />
+  <Closing title={sh.closing} />
+</MiniSiteLayout>

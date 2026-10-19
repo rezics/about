@@ -1,0 +1,38 @@
+---
+// 發行版本 (SITE.md "v3"): the release filter, title and content language, coverage, status,
+// following, the next pages and the closing.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ReleaseFilter from '../../sites/visual-novels/ReleaseFilter.astro';
+import NextPages from '../../sites/visual-novels/NextPages.astro';
+import site from '../../content/sites/visual-novels';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.releases;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.matrix.label} title={s.matrix.headline} lead={s.matrix.body}>
+    <ReleaseFilter />
+  </Section>
+
+  <Statement text={s.languages.text} sub={s.languages.more} note={s.languages.body} />
+
+  <Section eyebrow={s.coverage.label} title={s.coverage.headline} lead={s.coverage.body}>
+    <FactList items={s.coverage.items} />
+  </Section>
+
+  <Section eyebrow={s.status.label} title={s.status.headline} lead={s.status.body}>
+    <FactList items={s.status.items} />
+  </Section>
+
+  <Section eyebrow={s.follow.label} title={s.follow.headline} lead={s.follow.body} />
+
+  <NextPages line={s.finale} />
+  <Closing title={site.strings.shared.closing} />
+</MiniSiteLayout>
