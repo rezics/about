@@ -653,5 +653,4 @@ What changed from the stage 1 plan, and why.
   style reference `books-1.png`, field `#1d5a47`), encoded as AVIF and WebP at 960 px
   (≤ 60 KB) and 320 px (≤ 12 KB) in `public/images/sites/books/`.
 - **Tests.** `bookmark-state.test.ts` covers the signature's state logic (omnibus counts once,
-  one-axis moves, the waiting square, progress across translations). The shared vitest include
-  does not pick up `src/sites/**`; it runs with a local config until the kit includes it.
+  one-axis moves, the waiting square, progress across translations); it runs with `task check`.
