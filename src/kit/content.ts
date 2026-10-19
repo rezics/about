@@ -20,5 +20,3 @@ export const partById = (id: PartId): Part => byId(parts, id, 'part');
 /** Base paths of the shared sites: kinds at the root, modules under /engine/. */
 export const kindHref = (id: KindId) => `/${id}/`;
 export const moduleHref = (id: ModuleId) => `/engine/${id}/`;
-/** Picture files for a kind: `${base}-960.avif` and friends (public/images/kinds/). */
-export const kindImage = (id: KindId) => `/images/kinds/${id}`;

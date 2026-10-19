@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Self-hosted fonts, subset to what the site uses.
 //
-//   node scripts/fonts.mjs latin        Archivo + Martian Mono Latin subsets into public/fonts/
-//                                       (committed) and Archivo advance widths for name fitting.
+//   node scripts/fonts.mjs latin        the Martian Mono Latin subset into public/fonts/ (committed).
+//                                       (Archivo stays a source for the Open Graph wordmark.)
 //   node scripts/fonts.mjs cjk [dist]   Noto Sans TC sliced by actual use in the built HTML:
 //                                       slice 0 holds the characters on every page (the chrome),
 //                                       slice 1 the rest of the home page; the rest is grouped by
@@ -65,41 +65,13 @@ function hex(n) {
 async function latin() {
   const out = path.join(root, 'public', 'fonts');
   fs.mkdirSync(out, { recursive: true });
-  const archivo = await subsetFont(await source('archivo'), latinText, {
-    targetFormat: 'woff2',
-    variationAxes: { wdth: { min: 100, max: 125 }, wght: { min: 400, max: 900 } },
-  });
-  fs.writeFileSync(path.join(out, 'archivo.woff2'), archivo);
   const martian = await subsetFont(await source('martian'), latinText, {
     targetFormat: 'woff2',
     variationAxes: { wdth: 100, wght: { min: 400, max: 700 } },
   });
   fs.writeFileSync(path.join(out, 'martian-mono.woff2'), martian);
-  console.log(`archivo.woff2 ${kb(archivo)} KB, martian-mono.woff2 ${kb(martian)} KB`);
+  console.log(`martian-mono.woff2 ${kb(martian)} KB`);
   console.log(`unicode-range: ${latinUnicodeRange}`);
-  await advances();
-}
-
-// Advance widths (em) of Archivo at the square-name setting, so names can be sized to fill a
-// square at build time without measuring in the browser (no layout shift).
-async function advances() {
-  const hb = await import('harfbuzzjs');
-  const data = await source('archivo');
-  const face = new hb.Face(new hb.Blob(data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength)));
-  const font = new hb.Font(face);
-  font.setVariations([new hb.Variation('wdth', 125), new hb.Variation('wght', 900)]);
-  const upem = face.upem;
-  const widths = {};
-  for (let c = 0x20; c <= 0x7e; c++) {
-    const buffer = new hb.Buffer();
-    buffer.addText(String.fromCharCode(c));
-    buffer.guessSegmentProperties();
-    hb.shape(font, buffer);
-    widths[String.fromCharCode(c)] = Math.round((buffer.getGlyphPositions()[0].xAdvance / upem) * 1000) / 1000;
-  }
-  const file = path.join(root, 'src', 'kit', 'archivo-advances.json');
-  fs.writeFileSync(file, `${JSON.stringify({ setting: 'wdth 125, wght 900', widths }, null, 2)}\n`);
-  console.log(`wrote ${path.relative(root, file)}`);
 }
 
 const kb = (b) => Math.round(b.length / 1024);

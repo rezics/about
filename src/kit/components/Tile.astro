@@ -47,10 +47,10 @@ const fg = inkOn(bg, on);
       {rel && <span class="tile__rel">{rel}</span>}
     </span>
   )}
-  <span class="tile__foot">
+  <div class="tile__foot">
     <Tag class:list={['tile__name', latin ? 'tile__name--latin' : 'serif']}>{name}</Tag>
-    {line && lineOn !== 'none' && <span class:list={['tile__line', `tile__line--${lineOn}`]}>{line}</span>}
-  </span>
+    {line && lineOn !== 'none' && <p class:list={['tile__line', 'phrase', `tile__line--${lineOn}`]}>{line}</p>}
+  </div>
   {href && (
     <svg class="tile__arrow" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
       <path d="M2 8h10.5M8.5 4 12.5 8l-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
