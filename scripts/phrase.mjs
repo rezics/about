@@ -28,7 +28,30 @@ export function phrases(text) {
       else out.push(t);
     } else out.push(t);
   });
-  return out;
+  return attachPunctuation(out);
+}
+
+// Closing punctuation never starts a line and opening brackets never end one: move a phrase's
+// leading closers onto the phrase before it, and its trailing openers onto the phrase after it.
+const CLOSERS = /^[；：，、。！？」』）》〉】…·\s]+/;
+const OPENERS = /[「『（《〈【\s]+$/;
+function attachPunctuation(list) {
+  const out = [...list];
+  for (let i = 1; i < out.length; i++) {
+    const lead = out[i].match(CLOSERS)?.[0];
+    if (lead && lead !== out[i]) {
+      out[i - 1] += lead;
+      out[i] = out[i].slice(lead.length);
+    }
+  }
+  for (let i = out.length - 2; i >= 0; i--) {
+    const trail = out[i].match(OPENERS)?.[0];
+    if (trail && trail !== out[i]) {
+      out[i + 1] = trail + out[i + 1];
+      out[i] = out[i].slice(0, -trail.length);
+    }
+  }
+  return out.filter(Boolean);
 }
 
 // Latin runs (words, numbers, versions, paths: letters, digits and . / + - #) never break: they

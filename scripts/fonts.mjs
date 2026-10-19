@@ -4,9 +4,9 @@
 //   node scripts/fonts.mjs latin        Archivo + Martian Mono Latin subsets into public/fonts/
 //                                       (committed) and Archivo advance widths for name fitting.
 //   node scripts/fonts.mjs cjk [dist]   Noto Sans TC sliced by actual use in the built HTML:
-//                                       slice 0 holds every character of the home page and the
-//                                       shared chrome; the rest is grouped by how many pages use a
-//                                       character. Writes dist/fonts/rezics-sans-*.woff2 and puts the
+//                                       slice 0 holds the characters on every page (the chrome),
+//                                       slice 1 the rest of the home page; the rest is grouped by
+//                                       how many pages use a character. Writes dist/fonts/rezics-sans-*.woff2 and puts the
 //                                       @font-face rules (unicode-range per slice) and preloads into
 //                                       each page in place of <meta name="rezics:fonts">.
 //
@@ -151,13 +151,15 @@ export async function cjk(dist = path.join(root, 'dist')) {
   }
   const chars = new Map(all.map((p) => [p.route, pageChars(p.html)]));
   const home = chars.get('/') ?? new Set();
-  // Characters on every page are chrome (header, panels, footer): they belong in slice 0 too.
-  const chrome = [...(chars.get(all[0].route) ?? [])].filter((c) => all.every((p) => chars.get(p.route).has(c)));
-  const first = new Set([...home, ...chrome]);
+  // Slice 0: characters on every page (the shared chrome). Slice 1: the rest of the home page.
+  // Then the remaining characters, most widely used first. A page loads only the slices it uses.
+  const chrome = new Set([...(chars.get(all[0].route) ?? [])].filter((c) => all.every((p) => chars.get(p.route).has(c))));
+  const homeOnly = [...home].filter((c) => !chrome.has(c));
+  const placed = new Set([...chrome, ...homeOnly]);
   const frequency = new Map();
-  for (const set of chars.values()) for (const c of set) if (!first.has(c)) frequency.set(c, (frequency.get(c) ?? 0) + 1);
+  for (const set of chars.values()) for (const c of set) if (!placed.has(c)) frequency.set(c, (frequency.get(c) ?? 0) + 1);
   const rest = [...frequency.keys()].sort((a, b) => frequency.get(b) - frequency.get(a) || a - b);
-  const slices = [[...first]];
+  const slices = [[...chrome], homeOnly];
   for (let i = 0; i < rest.length; i += SLICE) slices.push(rest.slice(i, i + SLICE));
 
   const src = await source('noto');
@@ -181,7 +183,9 @@ export async function cjk(dist = path.join(root, 'dist')) {
     const css = needed
       .map((f) => `@font-face{font-family:"REZICS Sans";src:url(/fonts/${f.name}) format("woff2");font-weight:400 900;font-display:swap;unicode-range:${f.range}}`)
       .join('');
-    const preload = needed.slice(0, 1).map((f) => `<link rel="preload" href="/fonts/${f.name}" as="font" type="font/woff2" crossorigin>`).join('');
+    // Every slice the page uses is preloaded (a page uses a few), so the face swaps in before or
+    // near the first paint rather than after it.
+    const preload = needed.slice(0, 4).map((f) => `<link rel="preload" href="/fonts/${f.name}" as="font" type="font/woff2" crossorigin>`).join('');
     const tag = /<meta name="rezics:fonts"[^>]*>/;
     if (!tag.test(page.html)) throw new Error(`${page.route}: missing <meta name="rezics:fonts"> in the head`);
     fs.writeFileSync(page.file, page.html.replace(tag, `${preload}<style>${css}</style>`));

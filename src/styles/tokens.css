@@ -10,6 +10,27 @@
   font-display: swap;
   unicode-range: U+0020-007E, U+00A0-00FF, U+2018-201D, U+2026, U+2190-2193;
 }
+/* Until Archivo arrives, Latin text is set in the local Arial-compatible face scaled to
+   Archivo's widths (measured: 98 % at 400 and 700, 108 % at 900), so lines do not rewrap when
+   it swaps in. */
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans'), local('Helvetica');
+  font-weight: 100 600;
+  size-adjust: 98.2%;
+}
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Helvetica Bold');
+  font-weight: 700 800;
+  size-adjust: 98.3%;
+}
+@font-face {
+  font-family: 'Archivo Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Helvetica Bold');
+  font-weight: 900;
+  size-adjust: 108%;
+}
 /* Mono: Martian Mono, for part ids, real counts and code. */
 @font-face {
   font-family: 'Martian Mono';
@@ -54,8 +75,8 @@
 
   /* Type families: Latin first so CJK falls through to the CJK face glyph by glyph. */
   --f-cjk: 'REZICS Sans', 'Noto Sans TC', 'Noto Sans CJK TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
-  --f-body: 'Archivo', var(--f-cjk);
-  --f-display: 'Archivo', var(--f-cjk);
+  --f-body: 'Archivo', 'Archivo Fallback', var(--f-cjk);
+  --f-display: 'Archivo', 'Archivo Fallback', var(--f-cjk);
   --f-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
   /* Fluid scale (390 px → 1440 px) */
