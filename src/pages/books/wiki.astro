@@ -1,18 +1,16 @@
 ---
-// Wiki+ (v3, SITE.md "Pages"): the heading and lede; the cut-out photograph beside the way from
-// a file to a wiki and its four steps; the reading-position figure and its rules; the statement
+// Wiki+ (v3, SITE.md "Pages"): the heading and lede beside the cut-out photograph; the way from
+// a file to a wiki in four steps; the reading-position figure and its rules; the statement
 // that REZICS never receives the text, with four facts; a wiki's pages as tiles (示意); agents
 // propose and people review; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageHead from '../../kit/components/PageHead.astro';
-import PhotoRow from '../../kit/components/PhotoRow.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
 import TileMasonry from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/books/NextPage.astro';
-import Facts from '../../sites/books/Facts.astro';
+import PhotoHead from '../../sites/books/PhotoHead.astro';
 import Notes from '../../sites/books/Notes.astro';
 import Position from '../../sites/books/Position.astro';
 import site from '../../content/sites/books';
@@ -26,18 +24,20 @@ const zoneTones = [tones.accent, tones.deep, tones.green, tones.olive, tones.sag
 const zoneTiles = s.zone.tiles.map((t, i) => ({ id: `z${i}`, name: t.name, line: t.line, ...zoneTones[i]! }));
 ---
 <MiniSiteLayout>
-  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.wiki, alt: s.hero.alt }} />
 
-  <PhotoRow eyebrow={s.flow.label} title={s.flow.headline} image={{ ...pictures.wiki, alt: s.flow.alt }} />
-  <Facts items={s.flow.steps} numbered />
+  <Section eyebrow={s.flow.label} title={s.flow.headline}>
+    <FactList items={s.flow.steps} numbered />
+  </Section>
 
   <Section eyebrow={s.position.label} title={s.position.headline} lead={s.position.lead}>
     <Position />
     <Notes items={s.position.rules} />
   </Section>
 
-  <Statement text={s.text.text} sub={s.text.sub} />
-  <Facts items={s.text.facts} />
+  <Statement text={s.text.text} sub={s.text.sub}>
+    <div class="bk-under"><FactList items={s.text.facts} /></div>
+  </Statement>
 
   <Section eyebrow={s.zone.label} title={s.zone.headline} lead={s.zone.lead}>
     <div slot="wide">

@@ -1,8 +1,8 @@
 ---
-// The way on from an inner page (books; the v3 replacement of v2's SiteFinale): a section whose
-// heading is the page's closing line and one calm index row to the next page in tab order; the
+// The way on from an inner page (books; the v3 replacement of v2's SiteFinale): one calm index
+// row to the next page in tab order, its line the page's closing sentence, under a small
+// eyebrow; no heading of its own, so it does not compete with the closing that follows. The
 // last page leads to the next site.
-import Section from '../../kit/components/Section.astro';
 import IndexRows from '../../kit/components/IndexRows.astro';
 import { kindById, kindHref } from '../../kit/content';
 import { pageHref } from '../../kit/sites';
@@ -11,17 +11,27 @@ import site from '../../content/sites/books';
 interface Props {
   /** The current page's slug. */
   slug: string;
-  /** The page's closing line: the section heading. */
+  /** The page's closing sentence: the row's line. */
   lead: string;
 }
 const { slug, lead } = Astro.props;
 const s = site.strings;
 const at = site.pages.findIndex((p) => p.slug === slug);
 const next = site.pages[at + 1];
-const row = next
-  ? { name: next.label, desc: s.landing.pages.rows.find((r) => r.slug === next.slug)?.line ?? '', href: pageHref(site, next) }
-  : { name: kindById('anime').name, desc: kindById('anime').summary, href: kindHref('anime') };
+const row = next ? { name: next.label, desc: lead, href: pageHref(site, next) } : { name: kindById('anime').name, desc: lead, href: kindHref('anime') };
 ---
-<Section eyebrow={next ? s.common.nextPage : s.common.nextSite} title={lead}>
-  <IndexRows rows={[row]} />
-</Section>
+<nav class="bk-next" aria-label={next ? s.common.nextPage : s.common.nextSite}>
+  <div class="grid">
+    <p class="eyebrow bk-next__label">{next ? s.common.nextPage : s.common.nextSite}</p>
+    <div class="bk-next__row"><IndexRows rows={[row]} /></div>
+  </div>
+</nav>
+<style>
+  .bk-next { padding-top: var(--space-section); }
+  .bk-next__label { grid-column: 1 / 4; grid-row: 1; padding-top: 30px; }
+  .bk-next__row { grid-column: 4 / 13; grid-row: 1; min-width: 0; }
+  @media (max-width: 767px) {
+    .bk-next__label, .bk-next__row { grid-row: auto; }
+    .bk-next__label { padding: 0 0 14px; }
+  }
+</style>

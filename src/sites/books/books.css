@@ -4,7 +4,28 @@
 [data-site='books'] .bk-note { margin-top: 28px; max-width: 40em; font-size: 15px; line-height: 1.85; color: var(--c-muted); }
 [data-site='books'] .bk-note--wide { margin-top: 20px; }
 [data-site='books'] .bk-gap { margin-top: 56px; }
+/* A list under a statement, on the section body's columns (4 to 12). */
+[data-site='books'] .bk-under { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+[data-site='books'] .bk-under > * { grid-column: 4 / 13; min-width: 0; }
+/* Shared text links currently change colour only. Keep their underline and give books links
+   the same small rise as its tiles; scope the workaround here until the kit adopts it. */
+[data-site='books'] :is(.link-draw, .sitebar__tab, .sitebar__name),
+[data-site='books'] .header .tab > span:first-child {
+  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-soft);
+}
+@media (hover: hover) {
+  [data-site='books'] :is(.link-draw, .sitebar__tab):hover,
+  [data-site='books'] .sitebar__home:hover .sitebar__name,
+  [data-site='books'] .header .tab:hover > span:first-child { translate: 0 -2px; }
+}
+[data-site='books'] :is(.link-draw, .sitebar__tab):focus-visible,
+[data-site='books'] .sitebar__home:focus-visible .sitebar__name,
+[data-site='books'] .header .tab:focus-visible > span:first-child { translate: 0 -2px; }
+[data-site='books'] :is(.link-draw, .sitebar__tab):active,
+[data-site='books'] .sitebar__home:active .sitebar__name,
+[data-site='books'] .header .tab:active > span:first-child { translate: none; }
 @media (max-width: 767px) {
+  [data-site='books'] .bk-under { display: block; }
   [data-site='books'] .bk-note { margin-top: 20px; font-size: 14px; }
   [data-site='books'] .bk-gap { margin-top: 36px; }
 }
@@ -13,4 +34,8 @@
    and 390 px, script on). Leads wrap plainly here until the kit settles it. */
 @media (max-width: 767px) {
   [data-site='books'] :is(.lead, .lede) { text-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-site='books'] :is(.link-draw, .sitebar__tab, .sitebar__name),
+  [data-site='books'] .header .tab > span:first-child { transition: none; translate: none; }
 }

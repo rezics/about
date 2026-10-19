@@ -51,9 +51,9 @@ export type BooksStrings = {
     finaleLead: string;
   };
   wiki: {
-    hero: { headline: string; lede: string };
-    /** Photo row: the cut-out picture beside the four steps. */
-    flow: Head & { steps: TitledText[] } & Picture;
+    /** The page head beside the cut-out picture. */
+    hero: { headline: string; lede: string } & Picture;
+    flow: Head & { steps: TitledText[] };
     position: Head & {
       control: string;
       positions: { label: string; chapter: number }[];
@@ -61,6 +61,8 @@ export type BooksStrings = {
       source: string;
       aliases: string;
       entries: { group: 'people' | 'events'; name: string; aliases?: string; chapter: number; note: string }[];
+      /** What a folded entry says: the chapter it appears in (`{n}`). */
+      later: string;
       status: string;
       statusAll: string;
       rail: string;
@@ -74,9 +76,9 @@ export type BooksStrings = {
     finaleLead: string;
   };
   editions: {
-    hero: { headline: string; lede: string };
-    /** Photo row: the stack picture beside the four kinds of release. */
-    releases: Head & { kinds: TitledText[]; caption: string } & Picture;
+    /** The page head beside the stack picture. */
+    hero: { headline: string; lede: string } & Picture;
+    releases: Head & { kinds: TitledText[] };
     translations: Head & { rows: TitledText[]; stateLabel: string; states: string[]; notes: string[] };
     sameWork: Head & { rows: TitledText[]; caption: string };
     orders: Head & {
@@ -91,9 +93,10 @@ export type BooksStrings = {
     finaleLead: string;
   };
   library: {
-    hero: { headline: string; lede: string };
-    /** Photo row: the three strips beside three reads of one book. */
-    reads: Head & { rows: TitledText[]; caption: string } & Picture;
+    /** The page head beside the three strips. */
+    hero: { headline: string; lede: string } & Picture;
+    /** Three reads of one book as three strips, the photograph seen flat (`share`: its length). */
+    reads: Head & { rows: (TitledText & { share: number })[]; caption: string };
     move: Head & { steps: TitledText[]; retention: string };
     continue: StatementText;
     shelf: Head & { rows: TitledText[] };
@@ -102,9 +105,9 @@ export type BooksStrings = {
     finaleLead: string;
   };
   serial: {
-    hero: { headline: string; lede: string };
-    /** Photo row: the folded strip beside the four safeguards. */
-    safe: Head & { rows: TitledText[] } & Picture;
+    /** The page head beside the folded strip. */
+    hero: { headline: string; lede: string } & Picture;
+    safe: Head & { rows: TitledText[] };
     mirror: Head & { rows: TitledText[]; notes: string[] };
     ai: Head & { rows: TitledText[]; notes: string[] };
     world: Head & { items: string[] };
@@ -126,10 +129,10 @@ export type BooksStrings = {
 const strings: BooksStrings = {
   common: {
     nextPage: '下一頁',
-    nextSite: '下一個網站',
+    nextSite: '相關種類',
     closing: {
-      title: '你讀到哪裡，書庫就記到哪裡。',
-      body: '每一本書、每一個版本與每一次閱讀，都記在同一個帳號裡；下一本讀什麼，打開就知道。',
+      title: '下一本讀什麼，打開書庫就知道。',
+      body: '每一本書、每一個版本與每一次閱讀，都記在同一個帳號裡。',
     },
   },
 
@@ -175,10 +178,10 @@ const strings: BooksStrings = {
     },
     pages: {
       label: '書庫的頁面',
-      headline: '六個頁面，各講一件事。',
+      headline: '找書、讀書，也在這裡寫書。',
       rows: [
         { slug: 'work', line: '一部作品的一切，從這一頁出發' },
-        { slug: 'wiki', line: '讀到哪裡，Wiki 就到哪裡' },
+        { slug: 'wiki', line: '用你的 AI 代理，為書建 Wiki' },
         { slug: 'editions', line: '譯本、合訂本與系列，分得清楚' },
         { slug: 'library', line: '照實記下每一次閱讀' },
         { slug: 'serial', line: '一章章寫，一章章讀' },
@@ -300,8 +303,9 @@ const strings: BooksStrings = {
 
   wiki: {
     hero: {
-      headline: '每一本書，都能有一部讀到哪、看到哪的 Wiki。',
+      headline: '每一本書，都有自己的 Wiki。',
       lede: '有這本書的人，在自己的電腦上讓 AI 代理一章章整理人物、地點與事件，經人審核後發布。每位讀者看到的，只到他讀過的那一章。',
+      alt: '一張深綠色的紙上割出幾道長短不同的空隙，割下的紙片整齊地排在一旁的淡藍色卡紙上。',
     },
     flow: {
       label: '從檔案到 Wiki',
@@ -321,7 +325,6 @@ const strings: BooksStrings = {
           body: '審核的人一次通過整批提案，作品的 Wiki 隨即更新。之後出了新章節，只需要送出新增與修改的部分。',
         },
       ],
-      alt: '一張深綠色的紙上割出幾道長短不同的空隙，割下的紙片整齊地排在一旁的淡藍色卡紙上。',
     },
     position: {
       label: '閱讀位置',
@@ -342,12 +345,14 @@ const strings: BooksStrings = {
       entries: [
         { group: 'people', name: '主角', aliases: '小名、筆名', chapter: 1, note: '故事的敘述者，在港口城市長大。' },
         { group: 'people', name: '主角的姊姊', chapter: 1, note: '在城裡的書店工作。' },
-        { group: 'people', name: '新來的鄰居', chapter: 1, note: '剛搬進對面房子的年輕人。' },
-        { group: 'people', name: '鄰居的朋友', chapter: 3, note: '在一場宴會上登場。' },
-        { group: 'people', name: '旅行的畫家', chapter: 9, note: '暫住在港口旁的旅館。' },
+        { group: 'people', name: '新來的鄰居', chapter: 3, note: '剛搬進對面房子的年輕人。' },
+        { group: 'people', name: '旅行的畫家', chapter: 16, note: '暫住在港口旁的旅館。' },
+        { group: 'events', name: '書店重新開張', chapter: 1, note: '姊姊工作的書店換了新招牌。' },
+        { group: 'events', name: '港口的宴會', chapter: 9, note: '主角在宴會上和鄰居說了第一句話。' },
         { group: 'events', name: '一封長信', chapter: 16, note: '信裡說出兩人過去的事。' },
         { group: 'events', name: '離港的船', chapter: 22, note: '消息從姊姊的來信傳來。' },
       ],
+      later: '第 {n} 章才出現，先收起來',
       status: '目前位置：第 {n} 章。之後的內容不會出現在這裡。',
       statusAll: '目前顯示全部內容，包括結局。',
       rail: '全書 30 章。',
@@ -407,22 +412,22 @@ const strings: BooksStrings = {
     hero: {
       headline: '一部作品，可以有一整排書。',
       lede: '原文與譯本、平裝與電子版、合訂本與網路連載，各自分開記下，再指回同一部作品。你知道手上是哪一本，系列進度也不會亂。',
+      alt: '大小不同的綠色紙張疊在一起，左下角對齊，其中一張是淡藍色。',
     },
     releases: {
       label: '四種出版',
-      headline: '每一次出版，都標明種類。',
+      headline: '每一次出版，都標明它是哪一種。',
+      lead: '一本書在三家商店販售，紀錄上仍只有一個版本，附上三個購買地點。未經授權的轉載另外記錄，不會併進正版。',
       kinds: [
         { title: '正式出版', body: '出版社的單行本、平裝、電子版或特裝版。它記錄的是當時真的出版了什麼，之後不往裡面加內容。' },
         { title: '網路發表', body: '網路連載也是一次真實的發行。保留原始網址，以及一份份標上日期的存檔。' },
         { title: 'REZICS 固定版', body: '把 REZICS 上某個時刻選定的內容封存成一版，之後的修訂不會改動它。' },
         { title: '虛擬版', body: '照著某一次出版的結構放使用者的翻譯，寫明涵蓋的範圍，例如全書 100 章中的第 1 到 20 章。它從來不代表真的出版過。' },
       ],
-      caption: '一本書在三家商店販售，紀錄上仍只有一個版本，附上三個購買地點。未經授權的轉載另外記錄，不會併進正版。',
-      alt: '大小不同的綠色紙張疊在一起，左下角對齊，其中一張是淡藍色。',
     },
     translations: {
       label: '譯本',
-      headline: '每個譯本，都寫明誰翻的、從哪一版翻的。',
+      headline: '每個譯本，都標明譯者與來源。',
       rows: [
         { title: '官方譯本', body: '出版社的譯本是它自己的一次出版，署名譯者，標明權利。' },
         { title: '同好翻譯', body: '屬於譯者本人，對應到原文的某一個版本，永遠不會被標成官方。' },
@@ -455,7 +460,7 @@ const strings: BooksStrings = {
     orders: {
       label: '順序',
       headline: '出版順序和閱讀順序，可以不一樣。',
-      lead: '換一種順序讀，每一集的識別碼都不變。',
+      lead: '示意：同一套系列的兩種順序。每一集的識別碼都不變。',
       rows: ['出版順序', '推薦的閱讀順序'],
       tiles: ['第 1 集', '外傳', '第 2 集', '第 3 集'],
       reading: [0, 2, 1, 3],
@@ -478,18 +483,18 @@ const strings: BooksStrings = {
     hero: {
       headline: '你怎麼讀，紀錄就怎麼記。',
       lede: '讀到一半放下、隔兩年重讀、通勤時改聽有聲書。REZICS 照實記下每一種情況，預設只有你看得到，想搬走時整份帶走。',
+      alt: '三條長短不同的深綠色紙條平行排著，最短的一條旁邊放著一小張淡綠色的紙。',
     },
     reads: {
       label: '每一次閱讀',
       headline: '同一本書讀三次，就是三筆紀錄。',
       lead: '暫停就記成暫停，棄讀就記成棄讀，兩者都不算讀完。重讀是新的一筆，不會蓋掉第一次。',
       rows: [
-        { title: '第一次', body: '紙本，讀到第 20 章，暫停。' },
-        { title: '第二次', body: '電子書，後半改聽有聲書，讀完。' },
-        { title: '第三次', body: '重讀，正在讀。' },
+        { title: '第一次', body: '紙本，讀到第 20 章，暫停。', share: 0.62 },
+        { title: '第二次', body: '電子書，後半改聽有聲書，讀完。', share: 1 },
+        { title: '第三次', body: '重讀，正在讀。', share: 0.24 },
       ],
-      caption: '每一筆紀錄都對著你實際讀的那一版。換一個版本重讀，也是另一筆。',
-      alt: '三條長短不同的深綠色紙條平行排著，最短的一條旁邊放著一小張淡綠色的紙。',
+      caption: '示意：每一筆紀錄都對著你實際讀的那一版。換一個版本重讀，也是另一筆。',
     },
     move: {
       label: '匯入與匯出',
@@ -535,6 +540,7 @@ const strings: BooksStrings = {
     hero: {
       headline: '一章一章寫，一章一章讀。',
       lede: '網路連載、輕小說的連載版或你自己的長篇，都能在 REZICS 上寫作、排程與發布。稿子不怕遺失，讀者總能回到上次讀到的地方。',
+      alt: '一條深綠色的長紙摺成一頁一頁，後半段還平攤著，摺痕處放著一小張淡綠色的紙。',
     },
     safe: {
       label: '稿子',
@@ -545,7 +551,6 @@ const strings: BooksStrings = {
         { title: '協作者分四種權限', body: '閱讀、建議、編輯、發布，分開授權。能改稿的人，不一定能按下發布。' },
         { title: '作者的話，和正文分開', body: '章末的作者的話是另一部分。它不算進字數，不會被翻譯，也不會收進日後的出版版。' },
       ],
-      alt: '一條深綠色的長紙摺成一頁一頁，後半段還平攤著，摺痕處放著一小張淡綠色的紙。',
     },
     mirror: {
       label: '作者與讀者',
@@ -638,7 +643,7 @@ const strings: BooksStrings = {
       sub: '就在作品的社群旁邊。',
       note: '買之前看得到評論、討論與 Wiki；買了之後，你的版本、進度與收據都留在同一部作品下。讀者也能追蹤創作者，看見他寫的小說和做的遊戲。創作者看到的是彙總的銷售資料，看不到讀者的閱讀紀錄。',
     },
-    finaleLead: '書庫到這裡，下一個網站是動畫。',
+    finaleLead: '原著改編的動畫，也連回同一部作品。',
   },
 };
 

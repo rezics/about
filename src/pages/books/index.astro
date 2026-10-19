@@ -12,16 +12,16 @@ import Statement from '../../kit/components/Statement.astro';
 import TileMasonry from '../../kit/components/TileMasonry.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindById, kindHref, partById } from '../../kit/content';
+import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
 import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/books';
 import { pictures } from '../../sites/books/pictures';
 import { tones } from '../../sites/books/tones';
+import Parts from '../../sites/books/Parts.astro';
 import '../../sites/books/books.css';
 
 const s = site.strings.landing;
-const kind = kindById('books');
 const href = (slug: string) => pageHref(site, site.pages.find((p) => p.slug === slug)!);
 
 // The site's own pages in the greens of its photographs: the Work page in the accent, the rest
@@ -42,10 +42,9 @@ const kindTiles = s.connections.tiles.map((t) => ({
   on: kindFields[t.kind].on,
 }));
 
-const partRows = kind.parts.map((id) => ({ title: partById(id).name, body: kind.partNotes[id] ?? partById(id).gives }));
 ---
 <MiniSiteLayout>
-  <PhotoHero title={s.hero.headline} eyebrow={site.name} lede={s.hero.lede} image={{ ...pictures.hero, alt: s.hero.alt }} bar>
+  <PhotoHero title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.hero, alt: s.hero.alt }} bar>
     <ProductCall />
   </PhotoHero>
 
@@ -88,7 +87,7 @@ const partRows = kind.parts.map((id) => ({ title: partById(id).name, body: kind.
   </Section>
 
   <Section eyebrow={s.parts.label} title={s.parts.headline} lead={s.parts.lead}>
-    <FactList items={partRows} />
+    <Parts />
   </Section>
 
   <Section eyebrow={s.connections.label} title={s.connections.headline} lead={s.connections.lead}>
@@ -96,10 +95,7 @@ const partRows = kind.parts.map((id) => ({ title: partById(id).name, body: kind.
       slot="wide"
       label={s.connections.headline}
       items={kindTiles}
-      columns={[
-        [{ id: 'anime', h: 3 }, { id: 'manga', h: 2 }],
-        [{ id: 'visual-novels', h: 2 }, { id: 'games', h: 3 }],
-      ]}
+      columns={[[{ id: 'anime', h: 3 }, { id: 'manga', h: 2 }], [{ id: 'visual-novels', h: 1 }], [{ id: 'games', h: 1 }]]}
       height={420}
     />
   </Section>

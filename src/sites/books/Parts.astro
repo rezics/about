@@ -1,0 +1,24 @@
+---
+// The landing's eight parts (books): a compact two-column hairline list, the part's name in the
+// serif over this kind's note (kinds.ts), so the eight read as one calm block instead of eight
+// full-width rows. One column on phones.
+import { kindById, partById } from '../../kit/content';
+
+const kind = kindById('books');
+const rows = kind.parts.map((id) => ({ id, name: partById(id).name, note: kind.partNotes[id] ?? partById(id).gives }));
+---
+<ul class="bk-parts" role="list">
+  {rows.map((r) => (
+    <li class="bk-parts__item" data-part={r.id}>
+      <h3 class="bk-parts__name">{r.name}</h3>
+      <p class="bk-parts__note">{r.note}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .bk-parts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .bk-parts__item { padding: 24px 0 28px; border-top: 1px solid var(--c-line); }
+  .bk-parts__name { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .bk-parts__note { margin-top: 8px; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  @media (max-width: 767px) { .bk-parts { grid-template-columns: minmax(0, 1fr); } .bk-parts__item { padding: 20px 0 22px; } }
+</style>

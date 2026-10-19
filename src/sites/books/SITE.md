@@ -158,11 +158,13 @@ read as falling dominoes, the other reached into the left half where the headlin
 
 ### Pages
 
-Seven pages; each inner page opens on its heading and lede without a picture (the landing
-hero is the site's one full-bleed photograph), and its photo row, where it has one, comes first
-with its facts list under it (`Facts.astro`, on the section body's columns). Every inner page
-ends on a 下一頁 section (its closing line as the heading, one index row to the next page; the
-last page leads to 動畫) and the closing 「你讀到哪裡，書庫就記到哪裡。」 with the pill.
+Seven pages. The landing owns the full-bleed `PhotoHero`. The work and publish pages open on
+the kit's `PageHead`; wiki, editions, library and serial use the books `PhotoHead`, built from
+the kit's `Picture` and `Clauses`: one heading beside one photograph, with the detailed facts
+in the next section. This brings the photograph into the first desktop screen without a
+second heading competing with it. Phones put the copy first and the photograph underneath as
+a full-width band. Every inner page ends on a compact 下一頁 navigation row (the last leads
+to 動畫), then the closing 「下一本讀什麼，打開書庫就知道。」 and the ink pill.
 
 **`/books/` 總覽**
 
@@ -179,33 +181,34 @@ last page leads to 動畫) and the closing 「你讀到哪裡，書庫就記到�
    tile right below).
 6. 書庫的頁面, tile masonry of the six inner pages in the six tones; 作品頁 is the tall lead
    tile.
-7. 部件, the eight parts as a facts list (notes from `kinds.ts`).
+7. 部件, the eight parts as a compact two-column hairline list (notes from `kinds.ts`),
+   stacked on phones.
 8. 相關的種類, tile masonry of 動畫, 漫畫, 視覺小說 and 遊戲 in their own colours.
 9. Closing.
 
 **`/books/work/` 作品頁**: heading and lede; the example's title page as one accent tile
-(《魔法禁書目錄》, original title, author, text only) beside its caption; 八個區塊 facts list
+(《魔法禁書目錄》, original title, author, text only) across the section, its caption below; 八個區塊 facts list
 (each block with its example line); 主要按鈕 facts list (three states and the button's
 words); 評分 facts list; 修改 facts list (two rows); statement on languages; closing.
 
-**`/books/wiki/` Wiki+**: heading and lede; photo row (`wiki`) beside the four steps;
+**`/books/wiki/` Wiki+**: heading and lede beside `wiki`; the four steps in a facts list;
 閱讀位置, the one interactive figure on the site: position pills (radio buttons, no script
 needed) over two hairline lists that fold later entries away, then its four rules; statement
 「REZICS 不會收到全文；」 with four facts; Zone as a tile masonry of a wiki's pages (示意, not
 links); 審核 facts list of the four match states and the rules; closing.
 
-**`/books/editions/` 版本與系列**: heading and lede; photo row (`editions`) beside the four
-kinds of release; 譯本 facts list plus the four passage states as a quiet ordered line and
+**`/books/editions/` 版本與系列**: heading and lede beside `editions`; the four kinds of
+release in a facts list; 譯本 facts list plus the four passage states as a quiet ordered line and
 the notes; 同一部或兩部 facts list (change left, result right); 順序: two rows of four small
 flat tiles (publication order, recommended reading order) and four notes; statement
 「輸入書號，找到那一版。」 with the 《魔法禁書目錄》 note; closing.
 
-**`/books/library/` 閱讀紀錄**: heading and lede; photo row (`library`) beside three reads
-of one book; 匯入與匯出 numbered facts and the retention line; statement 「打開 REZICS，
+**`/books/library/` 閱讀紀錄**: heading and lede beside `library`; three reads of one book
+as green strips, each with its full text and a 示意 caption; 匯入與匯出 numbered facts and the retention line; statement 「打開 REZICS，
 先看到的是下一章。」; 書架 facts list; 隱私 facts list; closing.
 
-**`/books/serial/` 連載**: heading and lede; photo row (`serial`) beside the four
-safeguards; 作者與讀者 facts list (author's act left, reader's side right) and notes; AI 聲明
+**`/books/serial/` 連載**: heading and lede beside `serial`; the four safeguards in a facts
+list; 作者與讀者 facts list (author's act left, reader's side right) and notes; AI 聲明
 facts list and notes; 世界設定 lead and list; statement 「整部稿子，隨時完整帶走。」; closing.
 
 **`/books/publish/` 出版**: heading and lede; 購買 numbered facts; 結算單
@@ -246,9 +249,9 @@ name and show an arrow on hover; the position control swaps its lists with a sho
 
 ### Build record (v3)
 
-- **Photo-row headings stay short** (two clauses of eight characters or fewer): the text block
-  is four columns wide, and a longer clause broke mid-word (「每一次出版，都說清楚自己是什麼。」
-  became 「每一次出版，都標明種類。」).
+- **Landing photo-row headings stay short** (two clauses of eight characters or fewer): the
+  text block is four columns wide. Detailed inner-page section headings have seven columns
+  and keep their fuller wording.
 - **A Chromium crash on phones.** With script on, the publish page's lede crashed the page at
   375 and 390 px: a lead paragraph with the build's `<wbr>` phrase breaks, `word-break: normal`
   (the kit's phone rule) and `text-wrap: pretty`. Cutting the lede, removing its `<wbr>`, or
@@ -258,3 +261,14 @@ name and show an arrow on hover; the position control swaps its lists with a sho
 - **One action per inner page:** the publish page's head lost its pill; the closing carries it.
 - **No idle motion:** the site is still at rest; its life is in the tiles' hovers, the position
   pills and the index rows.
+- **Text links:** the kit's underlined links and navigation text currently change colour
+  only. A books-scoped rule adds a quiet two-pixel rise on hover and keyboard focus, and
+  returns them on press. It also covers the shared header and site bar while on books pages;
+  shared files remain untouched. Reduced motion keeps these still.
+- **Reading position:** native radio controls have 44 px targets, an explicit three-column
+  phone layout, a visible focus ring and CSS-only chapter filtering. Later entries state the
+  chapter where they appear without exposing the entry's name or content.
+- **Illustrative reading order:** the two volume sequences are explicitly marked 示意.
+- **Final accessory cut:** the landing's duplicate 書庫 eyebrow was removed. The site bar
+  already identifies the section; the photograph, serif sentence and single action carry the
+  opening, and the phone photograph arrives sooner.

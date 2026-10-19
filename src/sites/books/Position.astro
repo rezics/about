@@ -1,7 +1,7 @@
 ---
 // The Wiki+ page's reading-position example (示意): pick a position (radio pills, the checked
-// one in ink) and the people and events from later chapters fold away into a quiet placeholder
-// in their hairline lists; their text is hidden, so it is neither seen nor read out. Works
+// one in ink) and the people and events from later chapters fold away into a quiet line naming
+// the chapter they appear in; their text is hidden, so it is neither seen nor read out. Works
 // without script: the rules below, one selector per position and later entry, are generated here.
 import site from '../../content/sites/books';
 
@@ -18,9 +18,11 @@ const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.st
   <style is:inline set:html={css}></style>
   <fieldset class="pos__control">
     <legend class="pos__legend">{p.control}</legend>
-    {p.positions.map((pos, i) => (
-      <label class="pos__pill"><input type="radio" name="wiki-position" id={`pos-${i}`} checked={i === 3} />{pos.label}</label>
-    ))}
+    <div class="pos__options">
+      {p.positions.map((pos, i) => (
+        <label class="pos__pill"><input type="radio" name="wiki-position" id={`pos-${i}`} checked={i === 2} />{pos.label}</label>
+      ))}
+    </div>
   </fieldset>
   <div class="pos__card">
     <div class="pos__statuses" aria-live="polite">
@@ -32,7 +34,7 @@ const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.st
           <h3>{p.groups[g]}</h3>
           <ul role="list" class="pos__list">
             {p.entries.filter((e) => e.group === g).map((e) => (
-              <li class="pos__entry" data-ch={e.chapter}>
+              <li class="pos__entry" data-ch={e.chapter} data-later={p.later.replace('{n}', String(e.chapter))}>
                 <span class="pos__name serif">{e.name}</span>
                 {e.aliases && <span class="pos__alias">{p.aliases}{e.aliases}</span>}
                 <span class="pos__note">{e.note}</span>
@@ -48,22 +50,24 @@ const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.st
 </div>
 <style>
   .pos { display: flex; flex-direction: column; gap: 28px; }
-  .pos__control { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .pos__legend { float: left; margin-right: 12px; font-size: 13px; color: var(--c-muted); letter-spacing: 0.04em; }
+  .pos__control { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .pos__legend { margin-bottom: 12px; font-size: 13px; color: var(--c-muted); letter-spacing: 0.04em; }
+  .pos__options { display: flex; flex-wrap: wrap; gap: 8px; }
   .pos__pill {
     position: relative;
     display: inline-flex;
     align-items: center;
-    min-height: 40px;
+    min-height: 44px;
     padding: 0 18px;
     border: 1px solid var(--c-line-strong, rgb(38 41 45 / 0.3));
     border-radius: 999px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s var(--ease-soft, ease), color 0.3s var(--ease-soft, ease), border-color 0.3s var(--ease-soft, ease);
+    transition: background-color 0.3s var(--ease-soft, ease), color 0.3s var(--ease-soft, ease), border-color 0.3s var(--ease-soft, ease), translate 0.3s var(--ease-soft, ease);
   }
-  .pos__pill:hover { border-color: var(--c-fg); }
+  @media (hover: hover) { .pos__pill:hover { border-color: var(--c-fg); translate: 0 -2px; } }
+  .pos__pill:active { translate: none; }
   .pos__pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
   .pos__pill:has(input:checked) { background: var(--c-fg); border-color: var(--c-fg); color: var(--c-bg); }
   .pos__pill:has(:focus-visible) { outline: 2px solid var(--focus, var(--c-link)); outline-offset: 3px; }
@@ -76,28 +80,29 @@ const status = (i: number) => (i === p.positions.length - 1 ? p.statusAll : p.st
   .pos__group h3 { font-size: 13px; font-weight: 400; color: var(--c-muted); letter-spacing: 0.04em; }
   .pos__list { display: flex; flex-direction: column; margin-top: 12px; border-bottom: 1px solid var(--c-line); }
   .pos__entry { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 18px 0 20px; border-top: 1px solid var(--c-line); }
-  /* A later entry folds into a quiet placeholder: its row stays, its text goes (hidden, so it is
-     not read out either) and two soft paper bars stand in for it. */
+  /* A later entry folds away: its row stays, its text goes (hidden, so it is not read out) and
+     a quiet line says from which chapter it appears. */
   .pos__entry::after {
-    content: '';
+    content: attr(data-later);
     position: absolute;
     left: 0;
-    top: 22px;
-    width: min(60%, 14em);
-    height: 12px;
-    background: rgb(38 41 45 / 0.1);
-    box-shadow: 0 24px 0 -1px rgb(38 41 45 / 0.06);
+    top: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--c-muted);
     opacity: 0;
     transition: opacity 0.4s var(--ease-soft, ease);
     pointer-events: none;
   }
   .pos__name { font-size: 18px; font-weight: 600; line-height: 1.5; }
-  .pos__alias, .pos__note { color: var(--c-text); font-size: 15px; line-height: 1.8; }
+  .pos__alias { color: var(--c-text); font-size: 15px; line-height: 1.8; }
+  .pos__note { color: var(--c-text); font-size: 16px; line-height: 1.9; }
   .pos__src { font-size: 13px; color: var(--c-muted); }
   .pos__rail { font-size: 13px; color: var(--c-muted); }
   @media (max-width: 767px) {
     .pos__groups { grid-template-columns: minmax(0, 1fr); }
-    .pos__legend { float: none; width: 100%; margin: 0 0 4px; }
+    .pos__options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pos__pill { justify-content: center; padding-inline: 6px; }
   }
-  @media (prefers-reduced-motion: reduce) { .pos__entry::after, .pos__pill { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .pos__entry::after, .pos__pill { transition: none; translate: none; } }
 </style>

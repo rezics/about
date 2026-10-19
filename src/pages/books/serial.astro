@@ -1,16 +1,14 @@
 ---
-// 連載 (v3, SITE.md "Pages"): the heading and lede; the folded strip beside the four safeguards
+// 連載 (v3, SITE.md "Pages"): the heading and lede beside the folded strip; the four safeguards
 // of a manuscript; what a reader sees when the author acts; the AI declaration; the world beside
 // the manuscript; the backup statement; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageHead from '../../kit/components/PageHead.astro';
-import PhotoRow from '../../kit/components/PhotoRow.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/books/NextPage.astro';
-import Facts from '../../sites/books/Facts.astro';
+import PhotoHead from '../../sites/books/PhotoHead.astro';
 import Notes from '../../sites/books/Notes.astro';
 import site from '../../content/sites/books';
 import { pictures } from '../../sites/books/pictures';
@@ -19,10 +17,11 @@ import '../../sites/books/books.css';
 const s = site.strings.serial;
 ---
 <MiniSiteLayout>
-  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.serial, alt: s.hero.alt }} />
 
-  <PhotoRow eyebrow={s.safe.label} title={s.safe.headline} image={{ ...pictures.serial, alt: s.safe.alt }} />
-  <Facts items={s.safe.rows} />
+  <Section eyebrow={s.safe.label} title={s.safe.headline}>
+    <FactList items={s.safe.rows} />
+  </Section>
 
   <Section eyebrow={s.mirror.label} title={s.mirror.headline}>
     <FactList items={s.mirror.rows} />

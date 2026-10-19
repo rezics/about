@@ -1,15 +1,14 @@
 ---
-// 閱讀紀錄 (v3, SITE.md "Pages"): the heading and lede; the three strips beside three reads of
-// one book; moving in and out; the statement on the Continue row; the shelf; privacy; the closing.
+// 閱讀紀錄 (v3, SITE.md "Pages"): the heading and lede beside the three strips; three reads of
+// one book as strips; moving in and out; the statement on the Continue row; the shelf; privacy; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageHead from '../../kit/components/PageHead.astro';
-import PhotoRow from '../../kit/components/PhotoRow.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/books/NextPage.astro';
-import Facts from '../../sites/books/Facts.astro';
+import PhotoHead from '../../sites/books/PhotoHead.astro';
+import Reads from '../../sites/books/Reads.astro';
 import site from '../../content/sites/books';
 import { pictures } from '../../sites/books/pictures';
 import '../../sites/books/books.css';
@@ -17,10 +16,11 @@ import '../../sites/books/books.css';
 const s = site.strings.library;
 ---
 <MiniSiteLayout>
-  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.library, alt: s.hero.alt }} />
 
-  <PhotoRow eyebrow={s.reads.label} title={s.reads.headline} body={s.reads.lead} image={{ ...pictures.library, alt: s.reads.alt }} />
-  <Facts items={s.reads.rows} note={s.reads.caption} />
+  <Section eyebrow={s.reads.label} title={s.reads.headline} lead={s.reads.lead}>
+    <Reads />
+  </Section>
 
   <Section eyebrow={s.move.label} title={s.move.headline}>
     <FactList items={s.move.steps} numbered />
