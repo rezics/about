@@ -35,7 +35,7 @@ const kindsOfPerson: MasonryItem[] = s.person.tiles.map((t) => ({
   </Section>
 
   <Section eyebrow={s.person.eyebrow} title={s.person.heading} lead={s.person.lead}>
-    <TileMasonry slot="wide" items={kindsOfPerson} columns={kindsOfPerson.map((k) => [{ id: k.id, h: 1 }])} phone={[kindsOfPerson.map((k) => ({ id: k.id }))]} height={220} phoneRow={150} label={s.person.eyebrow} />
+    <TileMasonry slot="wide" items={kindsOfPerson} columns={kindsOfPerson.map((k) => [{ id: k.id, h: 1 }])} height={220} phoneRow={150} label={s.person.eyebrow} />
   </Section>
 
   <Statement text={s.statement.text} sub={s.statement.muted} />

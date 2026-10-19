@@ -1,7 +1,7 @@
 ---
 // 漫畫 landing (v3, SITE.md "v3"): the photograph hero (a sheet cut into panel windows, the place
-// you stopped in rose), the eight parts as facts, the six pages as ink tiles, the statement on the
-// awaited volume, the neighbouring kinds as their own tiles and the closing (the page tiles above
+// you stopped in rose), the six pages as ink tiles, the statement on the awaited volume, the
+// eight parts as facts, the neighbouring kinds as their own tiles and the closing (the page tiles above
 // already lead to 第 1 話).
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PhotoHero from '../../kit/components/PhotoHero.astro';
@@ -60,15 +60,15 @@ const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h:
     <ProductCall label={site.strings.action} />
   </PhotoHero>
 
-  <Section eyebrow={s.parts.eyebrow} title={s.parts.heading}>
-    <FactList items={parts} />
-  </Section>
-
   <Section eyebrow={s.pages.eyebrow} title={s.pages.heading}>
     <TileMasonry slot="wide" items={pages} columns={pageColumns} height={520} phoneRow={176} label={s.pages.eyebrow} />
   </Section>
 
   <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <Section eyebrow={s.parts.eyebrow} title={s.parts.heading}>
+    <FactList items={parts} />
+  </Section>
 
   <Section eyebrow={s.neighbours.eyebrow} title={s.neighbours.heading} lead={s.neighbours.lead}>
     <TileMasonry slot="wide" items={neighbours} columns={neighbourColumns} height={240} label={s.neighbours.eyebrow} />

@@ -143,7 +143,7 @@ page).
 
 | Page | Sequence |
 |---|---|
-| 漫畫 `/manga/` | Hero (panel sheet) → Facts: the eight parts → Tiles: the six pages → Statement → Tiles: four neighbouring kinds → Closing |
+| 漫畫 `/manga/` | Hero (panel sheet) → Tiles: the six pages → Statement → Facts: the eight parts → Tiles: four neighbouring kinds → Closing |
 | 系列 `/manga/series/` | Intro → Photo row (volume stack) with the five levels as facts → Facts: catalogue data → Section: names and editions → Closing |
 | 進度 `/manga/progress/` | Intro → Photo row (folded strip): switching language → Facts: kinds of "caught up" → Statement: owning is not reading → Facts: what travels with you → Closing |
 | 作者 `/manga/creators/` | Intro → Facts: credits by role → Section: one person across kinds, with the person's other kinds as tiles → Statement: people, not accounts → Closing |
@@ -192,4 +192,16 @@ Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus
   (or 960) file; the extra size keeps phone LCP down.
 - **Page tiles.** `accentRamp('#26282b')`: deep sheets and pale greys alternate across the three
   columns; phone rows are 176 px so the chapter label never meets the name.
+
+### Finishing pass
+
+- The six chapter links now follow the hero, before the detailed eight-part list. The landing
+  gives visitors a clear way into their subject at the same point the approved mock introduces
+  its product tiles.
+- The creators page uses the kit's default two-column phone masonry, with its third link on a
+  full row. Three narrow phone tiles were outside the v3 composition rule.
+- Copy distinguishes an original-language edition from its translations, and the identity of
+  each adaptation from its source. The landing promises language availability, without implying
+  that REZICS predicts a future translation date. The community module tile has its own line
+  rather than repeating the shared navigation's sentence.
 
