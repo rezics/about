@@ -142,7 +142,9 @@ Copy first in every phone hero, the picture as a band after it (a 3:2 crop of th
 640, 780 and 960 px wide). The 780 × 520 source is the direct match for a 390 px phone at 2×,
 kept below 48 KB so it does not need to download the 960 px file.
 Sections stack; facts lists put the title above its text. The kind picker is three columns of
-short tiles (three rows) with the list under it; the ring of five modules is two columns.
+short tiles (three rows) with the list under it; the ring of five modules is two columns with
+180 px rows so the current-module label clears the title and summary, including narrow phones. Related-work
+tiles use 220 px phone rows to fit a two-line work name, relation and full description.
 
 The photos' empty paper narrows towards the bottom. `src/sites/engine/hero.css`, imported only
 by these four pages, caps desktop copy at 28vw. Tablets from 768 to 1199 px use copy followed
