@@ -36,4 +36,6 @@ const id = idFor('close', title);
   .close__body { grid-column: 1 / 7; margin-top: 24px; font-size: 18px; line-height: 1.8; }
   .close__cta { grid-column: 1 / 4; margin-top: 36px; }
   .close :global(.close__pill--ink) { --btn-bg: var(--c-ink); --btn-fg: var(--c-paper); }
+  /* The white pill's label takes the block's own field, whatever the theme's link colour. */
+  .close :global(.btn--white) { --btn-fg: var(--close-bg); }
 </style>

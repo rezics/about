@@ -35,7 +35,7 @@
   --c-bg: var(--c-band-bg);
   --c-fg: var(--c-band-fg);
   --c-muted: var(--c-band-muted);
-  --c-text: rgb(249 246 242 / 0.84);
+  --c-text: color-mix(in srgb, var(--c-band-fg) 84%, transparent);
   --c-line: var(--c-band-line);
   --c-line-strong: var(--c-band-line-strong);
   --c-link: var(--c-band-link);

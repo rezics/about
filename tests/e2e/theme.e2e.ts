@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const DARK = `[data-site] {
-  --c-bg: #0e1420; --c-fg: #f4f5f2; --c-muted: #a9b2c1; --c-surface: #161e2c; --c-soft: #1f2838;
+  --c-bg: #0e1420; --c-fg: #f4f5f2; --c-muted: #a9b2c1; --c-text: #c9d1dc; --c-surface: #161e2c; --c-soft: #1f2838;
   --c-line: rgb(244 245 242 / 0.16); --c-line-strong: rgb(244 245 242 / 0.34); --c-link: #9ab8e6; --c-on-link: #0e1420;
   --c-band-bg: #f4f5f2; --c-band-fg: #0e1420; --c-band-muted: #566070;
   --c-band-line: rgb(14 20 32 / 0.12); --c-band-line-strong: rgb(14 20 32 / 0.28); --c-band-link: #2f63ad;

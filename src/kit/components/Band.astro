@@ -38,14 +38,14 @@ const id = given ?? idFor('band', title);
 </section>
 <style>
   .band { margin-top: var(--space-section); padding-block: clamp(72px, 9vw, 128px); }
-  .band__label { color: rgb(249 246 242 / 0.72); }
+  .band__label { color: var(--c-muted); }
   .band__head { grid-column: 1 / 7; }
   .band__title { margin-top: 22px; font-size: var(--t-big); font-weight: 600; line-height: 1.2; letter-spacing: 0.01em; }
-  .band__text { grid-column: 8 / 13; align-self: start; font-size: var(--t-body); line-height: 1.85; color: rgb(249 246 242 / 0.84); }
+  .band__text { grid-column: 8 / 13; align-self: start; font-size: var(--t-body); line-height: 1.85; color: var(--c-text); }
   .band__items { grid-column: 1 / 13; margin-top: 72px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
-  .band__items li { border-top: 1px solid rgb(249 246 242 / 0.22); padding-top: 18px; }
+  .band__items li { border-top: 1px solid var(--c-line-strong); padding-top: 18px; }
   .band__items h3 { font-size: 20px; font-weight: 600; }
-  .band__items p { margin-top: 10px; font-size: 15px; line-height: 1.8; color: rgb(249 246 242 / 0.8); }
+  .band__items p { margin-top: 10px; font-size: 15px; line-height: 1.8; color: var(--c-text); }
   @media (max-width: 767px) {
     .band__text { margin-top: 20px; }
     .band__items { grid-template-columns: minmax(0, 1fr); margin-top: 40px; gap: 24px; }
