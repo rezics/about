@@ -175,7 +175,7 @@ export interface Site {
   };
   /** The closing panel that ends every page and leads into the product. */
   product: { headline: string; body: string };
-  notFound: { meta: Meta; headline: string; body: string; back: string };
+  notFound: { meta: Meta; headline: string; body: string; back: string; imageAlt: string; restart: string };
   /** Shared control labels (kit primitives such as the composing square). */
   ui: {
     /** Pause and resume a moving element (WCAG 2.2.2). */

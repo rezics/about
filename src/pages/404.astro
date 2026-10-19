@@ -1,17 +1,36 @@
 ---
-// 404 (v3): a page head on paper and the way home, then the nine kinds to start again.
+// 404 (v3): one photograph (a sheet with a piece cut out), one sentence, the way home; then the
+// nine kinds as one quiet row of tiles to start again.
 import PageLayout from '../kit/layouts/PageLayout.astro';
-import PageHead from '../kit/components/PageHead.astro';
+import PhotoHero from '../kit/components/PhotoHero.astro';
+import Section from '../kit/components/Section.astro';
+import TileMasonry, { type MasonryItem } from '../kit/components/TileMasonry.astro';
 import ProductCall from '../kit/components/ProductCall.astro';
-import { site } from '../kit/content';
+import { kinds, site, kindHref } from '../kit/content';
+import { kindFields } from '../kit/theme';
 
 const nf = site.notFound;
+const tiles: MasonryItem[] = kinds.map((k) => ({ id: k.id, name: k.name, href: kindHref(k.id), bg: kindFields[k.id].field, on: kindFields[k.id].on }));
+const columns = tiles.map((t) => [{ id: t.id, h: 1 }]);
+const phone = [0, 3, 6].map((i) => tiles.slice(i, i + 3).map((t) => ({ id: t.id })));
 ---
 <PageLayout meta={nf.meta} noindex>
-  <PageHead label={site.name} title={nf.headline} lede={nf.body} class="nf">
+  <PhotoHero
+    title={nf.headline}
+    lede={nf.body}
+    class="nf"
+    image={{ src: '/images/home/missing', widths: [960, 1920], width: 1920, height: 1280, alt: nf.imageAlt, position: '100% 50%' }}
+  >
     <ProductCall href="/" label={nf.back} />
-  </PageHead>
+  </PhotoHero>
+  <Section title={nf.restart} class="nf-kinds">
+    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={168} phoneRow={92} size="m" label={nf.restart} />
+  </Section>
+  <div class="nf-end" aria-hidden="true"></div>
 </PageLayout>
 <style>
-  .nf { min-height: 64svh; padding-bottom: var(--space-section); }
+  :global(section.phero.nf) { --hero-h: min(calc(100svh - var(--header-h)), 720px); }
+  :global(.nf-kinds .section__title) { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem); }
+  :global(.nf-kinds .section__wide) { margin-top: 48px; }
+  .nf-end { height: clamp(96px, 10vw, 160px); }
 </style>
