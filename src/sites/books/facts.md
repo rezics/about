@@ -48,7 +48,7 @@ them are stated only as they say.
 | Status, progress, ratings, lists edit in place with undo; facts and relations through proposals | `docs/plan/frontend.md#work-page` ("Status, progress, rating and lists edit in place with undo; facts and relations edit through proposals") |
 | Proposals carry sources and are applied after human review | `docs/product/markets-and-growth.md#release-to-return-loop` ("An editor or scoped agent proposes facts with exact sources … review binds the candidate before Main applies it") |
 | Interface, title, release and review languages stay distinct; a translated title is not a translation | `docs/plan/frontend.md#work-page`; `docs/contracts/content-languages.md#one-native-language-contract` ("UI locale cannot become authored content language") |
-| 《傲慢與偏見》: 1813, England, 61 chapters in three volumes | general literary fact (public domain work); see uncertainties |
+| 《魔法禁書目錄》 (work page example, text only): original title 《とある魔術の禁書目録》; light novel by 鎌池和馬, illustrated by 灰村清孝; 正篇 from 2004, then 《新約》 and 《創約》 as three series of one story; Japanese original with Traditional Chinese and English editions | `about:.temp/sites/EXAMPLE-WORK.md` (verified facts; sources en.wikipedia.org/wiki/A_Certain_Magical_Index and zh.wikipedia.org/zh-tw/魔法禁書目錄, read 2026-10-19) |
 
 ## Wiki+ `/books/wiki/`
 
@@ -76,7 +76,7 @@ them are stated only as they say.
 | A reviewer with the same edition can verify the passage locally | same ("Verifiable locators") |
 | Each community decides on agent drafting and generated prose; facts and structure by default | same ("Each Realm decides whether agents may draft …") |
 | Nothing reaches readers without human review | same ("nothing reaches readers without human review") |
-| 《傲慢與偏見》 entries and chapters | the public-domain text; see uncertainties |
+| Wiki+ position example: a fictional story (示意), its people and events and the chapters they first appear in | illustrative, no real work |
 
 ## Editions and series `/books/editions/`
 
@@ -102,7 +102,7 @@ them are stated only as they say.
 | Series progress counts required parts; extras do not block a finish | same ("Required uses define the published-parts denominator; optional parts and extras do not block a finish") |
 | Four series states | same ("caught up with available material", "finished the published parts", "series concluded" and "correspondence unresolved") |
 | An ISBN belongs to one publication and resolves to the release, its realization and the Work | `docs/contracts/work-and-release.md` intro; `#catalogue-acceptance-fixtures` (query 2) |
-| 《紅樓夢》: early manuscripts at most 80 chapters, later printed editions 120 | general literary history; see uncertainties |
+| ISBN example: the Japanese original, the Traditional Chinese edition and the English edition of 《魔法禁書目錄》 are separate publications of one work | `about:.temp/sites/EXAMPLE-WORK.md` (the edition titles in three languages) |
 
 ## Library `/books/library/`
 
@@ -166,15 +166,8 @@ them are stated only as they say.
 
 ## Uncertain or worth checking
 
-1. **《傲慢與偏見》 details** (work and wiki pages): published 1813, 61 chapters in three
-   volumes; Bingley named in chapter 1; Darcy at the assembly in chapter 3; Wickham in
-   chapter 15; Darcy's letter in chapter 35; news of Lydia's elopement in Jane's letters in
-   chapter 46; Elizabeth the second daughter. From the text as I know it, not from REZICS
-   documents. Check against the public-domain text (the toolkit's Austen fixture) before
-   building.
-2. **《紅樓夢》 coverage** (editions S6): "early manuscripts at most 80 chapters, later printed
-   editions 120". Standard literary history, not a REZICS document; the copy does not claim
-   how REZICS would model the 後四十回 (same Work or not).
+1. **Example work** (work and editions pages): only 《魔法禁書目錄》, text only, per `about:.temp/sites/EXAMPLE-WORK.md`; old classics were removed (DESIGN.md decision of 2026-10-19 on examples).
+2. **Wiki+ position example**: a fictional story marked 示意; no real work's chapters are claimed.
 3. **「無法取得」** (wiki S6): the contract names the state "unavailable" without defining it;
    the definition in the copy is my reading.
 4. **Publish S3 note and S5 privacy line, S2 licence line**: from the creator distribution

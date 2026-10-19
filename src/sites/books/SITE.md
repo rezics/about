@@ -1,5 +1,16 @@
 # 書庫 `books`: site design record
 
+> **Direction v2 (2026-10-19).** The page bodies were rebuilt on the kit's v2 primitives (DESIGN.md
+> "Direction v2: a company homepage"): Aura ground and ink with the books field `#1d5a47` as the
+> accent in art, tints and the site bar's marker; painterly art (hero `hero`, rows `nook`, `desk`,
+> inner pages `shelves`, `lending`, `shop`, all in `public/images/sites/books/`); the bookmark
+> stage became a calm reading figure (`src/sites/books/Progress.astro`) beside six numbered steps;
+> the Wiki+ position became radio pills that fold later entries away (`Position.astro`); every
+> other square interaction (state tabs, order toggle, square grids) became text, pills, tables and
+> cards. Examples: 《魔法禁書目錄》 only, as text, on the work and editions pages; a fictional story
+> (示意) for the Wiki+ position. Where this record describes squares, curtains or the bookmark
+> stage, it is history.
+
 Site id `books`, routes `/books/` and `/books/<page>/`, field `#1d5a47`. The design record:
 brief, research, concept, pages, composition, signature, theme, images, and at the end the build
 record (what changed from the stage 1 plan and why). Copy lives in

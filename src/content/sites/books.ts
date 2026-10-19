@@ -12,7 +12,7 @@ export type BooksStrings = {
   /** Shared labels across the site's pages. */
   common: { nextPage: string; nextSite: string };
   landing: {
-    hero: { headline: string; lede: string; secondary: string; caption: string };
+    hero: { headline: string; lede: string; secondary: string; alt: string };
     bookmark: {
       headline: string;
       intro: string;
@@ -21,9 +21,12 @@ export type BooksStrings = {
       omnibusCell: string;
       waiting: string;
       steps: TitledText[];
-      /** Caption under the figure per step (1 to 6); decorative, the steps carry the meaning. */
-      captions: string[];
+      /** The figure's legend: read, published, the bookmark. */
+      legend: { read: string; published: string; bookmark: string };
     };
+    /** Text-and-image rows (DESIGN.md "Direction v2"). */
+    reading: { headline: string; body: string[]; link: string; alt: string };
+    writing: { headline: string; body: string[]; links: [string, string]; alt: string };
     shelf: { headline: string; words: string[]; caption: string };
     parts: { headline: string; caption: string };
     pages: { headline: string; rows: { slug: string; body: string }[] };
@@ -37,7 +40,7 @@ export type BooksStrings = {
   work: {
     hero: { headline: string; lede: string; title: string; original: string; author: string; caption: string };
     sections: { headline: string; intro: string; rows: (TitledText & { example: string })[] };
-    action: { headline: string; body: string; control: string; states: { tab: string; button: string }[]; caption: string };
+    action: { headline: string; body: string; control: string; column: string; states: { tab: string; button: string }[]; caption: string };
     ratings: { headline: string; targets: string[]; scopes: string[]; body: string; caption: string };
     edit: { headline: string; direct: { title: string; items: string[] }; propose: { title: string; items: string[] }; caption: string };
     languages: { statement: string; body: string };
@@ -76,7 +79,6 @@ export type BooksStrings = {
       squares: string[];
       /** Reading order as indexes into `squares`. */
       reading: number[];
-      toggle: [string, string];
       notes: string[];
     };
     isbn: { poster: string; body: string; example: string };
@@ -113,7 +115,7 @@ export type BooksStrings = {
 const strings: BooksStrings = {
   common: {
     nextPage: '下一頁',
-    nextSite: '下一個方塊',
+    nextSite: '下一個網站',
   },
 
   landing: {
@@ -121,32 +123,32 @@ const strings: BooksStrings = {
       headline: '一部作品，所有版本，和你讀到的那一頁。',
       lede: 'REZICS 書庫為每部作品建一個頁面。原文與譯本、單行本與合訂本、網路連載與出版版本各自分明，又都連回同一部作品。你的書籤放在哪裡，下一本、Wiki 與討論就跟到哪裡。',
       secondary: '看書籤怎麼走',
-      caption: '輕小說、網路連載，和每一種書。',
+      alt: '油畫風格的插圖：晨光裡的閱覽室，整面書架、綠色扶手椅與一張閱讀桌。',
     },
     bookmark: {
       headline: '書籤放在哪裡，下一本就從那裡算。',
       intro:
         '以一套十二集的輕小說為例：日文版出到第 12 集，繁中版出到第 6 集，英文版出到第 9 集，另有一本收錄第 1 到 3 集的繁中合訂本。',
-      figure: '示意圖：十二集的方格依語言排成數列，紅色書籤標出讀到的位置。',
+      figure: '示意：十二集依語言排成數列，書籤標出讀到的位置。',
       rows: { work: '作品', ja: '日文', zh: '繁中', omni: '合訂本', en: '英文' },
       omnibusCell: '合訂本',
       waiting: '等待',
       steps: [
         {
-          title: '一集一格',
-          body: '系列裡的每一集都是一部作品，排成一列。不論用哪種語言出版，第 7 集都在同一格。',
+          title: '每一集是一部作品',
+          body: '系列裡的每一集都是一部作品，依序排好。不論用哪種語言出版，第 7 集都是同一部作品。',
         },
         {
           title: '每種語言一列',
-          body: '日文、繁中、英文各占一列。只有真的出版過的版本才會填進格子，其餘留空。',
+          body: '日文、繁中、英文各占一列。只有真的出版過的版本才會記上，其餘留空。',
         },
         {
-          title: '合訂本橫跨三格',
-          body: '繁中合訂本收錄第 1 到 3 集，在這一列占三格寬。讀完它，三集各算讀完一次，不會重複計算。',
+          title: '合訂本收錄三集',
+          body: '繁中合訂本收錄第 1 到 3 集，是一次出版。讀完它，三集各算讀完一次，不會重複計算。',
         },
         {
           title: '書籤跟著你',
-          body: '讀完一集，書籤往右移一格。架上有沒有這本書，和你讀完了沒，是分開的兩件事。',
+          body: '讀完一集，書籤就往後移到下一集。架上有沒有這本書，和你讀完了沒，是分開的兩件事。',
         },
         {
           title: '下一本，用你讀的語言',
@@ -157,14 +159,25 @@ const strings: BooksStrings = {
           body: '先讀了日文版第 7、8 集，再換回繁中，這兩集仍然算讀完。譯本是同一部作品的不同文本，進度不必重來。',
         },
       ],
-      captions: [
-        '還沒開始讀。',
-        '選了繁中，下一本是第 1 集。',
-        '讀到第 3 集。下一本：第 4 集。',
-        '讀到第 6 集，書籤停在這一格之後。',
-        '讀到第 6 集。下一本：第 7 集，等待繁中版。',
-        '讀到第 8 集。下一本：第 9 集，等待繁中版。',
+      legend: { read: '讀過', published: '已出版', bookmark: '書籤：讀到第 6 集，下一本等待繁中版第 7 集' },
+    },
+    reading: {
+      headline: '讀到哪裡，討論與 Wiki 就停在哪裡。',
+      body: [
+        '登入之後，你讀完的最後一章就是預設的位置。之後才出現的人物、事件與討論先收起來，不會劇透。',
+        '想先看全部，也能一次打開；位置只在同一條故事脈絡裡有效。',
       ],
+      link: '看 Wiki+ 怎麼建',
+      alt: '油畫風格的插圖：午後陽光照著窗邊的閱讀座，靠墊、毛毯和一本攤開倒放的書。',
+    },
+    writing: {
+      headline: '寫書的人，也在同一個書庫。',
+      body: [
+        '連載作者在這裡一章章寫作、排程與發布，讀者從上次讀到的段落接著讀。',
+        '簽約創作者把已取得授權的無 DRM 電子書直接賣給讀者，商店頁就在作品的討論旁邊。',
+      ],
+      links: ['看連載', '看出版'],
+      alt: '油畫風格的插圖：開著的窗邊有一張書桌，桌上攤著筆記本、一支鋼筆、幾本書和一杯茶。',
     },
     shelf: {
       headline: '書庫收的書',
@@ -172,7 +185,7 @@ const strings: BooksStrings = {
       caption: '有書號的、沒有書號的、只在網路上連載的，在書庫裡都是一部作品。',
     },
     parts: {
-      headline: '八個部件，拼成書庫的方塊。',
+      headline: '八個部件，組成書庫。',
       caption: '同一套部件也組成動畫、漫畫與遊戲，書庫從中挑了這八個。',
     },
     pages: {
@@ -187,7 +200,7 @@ const strings: BooksStrings = {
       ],
     },
     connections: {
-      headline: '書裡的故事，也在別的方塊裡。',
+      headline: '書裡的故事，也在別的種類裡。',
       squares: [
         { kind: 'anime', label: '原著改編的動畫，用一條關係連回來' },
         { kind: 'manga', label: '漫畫化的版本，評分各自計算' },
@@ -202,10 +215,10 @@ const strings: BooksStrings = {
   work: {
     hero: {
       headline: '關於一部作品的一切，都從這一頁出發。',
-      lede: '作品頁是書庫的中心。事實、評分與評論、你選的版本與進度、系列與改編、Wiki 摘要、討論和清單，照閱讀時用得到的順序排好。下面用《傲慢與偏見》走一遍。',
-      title: '《傲慢與偏見》',
-      original: 'Pride and Prejudice',
-      author: '珍‧奧斯汀',
+      lede: '作品頁是書庫的中心。事實、評分與評論、你選的版本與進度、系列與改編、Wiki 摘要、討論和清單，照閱讀時用得到的順序排好。下面以《魔法禁書目錄》為例走一遍。',
+      title: '《魔法禁書目錄》',
+      original: 'とある魔術の禁書目録',
+      author: '鎌池和馬',
       caption: '書名用你的語言顯示，原文書名安靜地放在一旁。',
     },
     sections: {
@@ -215,27 +228,27 @@ const strings: BooksStrings = {
         {
           title: '身分與下一步',
           body: '封面、書名、作者與評分，評分寫明量表、人數與範圍。旁邊是你選的版本、閱讀狀態與進度。',
-          example: '讀到第 34 章，主要按鈕寫著「繼續讀」。',
+          example: '讀到第 5 集，主要按鈕寫著「繼續讀」。',
         },
         {
           title: '簡介',
           body: '不劇透的簡介、基本資料、幾個標籤與內容提醒。展開之後，才看到完整的事實、出處與「提出更正」。',
-          example: '1813 年在英國出版的長篇小說。',
+          example: '鎌池和馬著、灰村清孝插畫的輕小說，正篇從 2004 年起出版。',
         },
         {
           title: '你的版本與取得方式',
           body: '先列你選的版本，再列幾個相符的版本，最後是可以分頁瀏覽的完整清單。',
-          example: '英文原著，以及數個繁中譯本，各自署名譯者。',
+          example: '日文原著，以及繁體中文與英文的譯本，各自署名譯者。',
         },
         {
           title: '分集與關聯',
           body: '還沒讀完的下一個部分排在最前，接著是依序的章節或分集，然後是續集與改編。出版順序和推薦的閱讀順序分開列。',
-          example: '全書 61 章，原本分成三卷出版。',
+          example: '正篇、《新約》與《創約》三個系列，用續作的關係相連。',
         },
         {
           title: '探索 Wiki',
           body: '主要人物、重要的製作人員，以及不超過你進度的時間線或章節導讀，再連到 Wiki 的各個頁面。',
-          example: '讀到第 34 章，時間線就停在第 34 章。',
+          example: '讀到第 5 集，時間線就停在第 5 集。',
         },
         {
           title: '評分與評論',
@@ -245,12 +258,12 @@ const strings: BooksStrings = {
         {
           title: '討論與社群',
           body: '作品、章節與版本各有自己的討論串。看討論不需要先加入社群。',
-          example: '想聊第 34 章，從章節旁邊直接進去。',
+          example: '想聊第 5 集，從那一集旁邊直接進去。',
         },
         {
           title: '清單與探索',
           body: '收錄這部作品的清單與閱讀順序，各自附上理由；再往下是識別碼、出處與修訂歷史。',
-          example: '一份英國小說入門清單，寫明為什麼收了它。',
+          example: '一份輕小說入門清單，寫明為什麼收了它。',
         },
       ],
     },
@@ -258,6 +271,7 @@ const strings: BooksStrings = {
       headline: '最上方只有一個主要按鈕。',
       body: '按鈕上寫什麼，取決於你和這部作品的關係。追蹤與加入清單是另外兩個按鈕，不和它混在一起。',
       control: '閱讀狀態',
+      column: '主要按鈕上的字',
       states: [
         { tab: '還沒選版本', button: '選擇版本' },
         { tab: '還沒開始', button: '開始讀' },
@@ -289,7 +303,7 @@ const strings: BooksStrings = {
     hero: {
       headline: '每一本書，都能有一部讀到哪、看到哪的 Wiki。',
       lede: '有這本書的人，在自己的電腦上讓 AI 代理一章一章讀，把人物、地點與發生的事件一條條列出來，每一條都標明出自原文哪裡。經人審核的內容才會出現在 Wiki 上，而每位讀者看到的，只到他讀過的那一章。',
-      alt: '一本攤開的書，紅色書籤帶橫過右頁，垂到書外。',
+      alt: '油畫風格的插圖：窗邊的閱讀座擺著靠墊與毛毯，旁邊疊著幾本書，窗外是花園。',
     },
     flow: {
       headline: '從一個檔案，到一部 Wiki。',
@@ -311,31 +325,31 @@ const strings: BooksStrings = {
     },
     position: {
       headline: '讀到第幾章，Wiki 就到第幾章。',
-      intro: '以《傲慢與偏見》為例，同一份人物與事件清單，在不同位置看到的內容不同。',
+      intro: '以一部虛構的小說為例（示意），同一份人物與事件清單，在不同位置看到的內容不同。',
       control: '閱讀位置',
       positions: [
         { label: '第 1 章', chapter: 1 },
         { label: '第 3 章', chapter: 3 },
-        { label: '第 15 章', chapter: 15 },
-        { label: '第 35 章', chapter: 35 },
-        { label: '第 46 章', chapter: 46 },
-        { label: '全部', chapter: 61 },
+        { label: '第 9 章', chapter: 9 },
+        { label: '第 16 章', chapter: 16 },
+        { label: '第 22 章', chapter: 22 },
+        { label: '全部', chapter: 30 },
       ],
       groups: { people: '人物', events: '事件' },
       source: '出處：第 {n} 章',
       aliases: '別名：',
       entries: [
-        { group: 'people', name: '伊莉莎白‧班奈特', aliases: '莉琪、Elizabeth、Lizzy', chapter: 1, note: '班奈特家的次女。' },
-        { group: 'people', name: '班奈特先生、班奈特太太', chapter: 1, note: '家中有五個女兒。' },
-        { group: 'people', name: '賓利', chapter: 1, note: '剛租下附近莊園的年輕人。' },
-        { group: 'people', name: '達西', chapter: 3, note: '賓利的朋友，在舞會上登場。' },
-        { group: 'people', name: '韋克漢', chapter: 15, note: '駐紮在鎮上的軍官。' },
-        { group: 'events', name: '達西的信', chapter: 35, note: '信裡說出他和韋克漢的過去。' },
-        { group: 'events', name: '莉迪亞與韋克漢私奔', chapter: 46, note: '消息從珍的來信傳來。' },
+        { group: 'people', name: '主角', aliases: '小名、筆名', chapter: 1, note: '故事的敘述者，在港口城市長大。' },
+        { group: 'people', name: '主角的姊姊', chapter: 1, note: '在城裡的書店工作。' },
+        { group: 'people', name: '新來的鄰居', chapter: 1, note: '剛搬進對面房子的年輕人。' },
+        { group: 'people', name: '鄰居的朋友', chapter: 3, note: '在一場宴會上登場。' },
+        { group: 'people', name: '旅行的畫家', chapter: 9, note: '暫住在港口旁的旅館。' },
+        { group: 'events', name: '一封長信', chapter: 16, note: '信裡說出兩人過去的事。' },
+        { group: 'events', name: '離港的船', chapter: 22, note: '消息從姊姊的來信傳來。' },
       ],
       status: '目前位置：第 {n} 章。之後的內容不會出現在這裡。',
       statusAll: '目前顯示全部內容，包括結局。',
-      rail: '全書 61 章，紅色書籤標出目前的位置。',
+      rail: '全書 30 章，書籤標出目前的位置。',
       rules: [
         '沒有登入的讀者，從第 1 章開始看，頁面會說明這一點。',
         '登入之後，預設位置是你讀完的最後一章；在書庫標成「已讀」，就等於讀完整部。',
@@ -382,7 +396,7 @@ const strings: BooksStrings = {
     hero: {
       headline: '一部作品，可以有一整排書。',
       lede: '原文與譯本、平裝與電子版、合訂本與特裝版、網路連載與後來的出版版本。REZICS 把每一種分開記下，再讓它們指回同一部作品，你知道手上是哪一本，系列進度也不會亂。',
-      alt: '五本大小不同的書並排站著，最後一本特別厚。',
+      alt: '油畫風格的插圖：晨光照進家中書房的一角，整面書架靠著一架木梯。',
     },
     releases: {
       headline: '每一次出版，都說清楚自己是什麼。',
@@ -433,7 +447,6 @@ const strings: BooksStrings = {
       rows: ['出版順序', '推薦的閱讀順序'],
       squares: ['第 1 集', '外傳', '第 2 集', '第 3 集'],
       reading: [0, 2, 1, 3],
-      toggle: ['換成閱讀順序', '換成出版順序'],
       notes: [
         '合訂本是一次出版，收錄好幾集。每一集仍是自己的作品，評分與進度都留在各集。',
         '系列裡的子系列可以各自從第 1 集編號，另有一條總順序把它們接起來。',
@@ -444,7 +457,7 @@ const strings: BooksStrings = {
     isbn: {
       poster: '輸入書號，找到那一版。',
       body: '書號屬於某一次出版，不等於作品本身。從任何一個書號或電子版條目出發，都能找到那一版、它收的文本或譯本，以及上層的作品。',
-      example: '以《紅樓夢》為例：早期抄本至多八十回，後來的排印本有一百二十回。每一版各自記下收錄的範圍，你看得出手上這一部有沒有後四十回。',
+      example: '例如《魔法禁書目錄》：日文原著、繁體中文版與英文版各是一次出版，書號各自不同，都指回同一部作品。',
     },
     finaleLead: '接著看你自己的那一份紀錄。',
   },
@@ -453,7 +466,7 @@ const strings: BooksStrings = {
     hero: {
       headline: '你怎麼讀，紀錄就怎麼記。',
       lede: '讀到一半放下、隔了兩年重讀、通勤時改聽有聲書、借給朋友的書還沒還。REZICS 的閱讀紀錄照實記下每一種情況，預設只有你看得到，想搬走時整份帶走。',
-      alt: '一本攤開的書，內頁貼著紙袋，借書卡插了一半，卡上有幾個圓形印章。',
+      alt: '油畫風格的插圖：圖書館的借還書桌上疊著幾本書，一條書籤帶垂下，旁邊有一個桌鈴。',
     },
     reads: {
       headline: '同一本書讀三次，就是三筆紀錄。',
@@ -559,7 +572,7 @@ const strings: BooksStrings = {
         '用故事裡的曆法排時間線，日期不確定也能記。',
         '連貫性助手只標出筆記和稿子裡互相矛盾的地方，不會替你寫任何一章。',
       ],
-      alt: '一張空白的方格稿紙，右下角擱著一支鋼筆。',
+      alt: '油畫風格的插圖：窗邊書桌上攤開一本筆記本，旁邊擱著一支鋼筆。',
     },
     backup: {
       statement: '整部稿子，隨時完整帶走。',
@@ -572,7 +585,7 @@ const strings: BooksStrings = {
     hero: {
       headline: '書賣出去，檔案留在讀者手上。',
       lede: '簽約創作者可以在 REZICS 直接販售已取得授權的電子書、小型遊戲與視覺小說。讀者買到的是無 DRM 的檔案，商店頁就在作品的討論與 Wiki 旁邊。',
-      alt: '一本平放的書，上面壓著一張捲起一角的收據。',
+      alt: '油畫風格的插圖：黃昏的小書店裡，桌上疊著新書，一盞綠色小燈亮著。',
     },
     buy: {
       headline: '讀者買一本書，從選版本開始。',
@@ -611,7 +624,7 @@ const strings: BooksStrings = {
       body: '商店頁是作品頁的一部分。買之前看得到評論、討論與 Wiki；買了之後，你的版本、進度與收據都留在同一部作品下。讀者也能追蹤創作者，看見他寫的小說和做的遊戲。',
       privacy: '讀者買了一本書，創作者看到的是彙總的銷售資料，看不到讀者的閱讀紀錄。',
     },
-    finaleLead: '書庫到這裡。下一個方塊，是動畫。',
+    finaleLead: '書庫到這裡，下一個網站是動畫。',
   },
 };
 

@@ -1,0 +1,86 @@
+---
+// The landing's reading figure (示意): one twelve-volume series, a row per language with the
+// volumes really published, the omnibus spanning volumes 1 to 3, the volumes read, and the
+// bookmark after volume 6 with volume 7 waiting in Traditional Chinese. Static and calm; the
+// numbered steps beside it carry the meaning, so the drawing is hidden from screen readers.
+import site from '../../content/sites/books';
+
+const b = site.strings.landing.bookmark;
+const vols = Array.from({ length: 12 }, (_, i) => i + 1);
+const read = 6;
+const rows: { label: string; published: number; span?: [number, number]; waiting?: number }[] = [
+  { label: b.rows.ja, published: 12 },
+  { label: b.rows.zh, published: 6, waiting: 7 },
+  { label: b.rows.omni, published: 0, span: [1, 3] },
+  { label: b.rows.en, published: 9 },
+];
+---
+<figure class="prog">
+  <div class="prog__card" aria-hidden="true">
+    <div class="prog__grid">
+      <span class="prog__label"></span>
+      {vols.map((v) => <span class="prog__num">{v}</span>)}
+      <span class="prog__label prog__label--work">{b.rows.work}</span>
+      {vols.map((v) => <span class:list={['prog__cap', v <= read ? 'is-read' : v === read + 1 ? 'is-next' : 'is-ahead']}></span>)}
+      {rows.map((r) => (
+        <>
+          <span class="prog__label">{r.label}</span>
+          {r.span ? (
+            <>
+              <span class="prog__cap is-pub prog__cap--span" style={`grid-column: ${r.span[0] + 1} / ${r.span[1] + 2}`}>{b.omnibusCell}</span>
+              {vols.slice(r.span[1]).map(() => <span class="prog__cap is-none"></span>)}
+            </>
+          ) : (
+            vols.map((v) => <span class:list={['prog__cap', v <= r.published ? 'is-pub' : v === r.waiting ? 'is-wait' : 'is-none']}></span>)
+          )}
+        </>
+      ))}
+      <span class="prog__mark" style={`grid-column: ${read + 2}`}></span>
+    </div>
+    <ul class="prog__legend" role="list">
+      <li><span class="prog__key is-read"></span>{b.legend.read}</li>
+      <li><span class="prog__key is-pub"></span>{b.legend.published}</li>
+      <li><span class="prog__key prog__key--mark"></span>{b.legend.bookmark}</li>
+    </ul>
+  </div>
+  <figcaption class="prog__caption">{b.figure}</figcaption>
+</figure>
+<style>
+  .prog { min-width: 0; }
+  .prog__card { padding: clamp(20px, 3vw, 36px); border-radius: var(--r-card); background: var(--c-surface); border: 1px solid var(--c-line); box-shadow: var(--shadow-card); }
+  .prog__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4.5em repeat(12, minmax(0, 1fr));
+    gap: 10px 5px;
+    align-items: center;
+  }
+  .prog__num { text-align: center; font-size: var(--t-xs); color: var(--c-muted); font-family: var(--f-latin), var(--f-cjk); }
+  .prog__label { font-size: var(--t-s); color: var(--c-muted); white-space: nowrap; }
+  .prog__label--work { color: var(--c-fg); font-weight: 500; }
+  .prog__cap { height: 22px; border-radius: var(--r-pill); }
+  .prog__cap.is-read { background: var(--field); }
+  .prog__cap.is-next { box-shadow: inset 0 0 0 2px var(--field); }
+  .prog__cap.is-ahead { background: var(--c-soft); }
+  .prog__cap.is-pub { background: var(--tint-strong); }
+  .prog__cap.is-wait { box-shadow: inset 0 0 0 1.5px var(--field); background: repeating-linear-gradient(135deg, transparent 0 4px, var(--tint) 4px 8px); }
+  .prog__cap.is-none { background: transparent; box-shadow: inset 0 0 0 1px var(--c-line); }
+  .prog__cap--span { display: grid; place-items: center; font-size: var(--t-xs); font-weight: 500; color: var(--c-fg); }
+  /* The bookmark: a line in the accent after the last volume read, through every row. */
+  /* Absolutely placed in its grid area, so it takes no cell from the volumes. */
+  .prog__mark { position: absolute; grid-row: 2 / span 5; top: -2px; bottom: -2px; left: -4px; width: 2px; background: var(--field); border-radius: 2px; }
+  .prog__mark::before { content: ''; position: absolute; top: -6px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--field); }
+  .prog__legend { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 22px; font-size: var(--t-xs); color: var(--c-muted); }
+  .prog__legend li { display: inline-flex; align-items: center; gap: 8px; }
+  .prog__key { width: 22px; height: 10px; border-radius: var(--r-pill); }
+  .prog__key.is-read { background: var(--field); }
+  .prog__key.is-pub { background: var(--tint-strong); }
+  .prog__key--mark { width: 2px; height: 14px; background: var(--field); }
+  .prog__caption { margin-top: 12px; font-size: var(--t-s); color: var(--c-muted); }
+  @media (max-width: 599px) {
+    .prog__grid { grid-template-columns: 3.4em repeat(12, minmax(0, 1fr)); gap: 8px 3px; }
+    .prog__cap { height: 18px; }
+    .prog__cap--span { font-size: 10px; }
+    .prog__num { font-size: 10px; }
+  }
+</style>
