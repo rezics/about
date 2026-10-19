@@ -86,7 +86,35 @@ function previews() {
   });
 }
 
+// Focus carries the brand: an ink outline (CSS) and the red square at the focused element's
+// top-left corner, which follows focus and scrolling. Inside the top layer (open panels, the
+// phone sheet) the outline alone shows.
+function focusMark() {
+  let target: HTMLElement | null = null;
+  const mark = () => document.getElementById('focus-mark');
+  const place = () => {
+    const m = mark();
+    if (!m) return;
+    const on = !!target && target.isConnected && target.matches(':focus-visible') && !target.closest('[popover], dialog');
+    m.classList.toggle('is-on', on);
+    if (!on || !target) return;
+    const r = target.getBoundingClientRect();
+    gsap.set(m, { x: r.left - 9, y: r.top - 9 });
+  };
+  document.addEventListener('focusin', (e) => {
+    target = e.target as HTMLElement;
+    place();
+  });
+  document.addEventListener('focusout', () => {
+    target = null;
+    place();
+  });
+  onScroll(() => target && place());
+  addEventListener('resize', () => target && place());
+}
+
 export function startPage() {
+  focusMark();
   frame();
   pictures();
   cursors();

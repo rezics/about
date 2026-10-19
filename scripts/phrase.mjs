@@ -46,18 +46,55 @@ function breakText(text) {
     .replace(/[\ue000-\uf8ff]/g, (c) => `<span class="nw">${runs[c.charCodeAt(0) - PUA]}</span>`);
 }
 
-const breakInner = (inner) =>
-  inner
+// Text inside a `.nw` span is never broken (browsers break at <wbr> even under nowrap).
+function breakInner(inner) {
+  const spans = [];
+  return inner
     .split(/(<[^>]+>)/)
-    .map((part) => (part.startsWith('<') ? part : breakText(part)))
+    .map((part) => {
+      if (part.startsWith('</span')) spans.pop();
+      else if (part.startsWith('<span')) spans.push(/\bclass="[^"]*\bnw\b/.test(part));
+      if (part.startsWith('<')) return part;
+      return spans.includes(true) ? part : breakText(part);
+    })
     .join('');
+}
 
 const HEADING = /<(h[1-4])(\s[^>]*)?>([\s\S]*?)<\/\1>/g;
 const DISPLAY_P = /<p(\s[^>]*\bclass="[^"]*\b(?:t-mega|t-xl|t-l|t-m|lede)\b[^"]*"[^>]*)>([\s\S]*?)<\/p>/g;
 
-/** Insert phrase breaks into the headings and display paragraphs of one HTML document. */
+// No orphans: the last few characters of a paragraph stay together, so a line never ends a
+// paragraph with one or two characters (圖。). Phrase breaks inside that tail are dropped.
+const TAIL = 4;
+const PARAGRAPH = /<(p|dd)(\s[^>]*)?>([\s\S]*?)<\/\1>/g;
+
+export function bindTail(inner, n = TAIL) {
+  const parts = inner.split(/(<[^>]+>)/);
+  let tail = '';
+  for (let i = parts.length - 1; i >= 0 && [...tail].length < n; i--) {
+    const part = parts[i];
+    if (part.startsWith('<')) {
+      if (/^<wbr\s*\/?>$/i.test(part)) {
+        parts[i] = '';
+        continue;
+      }
+      break;
+    }
+    const chars = [...part];
+    const take = Math.min(chars.length, n - [...tail].length);
+    tail = chars.slice(chars.length - take).join('') + tail;
+    parts[i] = chars.slice(0, chars.length - take).join('');
+    if (parts[i]) break;
+  }
+  if ([...tail].length < n || /[\s&<>]/.test(tail) || !CJK.test(tail)) return inner;
+  return `${parts.join('')}<span class="nw">${tail}</span>`;
+}
+
+/** Insert phrase breaks into the headings and display paragraphs of one HTML document, and keep
+ * every paragraph's last characters together. */
 export function phraseHtml(html) {
   return html
     .replace(HEADING, (_, tag, attrs = '', inner) => `<${tag}${attrs}>${breakInner(inner)}</${tag}>`)
-    .replace(DISPLAY_P, (_, attrs, inner) => `<p${attrs}>${breakInner(inner)}</p>`);
+    .replace(DISPLAY_P, (_, attrs, inner) => `<p${attrs}>${breakInner(inner)}</p>`)
+    .replace(PARAGRAPH, (_, tag, attrs = '', inner) => `<${tag}${attrs}>${bindTail(inner)}</${tag}>`);
 }

@@ -7,14 +7,18 @@ import { gsap } from 'gsap';
 import { dur, ease, prefersReducedMotion } from './env';
 
 let source: HTMLElement | null = null;
+let destination = '';
 
-/** Remember the square inside the clicked link (capture phase, before the router acts). */
+/** Remember the square inside the clicked link (capture phase, before the router acts), and the
+ *  link's name for the curtain's middle frame. */
 export function trackSource() {
   document.addEventListener(
     'click',
     (e) => {
       const link = (e.target as HTMLElement | null)?.closest?.('a');
       source = link?.querySelector<HTMLElement>('[data-flip-src]') ?? (link?.matches('[data-flip-src]') ? link : null);
+      const name = (link?.dataset.transitionLabel ?? link?.innerText ?? '').replace(/\s+/g, ' ').trim();
+      destination = [...name].length <= 16 ? name : '';
     },
     true,
   );
@@ -64,17 +68,34 @@ function enterSquare(c: HTMLElement, ghost: HTMLElement) {
   return tl.add(() => ghost.remove()).set(c, { autoAlpha: 0 });
 }
 
+// The curtain's middle frame names where you are going: a paper chip with the red cursor and the
+// link's name slots in at the centre once the columns have closed.
 function leaveCurtain(c: HTMLElement) {
-  return gsap
+  const tl = gsap
     .timeline()
     .set(c, { autoAlpha: 1 })
     .fromTo(columns(c), { yPercent: -101 }, { yPercent: 0, duration: dur.m, ease: ease.out, stagger: 0.03 });
+  if (destination) {
+    const chip = document.createElement('div');
+    chip.className = 'curtain__chip';
+    const cursor = document.createElement('span');
+    cursor.className = 'curtain__cursor';
+    const name = document.createElement('span');
+    name.textContent = destination;
+    chip.append(cursor, name);
+    c.appendChild(chip);
+    tl.fromTo(chip, { autoAlpha: 0, yPercent: 40 }, { autoAlpha: 1, yPercent: 0, duration: dur.s, ease: ease.settle }, dur.m * 0.75);
+  }
+  destination = '';
+  return tl;
 }
 
 function enterCurtain(c: HTMLElement) {
-  return gsap
-    .timeline()
-    .to(columns(c), { yPercent: 101, duration: dur.m, ease: ease.out, stagger: 0.03 })
+  const chip = c.querySelector<HTMLElement>('.curtain__chip');
+  const tl = gsap.timeline();
+  if (chip) tl.to(chip, { autoAlpha: 0, yPercent: -40, duration: dur.s, ease: ease.out }).add(() => chip.remove());
+  return tl
+    .to(columns(c), { yPercent: 101, duration: dur.m, ease: ease.out, stagger: 0.03 }, chip ? '-=0.12' : 0)
     .set(c, { autoAlpha: 0 })
     .set(columns(c), { yPercent: -101 });
 }
@@ -84,7 +105,10 @@ export function playLeave(): Promise<unknown> {
   if (!c) return Promise.resolve();
   const from = source;
   source = null;
-  if (prefersReducedMotion()) return Promise.resolve();
+  if (prefersReducedMotion()) {
+    destination = '';
+    return Promise.resolve();
+  }
   return Promise.resolve(from && from.isConnected ? leaveSquare(c, from) : leaveCurtain(c));
 }
 

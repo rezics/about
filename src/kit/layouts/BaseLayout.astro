@@ -90,6 +90,7 @@ const jsonLd = isHome
   </head>
   <body data-site={siteId} data-kind={kind} style={field ? fieldStyle(field) : undefined}>
     <a class="skip-link" href="#main">{site.nav.skip}</a>
+    <div id="focus-mark" transition:persist="focus-mark" aria-hidden="true"></div>
     <div id="curtain" transition:persist="curtain" aria-hidden="true">
       {Array.from({ length: 12 }, () => <div class="curtain__col"></div>)}
     </div>
