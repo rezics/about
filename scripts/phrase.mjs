@@ -31,7 +31,20 @@ export function phrases(text) {
   return out;
 }
 
-const breakText = (text) => (CJK.test(text) && !text.includes('&') ? phrases(text).join('<wbr>') : text);
+// Latin runs (words, numbers, versions, paths: letters, digits and . / + - #) never break: they
+// are held out of the phrase parser as single private-use characters, then set back inside a
+// no-break span (.nw in base.css), so REZICS, MCP or v1.2 stay whole.
+const LATIN = /[A-Za-z0-9][A-Za-z0-9.\/+\-#]*/g;
+const PUA = 0xe000;
+
+function breakText(text) {
+  if (!CJK.test(text) || text.includes('&')) return text;
+  const runs = [];
+  const masked = text.replace(LATIN, (run) => String.fromCharCode(PUA + runs.push(run) - 1));
+  return phrases(masked)
+    .join('<wbr>')
+    .replace(/[\ue000-\uf8ff]/g, (c) => `<span class="nw">${runs[c.charCodeAt(0) - PUA]}</span>`);
+}
 
 const breakInner = (inner) =>
   inner

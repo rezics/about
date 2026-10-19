@@ -10,9 +10,11 @@ interface Props {
   home?: boolean;
   field?: Field;
   noindex?: boolean;
+  /** End on the footer's action square (default true). */
+  action?: boolean;
 }
-const { meta, home = false, field, noindex } = Astro.props;
+const { meta, home = false, field, noindex, action } = Astro.props;
 ---
-<BaseLayout title={home ? undefined : meta.title} description={meta.description} field={field} noindex={noindex}>
+<BaseLayout title={home ? undefined : meta.title} description={meta.description} field={field} noindex={noindex} action={action}>
   <slot />
 </BaseLayout>

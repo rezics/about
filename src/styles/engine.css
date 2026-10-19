@@ -11,6 +11,10 @@ html {
   scroll-padding-top: calc(var(--header-h) + var(--bar-h));
 }
 body {
+  /* A site theme set on [data-site] (html and body carry it) restyles everything from here. */
+  --focus: var(--c-link);
+  background: var(--c-bg);
+  color: var(--c-fg);
   min-height: 100dvh;
   font-family: var(--f-body);
   font-size: var(--t-body);
@@ -28,14 +32,14 @@ a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { font-weight: inherit; font-size: inherit; text-wrap: balance; }
 p { text-wrap: pretty; }
 ul[role='list'], ol[role='list'] { list-style: none; padding: 0; }
-::selection { background: var(--c-ink); color: var(--c-paper); }
+::selection { background: var(--c-fg); color: var(--c-bg); }
 
 /* Accessibility */
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 0; }
 #main:focus { outline: none; }
 .skip-link {
   position: fixed; left: var(--gutter); top: 8px; z-index: calc(var(--z-curtain) + 1);
-  padding: 0.6em 1em; background: var(--c-ink); color: var(--c-paper);
+  padding: 0.6em 1em; background: var(--c-fg); color: var(--c-bg);
   translate: 0 -200%;
 }
 .skip-link:focus-visible { translate: none; }
@@ -51,8 +55,11 @@ html.lenis, html.lenis body { height: auto; }
 
 #main { position: relative; z-index: var(--z-content); display: block; }
 
-/* Hidden-until-revealed (only when motion is allowed and JS runs) */
-.motion [data-split], .motion [data-reveal] { visibility: hidden; }
+/* Hidden-until-revealed (only when motion is allowed and JS runs, and not on phones, where a
+   heading and its paragraph would reveal at different moments: src/engine/reveal.ts). */
+@media (min-width: 600px) {
+  .motion [data-split], .motion [data-reveal] { visibility: hidden; }
+}
 .split-line { padding-bottom: 0.08em; margin-bottom: -0.08em; }
 [data-split] > *, [data-split] > * > * { text-indent: 0; }
 [data-split] > :first-child, [data-split] > :first-child > :first-child { text-indent: inherit; }

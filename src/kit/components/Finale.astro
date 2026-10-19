@@ -1,10 +1,14 @@
 ---
 /**
  * "Next page / next site": a full-bleed band in the next thing's field colour, its name set as
- * large as the band allows. The whole band is the link; the name rolls on hover.
+ * large as the band allows. The whole band is the link. On hover or focus three ink steps rise
+ * from the bottom-left (歸位, one grid step each), the name slides right by an arrow's width and
+ * the small label grows while its arrow travels. The footer's action square (「前往 REZICS」)
+ * follows it on every page, so a finale needs no action of its own.
  */
 import type { Field } from '../theme';
 import { fieldStyle } from '../theme';
+import Arrow from './Arrow.astro';
 
 interface Props {
   label: string;
@@ -16,14 +20,16 @@ const { label, name, href, field } = Astro.props;
 const size = Math.min(22, 92 / Math.max(2, [...name].length * (/^[\x20-\x7e]+$/.test(name) ? 0.62 : 1)));
 ---
 <a class="finale" href={href} style={`${fieldStyle(field)};--size:${size}`}>
-  <span class="finale__label mono">{label}<span class="arrow" aria-hidden="true"> →</span></span>
+  <span class="finale__steps" aria-hidden="true"><span></span><span></span><span></span></span>
+  <span class="finale__label mono">{label}<Arrow /></span>
   <span class="finale__name">
     <span class="finale__face">{name}</span>
-    <span class="finale__face" aria-hidden="true">{name}</span>
   </span>
 </a>
 <style>
   .finale {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -31,33 +37,62 @@ const size = Math.min(22, 92 / Math.max(2, [...name].length * (/^[\x20-\x7e]+$/.
     min-height: min(70svh, 640px);
     padding: var(--gutter);
     padding-top: clamp(24px, 4vw, 48px);
+    overflow: clip;
     background: var(--field);
     color: var(--on-field);
     --focus: var(--on-field);
   }
   .finale:focus-visible { outline-offset: -8px; }
-  .finale__label { font-size: var(--t-s); }
+  .finale__steps {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    display: flex;
+    align-items: flex-end;
+    --step: clamp(56px, 11vw, 160px);
+  }
+  .finale__steps span {
+    width: var(--step);
+    background: color-mix(in srgb, var(--field) 72%, #0e1420);
+    translate: 0 101%;
+    transition: translate var(--d-m) var(--ease-snap);
+  }
+  .finale__steps span:nth-child(1) { height: calc(var(--step) * 3); }
+  .finale__steps span:nth-child(2) { height: calc(var(--step) * 2); transition-delay: 40ms; }
+  .finale__steps span:nth-child(3) { height: var(--step); transition-delay: 80ms; }
+  .finale__label {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    font-size: var(--t-s);
+    transform-origin: left center;
+    transition: scale var(--d-m) var(--ease-snap);
+  }
   .finale__name {
     display: grid;
-    overflow: clip;
     font-weight: 900;
     font-size: calc(var(--size) * 1vw);
     line-height: 1;
     letter-spacing: var(--track-display);
     font-stretch: 125%;
+    transition: translate var(--d-m) var(--ease-snap);
   }
-  .finale__face { grid-area: 1 / 1; white-space: nowrap; transition: translate var(--d-m) var(--ease-snap); }
-  .finale__face + .finale__face { translate: 0 105%; }
+  .finale__face { grid-area: 1 / 1; white-space: nowrap; }
   @media (hover: hover) {
-    .finale:hover .finale__face { translate: 0 -105%; }
-    .finale:hover .finale__face + .finale__face { translate: 0 0; }
-    .finale:hover .arrow { translate: 0.4em 0; }
+    .finale:hover .finale__steps span { translate: 0 0; }
+    .finale:hover .finale__name { translate: 0.35em 0; }
+    .finale:hover .finale__label { scale: 1.25; }
+    .finale:hover :global(.arrow) { translate: 0.4em 0; }
   }
-  .finale:focus-visible .finale__face { translate: 0 -105%; }
-  .finale:focus-visible .finale__face + .finale__face { translate: 0 0; }
+  .finale:focus-visible .finale__steps span { translate: 0 0; }
+  .finale:focus-visible .finale__name { translate: 0.35em 0; }
+  .finale:focus-visible .finale__label { scale: 1.25; }
+  /* Phones: the band stays a band, not a screen of colour. */
+  @media (max-width: 599px) {
+    .finale { min-height: min(56svh, 420px); max-height: 60svh; }
+  }
   @media (prefers-reduced-motion: reduce) {
-    .finale__face { translate: none !important; }
-    .finale__face + .finale__face { visibility: hidden; }
     .finale:hover .finale__name, .finale:focus-visible .finale__name { text-decoration: underline; text-decoration-thickness: 0.04em; }
   }
 </style>

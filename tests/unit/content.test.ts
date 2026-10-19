@@ -63,6 +63,11 @@ describe('kinds, modules and parts', () => {
     }
   });
 
+  test('every action leads into the live product', () => {
+    expect(site.productUrl).toMatch(/^https:\/\/[a-z0-9.-]+\/?$/);
+    expect(site.nav.action).toContain('REZICS');
+  });
+
   test('the home story follows real kinds', () => {
     for (const c of site.home.identity.chapters) expect(kindSet.has(c.kind), c.kind).toBe(true);
   });
@@ -72,7 +77,6 @@ describe('kinds, modules and parts', () => {
       ['engine', site.engine.meta],
       ['developers', site.developers.meta],
       ['roadmap', site.roadmap.meta],
-      ['notified', site.notified.meta],
       ['notFound', site.notFound.meta],
       ...kinds.map((k) => [k.id, k.meta] as [string, Meta]),
       ...modules.map((m) => [m.id, m.meta] as [string, Meta]),

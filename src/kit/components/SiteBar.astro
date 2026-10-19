@@ -1,10 +1,12 @@
 ---
 /**
  * A mini-site's bar under the global header: its small square and name, its page tabs with the
- * current page marked, and its action. Sticky; when the header steps aside on scroll it moves up.
+ * current page marked, and the site's own action when it sets one (`MiniSite.action`); 「前往
+ * REZICS」 lives once, in the global header. On phones the tabs scroll sideways with faded edges
+ * and the current tab is scrolled into view. Sticky; when the header steps aside on scroll it
+ * moves up.
  */
 import type { MiniSite, MiniSitePage } from '../../content/schema';
-import { site as shared } from '../content';
 import { pageHref } from '../sites';
 
 interface Props {
@@ -12,7 +14,9 @@ interface Props {
   page: MiniSitePage;
 }
 const { site, page } = Astro.props;
-const action = site.action ?? { label: shared.nav.action, href: '#notify' };
+import { site as shared } from '../content';
+// The header already carries 前往 REZICS: the bar shows only an action of the site's own.
+const action = site.action && site.action.href !== shared.productUrl && site.action.href !== '#notify' ? site.action : undefined;
 const initial = [...site.name][0];
 ---
 <nav class="sitebar" aria-label={site.name} data-sitebar>
@@ -30,9 +34,11 @@ const initial = [...site.name][0];
         ))}
       </ul>
     )}
-    <a class="btn btn--small sitebar__action" href={action.href} data-notify-link={action.href === '#notify' ? '' : undefined}>
-      <span class="btn__label"><span>{action.label}</span><span aria-hidden="true">{action.label}</span></span>
-    </a>
+    {action && (
+      <a class="btn btn--small sitebar__action" href={action.href}>
+        <span class="btn__label"><span>{action.label}</span></span>
+      </a>
+    )}
   </div>
 </nav>
 <style>
@@ -74,6 +80,9 @@ const initial = [...site.name][0];
     scrollbar-width: none;
     flex: 1 1 auto;
     min-width: 0;
+    padding-inline: 12px;
+    /* Faded edges say the row scrolls; nav.ts scrolls the current tab into view. */
+    mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 28px), transparent);
   }
   .sitebar__tab {
     position: relative;

@@ -109,6 +109,8 @@ export interface Principle {
 export interface Site {
   name: 'REZICS';
   url: string;
+  /** The live product every action leads to (「前往 REZICS」). */
+  productUrl: string;
   meta: Meta;
   nav: {
     products: string;
@@ -166,18 +168,8 @@ export interface Site {
     steps: Item[];
     statement: string;
   };
-  notify: {
-    headline: string;
-    body: string;
-    label: string;
-    placeholder: string;
-    submit: string;
-    sending: string;
-    done: string;
-    privacy: string;
-    errors: { invalid_email: string; invalid_request: string; cross_origin: string; unavailable: string };
-  };
-  notified: { meta: Meta; headline: string; body: string; back: string };
+  /** The action square that ends every page and leads into the product. */
+  product: { headline: string; body: string };
   notFound: { meta: Meta; headline: string; body: string; back: string };
   /** Shared control labels (kit primitives such as the composing square). */
   ui: {
@@ -219,7 +211,7 @@ export interface MiniSite<Strings = Record<string, unknown>> {
   next?: string;
   /** Pages in tab order; the first is the landing page (slug ''). */
   pages: MiniSitePage[];
-  /** The site bar's action; defaults to the notify call to action. */
+  /** An action of the site's own in its bar (「前往 REZICS」 is in the global header). */
   action?: { label: string; href: string };
   /** Everything else the site shows, shaped by the site itself. */
   strings: Strings;

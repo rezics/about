@@ -1,0 +1,28 @@
+---
+/**
+ * A code sample: indentation kept, long lines scroll sideways inside the block (focusable, so a
+ * keyboard can scroll it too), an optional caption beneath.
+ */
+interface Props {
+  code: string;
+  language?: string;
+  caption?: string;
+  label?: string;
+  class?: string;
+}
+const { code, language, caption, label, class: className } = Astro.props;
+---
+<figure class:list={['code', className]}>
+  <pre tabindex="0" aria-label={label ?? caption} data-language={language}><code>{code}</code></pre>
+  {caption && <figcaption class="code__caption">{caption}</figcaption>}
+</figure>
+<style>
+  .code { min-width: 0; }
+  .code pre {
+    padding: 16px 20px;
+    border: 1px solid var(--c-line-strong);
+    background: color-mix(in srgb, var(--c-fg) 5%, var(--c-bg));
+    color: var(--c-fg);
+  }
+  .code__caption { margin-top: 10px; font-size: var(--t-s); color: var(--c-muted); }
+</style>

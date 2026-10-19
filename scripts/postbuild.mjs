@@ -84,7 +84,8 @@ async function og() {
     const html = fs.readFileSync(file, 'utf8');
     const image = meta(html, 'og:image');
     const full = meta(html, 'og:title');
-    const title = full.split('｜')[0] || full;
+    // `頁面｜REZICS` → 頁面; the home title (`REZICS｜…`) stays whole.
+    const title = full.endsWith('｜REZICS') ? full.slice(0, -'｜REZICS'.length) : full;
     const body = html.match(/<body[^>]*>/)?.[0] ?? '';
     const field = body.match(/--field:(#[0-9a-f]{3,8})/i)?.[1];
     const onField = body.match(/--on-field:(#[0-9a-f]{3,8})/i)?.[1] ?? PAPER;

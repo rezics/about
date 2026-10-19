@@ -25,8 +25,10 @@ interface Props {
   siteId?: string;
   kind?: string;
   noindex?: boolean;
+  /** End on the footer's action square (default); a page with its own action square turns it off. */
+  action?: boolean;
 }
-const { title, description, field, siteId, kind, noindex = false } = Astro.props;
+const { title, description, field, siteId, kind, noindex = false, action = true } = Astro.props;
 const path = Astro.url.pathname;
 const origin = Astro.site ?? new URL(site.url);
 const fullTitle = title ? `${title}｜${site.name}` : site.meta.title;
@@ -53,7 +55,7 @@ const jsonLd = isHome
     };
 ---
 <!doctype html>
-<html lang="zh-Hant" transition:animate="none">
+<html lang="zh-Hant" transition:animate="none" data-site={siteId} data-kind={kind}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -96,7 +98,7 @@ const jsonLd = isHome
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <Footer />
+    <Footer action={action} />
     <script>
       import { start } from '../../engine/astro';
       import { setupMotion } from '../motion/setup';

@@ -17,8 +17,9 @@ skill differ, this file wins and says why.
 - **Never name another product or company** in visible copy. Say what REZICS does.
 - **Audience.** Traditional Chinese readers first: fans of books, anime, manga, games and
   visual novels; developers and agent builders; communities that want their own site.
-- **Job.** In three seconds a visitor knows what REZICS is; by the end they leave an email to
-  hear when registration opens.
+- **Job.** REZICS is live. In three seconds a visitor knows what REZICS is; every page leads
+  them into the product (「前往 REZICS」, `site.productUrl`, currently `https://rezics.com`).
+  There is no waiting list, no notify form and no "when registration opens" language.
 - **Language.** `zh-Hant` only for now (`<html lang="zh-Hant">`, routes at the root). Other
   locales come later; keep strings in content files so they can be translated.
 - **Claims.** Write every capability as available. No "coming soon", "later" or status labels
@@ -47,20 +48,20 @@ to exist, and it is buildable with DOM, CSS and GSAP alone (no WebGL). Steal fro
 ```
 Idea:        Everything you care about, one square each, one grid for all of it.
 Metaphor:    方塊字: characters built in one square from shared components.
-Signature:   The composing square (hero): capability parts slide on grid rails and lock
-             into each kind's arrangement while its name fills the square; on scroll the
-             square splits into the 3×3 index of kinds (motion.md "Pinned chapters" +
-             "Flip shared-element transition").
+Signature:   The kind strip (hero): nine illustrated squares, names filling them, step
+             into place one square at a time; choosing one grows it into that kind's site
+             (motion.md "Flip shared-element transition"). The same squares are the
+             navigation tiles and every site's opening square.
 Emotion:     Order and abundance: a lot of different things, all in their place.
 Motion verb: 歸位, slot into place: moves travel along the grid (horizontal or vertical,
              never diagonal) and lock with a short, firm settle. No bounce, no float.
-Screenshot:  The 3×3 index: nine squares, each a different kind, same frame, names set to
-             fill their squares.
+Screenshot:  The headline over the strip of nine squares, each a different kind in the same
+             frame, names set to fill their squares.
 ```
 
 The concept must survive everywhere: navigation tiles are the same squares; page
 transitions grow a square into the next page; the 404 is an empty square in the grid; the
-footer ends on a square you fill with your email.
+footer ends on the action square that leads into REZICS.
 
 ## Information architecture
 
@@ -81,6 +82,24 @@ paths: `src/pages/<id>/**`, `src/sites/<id>/**`, `src/content/sites/<id>.ts`,
 pages by glob, so no site edits a shared file. A site's design record is its own
 `src/sites/<id>/SITE.md`.
 
+### One design language, different themes
+
+Sites may look clearly different from each other. Each site may set its own theme: its ground
+(light, dark or its field colour), ink, muted and line colours, accent tints, textures and
+image treatment, and how it uses the type families (weights, widths, vertical setting, scale).
+What stays the same everywhere is the design language: the global header and the site bar,
+the three type families, the 12-column grid and its strong lines, the square as the module,
+radius 0, the motion verb 歸位 with the shared easing and durations, the hover vocabulary,
+page transitions, the finale and the action into REZICS, and AA contrast for every text pair.
+A visitor should feel they changed rooms, not buildings.
+
+### Phones first
+
+Every page and signature is composed for 390 px first, then for desktop. Never use a large
+grid of text cells as a key visual (it is mostly empty cells on a phone); show parts as a
+compact list of labelled chips, and turn matrices, calendars and charts into forms a phone
+reads well (a stack, a horizontal scroll-snap row, a stepper) rather than shrinking them.
+
 ### Routes (zh-Hant at the root)
 
 | Route | What | Built by |
@@ -92,7 +111,7 @@ pages by glob, so no site edits a shared file. A site's design record is its own
 | `/engine/universal-index/` `/engine/zones/` | modules | modules agent A |
 | `/engine/community/` `/engine/create/` `/engine/trust/` | modules | modules agent B |
 | `/roadmap/` | where REZICS is going | modules agent A |
-| `/notified/`, 404 | small pages | foundation |
+| 404 | small page | foundation |
 
 ### Starting page plans for the sites
 
@@ -149,8 +168,8 @@ REZICS's own API, MCP server and SDK belong to `/developers/`.
 
 ### Shared capability parts (部件)
 
-The parts that compose every kind. Each square has a 3×3 grid: the centre holds the name,
-the eight surrounding cells hold the kind's parts. Names are short so they fit a cell.
+The parts that compose every kind, eight per kind. They are shown as a compact list of
+labelled chips (never as a large grid of text cells; see "Phones first"). Names are short.
 
 | id | Name | Gives |
 |---|---|---|
@@ -190,7 +209,7 @@ uses it, so the hero transition shows "same part, same place" and only the diffe
 ### Navigation
 
 ```
-[Z REZICS]          產品 ▾   引擎 ▾   開發者   路線圖          [開放時通知我]
+[Z REZICS]          產品 ▾   模組 ▾   開發者   路線圖          [前往 REZICS]
 ┌──────────────────────────────────────────────────────────────────────────┐
 │ 九種東西，同一個索引        作品與軟體                      AI 代理與開發者      │
 │ 一句話說明                ┌────┐┌────┐┌────┐            ┌────┐            │
@@ -313,30 +332,28 @@ text, so modules read as the engine underneath and products read as colour on to
 
 ### Composition plan
 
-Home (each layout family once):
+Home (each layout family once; designed for 390 px first):
 
 ```
-1 Hero (split frame + scene)
-  | h1 2–3 lines (t-xl)              ┌──────┬──────┬──────┐ |
-  | lede                             │ 身分 │ 版本 │製作人員│ |
-  | [開放時通知我] [看九種東西]          ├──────┼──────┼──────┤ |
-  |                                  │ 關聯 │ 書庫 │ 進度 │ |
-  | caption: 九種東西，同一套部件。       ├──────┼──────┼──────┤ |
-  |                                  │ 評分 │ 維基 │ 上架 │ |
-  |                                  └──────┴──────┴──────┘ |
-2 Index (gallery wall): the composing square Flips into the first tile of a 3×3 grid of
-  kinds; deliberate empty cell(s) marked as "the next kind" (no promise, just the grid).
-3 One identity (sticky narrative): sticky square left, chapters right, following one
+1 Hero (statement + strip): the h1 and lede across the top, the action 「前往 REZICS」, then a
+  strip of the nine kind squares (generated pictures, names filling their squares, linking
+  to their sites). Desktop: all nine in one row. Phone: a horizontal scroll-snap row with
+  about two and a half squares visible. The strip is the signature: it idles by stepping one
+  square at a time (歸位), pauses on pointer, focus and its toggle, is still under reduced
+  motion. No large grid of text cells.
+2 Parts (picker + list): pick a kind (small squares as tabs); its eight parts appear as a
+  compact list of labelled chips with one line each, wrapping naturally on a phone. The
+  caption says every kind is built from the same parts.
+3 One identity (sticky narrative on desktop, plain stacked chapters on phones): one
   public-domain work (《西遊記》) as book, manga, anime and game: same identity, each kind
   its own page, corrections in one language improve every view.
 4 Community (asymmetric pair): Realms, people as brands, ratings and lists; a Zone is a
   community's own complete site.
-5 Engine (index list + hover preview): the five modules as rows; hover shows the module's
-  square; rows link to module pages.
+5 Modules (index list + hover preview): the five modules as rows; rows link to module pages.
 6 Agents and developers (data/facts): what people can do, agents do through the same API;
   MCP server, SDK, bring your own agent.
 7 Principles (statement): a few true commitments, set large.
-8 Finale: giant call to action, the notify form as the last square, footer.
+8 Finale: giant action square into REZICS, footer.
 ```
 
 Every product site, at minimum (its own SITE.md designs the rest):
@@ -344,10 +361,11 @@ Every product site, at minimum (its own SITE.md designs the rest):
 - Its landing page opens with the kind's square as the Flip target from the clicked tile,
   says in three seconds what REZICS is for this kind, shows the site's signature moment, and
   links every inner page.
-- Somewhere in the site: the kind's eight parts in its 3×3 with what each gives this kind
-  ("same parts as every other kind"), and its connections to neighbouring kinds as squares.
+- Somewhere in the site: the kind's eight parts with what each gives this kind ("same parts
+  as every other kind"), as a compact list that reads well on a phone, and its connections
+  to neighbouring kinds as squares.
 - Every page ends on a finale: the next page of the site, or on the last page the next site
-  (full-bleed field colour of the next kind, continuous transition), plus the notify action.
+  (full-bleed field colour of the next kind, continuous transition), plus the action into REZICS.
 - Layout families vary within a page and across the site's pages; no two pages of a site
   share a structure, and no two sites read like one template filled twice.
 
@@ -388,9 +406,8 @@ Voice (zh-Hant):
 ## Engineering
 
 - **Stack:** Astro (static output) + GSAP + Lenis, plain CSS with tokens (no Tailwind, no UI
-  kit), TypeScript. One small Cloudflare Worker serves `dist` and `POST /api/notify` into D1
-  (carried over from the previous site). Reason: the site is a content showcase where motion
-  is the product (skill: Astro), and it already deploys as a Worker.
+  kit), TypeScript. Served as static assets by Cloudflare (no Worker script, no database).
+  Reason: the site is a content showcase where motion is the product (skill: Astro).
 - **Tooling:** Yarn (Berry, `nodeLinker: node-modules`), Task for every command
   (`task --list`), Playwright + axe for tests, the skill's `shoot.mjs` and `audit.mjs` for QA.
   Packages at their latest versions.
@@ -402,7 +419,7 @@ Voice (zh-Hant):
   home page, WebPage elsewhere).
 - **Accessibility:** one h1 per page, landmarks, skip link first, visible focus in `link`
   blue, AA contrast for every text/field pair, tap targets ≥ 44 px for primary actions.
-- **Cookies and tracking:** none beyond what the notify form needs; no analytics.
+- **Cookies and tracking:** none; no analytics.
 
 ## Decisions
 
@@ -445,7 +462,26 @@ Voice (zh-Hant):
   the rest is grouped by how many pages use a character; each page links only its slices.
   Archivo and Martian Mono ship committed Latin subsets. In `astro dev` the local Noto Sans CJK
   TC stands in. Lenis runs on fine pointers only; touch keeps native scroll.
-- 2026-10-19 (builder): the notify form sits in the footer of every page (`#notify`, the square
-  you fill with your email); every 開放時通知我 action lands there and focuses the address.
-  Document titles read `頁面｜REZICS`. Open Graph images are rendered after the build from each
+- 2026-10-19 (builder, superseded the same day: REZICS is presented as live, so there is no
+  notify form; every action goes into the product): the notify form sat in the footer. Document titles read `頁面｜REZICS`. Open Graph images are rendered after the build from each
   page's own metadata and field colour, so new pages get one without registration.
+- 2026-10-19: REZICS is presented as a live product: no notify form, waiting list
+  or registration-opening language; every action is 「前往 REZICS」 to `site.productUrl`. The
+  header tab 引擎 reads 模組 (route unchanged). The home hero's 3×3 composing square is
+  dropped because it is not phone-friendly; large grids of text cells are not used as key
+  visuals. Sites may take clearly different themes within one design language.
+- 2026-10-19 (builder): the home strip rests as nine field squares with their names; its idle
+  floods one square's picture at a time (2.2 s a step, a red mark under the lit square), so the
+  row reads as posters and each illustration gets its moment. The pointer or focus takes over
+  (the square under it floods); a visible toggle pauses it; reduced motion keeps it still.
+- 2026-10-19 (builder): the parts picker is a radio group of small kind squares with one panel
+  per kind (a CSS rule per kind shows the checked one), so it works without script and with the
+  arrow keys; the chosen square steps up and carries the red mark, and the chips slot in.
+- 2026-10-19 (builder): every page ends on the footer's action square (cursor, one line,
+  前往 REZICS); the home page ends on its own giant square and turns the footer's off. A finale
+  band needs no action of its own.
+- 2026-10-19 (builder): themes are semantic tokens (`--c-bg`, `--c-fg`, `--c-muted`,
+  `--c-line`, `--c-line-strong`, `--c-link`, the `--c-band-*` set for the inverted band, and
+  `--field` / `--on-field`) set on `[data-site]`, which sits on `<html>` and `<body>`; the chrome
+  reads nothing else. Buttons draw their square as an inset shadow and arrows are shapes, not
+  glyphs, so contrast checkers can judge every text.

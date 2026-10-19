@@ -32,12 +32,20 @@
   --c-link: #2f63ad;
   --c-mark: #df3d35;
 
-  /* Engine contract names */
+  /* Semantic tokens: everything in the kit reads these, never the palette names above, so a
+     site may set its own theme on [data-site='<id>'] (src/kit/README.md "Themes"). */
   --c-bg: var(--c-paper);
   --c-fg: var(--c-ink);
   --c-accent: var(--c-link);
   --c-curtain: var(--c-ink);
   --focus: var(--c-link);
+  /* The inverted band (.band-ink, the footer) of the theme. */
+  --c-band-bg: var(--c-ink);
+  --c-band-fg: var(--c-paper);
+  --c-band-muted: #a9b2c1;
+  --c-band-line: rgb(244 245 242 / 0.16);
+  --c-band-line-strong: rgb(244 245 242 / 0.34);
+  --c-band-link: #9ab8e6;
 
   /* A field: set per element from src/kit/theme.ts (style="--field:…;--on-field:…"). */
   --field: var(--c-ink);
@@ -93,5 +101,13 @@
   :root {
     --header-h: 56px;
     --bar-h: 48px;
+  }
+}
+/* Phones: one section rhythm, about 64 px, so no section leaves a dead band. */
+@media (max-width: 599px) {
+  :root {
+    --space-tight: 48px;
+    --space-normal: 64px;
+    --space-airy: 64px;
   }
 }

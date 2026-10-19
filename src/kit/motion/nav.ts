@@ -124,45 +124,89 @@ function wirePanels() {
   };
 }
 
-// The red square marker sits under the current tab and slides to the tab under the pointer.
+// The current tab follows the URL on every page load, Back, Forward and bfcache restores
+// included: aria-current is recomputed here rather than trusted from markup that may have been
+// restored from a cache. Its filled red square is drawn by CSS from aria-current.
+function currentTab(tabs: HTMLElement[]): HTMLElement | undefined {
+  const path = location.pathname.endsWith('/') ? location.pathname : `${location.pathname}/`;
+  const panelOwns = (id: string) =>
+    [...document.querySelectorAll<HTMLAnchorElement>(`#${id} a[href]`)].some((a) => {
+      const href = a.getAttribute('href') ?? '';
+      return href.startsWith('/') && !href.includes('#') && href !== '/' && path.startsWith(href);
+    });
+  return tabs.find((t) => {
+    const href = t.getAttribute('href');
+    if (href) return path.startsWith(href);
+    const panel = t.dataset.panelButton;
+    return panel === 'panel-engine' ? path.startsWith('/engine/') : panel ? panelOwns(panel) : false;
+  });
+}
+
+export function syncCurrent() {
+  const tabs = [...document.querySelectorAll<HTMLElement>('[data-tabs] .tab')];
+  const current = currentTab(tabs);
+  for (const t of tabs) {
+    if (t !== current) t.removeAttribute('aria-current');
+    else t.setAttribute('aria-current', t.hasAttribute('href') ? 'page' : 'true');
+  }
+  const marker = document.querySelector<HTMLElement>('[data-tabs-marker]');
+  if (marker) gsap.set(marker, { opacity: 0 });
+}
+
+// Hover and focus get their own outlined square that slides between tabs (on real pointer
+// movement, so a page swapped in under a resting pointer shows nothing); the current tab keeps
+// its filled square throughout.
 function wireMarker() {
   const nav = document.querySelector<HTMLElement>('[data-tabs]');
   const marker = nav?.querySelector<HTMLElement>('[data-tabs-marker]');
+  syncCurrent();
   if (!nav || !marker) return () => {};
   const tabs = [...nav.querySelectorAll<HTMLElement>('.tab')];
-  const current = tabs.find((t) => t.hasAttribute('aria-current'));
   const instant = prefersReducedMotion();
   const centre = (t: HTMLElement) => {
     const r = t.getBoundingClientRect();
     const n = nav.getBoundingClientRect();
     return r.left - n.left + r.width / 2;
   };
+  let at: HTMLElement | undefined;
   const go = (t: HTMLElement | undefined) => {
-    if (!t) return gsap.to(marker, { opacity: 0, duration: instant ? 0 : dur.s, ease: ease.soft });
+    if (t === at) return;
+    if (!t) {
+      at = undefined;
+      return void gsap.to(marker, { opacity: 0, duration: instant ? 0 : dur.s, ease: ease.soft });
+    }
+    if (!at) gsap.set(marker, { x: centre(t) });
+    at = t;
     gsap.to(marker, { x: centre(t), opacity: 1, duration: instant ? 0 : dur.m, ease: ease.out });
   };
-  gsap.set(marker, { x: current ? centre(current) : 0, opacity: current ? 1 : 0 });
   const off: (() => void)[] = [];
   for (const t of tabs) {
     const enter = () => go(t);
-    t.addEventListener('pointerenter', enter);
-    t.addEventListener('focus', enter);
+    const focus = () => t.matches(':focus-visible') && go(t);
+    t.addEventListener('pointermove', enter);
+    t.addEventListener('focus', focus);
     off.push(() => {
-      t.removeEventListener('pointerenter', enter);
-      t.removeEventListener('focus', enter);
+      t.removeEventListener('pointermove', enter);
+      t.removeEventListener('focus', focus);
     });
   }
-  const back = () => go(current);
-  nav.addEventListener('pointerleave', back);
-  nav.addEventListener('focusout', back);
-  const resize = () => gsap.set(marker, { x: current ? centre(current) : 0 });
-  addEventListener('resize', resize);
+  const away = () => go(undefined);
+  nav.addEventListener('pointerleave', away);
+  nav.addEventListener('focusout', away);
   return () => {
-    nav.removeEventListener('pointerleave', back);
-    nav.removeEventListener('focusout', back);
-    removeEventListener('resize', resize);
+    nav.removeEventListener('pointerleave', away);
+    nav.removeEventListener('focusout', away);
     off.forEach((f) => f());
   };
+}
+
+// Site bar on phones: its tabs scroll sideways; bring the current one into view.
+function wireSiteBar() {
+  const tabs = document.querySelector<HTMLElement>('[data-sitebar] .sitebar__tabs');
+  const current = tabs?.querySelector<HTMLElement>('[aria-current="page"]');
+  if (!tabs || !current || tabs.scrollWidth <= tabs.clientWidth) return;
+  const item = current.parentElement ?? current;
+  tabs.scrollLeft = Math.max(0, item.offsetLeft - (tabs.clientWidth - item.offsetWidth) / 2);
 }
 
 // Phone sheet: native <dialog> opened by invoker commands; a fallback for older browsers, and a
@@ -195,10 +239,19 @@ function wireMenu() {
 
 export function startNavigation() {
   document.addEventListener('astro:before-preparation', closeNavigation);
+  // A page restored from the back/forward cache keeps its old state: refresh what depends on it.
+  addEventListener('pageshow', (e) => {
+    if (!e.persisted) return;
+    closeNavigation();
+    syncCurrent();
+    const curtain = document.getElementById('curtain');
+    if (curtain) gsap.set(curtain, { autoAlpha: 0 });
+  });
   onPage(() => {
     const a = wirePanels();
     const b = wireMarker();
     const c = wireMenu();
+    wireSiteBar();
     return () => {
       a();
       b();

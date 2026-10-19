@@ -11,7 +11,7 @@ import ModuleSquare from './ModuleSquare.astro';
 import Square from './Square.astro';
 import Finale from './Finale.astro';
 import Section from './Section.astro';
-import NotifyCall from './NotifyCall.astro';
+import ProductCall from './ProductCall.astro';
 
 const found = siteFor(Astro.url.pathname);
 if (!found) throw new Error(`${Astro.url.pathname}: no mini-site owns this path`);
@@ -33,7 +33,7 @@ const next = nextSite(site);
   <div class="col-7-12 stub__text">
     <h1 class="t-xl">{strings.headline ?? site.name}</h1>
     {strings.lede && <p class="lede">{strings.lede}</p>}
-    <div><NotifyCall /></div>
+    <div><ProductCall /></div>
   </div>
 </Section>
 {next && strings.next && <Finale label={strings.next} name={next.name} href={next.base} field={fieldOf(next.theme)} />}

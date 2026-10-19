@@ -6,6 +6,6 @@
     "noUncheckedIndexedAccess": true,
     "types": ["astro/client", "node"]
   },
-  "include": [".astro/types.d.ts", "src", "worker", "tests", "scripts", "*.ts"],
+  "include": [".astro/types.d.ts", "src", "tests", "scripts", "*.ts"],
   "exclude": ["node_modules", "dist", ".temp", ".agents"]
 }

@@ -19,15 +19,18 @@
 .pad-normal { padding-block: var(--space-normal); }
 .pad-airy { padding-block: var(--space-airy); }
 
-/* Bands: the ground flips; every text colour follows these variables. */
+/* Bands: the ground flips; every text colour follows these variables. `band-ink` takes the
+   theme's band tokens (an ink band on the default paper theme; a site with a dark ground sets
+   light band tokens). */
 .band-ink {
-  --c-bg: var(--c-ink);
-  --c-fg: var(--c-paper);
-  --c-muted: #a9b2c1;
-  --c-line: rgb(244 245 242 / 0.16);
-  --c-line-strong: rgb(244 245 242 / 0.34);
-  --focus: #9ab8e6;
-  --link-on: #9ab8e6;
+  --c-bg: var(--c-band-bg);
+  --c-fg: var(--c-band-fg);
+  --c-muted: var(--c-band-muted);
+  --c-line: var(--c-band-line);
+  --c-line-strong: var(--c-band-line-strong);
+  --c-link: var(--c-band-link);
+  --focus: var(--c-band-link);
+  --link-on: var(--c-band-link);
   background: var(--c-bg);
   color: var(--c-fg);
 }
@@ -72,17 +75,21 @@ h1, h2, h3, h4, .t-mega, .t-xl, .t-l, .t-m, .lede { word-break: keep-all; overfl
 }
 
 /* Primary button: an ink square at the start floods across the button in one step and the
-   label rolls one line (DESIGN.md "Hovers"). Touch and no-hover get the fill on press. */
+   label rolls one line (DESIGN.md "Hovers"). Touch and no-hover get the fill on press.
+   Markup: <a class="btn"><span class="btn__label"><span>Label</span></span></a>. The roll is
+   one face leaving upward and returning from below (a keyframe), so no copy of the label sits
+   in the DOM; the older two-span markup (second span aria-hidden) still works. */
 .btn {
   --btn-ink: var(--c-fg);
   --btn-ground: var(--c-bg);
-  --btn-sq: 44px;
+  --btn-h: 48px;
+  --btn-sq: var(--btn-h);
   position: relative;
   isolation: isolate;
   display: inline-flex;
   align-items: center;
   gap: 0.75em;
-  min-height: 48px;
+  min-height: var(--btn-h);
   padding: 0 1.25em 0 0;
   border: 2px solid var(--btn-ink);
   color: var(--btn-ink);
@@ -91,38 +98,74 @@ h1, h2, h3, h4, .t-mega, .t-xl, .t-l, .t-m, .lede { word-break: keep-all; overfl
   line-height: 1;
   overflow: clip;
   cursor: pointer;
-  transition: color var(--d-s) var(--ease-snap);
+  /* The square the fill grows from is an inset shadow: drawn by the button itself, inside its
+     border, so the two can never fall out of register. */
+  box-shadow: inset calc(var(--btn-sq) - 4px) 0 0 0 var(--btn-ink);
+  transition: color var(--d-s) var(--ease-snap), box-shadow var(--d-m) var(--ease-snap);
 }
-.btn::before {
-  /* The square the fill grows from: the button's own height. */
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--btn-ink);
-  z-index: -1;
-  clip-path: inset(0 calc(100% - var(--btn-sq)) 0 0);
-  transition: clip-path var(--d-m) var(--ease-snap);
-}
-.btn__label { display: inline-grid; overflow: clip; margin-left: calc(var(--btn-sq) + 0.5em); }
-.btn__label > span { grid-area: 1 / 1; transition: translate var(--d-m) var(--ease-snap); }
-.btn__label > span + span { translate: 0 110%; }
+.btn__label { display: inline-grid; overflow: clip; margin-left: calc(var(--btn-sq) - 4px + 0.6em); }
+.btn__label > span { grid-area: 1 / 1; }
+.btn__label > span:not(:only-child) { transition: translate var(--d-m) var(--ease-snap); }
+.btn__label > span:not(:only-child) + span { translate: 0 110%; }
 .btn:active, .btn.is-filled { color: var(--btn-ground); }
-.btn:active::before, .btn.is-filled::before { clip-path: inset(0 0 0 0); }
+.btn:active, .btn.is-filled { box-shadow: inset 40em 0 0 0 var(--btn-ink); }
+/* A block slots into place along the grid (lists, chips): use with the settle curve. */
+@keyframes rz-slot {
+  from { translate: 0 12px; opacity: 0; }
+  to { translate: 0 0; opacity: 1; }
+}
+@keyframes rz-roll {
+  0% { translate: 0 0; }
+  45% { translate: 0 -110%; }
+  45.01% { translate: 0 110%; }
+  100% { translate: 0 0; }
+}
 @media (hover: hover) {
   .btn:hover { color: var(--btn-ground); }
-  .btn:hover::before { clip-path: inset(0 0 0 0); }
-  .btn:hover .btn__label > span { translate: 0 -110%; }
-  .btn:hover .btn__label > span + span { translate: 0 0; }
+  .btn:hover { box-shadow: inset 40em 0 0 0 var(--btn-ink); }
+  .btn:hover .btn__label > span:only-child { animation: rz-roll var(--d-m) var(--ease-snap); }
+  .btn:hover .btn__label > span:not(:only-child) { translate: 0 -110%; }
+  .btn:hover .btn__label > span:not(:only-child) + span { translate: 0 0; }
 }
 .btn:focus-visible { color: var(--btn-ground); }
-.btn:focus-visible::before { clip-path: inset(0 0 0 0); }
-.btn:focus-visible .btn__label > span { translate: 0 -110%; }
-.btn:focus-visible .btn__label > span + span { translate: 0 0; }
+.btn:focus-visible { box-shadow: inset 40em 0 0 0 var(--btn-ink); }
+.btn:focus-visible .btn__label > span:only-child { animation: rz-roll var(--d-m) var(--ease-snap); }
+.btn:focus-visible .btn__label > span:not(:only-child) { translate: 0 -110%; }
+.btn:focus-visible .btn__label > span:not(:only-child) + span { translate: 0 0; }
 @media (prefers-reduced-motion: reduce) {
-  .btn__label > span { translate: none !important; }
+  .btn__label > span { translate: none !important; animation: none !important; }
   .btn__label > span + span { visibility: hidden; }
 }
-.btn--small { --btn-sq: 36px; min-height: 40px; font-size: var(--t-s); padding-right: 1em; gap: 0.5em; }
+.btn--small { --btn-h: 40px; font-size: var(--t-s); padding-right: 1em; gap: 0.5em; }
+/* The arrow in the button's square (ProductCall): it travels along the flood on hover. */
+.btn__icon {
+  position: absolute;
+  left: calc((var(--btn-sq) - 4px) / 2 - 8px);
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  color: var(--btn-ground);
+  transition: translate var(--d-m) var(--ease-snap);
+}
+.btn--small .btn__icon { left: calc((var(--btn-sq) - 4px) / 2 - 7px); width: 14px; height: 14px; margin-top: -7px; }
+@media (hover: hover) { .btn:hover .btn__icon { translate: 6px 0; } }
+.btn:focus-visible .btn__icon { translate: 6px 0; }
+
+/* Code: indentation survives on phones; long lines scroll inside the block. */
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: pre;
+  font-family: var(--f-mono);
+  font-size: var(--t-s);
+  line-height: 1.6;
+  tab-size: 2;
+}
+pre code { white-space: inherit; font: inherit; }
+
+/* Latin runs inside phrase-broken display text never break (scripts/phrase.mjs). */
+.nw { white-space: nowrap; }
 
 /* Text links: the underline draws (standalone) or stays and thickens (inline in text). */
 .link-draw {
