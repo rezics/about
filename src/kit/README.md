@@ -161,6 +161,22 @@ task e2e                        # every route at desktop and 390 px, axe, no con
 
 Breaking changes to the kit, newest first. Merge `main`, then fix what the build reports.
 
+### 2026-10-19: focus, links and transitions
+
+- Focus is the brand: a 2 px outline in the ink (`--focus`, now `--c-fg`; on `.band-ink` the
+  band's ink) and a red square at the focused element's top-left corner (`#focus-mark`, placed by
+  the kit). Do not restyle `:focus-visible` to blue; if your theme needs another outline colour,
+  set `--focus`.
+- `.link-draw` draws its line as a border image (no background), so give it no
+  `background` of your own; it still has a 24 px target.
+- Linked plain squares (modules, your own `mode="plain"` links) invert on hover: the text colour
+  floods up and the name and facets turn to the field colour.
+- Header tabs draw a red line from the square under the label on hover and focus.
+- The curtain's middle frame shows the clicked link's name; set `data-transition-label` on a
+  link to choose a shorter one (16 characters at most, else nothing is shown).
+- The build keeps the last four characters of every `<p>` and `<dd>` together (no one- or
+  two-character last lines) and never breaks text inside a `.nw` span.
+
 ### 2026-10-19: REZICS is live
 
 - The notify feature is gone: no footer form, no `/notified/`, no `/api/notify`, no Worker, no

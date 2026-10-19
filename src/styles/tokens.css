@@ -38,7 +38,8 @@
   --c-fg: var(--c-ink);
   --c-accent: var(--c-link);
   --c-curtain: var(--c-ink);
-  --focus: var(--c-link);
+  /* Focus: an outline in the ink, with the red square at its corner (src/kit/motion/page.ts). */
+  --focus: var(--c-fg);
   /* The inverted band (.band-ink, the footer) of the theme. */
   --c-band-bg: var(--c-ink);
   --c-band-fg: var(--c-paper);

@@ -1,6 +1,6 @@
 ---
 /**
- * Footer on every page: it ends on the action square that leads into REZICS (「前往 REZICS」),
+ * Footer on every page: it ends on the action card that leads into REZICS (「前往 REZICS」),
  * then the small print. A page that already ends on its own action square passes
  * `action={false}` (the home page does).
  */
@@ -44,12 +44,11 @@ const f = site.footer;
   .footer__square {
     grid-column: 9 / span 4;
     position: relative;
-    aspect-ratio: 1;
+    align-self: end;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: flex-start;
-    gap: 32px;
+    gap: 24px;
     padding: var(--sq-pad);
     border: 1px solid var(--c-line-strong);
   }
@@ -78,6 +77,5 @@ const f = site.footer;
   @media (max-width: 899px) {
     .footer__lead, .footer__square, .footer__brand, .footer__links, .footer__colophon, .footer__copy { grid-column: 1 / -1; text-align: left; }
     .footer__lead { padding-bottom: 0; }
-    .footer__square { aspect-ratio: auto; min-height: 260px; }
   }
 </style>

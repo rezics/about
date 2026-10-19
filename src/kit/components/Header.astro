@@ -38,16 +38,16 @@ const agents = kinds.filter((k) => k.group === 'agents');
       <ul role="list">
         <li>
           <button type="button" class="tab" popovertarget="panel-products" aria-controls="panel-products" data-panel-button="panel-products" aria-current={section === 'products' ? 'true' : undefined}>
-            <span>{nav.products}</span><span class="tab__caret" aria-hidden="true"></span>
+            <span>{nav.products}</span><span class="tab__caret" aria-hidden="true"></span><span class="tab__line" aria-hidden="true"></span>
           </button>
         </li>
         <li>
           <button type="button" class="tab" popovertarget="panel-engine" aria-controls="panel-engine" data-panel-button="panel-engine" aria-current={section === 'engine' ? 'true' : undefined}>
-            <span>{nav.engine}</span><span class="tab__caret" aria-hidden="true"></span>
+            <span>{nav.engine}</span><span class="tab__caret" aria-hidden="true"></span><span class="tab__line" aria-hidden="true"></span>
           </button>
         </li>
-        <li><a class="tab" href="/developers/" aria-current={section === 'developers' ? 'page' : undefined}>{nav.developers}</a></li>
-        <li><a class="tab" href="/roadmap/" aria-current={section === 'roadmap' ? 'page' : undefined}>{nav.roadmap}</a></li>
+        <li><a class="tab" href="/developers/" aria-current={section === 'developers' ? 'page' : undefined}><span>{nav.developers}</span><span class="tab__line" aria-hidden="true"></span></a></li>
+        <li><a class="tab" href="/roadmap/" aria-current={section === 'roadmap' ? 'page' : undefined}><span>{nav.roadmap}</span><span class="tab__line" aria-hidden="true"></span></a></li>
       </ul>
       <span class="tabs__marker" aria-hidden="true" data-tabs-marker></span>
     </nav>
@@ -196,6 +196,19 @@ const agents = kinds.filter((k) => k.group === 'agents');
     margin-left: -4px;
     background: var(--c-mark);
   }
+  /* The label answers too: a red line draws out from the square under it. */
+  .tab__line {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    bottom: 5px;
+    height: 2px;
+    background: var(--c-mark);
+    scale: 0 1;
+    transition: scale var(--d-m) var(--ease-snap);
+  }
+  @media (hover: hover) { .tab:hover .tab__line { scale: 1 1; } }
+  .tab:focus-visible .tab__line, .tab[aria-expanded='true'] .tab__line { scale: 1 1; }
   .tabs__marker {
     position: absolute;
     left: 0;

@@ -9,7 +9,7 @@
  *       'plain'  field and name only (modules, anything without a picture)
  * href  makes the square a link; linked squares are page-transition sources ([data-flip-src])
  * flip  'target' marks the square a transition lands on (one per page, the hero square)
- * facets up to four short captions set in mono under the name (plain squares: a module's
+ * facets up to five short captions set in mono under the name (plain squares: a module's
  *       points, a site's sections), so a square without a picture still fills its frame. They
  *       show where the square is at least 260 px wide. A linked plain square floods with a
  *       deeper shade of its field from the bottom on hover, as a picture floods a kind square.
@@ -33,7 +33,7 @@ interface Props {
   class?: string;
   /** Hidden text appended to a linked square's name, e.g. its summary. */
   description?: string;
-  /** Short captions under the name (at most four are shown). */
+  /** Short captions under the name (at most five are shown). */
   facets?: string[];
   [key: `data-${string}`]: unknown;
 }
@@ -51,7 +51,7 @@ const {
   facets = [],
   ...rest
 } = Astro.props;
-const shownFacets = facets.slice(0, 4);
+const shownFacets = facets.slice(0, 5);
 const Tag = href ? 'a' : 'div';
 const escapeAttr = (v: string) => v.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const showPicture = mode !== 'plain' && image;
@@ -74,7 +74,7 @@ const showPicture = mode !== 'plain' && image;
       <Fragment set:html={`<img src="${image.base}-960.webp" alt="${escapeAttr(href ? '' : image.alt)}" width="960" height="960" loading="${eager ? 'eager' : 'lazy'}" fetchpriority="${eager ? 'high' : 'auto'}" decoding="async" data-square-img>`} />
     </picture>
   )}
-  <SquareName name={name} roll={!!href} height={shownFacets.length ? 56 : undefined} />
+  <SquareName name={name} roll={!!href} height={shownFacets.length ? 50 : undefined} />
   {href && mode === 'plain' && <span class="sq__shade" aria-hidden="true"></span>}
   {shownFacets.length > 0 && (
     <ul class="sq__facets mono" role="list" aria-hidden={href ? 'true' : undefined}>
@@ -107,7 +107,7 @@ const showPicture = mode !== 'plain' && image;
     z-index: 1;
     display: none;
     gap: 0.35em;
-    font-size: clamp(0.75rem, 3.2cqi, 1rem);
+    font-size: clamp(0.75rem, 3.4cqi, 1.375rem);
     line-height: 1.3;
     color: var(--on-field);
   }
@@ -121,21 +121,25 @@ const showPicture = mode !== 'plain' && image;
      flood square's picture from script (an idle sequence, a chosen item). */
   .sq--image, a.sq--flood:hover, a.sq--flood:focus-visible, .sq--flood.is-lit { --sqname-trap: 0.08em; }
   .sq--flood.is-lit .sq__img { clip-path: inset(0 0 0 0); }
-  /* A linked plain square floods with a deeper shade of its field from the bottom. */
+  /* A linked plain square answers by inverting: its text colour floods up through it from the
+     bottom and the name and facets turn to the field colour (the same AA pair, reversed). */
   .sq__shade {
     position: absolute;
     inset: 0;
-    background: color-mix(in srgb, var(--field) 76%, #0e1420);
+    background: var(--on-field);
     clip-path: inset(100% 0 0 0);
     transition: clip-path var(--d-m) var(--ease-snap);
   }
+  a.sq--plain :global(.sqname), a.sq--plain .sq__facets { transition: color 0.2s linear 0.08s; }
   @media (hover: hover) {
     a.sq--flood:hover .sq__img { clip-path: inset(0 0 0 0); }
     a.sq--plain:hover .sq__shade { clip-path: inset(0 0 0 0); }
+    a.sq--plain:hover :global(.sqname), a.sq--plain:hover .sq__facets { color: var(--field); }
     a.sq:hover :global(.sqname__face--roll) { animation: rz-roll var(--d-m) var(--ease-snap); }
   }
   a.sq--flood:focus-visible .sq__img { clip-path: inset(0 0 0 0); }
   a.sq--plain:focus-visible .sq__shade { clip-path: inset(0 0 0 0); }
+  a.sq--plain:focus-visible :global(.sqname), a.sq--plain:focus-visible .sq__facets { color: var(--field); }
   a.sq:focus-visible :global(.sqname__face--roll) { animation: rz-roll var(--d-m) var(--ease-snap); }
   a.sq:focus-visible { outline-offset: 4px; }
   a.sq:active { scale: 0.985; }

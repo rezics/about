@@ -29,7 +29,7 @@
   --c-line: var(--c-band-line);
   --c-line-strong: var(--c-band-line-strong);
   --c-link: var(--c-band-link);
-  --focus: var(--c-band-link);
+  --focus: var(--c-band-fg);
   --link-on: var(--c-band-link);
   background: var(--c-bg);
   color: var(--c-fg);
@@ -48,6 +48,15 @@
 /* CJK display text breaks only between phrases: the build inserts <wbr> between BudouX phrases
    in headings and display paragraphs (scripts/phrase.mjs); overflow-wrap is the safety net. */
 h1, h2, h3, h4, .t-mega, .t-xl, .t-l, .t-m, .lede { word-break: keep-all; overflow-wrap: anywhere; }
+p, dd, li, .lede { text-wrap: pretty; }
+/* Phones: running text breaks between any characters again (keep-all would leave ragged lines
+   in a narrow column), and no measure narrows a column already narrower than it. */
+@media (max-width: 767px) {
+  .lede { word-break: normal; }
+}
+@media (max-width: 599px) {
+  .lede, .measure { max-width: none; }
+}
 
 /* Type roles. CJK display: tracking -0.02em, leading 1.05 to 1.15. */
 .t-mega, .t-xl, .t-l {
@@ -167,17 +176,23 @@ pre code { white-space: inherit; font: inherit; }
 /* Latin runs inside phrase-broken display text never break (scripts/phrase.mjs). */
 .nw { white-space: nowrap; }
 
-/* Text links: the underline draws (standalone) or stays and thickens (inline in text). */
+/* Text links: the underline draws (standalone) or stays and thickens (inline in text). The
+   drawn line is a border image, not a background, so contrast checkers read the text plainly. */
+@property --draw {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
 .link-draw {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
-  background: linear-gradient(currentColor 0 0) left bottom / 0% 2px no-repeat;
-  padding-bottom: 2px;
-  transition: background-size var(--d-m) var(--ease-snap);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(to right, currentColor var(--draw), transparent var(--draw)) 1;
+  transition: --draw var(--d-m) var(--ease-snap);
 }
-@media (hover: hover) { .link-draw:hover { background-size: 100% 2px; } }
-.link-draw:focus-visible, .link-draw[aria-current='page'] { background-size: 100% 2px; }
+@media (hover: hover) { .link-draw:hover { --draw: 100%; } }
+.link-draw:focus-visible, .link-draw[aria-current='page'] { --draw: 100%; }
 .link-inline {
   color: var(--link-on, var(--c-link));
   text-decoration: underline;
