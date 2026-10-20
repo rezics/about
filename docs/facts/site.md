@@ -172,3 +172,18 @@ The roadmap statement comes from `docs/product/markets-and-growth.md#strong-dema
 - **Legal statements** (no trackers, no training by default, export, appeals) come from drafts not yet reviewed by counsel, and some still carry `[REZICS TO FILL]` markers. They are the stated direction, not verified operation.
 - **Meta description length.** Total length is 50 to 80 characters. Descriptions heavy in Latin text (developers, zones) have fewer than 50 CJK characters but are similar in display width.
 - **Type check.** A `tsconfig.json` now sits at `about:` root, so the brief's command needs `--ignoreConfig` with TypeScript 7.0.2. With that flag it passes.
+
+## Claims ahead of the product's specification
+
+The 2026-10-20 claim audit found six claims that no rezics-next document settles. The site
+presents every feature as open, so each stays as written; it states the intended behaviour and
+the product should follow it, or the copy changes when the product decides otherwise.
+
+| Claim | Pages | Intended behaviour |
+| --- | --- | --- |
+| Airing times shown in the viewer's time zone | `/anime/`, `/anime/seasons/` | Display defaults to the viewer's local time zone |
+| API, software, MCP server and Skill entries link both ways | `/software/connections/`, `/mcp/`, `/mcp/directory/`, `/apis/connections/` | Provider, consumer, wrapper and uses relations, each shown from both ends |
+| Compatibility records name a language | `/mcp/`, `/mcp/directory/`, `/mcp/evidence/`, `/skills/directory/`, `/skills/evidence/` | The natural language of the task, its input and its output |
+| Tool changes between MCP versions are marked | `/mcp/versions/` | A public comparison of observed tools between versions |
+| Every Skill file listed with path, role, executable flag and hash | `/skills/`, `/skills/versions/`, `/skills/use/` | The public Work page shows the stored file inventory |
+| Authentication and specification recorded per API version, and usable as filters | `/apis/`, `/apis/specs/`, `/apis/directory/`, `/apis/versions/` | Version-level fields in the API Hub manifest, admitted as filter paths |
