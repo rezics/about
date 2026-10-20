@@ -1,0 +1,35 @@
+---
+// The Work page's example (books): one flat accent tile set like a book's title page, across the
+// section's width, with the title, the original title and the author, text only
+// (EXAMPLE-WORK.md: no cover or artwork), and its caption under it.
+import site from '../../content/sites/books';
+
+const e = site.strings.work.example;
+---
+<figure class="bk-title">
+  <div class="bk-title__page">
+    <p class="bk-title__name serif">{e.title}</p>
+    <p class="bk-title__original" lang="ja">{e.original}</p>
+    <p class="bk-title__author">{e.author}</p>
+  </div>
+  <figcaption class="bk-note">{e.caption}</figcaption>
+</figure>
+<style>
+  .bk-title { margin-bottom: 72px; }
+  .bk-title__page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    min-height: 260px;
+    padding: 28px 32px;
+    background: var(--field);
+    color: var(--on-field);
+  }
+  .bk-title__name { margin-bottom: 8px; font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem); line-height: 1.35; }
+  .bk-title__original, .bk-title__author { font-size: 15px; line-height: 1.6; }
+  @media (max-width: 767px) {
+    .bk-title { margin-bottom: 44px; }
+    .bk-title__page { min-height: 180px; padding: 20px; }
+  }
+</style>

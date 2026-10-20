@@ -1,48 +1,45 @@
 ---
-// 書庫 閱讀紀錄 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, three readings
-// of one book, moving in and out, the shelf as flat tiles, the ink band on "continue", privacy,
-// the next page and the closing block.
+// 閱讀紀錄 (v3, SITE.md "Pages"): the heading and lede beside the three strips; three reads of
+// one book as strips; moving in and out; the statement on the Continue row; the shelf; privacy; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import Table from '../../kit/components/Table.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
+import NextPage from '../../sites/books/NextPage.astro';
+import PhotoHead from '../../sites/books/PhotoHead.astro';
+import Reads from '../../sites/books/Reads.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
+import { pictures } from '../../sites/books/pictures';
 import '../../sites/books/books.css';
 
 const s = site.strings.library;
-const accent = kindFields.books.field;
-const page = site.pages.find((p) => p.slug === 'library')!;
 ---
 <MiniSiteLayout>
-  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.library, alt: s.hero.alt }} />
+  <Contents items={[s.reads, s.move, s.shelf, s.privacy]} />
 
-  <Sec label="01" title={s.reads.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.reads.body}</p>
-      <Table columns={s.reads.columns} rows={s.reads.rows} caption={s.reads.caption} label={s.reads.headline} />
-    </div>
-  </Sec>
+  <Section eyebrow={s.reads.label} title={s.reads.headline} lead={s.reads.lead}>
+    <Reads />
+  </Section>
 
-  <Sec label="02" title={s.move.headline}>
-    <p class="text">{s.move.statement}</p>
-    <ItemGrid slot="wide" items={s.move.steps} cols={4} numbered />
-  </Sec>
+  <Section eyebrow={s.move.label} title={s.move.headline}>
+    <FactList items={s.move.steps} numbered />
+    <p class="bk-note">{s.move.retention}</p>
+  </Section>
 
-  <Band label={page.label} title={s.continue.poster} text={s.continue.body} />
+  <Statement text={s.continue.text} sub={s.continue.sub} note={s.continue.note} />
 
-  <Sec label="03" title={s.shelf.headline}>
-    <ItemGrid slot="wide" items={s.shelf.squares} cols={3} look="cards" />
-  </Sec>
+  <Section eyebrow={s.shelf.label} title={s.shelf.headline}>
+    <FactList items={s.shelf.rows} />
+  </Section>
 
-  <Sec label="04" title={s.privacy.statement}>
-    <ul class="bk-notes">{s.privacy.facts.map((f) => <li>{f}</li>)}</ul>
-  </Sec>
+  <Section eyebrow={s.privacy.label} title={s.privacy.headline}>
+    <FactList items={s.privacy.rows} />
+  </Section>
 
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
-  <Closing bg={accent} />
+  <NextPage slug="library" lead={s.finaleLead} />
+
+  <Closing title={site.strings.common.closing.title} body={site.strings.common.closing.body} />
 </MiniSiteLayout>

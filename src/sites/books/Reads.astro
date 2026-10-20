@@ -1,0 +1,36 @@
+---
+// The library page's three reads of one book (books, 示意): the head photograph's three strips
+// seen flat. Each read is a strip in the accent whose length is how far it went; the current
+// read ends on the bookmark's sage. The words under each strip carry the meaning, so the strips
+// are hidden from screen readers.
+import { fieldStyle, kindFields } from '../../kit/theme';
+import site from '../../content/sites/books';
+
+const r = site.strings.library.reads;
+const sage = fieldStyle(kindFields.skills);
+---
+<ol class="bk-reads" role="list">
+  {r.rows.map((row, i) => (
+    <li class="bk-reads__row">
+      <h3 class="bk-reads__title">{row.title}</h3>
+      <div class="bk-reads__text">
+        <div class="bk-reads__track" aria-hidden="true">
+          <span class="bk-reads__strip" style={`width:${Math.round(row.share * 100)}%`}></span>
+          {i === r.rows.length - 1 && <span class="bk-reads__mark" style={sage}></span>}
+        </div>
+        <p class="bk-reads__body">{row.body}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+<p class="bk-note">{r.caption}</p>
+<style>
+  .bk-reads { border-top: 1px solid var(--c-line); }
+  .bk-reads__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); align-items: baseline; padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
+  .bk-reads__title { font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem); line-height: 1.55; }
+  .bk-reads__track { display: flex; gap: 3px; height: 18px; }
+  .bk-reads__strip { display: block; height: 100%; background: var(--field); }
+  .bk-reads__mark { display: block; width: 18px; height: 100%; flex: none; background: var(--field); }
+  .bk-reads__body { margin-top: 14px; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  @media (max-width: 767px) { .bk-reads__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; } }
+</style>

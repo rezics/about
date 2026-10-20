@@ -1,18 +1,10 @@
 # 書庫 `books`: site design record
 
-> **Direction v2, revised (2026-10-19).** Every page follows the Swiss grid and flat seamless
-> tiles of the reference mock (`.temp/mocks/home.html`; DESIGN.md "Direction v2"): the landing
-> is the copy beside a seamless wall of the site's own pages in shades of its accent (`#1d5a47`),
-> sections take the meta column and heading grid, hairline lists and tables, one ink band at most,
-> and the closing block in the accent. No scene images; the bookmark stage is a flat reading figure beside six numbered steps, one work's editions are flat example tiles (示意), the Wiki+ position folds later entries into placeholders. Where this record describes
-> squares, curtains, painted art or the earlier calm manner, it is history.
-
-Site id `books`, routes `/books/` and `/books/<page>/`, field `#1d5a47`. The design record:
-brief, research, concept, pages, composition, signature, theme, images, and at the end the build
-record (what changed from the stage 1 plan and why). Copy lives in
-`src/content/sites/books.ts`, sources in `facts.md`. DESIGN.md's system is binding; this file
-only adds what is specific to books. REZICS is live: no page carries a notify action or
-waiting-list wording; the action into the product comes from the kit.
+Site id `books`, routes `/books/` and `/books/<page>/`, accent `#3f5a45` (paper text on it,
+6.3:1). Copy lives in `src/content/sites/books.ts`, sources in `facts.md`. The binding design
+language is v3 (`about:.temp/sites/V3-SPEC.md`, approved 2026-10-19 from the home mock); this
+file adds only what is specific to books. Earlier records (the 方塊 bookmark grid, Direction v2's
+Swiss tiles) are in Git history; nothing from them is binding.
 
 ## Brief
 
@@ -30,7 +22,7 @@ waiting-list wording; the action into the product comes from the kit.
 
 **Job of the site.** In three seconds: REZICS keeps every edition and translation of a book
 apart, on one Work page, and knows where you are in it. By the end of any page: the visitor
-knows what they can do there and leaves an email. Each inner page answers one recurring task.
+knows what they can do there and goes into REZICS (「前往 REZICS」). Each inner page answers one recurring task.
 
 **What this audience cares about most.**
 
@@ -118,546 +110,212 @@ What REZICS does for books, with the owner document for each point (full claim l
 - **Privacy statements** come only from `docs/legal/privacy-policy.md` and
   `docs/legal/ai-policy.md`.
 
-## Concept
 
-Three candidates inside the 方塊 system, from three territories of the book world.
+## v3
 
-| | Idea | Anchor | Signature | O / F / Fe / P |
-|---|---|---|---|---|
-| **A. 書籤 (ritual: marking your place)** | The red square, REZICS's "you are here" mark, becomes the reader's bookmark. It sits under the squares of volumes and chapters, and the site shows everything up to it and nothing past it. | REZICS computes the next volume, the wiki and spoiler-safe discussion from the reader's own position; the system already reserves red for the current-position marker. | 書籤歸位: a grid of volume squares by language rows; the bookmark slots one volume at a time, read squares fill, an omnibus is one wide square, the next readable volume lights. | 4 / 5 / 4 / 2 |
-| B. 書脊 (material: spines on a shelf) | Every edition is a spine; a series is a shelf row; an omnibus is one thick spine across three slots; the site's pages are spines. | Series are shelved in volume order and an omnibus physically spans volumes. | Spines slide along the shelf rail and lock into the Work's square. | 3 / 4 / 4 / 3 (the shelf is every book site's metaphor) |
-| C. 稿紙 (place and culture: square-grid manuscript paper) | Everything is set in manuscript squares, written vertically; reading and writing both fill squares. | Taiwanese students write on 方格稿紙, one character per square, top to bottom. | Chapter text sets itself into vertical squares column by column. | 4 / 3 / 5 / 3 (fits writing, says little about editions, library or wiki) |
+### Idea
 
-**Pick A.** It is the only one that carries the flagship (Wiki+ read up to your position), the
-library (where you are, what is next) and series continuity (progress carried across
-translations) with one variable, and it reuses the system's own red marker, so the books site
-reads as itself and as REZICS at once. **Steal from B** for the omnibus as one wide square (the
-spine-shelf sub-navigation was dropped in the build; see the build record). **Steal from C** only as the serial page's hero
-texture (vertical type in manuscript squares).
+One work, every edition, and the page you are on. The site says it with the v3 paper
+still-life series: sheets of one green in different sizes are a work's editions, a fan of equal
+sheets is a series, and a narrow sage strip slipped between two of them is the reader's
+bookmark. Each section says one thing, in a slow rhythm: a photograph, a list, a statement, a
+photograph, tiles. Nothing on a screen competes with the one sentence that screen is for.
 
-### Concept card
+### Theme
 
-```
-Idea:        Your bookmark is the reference point: the next volume in your language, the
-             wiki and the discussion all stop where you stopped reading.
-Metaphor:    書籤. REZICS's red square (its current-position mark) is a bookmark slotted
-             under the squares of volumes and chapters.
-Signature:   書籤歸位 (landing). A grid of twelve volume squares by language rows. Scrolling
-             moves the red bookmark one volume at a time; read squares fill with the field
-             colour; the omnibus is one wide square over volumes 1 to 3; at volume 7 the
-             Chinese square stays empty and the next readable square lights; switching to
-             the Japanese row moves the bookmark along the column and progress is kept.
-             motion.md "Pinned chapters" + patterns.md "driver module" (one variable:
-             reading position).
-Emotion:     Calm certainty: you know where you are, what comes next, and nothing ahead
-             is spoiled.
-Motion verb: 歸位 (system). The bookmark travels only along a row or a column and locks
-             with a settle of at most 2 %; read squares fill in the reading direction.
-Screenshot:  The grid mid-story: four rows (日文, 繁中, 繁中合訂本, 英文), twelve columns,
-             a wide green square over 1 to 3, volumes 4 to 6 filled, the red bookmark under
-             column 6, an outlined square at 日文 7 and an empty square at 繁中 7.
-```
+- **Ground and ink are the shared v3 tokens** (paper `#efe9e0`, ink `#26292d`, muted
+  `#6b6f73`, hairline `rgb(38 41 45 / .14)`, link and hover `#2f4fa3`). No site ground of its
+  own: the photographs carry the books colour, and a tinted ground would fight them.
+- **Accent `#3f5a45`** (paper text 6.8:1) on the site's tiles, the example title page and the
+  order tiles. The site's own pages are tiles in six tones (`tones.ts`): the accent, two deeper
+  greens, and three greens mixed toward the sage of the bookmark strip. The kit's `accentRamp`
+  mixes toward the paper ground, which turns this green grey and the light tiles read as
+  disabled; mixed toward the sage, every tile is one of the photographs' papers seen flat.
+  `tones.test.ts` checks AA text on each.
+- **Neighbours in the pictures:** pale sage `#b8c58a` is the reader's place (the bookmark, the
+  fold being read, the end of the current read); pale blue `#a9c3dc` is a translation in the
+  stack of editions and the card the wiki's entries are sorted onto.
+- **Type** per V3-SPEC: Noto Serif TC 600 headings, Noto Sans TC 400 text, Manrope for Latin
+  (EPUB, DRM, Wiki+, ISBN). Statements in Noto Serif TC 500, second half muted.
 
-The concept survives everywhere on the site: the sub-navigation marks the current page with
-the same red square under the current tab; the Work page's primary button changes with your position;
-the Wiki+ page has a chapter rail with the bookmark; the library page counts sessions against
-the exact edition; the serial page keeps comments pinned to the passage they were written on.
+### Pictures
 
-## Pages
+Five photographs from one series (codex-2 image generation with the v3 reference photograph
+as the style reference; prompts and rejected attempts in the worktree's `.temp/art/`).
+Every one leaves empty paper on its left, so any of them can sit beside or under text.
 
-Order is the finale chain: each page ends on the next one; the last ends on the next site
-(動畫, field `#b03a62`).
-
-| # | Route | Spine label | Purpose | The one thing to leave with |
-|---|---|---|---|---|
-| 0 | `/books/` | 書庫 | What REZICS is for books; the bookmark signature; the eight parts; every inner page; neighbouring kinds | One page per Work keeps every edition apart, and the site follows where you are. |
-| 1 | `/books/work/` | 作品頁 | The Work page as the hub, section by section, on 《傲慢與偏見》 | Everything about a book starts from one page, arranged around your next action. |
-| 2 | `/books/wiki/` | Wiki+ | Wiki+ built by readers' own AI agents with the local toolkit, read up to your position | You can build a wiki for a book you hold with your own agent; REZICS never gets the text; readers only see what they have read. |
-| 3 | `/books/editions/` | 版本與系列 | Editions, translations, series, omnibus, web versus published continuity | Every edition and translation is told apart and still belongs to one Work; series order never gets mixed up. |
-| 4 | `/books/library/` | 閱讀紀錄 | The portable library: sessions, rereads, pauses, formats, copies and loans, import and export, privacy | The record is honest, private and leaves with you. |
-| 5 | `/books/serial/` | 連載 | Native writing and reading of serial fiction | Write chapter by chapter without losing a word; readers resume exactly where they were. |
-| 6 | `/books/publish/` | 出版 | Distribution and sales for authors | Sell DRM-free files to readers, with every deduction itemized and the store next to the community. |
-
-Light novels live on the landing signature, `editions` and `library`; serial fiction on
-`serial` and the landing word band.
-
-## Site-wide elements
-
-- **Sub-navigation, every page.** The kit's site bar (書庫 and its seven tabs: 總覽, 作品頁,
-  Wiki+, 版本與系列, 閱讀紀錄, 連載, 出版), with the system's red square under the current tab.
-  The stage 1 plan of a shelf of vertical spines was dropped: the kit gives every mini-site the
-  same bar, and a second navigation would compete with it.
-- **Finale, every page.** A full-bleed field band whose small label is the page's one-line lead
-  and whose large name is the next page. The last page leads into 動畫 on its own field colour.
-- **Examples.** Named works are public domain only: 《傲慢與偏見》 (the toolkit's own examples
-  use Jane Austen) on `work` and `wiki`, 《紅樓夢》 for coverage on `editions`. Series and
-  serial examples are generic ("a twelve-volume light novel"), never a modern franchise.
-
-## Composition plan
-
-Wireframes at 1440 px, 12 columns; text starts on column 1, 5 or 9. Family names follow
-layout.md; REZICS-specific forms are named. Phone notes follow each page.
-
-### 0. `/books/` landing
-
-```
-S1 Hero: split frame + kind square (Flip target)
-┌─────────────── col 1–4 ──────────┐  col 5–12
-│                                  │  h1, t-xl, 2 lines
-│      image (books.png)           │  一部作品，所有版本，和你讀到的那一頁。
-│      name 書庫 fills the square   │  lede col 5–9
-│                                  │  [開放時通知我]  [看書籤怎麼走]
-└──────────────────────────────────┘  caption col 9–12
-```
-```
-S2 書籤歸位: pinned stage (sticky narrative), signature
-┌──────────── stage col 1–8, sticky, paper ground ─────────────┐ captions col 9–12
-│      1  2  3  4  5  6  7  8  9  10 11 12                     │ ┌ step title (t-m)
-│ 日文 □  □  □  □  □  □  □  □  □  □  □  □                      │ │ body
-│ 繁中 □  □  □  ■  ■  ■  ·                                      │ └ (6 steps scroll)
-│ 合訂 [■■■■■■■■■]                                              │
-│ 英文 □  □  □  □  □  □  □  □  □                                │
-│      ─────────────────▪───────────────  rail + red bookmark   │
-│      讀到第 6 集。下一本：第 7 集，等待繁中版。  (live caption)    │
-└───────────────────────────────────────────────────────────────┘
-```
-```
-S3 Word band: poster
- h2 small col 1
- ┌──────┬──────┬──────┬──────┬──────┬──────┐   six words, each fills its square
- │輕小說│網路連載│長篇小說│短篇集│ 詩集 │非虛構│   (field tint t08, ink text)
- └──────┴──────┴──────┴──────┴──────┴──────┘
- caption col 5–9
-```
-```
-S4 Eight parts: chips (data/facts), phones first
- h2 col 1–4, caption (sticky)      col 5–12, one row per part:
-                                   ■ 身分 identity   note from kinds.ts partNotes
-                                   ■ 版本 editions   note
-                                   … eight rows, hairline rules
-```
-```
-S5 Pages: index list
- h2 col 1
- ──────────────────────────────────────────────────────────── 
- 作品頁 (t-l)        one line (col 5–9)                 [□ glyph] col 12
- Wiki+               …                                  [□]
- 版本與系列 / 閱讀紀錄 / 連載 / 出版                         rows link; the glyph
- ────────────────────────────────────────────────────────────  slides one step right
-```
-```
-S6 Connections: gallery wall
- h2 col 1–4      ┌──────────┐ ┌─────┐
-                 │  動畫     │ │ 漫畫 │      four kind squares, two sizes,
-                 │ (large)  │ └─────┘      field colours of each kind,
-                 └──────────┘ ┌─────┐┌───┐ label under each; one line col 1–4
-                              │視覺小說││遊戲│
-                              └─────┘└───┘
-```
-```
-S7 Finale: full-bleed field band → 作品頁
-```
-Phone: S1 square full width then h1; S2 panning track (see Signature); S3 words in a 3 × 2
-grid; S4 chips stack (part name over its note); S5 glyph inline left of the name; S6 two columns.
-
-### 1. `/books/work/` 作品頁
-
-```
-S1 Hero: statement + title page
- h1 t-xl col 1–10, 2 lines
- lede col 5–9
- ┌ title page, col 9–12, hairline frame ┐
- │ 《傲慢與偏見》 (t-l)                    │
- │ Pride and Prejudice (Archivo, muted)  │
- │ 珍‧奧斯汀                              │
- └───────────────────────────────────────┘ caption beneath
-```
-```
-S2 Eight sections: ordered index list (real order, numerals allowed)
- h2 col 1, intro col 5–9
- 1  身分與下一步 (t-l)        what it shows (col 5–8)     example line (col 9–12, muted)
- 2  簡介
- …  (8 rows, hairline rules, row number in tabular Archivo)
-```
-```
-S3 One primary action: kinetic poster
- h2 col 1–4, body              ┌─────────────────────────────┐ col 5–12
- [還沒選版本][還沒開始][讀到一半] │          繼續讀              │ field square,
-  (tab control, col 1–4)        │   (t-mega, letter roll)     │ paper text
-                                └─────────────────────────────┘
-                                caption col 9–12
-```
-```
-S4 Ratings name their target: asymmetric pair
- col 1–7: 故事　譯本　朗讀 (t-xl, one line, one underlined)   col 9–12: h2, body,
-          scope as three squares (所有人, 你的社群, 另一個社群),      caption
-          not a meta string
-```
-```
-S5 Edit in place or propose: split compare (data)
- h2 col 1–8
- ┌ 直接改，可以復原 ─────────┐ ┌ 提出更正，經人審核 ───────┐
- │ 狀態 / 進度 / 評分 / 清單   │ │ 事實 / 關聯 / 書名與別名    │
- └──────────────────────────┘ └──────────────────────────┘ caption col 5–9
-```
-```
-S6 Languages stay apart: statement (t-l across col 1–10), body col 5–9
-S7 Finale → Wiki+
-```
-Phone: S1 title page above the lede; S2 example lines under each row; S3 tabs become a
-segmented row above the square; S4 targets wrap to three lines.
-
-### 2. `/books/wiki/` Wiki+
-
-```
-S1 Hero: full-bleed field band
-┌───────────────────────── field #1d5a47 ──────────────────────────┐
-│ h1 paper t-xl col 1–7                      image col 9–12 (square) │
-│ lede col 1–6                               open book + red ribbon  │
-└────────────────────────────────────────────────────────────────────┘
-```
-```
-S2 From one file to a wiki: filmstrip (static row of four squares, a real sequence)
- h2 col 1
- ┌────┐ ┌────┐ ┌────┐ ┌────┐   each square: step name (t-m), body under it
- │檔案│ │代理│ │提案│ │發布│   squares tint from t08 to field as the steps advance
- └────┘ └────┘ └────┘ └────┘
-```
-```
-S3 Read to your chapter: interactive stage (control + panel + rail), signature echo
- h2 col 1–8, intro
- [第 1 章][第 3 章][第 15 章][第 35 章][第 46 章][全部]   position control (col 1–12)
- ▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯▯ … 61 cells ▯▯▯   chapter rail; red bookmark beneath
- ┌ 人物 ───────────────────────┐  ┌ 事件 ─────────────────┐
- │ name / aliases / 出處：第 n 章 │  │ name / 出處：第 n 章     │   entries slot in
- └─────────────────────────────┘  └───────────────────────┘
- status line; rules list col 9–12
-```
-```
-S4 REZICS never receives the text: statement + fine print
- statement t-xl col 1–10
- five short facts, two columns col 5–12, hairline between
-```
-```
-S5 What a wiki holds: gallery wall of route squares
- ┌──────────┐┌────┐┌────┐
- │  作品頁   ││人物│ │地點│      the large square is the Work page (the hub);
- │ (large)  │└────┘└────┘      route squares around it; body col 9–12
- └──────────┘┌──────┐┌────┐
-             │章節導讀││關係│ ┌時間線┐
-             └──────┘└────┘ └─────┘
-```
-```
-S6 Agents propose, people review: data/facts
- h2 col 1
- 相符      新增      不確定      無法取得     four words at t-l in a row,
- def       def       def         def          one-line definition under each
- rules list col 5–12
-S7 Finale → 版本與系列
-```
-Phone: S1 image above h1 inside the band; S2 becomes a native scroll-snap row; S3 control
-wraps to two rows of three, rail stays one row (61 thin cells), lists stack.
-
-### 3. `/books/editions/` 版本與系列
-
-```
-S1 Hero: poster with image
- h1 t-xl col 1–12, one line
- image col 5–8 (square)        lede col 9–12, bottom-aligned with the image
-```
-```
-S2 Four kinds of release: 田 grid (one square cut in four)
- h2 col 1–4, caption   ┌──────────────┬──────────────┐ col 5–12
-                       │ 正式出版      │ 網路發表      │ each quarter: name t-m,
-                       ├──────────────┼──────────────┤ definition t-s
-                       │ REZICS 固定版 │ 虛擬版        │
-                       └──────────────┴──────────────┘
-```
-```
-S3 Translations: index list + state strip
- h2 col 1–8
- 官方譯本 / 同好翻譯 / 機器翻譯 / AI 輔助    (rows, definition col 5–12)
- 每一段都有狀態: ■ 待翻譯  ■ 已翻譯  ■ 已審閱  ■ 定稿   (four squares filling in turn)
- notes col 5–12
-```
-```
-S4 Same Work or two: ledger table (data)
- h2 col 1, intro col 5–9
- ┌ 改動 (col 1–6) ───────────────────┬ 結果 (col 7–12) ───────────┐
- │ six rows, hairline rules            │                              │
- └────────────────────────────────────┴──────────────────────────────┘ caption
-```
-```
-S5 Two orders: parallel rows (order toggle)
- h2 col 1–8                                 [換成閱讀順序] button col 9–12
- 出版順序      □第1集 □外傳 □第2集 □第3集
- 閱讀順序      □第1集 □第2集 □外傳 □第3集   squares swap along the row (Flip)
- three notes col 5–12
-```
-```
-S6 ISBN: poster
- 輸入書號，找到那一版。 (t-mega, two lines, col 1–12)
- body col 5–9; 《紅樓夢》 example col 9–12
-S7 Finale → 閱讀紀錄
-```
-Phone: S2 quarters stack 2 × 2 at full width; S4 table becomes stacked pairs; S5 rows
-scroll horizontally with snap.
-
-### 4. `/books/library/` 閱讀紀錄
-
-```
-S1 Hero: statement with a slipped-in card
- h1 t-xl col 1–9
- lede col 5–9                       image col 10–12, offset down half a square
-```
-```
-S2 Three reads: card table (data)
- h2 col 1–8
- ┌ 第幾次 ┬ 怎麼讀 ─────────────────┬ 結果 ───────────────┐  ruled like a due-date
- │ 第一次 │ 紙本                     │ 讀到第 20 章，暫停    │  card; rows stamp in
- │ 第二次 │ 電子書，後半改聽有聲書     │ 讀完                 │
- │ 第三次 │ 重讀                     │ 進行中               │
- └────────┴─────────────────────────┴─────────────────────┘ body + caption col 5–9
-```
-```
-S3 Move in, move out: asymmetric pair
- col 1–7: four steps as a vertical stack of squares     col 9–12: statement on retention
-```
-```
-S4 The shelf too: gallery wall (unequal squares)
- ┌──────────┐┌──────┐
- │ 藏書      ││借出借入│ ┌────┐
- └──────────┘└──────┘ │清單│
- ┌──────┐┌──────────┐ └────┘
- │段落筆記││在讀就追蹤  │
- └──────┘└──────────┘
-```
-```
-S5 Continue: poster (t-xl, col 1–10), body col 5–9
-S6 Private: statement (field band, paper text), four facts col 5–12
-S7 Finale → 連載
-```
-Phone: S1 card image beside the lede at half width; S2 table rows become cards with
-labels; S4 one column with alternating widths.
-
-### 5. `/books/serial/` 連載
-
-```
-S1 Hero: vertical poster in manuscript squares
- ┌ manuscript grid (line colour), col 7–12 ┐  lede col 1–5, bottom
- │ 讀  寫                                    │
- │ 。  ，  ← h1 set vertical-rl, one char    │
- │ …   …     per square, right to left      │
- └──────────────────────────────────────────┘
-```
-```
-S2 The manuscript is safe: staggered asymmetric pairs
- pair 1: title col 1–4, body col 5–8
-          pair 2: title col 5–8, body col 9–12
- pair 3: col 1–4 / 5–8          pair 4: col 5–8 / 9–12
-```
-```
-S3 Writer and reader: mirror table
- 寫的人 (col 1–5)            │ 讀的人 (col 7–12)
- 發布第 12 章                 │ …
- four rows, a vertical hairline at col 6; caption
-```
-```
-S4 AI declaration: three squares (data)
- ┌─────┐┌─────┐┌─────┐  col 1–9, unequal: 未使用 small, 輔助 medium, 生成 large
- │未使用││ 輔助 ││ 生成 │  definitions under; notes col 9–12
- └─────┘└─────┘└─────┘
-```
-```
-S5 World beside the manuscript: square grid + image
- image col 1–4 (manuscript + pen)    3 × 2 squares col 5–9 (人物 地點 組織 事件 物品 設定)
-                                      body + four items col 9–12
-```
-```
-S6 Backup: statement (t-l col 1–10), body col 5–9
-S7 Finale → 出版
-```
-Phone: S1 h1 stays vertical in two columns (12 characters), lede below; S2 pairs stack; S3
-mirror becomes stacked pairs with labels; S4 squares stack.
-
-### 6. `/books/publish/` 出版
-
-```
-S1 Hero: poster with image
- h1 t-xl col 1–8                        image col 9–12
- lede col 1–6
-```
-```
-S2 Buying one book: sticky narrative
- ┌ stage square col 1–5, sticky ┐   steps col 7–12 (four)
- │  版本 / 付款 / 檔案 / 更新     │   the state word slots into the square per step
- └──────────────────────────────┘   caption
-```
-```
-S3 The statement: ledger table
- h2 col 1–8
- 讀者付款 ─────────────── explanation
- 稅款 / 支付手續費 / 退款與爭議款 / 淨收入   (rows; deductions indented one square)
- note col 5–9
-```
-```
-S4 What is distributed: index list
- 電子書 / 小型遊戲與視覺小說 / 試閱 / 重新下載   rows; policy lines col 5–12
-```
-```
-S5 Next to the community: asymmetric pair (text col 1–6; the eight parts as chips col 7–12,
-   上架 filled with the field, 評分 and 維基 tinted beside it)
-S6 Finale → next site 動畫 (field #b03a62, continuous transition)
-```
-Phone: S2 stage square shrinks to a strip at the top; S3 rows stack label over text.
-
-## Signature moments
-
-### Primary: 書籤歸位 (landing S2)
-
-- **Data in the figure (generic example).** One twelve-volume light novel. Japanese
-  published to volume 12, Traditional Chinese to 6, English to 9, plus a Traditional Chinese
-  omnibus covering 1 to 3. Rows: 日文, 繁中, 繁中合訂本, 英文. Columns: volumes 1 to 12.
-- **Cells.** Empty (no edition): hairline in `line`. Published, unread: field outline. Read:
-  field fill. Next: field outline 2 px with t16 fill. Omnibus: one wide cell across columns
-  1 to 3. Column numbers on top get a field underline when that volume is read in any row
-  (the column is the Work).
-- **Driver.** One module, one variable: reading state `r(p)`, a pure function of the pinned
-  section's progress `p` (so scrubbing backwards is exact). `r` yields the step (1 to 6), the
-  row of the bookmark and the volume. Everything derives from `r`: which cells are filled,
-  the bookmark's column and row, the next cell, the live caption, the column underlines.
-- **Steps.** (1) the Work row of twelve squares; (2) language rows slot in from the left
-  along their row, 40 ms stagger; (3) the omnibus row slots in, the bookmark appears at 3 and
-  columns 1 to 3 fill; (4) the bookmark advances 3 → 6 in the 繁中 row, one column per scroll
-  quantum; (5) at column 7 the 繁中 cell stays empty, 日文 7 gets the next outline;
-  (6) the bookmark moves up to 日文, advances to 8, then down to 繁中 at 8; columns 7 and 8
-  stay read; the caption ends 「讀到第 8 集。下一本：第 9 集，等待繁中版。」
-- **What moves.** Only the bookmark (translate on x or y, never both at once), cell fills
-  (`clip-path` from the left, 0.32 s) and row entries (`translate` x). Bookmark moves are
-  tweens to an integer column: snap ease, 0.56 s, settle at most 2 %.
-- **Idle.** While the stage is on screen, a 3 px field line grows across the square being read
-  now (the next readable square) over 5.4 s and starts again: the page under the bookmark is
-  being read. A GSAP tween on the one clock, paused off screen, absent under reduced motion.
-  The bookmark itself never moves at rest.
-- **Phone (390 px), first.** The row labels stay fixed and the twelve columns sit on a track
-  that shows about six volumes at a readable size (about 44 px squares). With motion the
-  track pans with the bookmark: the same `--mark` that moves the ribbon also translates the
-  track so about two volumes stay visible before the bookmark (CSS `clamp`, so it never pans
-  past the ends). Without script or under reduced motion the track is a horizontal
-  scroll-snap row. The stage is sticky under the site bar and the steps scroll beneath it.
-- **Reduced motion and no script.** The final state (step 6) as a static grid, with the six
-  steps as an ordered list beside it (desktop) or under it (phone). Nothing hidden.
-- **Accessibility.** The grid is `aria-hidden`; the steps are the content. A short visually
-  hidden description precedes it. The live caption is decorative (no live region, so
-  scrubbing never floods a screen reader).
-- **Recipes.** motion.md "Pinned chapters" (sticky stage, state per chapter), patterns.md
-  "Driver module" and "Static fallbacks per section", motion.md "Idle state".
-
-### Echoes (quiet, same concept, different input)
-
-- **Work S3, the primary action.** Tabs set the reader's state; the button's label rolls to
-  選擇版本, 開始讀 or 繼續讀. Idle: cycles every 3.6 s while visible until the visitor picks a
-  state. Reduced motion: 繼續讀 with the three states listed.
-- **Wiki S3, read to your chapter.** Input is a tap, not scroll: the position control (real
-  buttons; without script, the 全部 state with every entry's source chapter). The bookmark
-  slides along a 61-cell chapter rail (duration scales with distance, at most 0.9 s); entries
-  past the position leave by collapsing along their row, entries within slot in with 40 ms
-  stagger. No idle (the landing carries it). Reduced motion: instant swap.
-- **Editions S5, two orders.** One toggle; the same four squares swap places along the row
-  (Flip), identifiers unchanged.
-- **Serial S1.** Intro only: the h1's characters slot into their manuscript squares in
-  vertical reading order, top to bottom and right to left, 40 ms stagger, under 0.9 s.
-
-## Theme
-
-One design language, a different room (DESIGN.md "One design language, different themes").
-The books site is a reading library: set under `[data-site='books']` in
-`src/sites/books/books.css` with the semantic tokens.
-
-| Token | Value | Use and contrast |
-|---|---|---|
-| `--c-bg` | `#edf1ec` | pale celadon ground: paper with a trace of the field |
-| `--c-fg` | `#10231d` | green-black text and dark bands (about 14:1 on the ground) |
-| `--c-muted` | `#4d5f58` | green-grey secondary text (about 5.9:1 on the ground) |
-| `--c-line`, `--c-line-strong` | `rgb(16 35 29 / .13)`, `/ .3` | hairlines, card rulings |
-| `--bk-paper` | `#f6f8f5` | unread squares, quiet cards |
-| `--c-band-*` | bg `#10231d`, fg `#f6f8f5`, muted `#a9bcb3`, link `#9ab8e6` | the inverted band and the footer (muted about 8:1) |
-| `--bk-t08`, `--bk-t16`, `--bk-t32` | `#e1e9e3`, `#d0ddd5`, `#acc2b7` | field tints: panels, next square, steps |
-| `--field` | `#1d5a47` | the reading colour: read squares, finale band, chips' marks (paper on it about 7.4:1) |
-
-- **Red stays a mark.** The bookmark is the system's current-position square, drawn on the
-  ground or t08 (about 3.8:1 and 3.5:1, above 3:1 for graphics), never on the field. Read and
-  unread differ by fill versus outline, not by colour alone.
-- **Vertical type.** Book culture in Taiwan sets books vertically: the serial hero sets its
-  headline vertically in manuscript squares (`writing-mode: vertical-rl`, real text).
-- **Material.** Hairline rules like a due-date card (library), a manuscript grid (serial), the
-  田 grid (editions), chips with a field mark for parts. Radius 0 everywhere.
-- **Type.** Noto Sans TC 900 display, 700 headings, 400 text; Archivo wide for numerals and
-  Latin; Martian Mono only for part ids and step numbers. No new fonts.
-- **Phones first.** No grid of text cells as a key visual: the eight parts are chips, one row
-  each; matrices become a panning track (landing), a stack (editions 田 grid, ledgers) or a
-  scroll-snap row (Wiki+ steps).
-
-## Images
-
-Five extra images, all in the shared style (`.temp/images/prompts/style.txt`, field
-`#1d5a47`). The landing uses the existing kind image `books.png`; `work` uses none.
-
-| File | Page | Object (appended to the style text) | Alt (zh-Hant, in copy) |
+| File | Idea | Used on | Sizes |
 |---|---|---|---|
-| `books-wiki` | wiki S1 | A single hardback book lying open flat, seen from slightly above; its two pages carry rows of short abstract ink bars instead of text. A long narrow vermilion ribbon bookmark runs from the top of the spine down across the right-hand page and hangs past the bottom edge. | 一本攤開的書，紅色書籤帶橫過右頁，垂到書外。 |
-| `books-editions` | editions S1 | Five books of different sizes standing upright in a row, spines facing the viewer: a tall hardback, a medium paperback, a small pocket edition, a thin special edition in a slipcase, and at the end one thick volume as wide as three of the others together. Spines are plain blocks of paper white, ink navy and one vermilion, with blank horizontal bands and no lettering. | 五本大小不同的書並排站著，最後一本特別厚。 |
-| `books-library` | library S1 | The inside back cover of an open hardback with a small paper pocket glued to it and a library due-date card tucked half into the pocket. The card is ruled into a grid of empty boxes; a few boxes hold round abstract ink stamps with no numbers or letters. | 一本攤開的書，內頁貼著紙袋，借書卡插了一半，卡上有幾個圓形印章。 |
-| `books-serial` | serial S5 | A single sheet of square-grid manuscript paper lying flat, its small empty squares arranged in vertical columns with a narrow blank gutter down the middle; a fountain pen with a vermilion nib lies across the lower right corner. No characters or marks in the squares. | 一張空白的方格稿紙，右下角擱著一支鋼筆。 |
-| `books-publish` | publish S1 | A closed paperback lying flat with a narrow paper receipt slip resting on top, curled slightly at one end; the slip carries only rows of short abstract ink bars and one vermilion bar near the bottom, with no numbers, letters or symbols. | 一本平放的書，上面壓著一張捲起一角的收據。 |
+| `hero` | Equal green sheets fanned in reading order, rising from the lower right; a sage strip slipped in between two of them sticks out like a bookmark | landing hero (copy on the empty paper, the left half) | 1920, 960; phone band `hero-phone` 960, 640 (3:2 crop of the fan's top and the bookmark) |
+| `editions` | Six green sheets of clearly different sizes stacked on one shared corner, one of them pale blue | landing 版本 photo row; editions 四種出版 photo row | 1200, 640 |
+| `serial` | One long green strip folded into pages, the rest still flat; a sage square in the last fold | landing 寫作與出版 photo row; serial 稿子 photo row | 1200, 640 |
+| `wiki` | A green sheet with word-like slots cut out; the pieces laid in lines on a pale blue card | wiki 從檔案到 Wiki photo row | 1200, 640 |
+| `library` | Three parallel strips of different lengths (three reads: paused, finished, just begun), a sage square at the newest | library 每一次閱讀 photo row | 1200, 640 |
 
-## Copy ownership and decisions
+Rejected: a first wiki picture (a sheet with four windows and two circles reads as a
+building facade) and a sorted-by-length version (reads as a bar chart); two earlier heroes (one
+read as falling dominoes, the other reached into the left half where the headline sits).
 
-- The eight part notes on the landing (S4) render `kinds.ts` → `books.partNotes`; the
-  site's copy only adds the section heading and caption, so no sentence is written twice.
-- Terms follow DESIGN.md: 「AI 代理」 on first mention in a section, then 「代理」; 「MCP 伺服器」;
-  Wiki+, Realm, Zone as written. 「書庫」 is both the site name and the reader's library.
-- No numbers about REZICS itself. Figures in examples (volume numbers, chapter numbers,
-  《傲慢與偏見》's 61 chapters) describe the example, not the product.
-- The revenue split in the draft creator agreement (90/10) is a hypothesis; the publish page
-  shows the structure of a statement without percentages or amounts.
-- Distribution is written as available but its factual limits stay: contracted creators, no
-  open marketplace, no `r18`/`r18g` sales.
+### Pages
 
-## Genericness test
+Seven pages. The landing owns the full-bleed `PhotoHero`. The work and publish pages open on
+the kit's `PageHead`; wiki, editions, library and serial use the books `PhotoHead`, built from
+the kit's `Picture` and `Clauses`: one heading beside one photograph, with the detailed facts
+in the next section. This brings the photograph into the first desktop screen without a
+second heading competing with it. Phones put the copy first and the photograph underneath as
+a full-width band. Every inner page ends on a compact 下一頁 navigation row (the last leads
+to 動畫), then the closing 「下一本讀什麼，打開書庫就知道。」 and the ink pill.
 
-A generic "books page" would be a hero over a photo of a bookshelf, three cards (track,
-review, discover) and a reading-stats chart. Changed: the hero is the kind square and a
-statement; the core figure is a working model of edition continuity driven by the reader's
-own position; library, wiki and store pages each show a mechanism (a session card, a chapter
-rail, an itemized statement) instead of feature cards; the shelf survives only as the
-sub-navigation, where it carries real information (which page you are on).
+**`/books/` 總覽**
 
-## Build record (stage 2)
+1. Hero, photograph `hero`: h1 「一部作品，所有版本，和你讀到的那一頁。」, one short
+   paragraph, 「前往 REZICS」.
+2. 版本, photo row (`editions`) with one fictional series' editions in its text (示意) and a
+   link to 版本與系列.
+3. 閱讀進度, facts list: five rules of the bookmark (each volume is a work, an omnibus counts
+   once, the next volume in your language, switching language keeps progress, owning is not
+   finishing). It replaces the old twelve-column bookmark grid: the hero already shows the
+   bookmark, and a matrix of cells is the kind of key visual phones cannot read.
+4. Statement: 「讀到哪裡，Wiki 與討論就停在哪裡；」 and its muted continuation.
+5. 寫作與出版, photo row (`serial`) with two short paragraphs and a link to 連載 (出版 is a
+   tile right below).
+6. 書庫的頁面, tile masonry of the six inner pages in the six tones; 作品頁 is the tall lead
+   tile.
+7. 部件, the eight parts as a compact two-column hairline list (notes from `kinds.ts`),
+   stacked on phones.
+8. 相關的種類, tile masonry of 動畫, 漫畫, 視覺小說 and 遊戲 in their own colours.
+9. Closing.
 
-What changed from the stage 1 plan, and why.
+**`/books/work/` 作品頁**: heading and lede; the example's title page as one accent tile
+(《魔法禁書目錄》, original title, author, text only) across the section, its caption below; 八個區塊 facts list
+(each block with its example line); 主要按鈕 facts list (three states and the button's
+words); 評分 facts list; 修改 facts list (two rows); statement on languages; closing.
 
-- **REZICS is live (direction of 2026-10-19).** The landing hero lost its notify button; the
-  kit's action into REZICS (「前往 REZICS」) replaces it once the foundation lands it. No page
-  has waiting-list wording.
-- **Parts as chips.** The landing's eight parts and the publish page's Work square are compact
-  chip rows instead of a 3×3 of text cells (DESIGN.md "Phones first").
-- **Signature on phones.** A panning track of about five volumes instead of the transposed
-  grid of the stage 1 plan: the transposed grid would have needed most of a phone screen as a
-  sticky stage, while the track keeps the stage short and every square readable.
-- **No hero-to-grid continuity.** The stage 1 idea of the hero square sliding into the first
-  Work square was not built; the kit's page transition already lands on the hero square, and
-  a second travelling square would compete with it.
-- **Sub-navigation** is the kit's site bar, not a shelf of spines (see "Site-wide elements").
-- **Idle motion lives in the signature.** The landing hero is still at rest by decision: the
-  kind square is the transition target and the reading line in the bookmark figure carries the
-  idle state; the Work page's action poster cycles at rest. Other inner pages are quiet reading
-  pages; their life is in hovers and their one interactive figure each.
-- **Text-cell grids removed.** The word band is one poster line; the Wiki+ routes and the
-  World's entry types are chips; the editions 田 grid is sized by its text and stacks on phones.
-- **Theme.** The books site sets its own ground, ink, muted, lines and tints (see "Theme").
-- **Pictures.** Five images generated with the shared pipeline (codex-2 image generation,
-  style reference `books-1.png`, field `#1d5a47`), encoded as AVIF and WebP at 960 px
-  (≤ 60 KB) and 320 px (≤ 12 KB) in `public/images/sites/books/`.
-- **Tests.** `bookmark-state.test.ts` covers the signature's state logic (omnibus counts once,
-  one-axis moves, the waiting square, progress across translations); it runs with `task check`.
+**`/books/wiki/` Wiki+**: heading and lede beside `wiki`; the four steps in a facts list;
+閱讀位置, the one interactive figure on the site: position pills (radio buttons, no script
+needed) over two hairline lists that fold later entries away, then its four rules; statement
+「REZICS 不會收到全文；」 with four facts; Zone as a tile masonry of a wiki's pages (示意, not
+links); 審核 facts list of the four match states and the rules; closing.
+
+**`/books/editions/` 版本與系列**: heading and lede beside `editions`; the four kinds of
+release in a facts list; 譯本 facts list plus the four passage states as a quiet ordered line and
+the notes; 同一部或兩部 facts list (change left, result right); 順序: two rows of four small
+flat tiles (publication order, recommended reading order) and four notes; statement
+「輸入書號，找到那一版。」 with the 《魔法禁書目錄》 note; closing.
+
+**`/books/library/` 閱讀紀錄**: heading and lede beside `library`; three reads of one book
+as green strips, each with its full text and a 示意 caption; 匯入與匯出 numbered facts and the retention line; statement 「打開 REZICS，
+先看到的是下一章。」; 書架 facts list; 隱私 facts list; closing.
+
+**`/books/serial/` 連載**: heading and lede beside `serial`; the four safeguards in a facts
+list; 作者與讀者 facts list (author's act left, reader's side right) and notes; AI 聲明
+facts list and notes; 世界設定 lead and list; statement 「整部稿子，隨時完整帶走。」; closing.
+
+**`/books/publish/` 出版**: heading and lede; 購買 numbered facts; 結算單
+facts list and note; 發行範圍 facts list and policy; statement 「商店頁，就在作品的社群旁邊。」;
+the next site 動畫; closing.
+
+### Phones (390 px first)
+
+- Landing hero: copy and pill first, then `hero-phone` as a band of about 260 px.
+- Photo rows: the text block first, the photograph under it at full width.
+- Facts lists: the title above its text, one hairline between rows.
+- Tile masonry: two columns; the 作品頁 tile spans the first row.
+- Editions 順序: each row of four tiles fits at about 84 px a tile; the row label sits above.
+- Wiki+ position pills wrap to two rows of three; the two lists stack.
+
+### Motion
+
+Quiet, per V3-SPEC: content fades and rises a few pixels; tiles lift their tone, slide the
+name and show an arrow on hover; the position control swaps its lists with a short fade
+(instant under reduced motion). No idle motion and no scrubbed scenes.
+
+### Copy decisions (v3)
+
+- Hero ledes are one short paragraph; the detail moved into the sections.
+- Statements are a line and its muted continuation; any longer text sits under them as a note.
+- Tables and chip rows became facts lists (title left, text right); the six genre words of the
+  old landing were dropped and their sentence joined the editions lead.
+- Tile lines are short (16 characters or fewer) so a tile holds its name and one line.
+- One sentence appears once: the protected-file rule lives only in the Wiki+ facts, not in its
+  first step.
+- The only named work is 《魔法禁書目錄》 (work and editions pages, text only, per
+  `.temp/sites/EXAMPLE-WORK.md`); the series and the Wiki+ story are fictional and marked 示意.
+- The eight part notes render `kinds.ts` → `books.partNotes`; nothing is written twice.
+- Terms: 「AI 代理」 on first mention in a section, then 「代理」; Wiki+, Zone as written; no
+  numbers about REZICS itself; the draft revenue split (90/10) stays out; distribution is
+  written as available with its limits (contracted creators, no open marketplace, no
+  `r18`/`r18g` sales).
+
+### Build record (v3)
+
+- **Landing photo-row headings stay short** (two clauses of eight characters or fewer): the
+  text block is four columns wide. Detailed inner-page section headings have seven columns
+  and keep their fuller wording.
+- **A Chromium crash on phones.** With script on, the publish page's lede crashed the page at
+  375 and 390 px: a lead paragraph with the build's `<wbr>` phrase breaks, `word-break: normal`
+  (the kit's phone rule) and `text-wrap: pretty`. Cutting the lede, removing its `<wbr>`, or
+  setting `text-wrap` to `wrap` or `balance` each stops it. `books.css` sets leads to wrap
+  plainly on phones; every books page then loads at every width from 320 to 430 px in steps of
+  5. The kit should settle this for every site (reported).
+- **One action per inner page:** the publish page's head lost its pill; the closing carries it.
+- **No idle motion:** the site is still at rest; its life is in the tiles' hovers, the position
+  pills and the index rows.
+- **Text links:** the kit's underlined links and navigation text currently change colour
+  only. A books-scoped rule adds a quiet two-pixel rise on hover and keyboard focus, and
+  returns them on press. It also covers the shared header and site bar while on books pages;
+  shared files remain untouched. Reduced motion keeps these still.
+- **Reading position:** native radio controls have 44 px targets, an explicit three-column
+  phone layout, a visible focus ring and CSS-only chapter filtering. Later entries state the
+  chapter where they appear without exposing the entry's name or content.
+- **Illustrative reading order:** the two volume sequences are explicitly marked 示意.
+- **Final accessory cut:** the landing's duplicate 書庫 eyebrow was removed. The site bar
+  already identifies the section; the photograph, serif sentence and single action carry the
+  opening, and the phone photograph arrives sooner.
+- **Article navigation:** each inner page has a short 本頁內容 index after its opening. Its
+  underlined links use the kit's stable heading ids, need no script and keep a 44 px target.
+  On phones they form two columns. This makes the long facts sections directly reachable.
+- **Withheld entries:** the first critic found that invisible Wiki text still kept a full
+  entry's height. Later entries now fold to a 64 px notice; selecting a later position restores
+  their complete content. The control itself stays in place.
+- **Tablet hero crop:** at 768 px the shared centred cover crop pulled the green fan under the
+  headline and paragraph. Between 768 and 1199 px, books sets the picture's crop from the left
+  edge and keeps a seven-column copy area with a 40–48 px title, preventing a two-character
+  orphan at the shared 1024 px breakpoint. Desktop and phone crops keep their original framing;
+  this workaround lives in `books.css` without changing the kit.
+- **Earlier phone tabs:** the books-scoped bar masks both overflow edges, with a 12 px start
+  inset so the first tab remains clear at the beginning. This signals that earlier pages are
+  available when the shared bar scrolls the selected page into view.
+
+### Verification (v3, 2026-10-20)
+
+`task check` passed: 151 Astro files with no diagnostics, 31 static routes built, 187 tests
+passed. The final production audit has no failures or warnings on any books route.
+
+| Page | Phone LCP (ms) | CLS | axe violations |
+|---|---:|---:|---:|
+| `/books/` | 2128 | 0 | 0 |
+| `/books/work/` | 1264 | 0 | 0 |
+| `/books/wiki/` | 1772 | 0 | 0 |
+| `/books/editions/` | 1964 | 0 | 0 |
+| `/books/library/` | 1816 | 0 | 0 |
+| `/books/serial/` | 1752 | 0 | 0 |
+| `/books/publish/` | 1328 | 0 | 0 |
+
+Phone measurements use 4× CPU slowdown and slow 4G. All seven final runs recorded 60 fps,
+no browser errors or failed requests, no page overflow or small targets, no invisible focus
+stops and no text hidden under reduced motion. Every primary hover target responds beyond
+colour alone. The Chinese skip link is the first keyboard stop; the QA helper's English-only
+skip-link heuristic reports a false negative, independently checked against its actual href.
+
+The screenshot review covers all 273 desktop, phone, focus, hover, reduced-motion and
+navigation frames. A supplemental production check loaded every route at 14 widths from
+320 to 1920 px (98 loads), verified image loading, heading/anchor structure and first focus,
+and captured complete pages with lazy pictures decoded. The hero's actual glyph positions
+pass contrast at all 11 desktop/tablet widths: minimum 5.06:1 for the large heading and
+4.91:1 for its paragraph. All six chapter positions and arrow-key selection work with
+JavaScript disabled; later rows remain compact and their text is hidden.
+
+QA artifacts live in `.shots/books*`, with the complete landing at
+`.shots/books-review-final/books-1440-full.png` and the throttled phone opening at
+`.shots/books/m-01-hero.png`. No shared kit, engine, style or content files were edited.

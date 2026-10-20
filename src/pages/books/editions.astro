@@ -1,64 +1,65 @@
 ---
-// 書庫 版本與系列 (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, four kinds of
-// release as flat tiles, translations and their states, what stays the same work, publication
-// and reading order, the ink band on ISBNs, the next page and the closing block.
+// 版本與系列 (v3, SITE.md "Pages"): the heading and lede beside the stack photograph; the four
+// kinds of release; translations and their passage states; what keeps one work or makes two;
+// the two orders as rows of tiles; the ISBN statement; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import Pills from '../../kit/components/Pills.astro';
-import Table from '../../kit/components/Table.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
+import NextPage from '../../sites/books/NextPage.astro';
+import PhotoHead from '../../sites/books/PhotoHead.astro';
+import Notes from '../../sites/books/Notes.astro';
+import Orders from '../../sites/books/Orders.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
+import { pictures } from '../../sites/books/pictures';
 import '../../sites/books/books.css';
 
 const s = site.strings.editions;
-const accent = kindFields.books.field;
-const page = site.pages.find((p) => p.slug === 'editions')!;
-const reading = s.orders.reading.map((i) => s.orders.squares[i]!);
 ---
 <MiniSiteLayout>
-  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.editions, alt: s.hero.alt }} />
+  <Contents items={[s.releases, s.translations, s.sameWork, s.orders]} />
 
-  <Sec label="01" title={s.releases.headline}>
-    <p class="text">{s.releases.caption}</p>
-    <ItemGrid slot="wide" items={s.releases.quarters} cols={4} look="cards" />
-  </Sec>
+  <Section eyebrow={s.releases.label} title={s.releases.headline} lead={s.releases.lead}>
+    <FactList items={s.releases.kinds} />
+  </Section>
 
-  <Sec label="02" title={s.translations.headline}>
-    <div class="bk-stack">
-      <Pills items={s.translations.states} label={s.translations.stateLabel} tone="tint" ordered />
-      <ul class="bk-notes">{s.translations.notes.map((n) => <li>{n}</li>)}</ul>
+  <Section eyebrow={s.translations.label} title={s.translations.headline}>
+    <FactList items={s.translations.rows} />
+    <div class="bk-states">
+      <p class="bk-states__label">{s.translations.stateLabel}</p>
+      <ol class="bk-states__list" role="list">
+        {s.translations.states.map((st) => <li class="serif">{st}</li>)}
+      </ol>
     </div>
-    <ItemGrid slot="wide" items={s.translations.rows} cols={4} />
-  </Sec>
+    <Notes items={s.translations.notes} />
+  </Section>
 
-  <Sec label="03" title={s.sameWork.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.sameWork.intro}</p>
-      <Table columns={s.sameWork.columns} rows={s.sameWork.rows} caption={s.sameWork.caption} label={s.sameWork.headline} />
-    </div>
-  </Sec>
+  <Section eyebrow={s.sameWork.label} title={s.sameWork.headline} lead={s.sameWork.lead}>
+    <FactList items={s.sameWork.rows} level="p" />
+    <p class="bk-note">{s.sameWork.caption}</p>
+  </Section>
 
-  <Sec label="04" title={s.orders.headline}>
-    <div class="bk-stack">
-      <Pills items={s.orders.squares} label={s.orders.rows[0]} ordered />
-      <Pills items={reading} label={s.orders.rows[1]} tone="tint" ordered />
-      <ul class="bk-notes">{s.orders.notes.map((n) => <li>{n}</li>)}</ul>
-    </div>
-  </Sec>
+  <Section eyebrow={s.orders.label} title={s.orders.headline} lead={s.orders.lead}>
+    <Orders />
+    <FactList items={s.orders.notes} />
+  </Section>
 
-  <Band label={page.label} title={s.isbn.poster} text={s.isbn.body}>
-    <p class="ed-example">{s.isbn.example}</p>
-  </Band>
+  <Statement text={s.isbn.text} sub={s.isbn.sub} note={s.isbn.note} />
 
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
-  <Closing bg={accent} />
+  <NextPage slug="editions" lead={s.finaleLead} />
+
+  <Closing title={site.strings.common.closing.title} body={site.strings.common.closing.body} />
 </MiniSiteLayout>
 
 <style>
-  .ed-example { grid-column: 8 / 13; margin-top: 24px; font-size: 15px; line-height: 1.8; color: var(--c-text); }
+  .bk-states { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 12px var(--gutter); align-items: center; margin-top: 40px; }
+  .bk-states__label { font-size: 13px; color: var(--c-muted); letter-spacing: 0.04em; }
+  .bk-states__list { display: flex; flex-wrap: wrap; gap: 8px 0; counter-reset: st; }
+  .bk-states__list li { counter-increment: st; display: inline-flex; align-items: baseline; gap: 8px; font-size: 18px; font-weight: 600; }
+  .bk-states__list li::before { content: counter(st, decimal-leading-zero); font-family: var(--f-body); font-size: 13px; font-weight: 400; color: var(--c-muted); }
+  .bk-states__list li:not(:last-child)::after { content: ''; width: 28px; height: 1px; margin: 0 14px 0 6px; align-self: center; background: var(--c-line-strong, rgb(38 41 45 / 0.3)); }
+  @media (max-width: 767px) { .bk-states { grid-template-columns: minmax(0, 1fr); } }
 </style>

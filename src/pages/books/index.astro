@@ -1,103 +1,104 @@
 ---
-// 書庫 landing (DESIGN.md "Direction v2": Swiss grid, flat tiles): the hero with the wall of the
-// site's own pages, the reading figure and its six steps, one work's editions as tiles (示意),
-// the ink band on reading position, the kinds of books, writing and publishing, the eight parts,
-// the neighbouring kinds, the next page and the closing block in the books field.
+// 書庫 landing (v3, SITE.md "Pages"): the photograph hero with the bookmark, the editions photo
+// row, the bookmark's rules as facts, the reading-position statement, writing and publishing
+// beside the folded strip, the site's own pages and the neighbouring kinds as tile masonry, the
+// eight parts, and the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import HeroWall from '../../kit/components/HeroWall.astro';
-import Sec from '../../kit/components/Sec.astro';
-import TextCols from '../../kit/components/TextCols.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import Band from '../../kit/components/Band.astro';
-import PartsList from '../../kit/components/PartsList.astro';
-import Pills from '../../kit/components/Pills.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry from '../../kit/components/TileMasonry.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
 import Closing from '../../kit/components/Closing.astro';
 import { kindById, kindHref } from '../../kit/content';
 import { kindFields } from '../../kit/theme';
-import { accentRamp } from '../../kit/color';
-import { pageWall } from '../../kit/pageWall';
 import { pageHref } from '../../kit/sites';
-import Progress from '../../sites/books/Progress.astro';
 import site from '../../content/sites/books';
+import { pictures } from '../../sites/books/pictures';
+import { tones } from '../../sites/books/tones';
+import Parts from '../../sites/books/Parts.astro';
 import '../../sites/books/books.css';
 
 const s = site.strings.landing;
-const L = s.labels;
-const kind = kindById('books');
-const accent = kindFields.books.field;
-const pageBy = (slug: string) => site.pages.find((p) => p.slug === slug)!;
-const wall = pageWall(site, accent, s.pages.rows);
-const ramp = accentRamp(accent);
-const editions = s.editions.tiles.map((t, i) => ({ name: t.name, line: t.line, rel: '示意', ...ramp[[0, 2, 4, 1][i] ?? 0]! }));
-const neighbours = s.connections.squares.map((c) => ({
-  name: kindById(c.kind).name,
-  tag: kindById(c.kind).tag,
-  line: c.label,
-  href: kindHref(c.kind),
-  bg: kindFields[c.kind].field,
-  on: kindFields[c.kind].on,
+const href = (slug: string) => pageHref(site, site.pages.find((p) => p.slug === slug)!);
+
+// The site's own pages in the greens of its photographs: the Work page in the accent, the rest
+// from the deepest green to the sage of the bookmark (src/sites/books/tones.ts).
+const tileTone = { work: tones.accent, wiki: tones.deep, editions: tones.green, library: tones.sage, serial: tones.deepest, publish: tones.olive };
+const pageTiles = s.pages.rows.map((r) => {
+  const page = site.pages.find((p) => p.slug === r.slug)!;
+  const tone = tileTone[r.slug as keyof typeof tileTone];
+  return { id: r.slug, name: page.label, line: r.line, href: href(r.slug), bg: tone.bg, on: tone.on };
+});
+
+const kindTiles = s.connections.tiles.map((t) => ({
+  id: t.kind,
+  name: kindById(t.kind).name,
+  line: t.line,
+  href: kindHref(t.kind),
+  bg: kindFields[t.kind].field,
+  on: kindFields[t.kind].on,
 }));
+
 ---
 <MiniSiteLayout>
-  <HeroWall label={site.name} title={s.hero.headline} lede={s.hero.lede} items={wall.items} wide={wall.wide} phone={wall.phone} phoneHeight={860} bar>
+  <PhotoHero title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.hero, alt: s.hero.alt }} bar>
     <ProductCall />
-    <a class="link-draw" href="#bookmark">{s.hero.secondary}</a>
-  </HeroWall>
+  </PhotoHero>
 
-  <Sec id="bookmark" label={L.bookmark} title={s.bookmark.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.bookmark.intro}</p>
-      <Progress />
-    </div>
-    <ItemGrid slot="wide" items={s.bookmark.steps} cols={3} numbered />
-  </Sec>
+  <PhotoRow
+    eyebrow={s.editions.label}
+    title={s.editions.headline}
+    body={[s.editions.lead, s.editions.caption]}
+    link={{ href: href('editions'), text: s.editions.link }}
+    image={{ ...pictures.editions, alt: s.editions.alt }}
+  />
 
-  <Sec label={L.editions} title={s.editions.headline}>
-    <p class="text">{s.editions.lede}</p>
-    <div slot="wide" class="bk-stack">
-      <TileRow items={editions} cols={4} label={s.editions.headline} />
-      <p class="bk-note">{s.editions.caption}</p>
-    </div>
-  </Sec>
+  <Section eyebrow={s.progress.label} title={s.progress.headline} lead={s.progress.lead}>
+    <FactList items={s.progress.steps} />
+  </Section>
 
-  <Band label={L.reading} title={s.reading.headline} text={s.reading.body.join('')}>
-    <p class="bk-band-link"><a class="link-draw" href={pageHref(site, pageBy('wiki'))}>{s.reading.link}</a></p>
-  </Band>
+  <Statement text={s.reading.text} sub={s.reading.sub} />
 
-  <Sec label={s.shelf.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.shelf.caption}</p>
-      <Pills items={s.shelf.words} tone="tint" />
-    </div>
-  </Sec>
+  <PhotoRow
+    side="left"
+    eyebrow={s.writing.label}
+    title={s.writing.headline}
+    body={s.writing.body}
+    link={{ href: href('serial'), text: s.writing.link }}
+    image={{ ...pictures.serial, alt: s.writing.alt }}
+  />
 
-  <Sec label={L.writing} title={s.writing.headline}>
-    <TextCols paragraphs={s.writing.body} />
-    <div class="bk-links">
-      <a class="link-draw" href={pageHref(site, pageBy('serial'))}>{s.writing.links[0]}</a>
-      <a class="link-draw" href={pageHref(site, pageBy('publish'))}>{s.writing.links[1]}</a>
-    </div>
-  </Sec>
+  <Section eyebrow={s.pages.label} title={s.pages.headline}>
+    <TileMasonry
+      slot="wide"
+      label={s.pages.headline}
+      items={pageTiles}
+      columns={[
+        [{ id: 'work', h: 5 }, { id: 'library', h: 3 }],
+        [{ id: 'wiki', h: 4 }, { id: 'serial', h: 4 }],
+        [{ id: 'editions', h: 4.5 }, { id: 'publish', h: 3.5 }],
+      ]}
+      phone={[[{ id: 'work' }], [{ id: 'wiki' }, { id: 'editions' }], [{ id: 'library' }, { id: 'serial' }], [{ id: 'publish' }]]}
+      height={520}
+    />
+  </Section>
 
-  <Sec label={L.parts} title={s.parts.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.parts.caption}</p>
-      <PartsList parts={kind.parts} notes={kind.partNotes} level="h3" />
-    </div>
-  </Sec>
+  <Section eyebrow={s.parts.label} title={s.parts.headline} lead={s.parts.lead}>
+    <Parts />
+  </Section>
 
-  <Sec label={L.connections} title={s.connections.headline}>
-    <p class="text">{s.connections.line}</p>
-    <TileRow slot="wide" items={neighbours} cols={4} label={s.connections.headline} />
-  </Sec>
+  <Section eyebrow={s.connections.label} title={s.connections.headline} lead={s.connections.lead}>
+    <TileMasonry
+      slot="wide"
+      label={s.connections.headline}
+      items={kindTiles}
+      columns={[[{ id: 'anime', h: 3 }, { id: 'manga', h: 2 }], [{ id: 'visual-novels', h: 1 }], [{ id: 'games', h: 1 }]]}
+      height={420}
+    />
+  </Section>
 
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
-  <Closing bg={accent} />
+  <Closing title={site.strings.common.closing.title} body={site.strings.common.closing.body} />
 </MiniSiteLayout>
-
-<style>
-  .bk-band-link { grid-column: 8 / 13; margin-top: 28px; }
-</style>

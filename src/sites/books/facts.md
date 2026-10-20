@@ -12,7 +12,7 @@ them are stated only as they say.
 | One page per Work; originals, translations, single volumes, omnibus, web serial and published versions are separate yet connected | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions`; `docs/product/goal.md#wiki-the-flagship` (the Work page is the hub) |
 | Wiki and discussion stop at the chapter you have read | `docs/contracts/information-verification.md#a-big-franchise-wiki-for-every-work` ("readers see only what their consumption position admits"); `docs/plan/frontend.md#home` ("chapter posts hide spoilers past the reader's position") |
 | Each volume of a series is a Work; translations occupy the same Work | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` (series volumes are Works; "Ordinary translations … are realizations of the same Work") |
-| Only editions actually published fill a cell | `docs/contracts/work-and-release.md#closed-records-and-open-axes` (a release records what was published); `docs/plan/frontend.md#work-page` ("a translated title never implies an available translation") |
+| Only editions actually published are recorded | `docs/contracts/work-and-release.md#closed-records-and-open-axes` (a release records what was published); `docs/plan/frontend.md#work-page` ("a translated title never implies an available translation") |
 | An omnibus covers 1 to 3; finishing it counts each volume once | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` ("a volumes 1–3 omnibus is one release covering three Works"; "Each Work counts once, including when the reader finishes both an omnibus … and one of its volumes") |
 | Owning a book and finishing it are separate | `docs/contracts/work-and-release.md#explicit-identities-targets-and-units` ("Ownership does not imply reading completion") |
 | "Caught up", next part awaiting your language, notified when it is published | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` (summary reports "caught up with available material"; returns "the first required part awaiting that language"); `docs/contracts/community-interactions.md#follow-join-and-notification` (Work follow at All: "new chapters and releases in the person's languages") |
@@ -168,21 +168,17 @@ them are stated only as they say.
 
 1. **Example work** (work and editions pages): only 《魔法禁書目錄》, text only, per `about:.temp/sites/EXAMPLE-WORK.md`; old classics were removed (DESIGN.md decision of 2026-10-19 on examples).
 2. **Wiki+ position example**: a fictional story marked 示意; no real work's chapters are claimed.
-3. **「無法取得」** (wiki S6): the contract names the state "unavailable" without defining it;
+3. **「無法取得」** (wiki 審核): the contract names the state "unavailable" without defining it;
    the definition in the copy is my reading.
-4. **Publish S3 note and S5 privacy line, S2 licence line**: from the creator distribution
+4. **Publish 結算單 note, the statement's privacy line and the 購買 licence line**: from the creator distribution
    agreement outline, a non-binding draft not reviewed by counsel. If the coordinator wants
-   only contract-level claims, drop the S3 note and keep the statement rows.
+   only contract-level claims, drop the 結算單 note and keep the statement rows.
 5. **Distribution overall** is gated (payment-provider approval, first-launch cut lines in
    `docs/product/capabilities.md#deferred-rollouts`); written as available per the brief, with
    its factual limits kept.
-6. **Passage notes** (library S4) come from a design proposal
+6. **Passage notes** (library 書架) come from a design proposal
    (`docs/architecture/anchored-journals.md`), planned rather than built.
-7. **Reader settings** (serial S3) come from a research note and the web code, not a contract.
-8. **Landing step 5**, 「想先讀日文版，它也排在這一欄裡」: the figure shows the Japanese
-   volume in the same column; I avoided claiming the system recommends another language.
-9. **Import** (library S3): no document describes a pre-apply preview of unmatched rows (the
+7. **Reader settings** (serial 作者與讀者 notes) come from a research note and the web code, not a contract.
+8. **Import** (library 匯入與匯出): no document describes a pre-apply preview of unmatched rows (the
    kinds draft cites only the old site), so the copy says only that unmatched rows are never
    forced onto another book.
-10. **Word band genres** (landing S3: 詩集, 非虛構) are ordinary book categories; the documents
-    do not enumerate genres.

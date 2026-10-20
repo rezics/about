@@ -1,64 +1,69 @@
 ---
-// 書庫 Wiki+ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, from a file to a
-// Wiki in four steps, the reading position (示意), the ink band on what REZICS never receives,
-// the Wiki as a Zone, review, the next page and the closing block.
+// Wiki+ (v3, SITE.md "Pages"): the heading and lede beside the cut-out photograph; the way from
+// a file to a wiki in four steps; the reading-position figure and its rules; the statement
+// that REZICS never receives the text, with four facts; a wiki's pages as tiles (示意); agents
+// propose and people review; the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import Pills from '../../kit/components/Pills.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
+import NextPage from '../../sites/books/NextPage.astro';
+import PhotoHead from '../../sites/books/PhotoHead.astro';
+import Notes from '../../sites/books/Notes.astro';
 import Position from '../../sites/books/Position.astro';
+import Contents from '../../sites/books/Contents.astro';
 import site from '../../content/sites/books';
+import { pictures } from '../../sites/books/pictures';
+import { tones } from '../../sites/books/tones';
 import '../../sites/books/books.css';
 
 const s = site.strings.wiki;
-const accent = kindFields.books.field;
-const page = site.pages.find((p) => p.slug === 'wiki')!;
+// The Work page in the accent, the wiki's own pages in the other greens (示意, not links).
+const zoneTones = [tones.accent, tones.deep, tones.green, tones.olive, tones.sage, tones.deepest];
+const zoneTiles = s.zone.tiles.map((t, i) => ({ id: `z${i}`, name: t.name, line: t.line, ...zoneTones[i]! }));
 ---
 <MiniSiteLayout>
-  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoHead label={site.name} title={s.hero.headline} lede={s.hero.lede} image={{ ...pictures.wiki, alt: s.hero.alt }} />
+  <Contents items={[s.flow, s.position, s.zone, s.review]} />
 
-  <Sec label="01" title={s.flow.headline}>
-    <ItemGrid slot="wide" items={s.flow.frames} cols={4} numbered />
-  </Sec>
+  <Section eyebrow={s.flow.label} title={s.flow.headline}>
+    <FactList items={s.flow.steps} numbered />
+  </Section>
 
-  <Sec label="02" title={s.position.headline}>
-    <p class="text">{s.position.intro}</p>
-    <div slot="wide" class="bk-stack">
-      <Position />
-      <ul class="bk-notes">{s.position.rules.map((r) => <li>{r}</li>)}</ul>
+  <Section eyebrow={s.position.label} title={s.position.headline} lead={s.position.lead}>
+    <Position />
+    <Notes items={s.position.rules} />
+  </Section>
+
+  <Statement text={s.text.text} sub={s.text.sub}>
+    <div class="bk-under"><FactList items={s.text.facts} /></div>
+  </Statement>
+
+  <Section eyebrow={s.zone.label} title={s.zone.headline} lead={s.zone.lead}>
+    <div slot="wide">
+      <TileMasonry
+        label={s.zone.headline}
+        items={zoneTiles}
+        columns={[
+          [{ id: 'z0', h: 1 }],
+          [{ id: 'z1', h: 1 }, { id: 'z2', h: 1 }],
+          [{ id: 'z3', h: 1 }, { id: 'z4', h: 1 }, { id: 'z5', h: 1 }],
+        ]}
+        phone={[[{ id: 'z0' }], [{ id: 'z1' }, { id: 'z2' }], [{ id: 'z3' }, { id: 'z4' }, { id: 'z5' }]]}
+        height={420}
+      />
+      <p class="bk-note bk-note--wide">{s.zone.caption}</p>
     </div>
-  </Sec>
+  </Section>
 
-  <Band label={page.label} title={s.text.statement}>
-    <ul class="wk-facts" role="list">{s.text.facts.map((f) => <li>{f}</li>)}</ul>
-  </Band>
+  <Section eyebrow={s.review.label} title={s.review.headline} lead={s.review.lead}>
+    <FactList items={s.review.states} />
+    <Notes items={s.review.rules} />
+  </Section>
 
-  <Sec label="03" title={s.zone.headline}>
-    <div class="bk-stack">
-      <p class="text">{s.zone.body}</p>
-      <Pills items={s.zone.squares} tone="tint" />
-      <p class="bk-note">{s.zone.hub}</p>
-    </div>
-  </Sec>
+  <NextPage slug="wiki" lead={s.finaleLead} />
 
-  <Sec label="04" title={s.review.headline}>
-    <div slot="wide" class="bk-stack">
-      <ItemGrid items={s.review.states} cols={4} look="cards" />
-      <ul class="bk-notes">{s.review.rules.map((r) => <li>{r}</li>)}</ul>
-    </div>
-  </Sec>
-
-  <SiteFinale nextPage={site.strings.common.nextPage} nextSite={site.strings.common.nextSite} body={s.finaleLead} />
-  <Closing bg={accent} />
+  <Closing title={site.strings.common.closing.title} body={site.strings.common.closing.body} />
 </MiniSiteLayout>
-
-<style>
-  .wk-facts { grid-column: 1 / 13; margin-top: 56px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); }
-  .wk-facts li { padding: 18px 0; border-top: 1px solid var(--c-line-strong); font-size: 16px; line-height: 1.8; color: var(--c-text); }
-  @media (max-width: 767px) { .wk-facts { grid-template-columns: minmax(0, 1fr); margin-top: 32px; } }
-</style>
