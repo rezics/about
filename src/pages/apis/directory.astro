@@ -1,0 +1,45 @@
+---
+// API Hub 目錄 (v3): the head and the request picture, the filters as facts, the statement on
+// complete results, one identity per API, four example saved views as flat tiles.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import HeadPicture from '../../sites/apis/HeadPicture.astro';
+import NextPages from '../../sites/apis/NextPages.astro';
+import Caption from '../../sites/apis/Caption.astro';
+import { pictures, tones } from '../../sites/apis/art';
+import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
+
+const s = site.strings.directory;
+const views = [tones.light, tones.blue, tones.mid, tones.deep];
+const tiles: MasonryItem[] = s.views.tiles.map((t, i) => ({ id: `view-${i}`, name: t.name, line: t.line, ...views[i]! }));
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <HeadPicture image={pictures.request} />
+
+  <Section eyebrow={s.facets.eyebrow} title={s.facets.headline} lead={s.facets.lead}>
+    <FactList items={s.facets.rows} />
+  </Section>
+
+  <Statement text={s.complete.lead} sub={s.complete.rest} note={s.complete.note} />
+
+  <Section eyebrow={s.identity.eyebrow} title={s.identity.headline} lead={s.identity.lead}>
+    <FactList items={s.identity.rows} />
+  </Section>
+
+  <Section eyebrow={s.views.eyebrow} title={s.views.headline} lead={s.views.lead}>
+    <div slot="wide">
+      <TileMasonry items={tiles} columns={tiles.map((t) => [{ id: t.id, h: 1 }])} height={260} phoneRow={180} size="m" label={s.views.headline} />
+      <Caption text={s.views.caption} />
+    </div>
+  </Section>
+
+  <NextPages slug="directory" />
+  <Closing title={s.closing} body={site.strings.closingBody} />
+</MiniSiteLayout>

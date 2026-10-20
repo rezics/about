@@ -1,0 +1,29 @@
+---
+/**
+ * The picture that follows an inner page's head (PageHead): one still-life across columns 4 to
+ * 12, its left edge on the h1's grid line. The page's largest picture, so it loads at once.
+ * Phones: across the full width, directly after the copy.
+ */
+import Picture from '../../kit/components/Picture.astro';
+
+interface Props {
+  image: { src: string; widths: number[]; alt: string; width: number; height: number };
+}
+const { image } = Astro.props;
+---
+<div class="apis-headpic">
+  <div class="grid">
+    <div class="apis-headpic__pic" data-reveal="image">
+      <Picture {...image} sizes="(max-width: 767px) 100vw, 75vw" priority />
+    </div>
+  </div>
+</div>
+<style>
+  .apis-headpic { padding-top: clamp(56px, 6vw, 88px); }
+  .apis-headpic__pic { grid-column: 4 / 13; min-width: 0; }
+  @media (max-width: 1023px) { .apis-headpic__pic { grid-column: 1 / 13; } }
+  @media (max-width: 767px) {
+    .apis-headpic { padding-top: 40px; }
+    .apis-headpic__pic { margin-inline: calc(var(--gutter) * -1); }
+  }
+</style>

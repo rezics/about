@@ -1,0 +1,34 @@
+---
+// API Hub 收錄 (v3): the head on copy, the six steps of the one reviewed path, providers on
+// the same path, the AI agent's proposal and its fields, the statement that payment buys no
+// verdict; the next pages lead to the developers site.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/apis/NextPages.astro';
+import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
+
+const s = site.strings.publishing;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.path.eyebrow} title={s.path.headline}>
+    <FactList items={s.path.rows} numbered />
+  </Section>
+
+  <Section eyebrow={s.provider.eyebrow} title={s.provider.headline} lead={[s.provider.lead!, s.provider.more]} />
+
+  <Section eyebrow={s.proposal.eyebrow} title={s.proposal.headline} lead={s.proposal.lead}>
+    <FactList items={s.proposal.rows} />
+  </Section>
+
+  <Statement text={s.paid.lead} sub={s.paid.rest} />
+
+  <NextPages slug="publishing" />
+  <Closing title={s.closing} body={site.strings.closingBody} />
+</MiniSiteLayout>

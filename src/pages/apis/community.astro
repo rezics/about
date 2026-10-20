@@ -1,0 +1,52 @@
+---
+// API Hub 社群 (v3): the head on copy, the five things a score states, the statement on
+// discussion by version, an example project list as flat tiles in each kind's colour, Realm
+// and Zone.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/apis/NextPages.astro';
+import Caption from '../../sites/apis/Caption.astro';
+import { kindFields } from '../../kit/theme';
+import { moduleHref } from '../../kit/content';
+import { tones } from '../../sites/apis/art';
+import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
+
+const s = site.strings.community;
+const tiles: MasonryItem[] = s.lists.tiles.map((t, i) => {
+  const colour = t.kind === 'apis' ? (i === 0 ? tones.blue : tones.light) : { bg: kindFields[t.kind].field, on: kindFields[t.kind].on };
+  return { id: `item-${i}`, name: t.name, rel: t.rel, line: t.line, ...colour };
+});
+const columns: MasonryPlace[][] = tiles.map((t) => [{ id: t.id, h: 1 }]);
+const phone: MasonryRowPlace[][] = [
+  [{ id: 'item-0' }, { id: 'item-1' }],
+  [{ id: 'item-2' }, { id: 'item-3' }],
+  [{ id: 'item-4' }],
+];
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.rating.eyebrow} title={s.rating.headline} lead={s.rating.lead}>
+    <FactList items={s.rating.rows} />
+  </Section>
+
+  <Statement text={s.discussion.lead} sub={s.discussion.rest} />
+
+  <Section eyebrow={s.lists.eyebrow} title={s.lists.headline} lead={s.lists.lead}>
+    <div slot="wide">
+      <TileMasonry items={tiles} columns={columns} phone={phone} height={300} phoneRow={190} size="m" label={s.lists.headline} />
+      <Caption text={s.lists.caption} />
+    </div>
+  </Section>
+
+  <Section eyebrow={s.zone.eyebrow} title={s.zone.headline} lead={s.zone.lead} link={{ href: moduleHref('zones'), text: s.zone.link }} />
+
+  <NextPages slug="community" />
+  <Closing title={s.closing} body={site.strings.closingBody} />
+</MiniSiteLayout>

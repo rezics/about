@@ -1,0 +1,63 @@
+---
+// API Hub 周邊 (v3): the head and the threaded sheet, the named relations, the statement that
+// they read both ways, the provider's own page, the neighbouring kinds and the developers site.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import HeadPicture from '../../sites/apis/HeadPicture.astro';
+import NextPages from '../../sites/apis/NextPages.astro';
+import { kindById, kindHref } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
+import { pictures, tones } from '../../sites/apis/art';
+import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
+
+const s = site.strings.connections;
+const n = s.neighbours;
+const kindTile = (id: 'mcp' | 'skills' | 'software'): MasonryItem => ({
+  id,
+  name: kindById(id).name,
+  line: n.lines[id],
+  href: kindHref(id),
+  bg: kindFields[id].field,
+  on: kindFields[id].on,
+});
+const tiles: MasonryItem[] = [
+  kindTile('mcp'),
+  kindTile('software'),
+  kindTile('skills'),
+  { id: 'developers', name: n.developers.name, line: n.developers.line, href: '/developers/', ...tones.slate },
+];
+const columns: MasonryPlace[][] = [
+  [{ id: 'mcp', h: 1 }],
+  [{ id: 'software', h: 1 }],
+  [{ id: 'skills', h: 3 }, { id: 'developers', h: 2 }],
+];
+const phone: MasonryRowPlace[][] = [
+  [{ id: 'mcp' }, { id: 'software' }],
+  [{ id: 'skills' }, { id: 'developers' }],
+];
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <HeadPicture image={pictures.connections} />
+
+  <Section eyebrow={s.relations.eyebrow} title={s.relations.headline} lead={s.relations.lead}>
+    <FactList items={s.relations.rows} />
+  </Section>
+
+  <Statement text={s.both.lead} sub={s.both.rest} />
+
+  <Section eyebrow={s.provider.eyebrow} title={s.provider.headline} lead={[s.provider.lead!, s.provider.more]} />
+
+  <Section eyebrow={n.eyebrow} title={n.headline}>
+    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={440} phoneRow={150} label={n.headline} />
+  </Section>
+
+  <NextPages slug="connections" />
+  <Closing title={s.closing} body={site.strings.closingBody} />
+</MiniSiteLayout>

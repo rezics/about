@@ -1,0 +1,46 @@
+/* API Hub (SITE.md "v3"): the few rules its pages add to the kit. */
+[data-site='apis'] .apis-foot { margin-top: 28px; max-width: 34em; font-size: 15px; line-height: 1.85; color: var(--c-muted); }
+
+/* Keep the kit's current-tab offset relative to the scrolling list, rather than the bar. */
+[data-site='apis'] .sitebar__tabs { position: relative; }
+
+/* These five short definitions read as one specification, including on a phone. */
+[data-site='apis'] .apis-compact-facts .facts__row {
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  padding-block: 20px;
+}
+
+[data-site='apis'] .sitebar__name { transition: translate .32s var(--ease-snap); }
+[data-site='apis'] .sitebar__tab::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 calc(50% - .75em);
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale .32s var(--ease-snap);
+}
+@media (hover: hover) {
+  [data-site='apis'] .sitebar__home:hover .sitebar__name { translate: 3px 0; }
+  [data-site='apis'] .sitebar__tab:hover::before { scale: 1 1; }
+}
+[data-site='apis'] .sitebar__home:focus-visible .sitebar__name { translate: 3px 0; }
+[data-site='apis'] .sitebar__tab:focus-visible::before { scale: 1 1; }
+[data-site='apis'] .sitebar__home:active .sitebar__name { translate: 1px 0; }
+
+/* The 1024 px Chromium layout terminates with pretty/balanced wrapping; plain wrapping is stable. */
+@media (min-width: 768px) and (max-width: 1399px) {
+  html[data-site='apis'] :is(h1, h2, h3, h4, p, li, .phrase) { text-wrap: wrap; }
+  html[data-site='apis'] .phero__copy { grid-column: 1 / 8; }
+}
+
+/* Keep short tile names together and avoid a lone opening character on narrow phones. */
+@media (max-width: 359px) {
+  [data-site='apis'] main .tile__name { --tile-name: 20px; text-wrap: balance; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-site='apis'] .sitebar__name,
+  [data-site='apis'] .sitebar__tab::before { transition: none; }
+}

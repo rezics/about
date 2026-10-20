@@ -1,0 +1,15 @@
+---
+/**
+ * The caption under an invented example (示意): small muted text, prefixed with the site's
+ * example marker, set on the grid under tiles in a Section's `wide` slot.
+ */
+import site from '../../content/sites/apis';
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+---
+<p class="apis-caption">{site.strings.example}{text}</p>
+<style>
+  .apis-caption { margin-top: 20px; font-size: 13px; line-height: 1.7; color: var(--c-muted); }
+</style>

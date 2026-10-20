@@ -1,0 +1,47 @@
+---
+// API Hub 版本 (v3): the head and the fanned versions picture, four versions of an invented API
+// as flat tiles (paler for the older), the five kinds of news, the statement on closed records,
+// following and its levels.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import Closing from '../../kit/components/Closing.astro';
+import HeadPicture from '../../sites/apis/HeadPicture.astro';
+import NextPages from '../../sites/apis/NextPages.astro';
+import Caption from '../../sites/apis/Caption.astro';
+import { pictures, tones } from '../../sites/apis/art';
+import site from '../../content/sites/apis';
+import '../../sites/apis/apis.css';
+
+const s = site.strings.versions;
+const steps = [tones.light, tones.blue, tones.mid, tones.deep];
+const tiles: MasonryItem[] = s.sequence.tiles.map((t, i) => ({ id: t.name, name: t.name, rel: t.rel, line: t.line, ...steps[i]! }));
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <HeadPicture image={pictures.versions} />
+
+  <Section eyebrow={s.sequence.eyebrow} title={s.sequence.headline} lead={s.sequence.lead}>
+    <div slot="wide">
+      <TileMasonry items={tiles} columns={tiles.map((t) => [{ id: t.id, h: 1 }])} height={280} phoneRow={220} label={s.sequence.headline} />
+      <Caption text={s.sequence.caption} />
+    </div>
+  </Section>
+
+  <Section eyebrow={s.events.eyebrow} title={s.events.headline} lead={s.events.lead}>
+    <FactList items={s.events.rows} />
+  </Section>
+
+  <Statement text={s.closed.lead} sub={s.closed.rest} />
+
+  <Section eyebrow={s.follow.eyebrow} title={s.follow.headline} lead={s.follow.lead}>
+    <FactList items={s.follow.rows} />
+    <p class="apis-foot">{s.follow.footnote}</p>
+  </Section>
+
+  <NextPages slug="versions" />
+  <Closing title={s.closing} body={site.strings.closingBody} />
+</MiniSiteLayout>
