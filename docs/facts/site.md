@@ -16,24 +16,6 @@ repeat what they say and add nothing.
 | One rating capability serves every kind ("the books rating is the same one MCP Hub uses") | `docs/product/platform-thesis.md#capabilities` (Reviewable, bound to any type) |
 | A correction in any language improves every view of that fact | `docs/product/platform-thesis.md#one-graph-many-language-fronts` |
 
-## 《西遊記》 chapters (home.identity)
-
-The novel is public domain. I did not name any adaptation, publisher or studio.
-
-| Claim | Source |
-| --- | --- |
-| The novel is one Work. Its 100 回 are chapters held in the Work's Structure, and progress is recorded per chapter | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` (chapters are occurrences in Structure with stable IDs and progress); `docs/contracts/creation.md` (progress belongs to stable occurrences) |
-| Each printing or edition has its own release record | `docs/contracts/work-and-release.md#closed-records-and-open-axes`, `#explicit-identities-targets-and-units` |
-| Translations in any language are realizations of the same Work, each with its own translators and rights | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions`; `docs/contracts/content-languages.md` |
-| Different authorship attributions each keep their sources | `docs/contracts/information-verification.md#quality-dimensions-and-records` ("Reviewed and disputed can coexist"). The attribution is genuinely debated; the copy names no author. |
-| An adaptation is its own Work, linked to the original by an adaptation relation | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` (Work relation: adaptation; derivation kinds) |
-| A Work's ratings are its own and do not merge into the novel's | `docs/contracts/ratings.md#scoped-targets-and-roll-ups` (an observation targets exactly one Resource; no implicit roll-up) |
-| Anime seasons and episodes are recorded separately; progress is per episode | `docs/contracts/work-and-release.md#explicit-identities-targets-and-units` ("anime series/seasons/episodes") |
-| One voice credit binds performer, character and Work | `docs/contracts/catalog.md` ("A contextual credit must bind performer, character and Work in one occurrence"). Stated there as a requirement on the remaining profile. |
-| A character is one identity across all the Works | `docs/product/goal.md#three-values-one-bet` ("connected once and reused everywhere"); `docs/contracts/information-verification.md#a-big-franchise-wiki-for-every-work` (fictional entities) |
-| Game releases are recorded per platform | `docs/contracts/work-and-release.md#explicit-identities-targets-and-units` (coverage: region, platform) |
-| Finishing one Work never completes another; correspondence only points the way | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` ("Correspondence alone transfers no progress or facts") |
-
 ## Community (home.community, community module)
 
 | Claim | Source |
@@ -132,7 +114,7 @@ production API hostname (`docs/operations/release.md`,
 `docs/operations/external-conditions.md` C-01), so the sample uses
 `$REZICS_API` for Main's origin. Put the real origin in when it is decided. The
 equivalent MCP call is the `search_catalogue` tool with
-`{"query": {"q": "西遊記", "limit": 5}}`, but it requires a Bearer token.
+`{"query": {"q": "輕小說", "limit": 5}}`, but it requires a Bearer token.
 
 ## Roadmap
 
