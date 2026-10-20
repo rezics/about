@@ -2,7 +2,7 @@
 
 Site id `software`, routes `/software/` and `/software/<page>/`. Kind colour `#24555a` (paper
 text). Facts and sources: `facts.md`. Copy: `src/content/sites/software.ts`. The binding design
-language is v3 (`/home/edge/projects/rezics/about/.temp/sites/V3-SPEC.md`); the plan for this
+language is v3 (`.temp/ref/V3-SPEC.md`); the plan for this
 site is under "v3" below. The earlier designs (the 方塊 matrix concept, its signature and the
 stage 2 build) are in the history of branch `site/software`; their layouts, motion and
 pictures are retired, their pages, facts and copy carry over.
@@ -120,7 +120,7 @@ connections, which hands off to the next site (視覺小說).
 
 ## v3
 
-Binding: `.temp/sites/V3-SPEC.md` (approved 2026-10-19 from the home mock). One focal point
+Binding: `.temp/ref/V3-SPEC.md` (approved 2026-10-19 from the home mock). One focal point
 per screen, editorial serif headings, the paper still-life series, restraint and air. This
 site is calm and exact: few elements, hairline lists for the facts a software page is made
 of, one data table where a table is the honest form.
@@ -129,16 +129,19 @@ of, one data table where a table is the honest form.
 
 The shared v3 tokens, no local ground: paper `#efe9e0`, ink `#26292d`, muted `#6b6f73`,
 hairline `rgb(38 41 45 / .14)`, link and hover `#2f4fa3`. The kind colour `#24555a` carries
-paper text (about 7:1 on it) and appears on the tiles, the closing block and the 相容 state.
-Tile colours for the site's own pages: the kind colour and its darker and lighter steps
-(from the kit's ramp, each checked for AA with its text colour); neighbouring kinds keep
+paper text (about 7:1 on it) and appears on the tiles, the site bar and the 相容 state.
+Tile colours for the site's own pages: the kind colour for 相容性 and five teals of the
+photographs (`#1b3f43`, `#2f6468` with paper text; `#8fb2b0`, `#a3c2bf`, `#bcd2ce` with ink
+text; every pair 5.9:1 or more), alternating dark and light in reading order. The kit's
+`accentRamp` mixes the teal with the warm paper into greys that read muddy and gave two
+near-identical darks, so `site.ts` sets them by hand. Neighbouring kinds keep
 their own colours (games `#2f4fa3`, MCP Hub `#c9963f`, Skill Hub `#b8c58a`, API Hub
-`#a9c3dc`, the last three with ink text). Version numbers and dates in Manrope with tabular
-figures; the hash is the only mono, because it is code.
+`#a9c3dc`, the last three with ink text). Version numbers, dates and the sample checksum use
+Manrope with tabular figures.
 
-States are always written in words, never colour alone: 相容 (kind colour, paper text),
-不相容 (ink, paper text), 未知 (paper with a hairline, muted text), 過時 (a pale teal tint, ink
-text), 無法取得 (paper, muted text, a hairline rule).
+States are always written in words, never colour alone. A small swatch accompanies each:
+相容 in teal, 不相容 in ink, 未知 as an outlined swatch, 過時 as pale teal, 無法取得 as a
+hairline. Labels use ink, with 未知 and 無法取得 in the AA muted ink on paper.
 
 ### Pictures (the paper still-life series)
 
@@ -153,6 +156,11 @@ mostly the kind colour plus one or two neighbours, no text or symbols. Sources a
 | `versions` | each release sealed: three folded packets, each closed with a band | teal, slate bands | catalogue |
 | `slit` | publishing: a card slid through a slit into the record | teal through slate | publishing |
 | `tabs` | dependencies: sheets joined by paper tabs threaded through slits | teal, mustard, sage | landing photo row, connections |
+
+Every section picture also has a 3:2 phone version at 800 wide (`<name>-phone-800`,
+≤ 32 KiB in AVIF and WebP), and the hero's phone crop has an 800 step: a phone band is 390 css px at twice the
+density, so without them the browser took the 1200 file on slow 4G and the photo row became a
+4 s LCP on the inner pages.
 
 Reviews and updates carry no picture: their sections are numbers, levels and lists, and the
 site keeps pictures to one per page at most besides the landing.
@@ -176,6 +184,10 @@ site keeps pictures to one per page at most besides the landing.
 Phone: copy first (h1 30 px, lede, pill), then the hero as a ~260 px band cropped to the fan;
 page tiles in two columns; photo rows stack text first, picture after; facts become stacked
 title over text; neighbour tiles two by two.
+The desktop crop anchors to the left, preserving the blank paper behind the headline on
+tall tablets; the separate phone crop remains centred on the fan.
+Between 1024 and 1399 px, the hero uses a 4vw heading and a wider headline-to-body gap to
+keep both clauses intact and above the fan's lower edge. Other viewport sizes use the kit.
 
 ### 目錄與版本 `/software/catalogue/`
 
@@ -186,13 +198,13 @@ title over text; neighbour tiles two by two.
   (版本 · 發行管道 · 日期 · 平台; 測試版 marked in words), then three facts rows
 4 Statement: REZICS 不計算下載次數，(muted) 也不拿它排序；……
 5 Section + facts: 名字與身分 / 名字一樣，不代表是同一個。 four rows
-6 Section: 篩選 / 條件要落在同一個發行上。 lead, the four conditions as flat tags,
-  three facts rows
+6 Section: 篩選 / 條件要落在同一個發行上。 lead (the conditions quoted in it), three facts
+  rows
 7 Next page, closing
 ```
 
 Phone: the release table becomes one stacked record per release (version and channel on
-the first line, date and platforms beneath); tags wrap.
+the first line, date and platforms beneath).
 
 ### 相容性 `/software/compatibility/`
 
@@ -202,7 +214,7 @@ the first line, date and platforms beneath); tags wrap.
 3 Section: 五種狀態 / 五種狀態，各說各的話。 five facts rows (state word left),
   then the sample table (示意): 4 environments × 5 releases, each cell the state in words
   plus its date; 未知 cells keep only their word
-4 Section: 條件 / 條件綁在同一筆實測上。 lead, the query as flat tags, two candidate rows
+4 Section: 條件 / 條件綁在同一筆實測上。 lead and the example conditions, two candidate rows
   (4.1 測試版 相容, 4.0 穩定版 未知) and the result sentence
 5 Statement: 每一個標示，都說得出證據與範圍。(muted) ……
 6 Next page, closing
@@ -216,8 +228,7 @@ four rows of environment and state beneath, no sideways scroll.
 ```
 1 Page head: h1 先講是哪一版，再講幾分。 · lede
 2 Section + facts with numerals: 先有足夠的人，才有平均。 rows 5 · 50 · 1
-3 Section: 每個分數，都有它回答的問題。 lead, the anatomy as facts (對象, 問題, 量表,
-  範圍; 示意), then three facts rows
+3 Section: 每個分數，都有它回答的問題。 lead, three facts rows (並排, 跨版本, 不捏造)
 4 Statement: 還沒有人評分時，什麼都不畫；(muted) ……
 5 Section + facts: 精選有人負責，替代說得出理由。 five rows
 6 Next page, closing
@@ -229,8 +240,8 @@ four rows of environment and state beneath, no sideways scroll.
 1 Page head: h1 新發行，照你選的程度送來。 · lede
 2 Section + facts: 三種程度，每個追蹤各自設定。 全部 · 精選 · 關閉 · 去處
 3 Section + facts: 能追蹤的，不只是程式。 four rows
-4 Section: 更新說明，跟著發行走。 lead, the sample changelog (示意) as a hairline list,
-  newest first, 3.2 marked 從這裡開始讀; two facts rows
+4 Section: 更新說明，跟著發行走。 two lead paragraphs (the changelog; 繼續 and rollback),
+  the sample changelog (示意) as a hairline list, newest first, 3.2 marked 從這裡開始讀
 5 Statement: 你的腳本與 AI 代理，(muted) 讀的是同一份更新事件；……
 6 Next page, closing
 ```
@@ -240,11 +251,10 @@ four rows of environment and state beneath, no sideways scroll.
 ```
 1 Page head: h1 把你的發行，寫成查得到的紀錄。 · lede · 前往 REZICS
 2 Photo row: picture `slit` beside 一筆發行 / 一筆發行包含的欄位。 + the record (示意)
-  as facts rows (版本號 … 更新說明; the hash in mono)
+  as facts rows (版本號 … 更新說明; the shortened hash explicitly marked 節錄)
 3 Section + numbered facts: 一次發行，五個步驟。 + the API and MCP note
-4 Section: 授權，寫到條款的版本。 lead, six field names as flat tags, three facts rows
-5 Section: 依賴關係，照各生態系自己的規則。 lead, three packages (示意) as facts rows,
-  three facts rows
+4 Section: 授權，寫到條款的版本。 lead, three facts rows
+5 Section: 依賴關係，照各生態系自己的規則。 lead, four facts rows
 6 Statement: 安裝，不等於允許執行。(muted) ……
 7 Section + facts: 發布之後的維護。 four rows
 8 Next page, closing
@@ -262,14 +272,73 @@ four rows of environment and state beneath, no sideways scroll.
 6 Next site (視覺小說), closing
 ```
 
+### Endings and shared pieces
+
+- Every inner page ends on up to two following pages as flat tiles in the kind colour's steps
+  (`Next.astro`, a navigation landmark with the eyebrow 下一頁), then `Closing` with the page's
+  own closing line; 關聯 ends on 視覺小說 (the next site) instead. The kit retired `SiteFinale`.
+- `Body.astro` carries what follows a photo row under the same heading (a fact list, a table)
+  on the heading's columns.
+- `site.ts` holds the pictures, the page tiles (one ramp step per page, the same on the landing
+  and in every ending) and the neighbour tiles.
+- `CompatTable.astro`: a real table on wide screens; under 768 px one record per release.
+- `PhonePhotoPreload.astro` gives the first phone photograph a resource hint before the copy
+  on catalogue, compatibility and connections. The kit's `PhotoRow` has no priority prop and
+  `MiniSiteLayout` does not forward the head slot. Other photographs remain lazy.
+- `feedback.css` scopes a two-pixel hover rise and a press reset to this site's site-bar
+  links. Header and standalone links now use the kit's feedback (77defac). Reduced motion
+  keeps the local rise still.
+  It also removes the last direct phrase break in a statement, which can otherwise leave
+  the closing semicolon alone at the start of a phone line, and snaps the phone site bar
+  to whole labels after touch or the kit's initial centring.
+  No shared files were edited for this workaround; pages deliberately stay still at rest.
+
 ### Copy changes for v3
 
 - No square-metaphor wording: 「一格一格」, 「這一格」, 「格子」, 「方格表」, 「它旁邊的方塊」 and
   「連回這一格」 are rewritten in plain words (environments, results, the same program).
 - Every action is 「前往 REZICS」; no notify wording.
-- Inner pages lost their scene props (matrix steps, conveyor, filmstrip, constellation); the
-  facts they carried stay as hairline rows, tables or flat tags.
+- Inner pages lost their scene props (matrix steps, conveyor, filmstrip, constellation) and
+  the flat tags (the kit retired them); the facts they carried stay as hairline rows, tables
+  or plain sentences. The sample lock and the rating anatomy were cut: their rules stay as
+  facts rows.
 - The kind card's terms win: 分支, 依賴, 作業系統, 條目.
+
+### Final verification (2026-10-20)
+
+Merged the current `site/v3` through `62a4613`. `task check` passes: 153 Astro files with
+zero errors, warnings or hints, and 195 tests in 10 files. The production build passes.
+All seven routes received the project QA capture under the shared semaphore; the landing
+was recaptured after the final tablet adjustment. Every desktop and phone frame was read
+against the approved reference, along with full-page, hover, focus and reduced-motion frames.
+Audit: zero FAIL and zero WARN on all seven routes.
+
+Phone values are measured at 4× CPU slowdown and slow 4G:
+
+| Route | LCP | CLS | axe violations |
+| --- | ---: | ---: | ---: |
+| `/software/` | 2052 ms | 0 | 0 |
+| `/software/catalogue/` | 2012 ms | 0 | 0 |
+| `/software/compatibility/` | 1868 ms | 0 | 0 |
+| `/software/reviews/` | 1812 ms | 0 | 0 |
+| `/software/updates/` | 1764 ms | 0 | 0 |
+| `/software/publishing/` | 1880 ms | 0 | 0 |
+| `/software/connections/` | 1824 ms | 0 | 0 |
+
+No console errors, failed requests, horizontal page overflow, hidden reduced-motion text,
+invisible focus or unresponsive hover targets remain. Additional captures check all pages at
+320, 768, 1024 and 1920 px. The hero is also checked at 1199, 1280 and 1366 px.
+Its five text-over-photo review nodes were measured against the darkest background pixel in
+each text-line rectangle at seven widths: small text is at least 4.60:1, headings 10.09:1.
+The Chinese skip link is the first focus stop and moves focus to `#main`; the QA script's
+English-label heuristic reports it as false. Desktop and phone menus close with Escape and
+return focus to their triggers.
+
+Landing evidence: `.shots/software/d-99-fullpage.png` and
+`.shots/software/m-01-hero.png`. Supplementary evidence: `.shots/software-extra.json`,
+`.shots/software-contrast.json` and `.shots/review-final/`. No shared files were manually
+edited; the local workarounds above cover the remaining kit gaps. Nothing is unfinished in
+the assigned seven pages. No push or deployment.
 
 ## Notes
 

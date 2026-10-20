@@ -20,6 +20,13 @@
   display: none;
 }
 
+/* Keep each hero clause on one line as the grid switches to five columns. The wider gap
+   also holds the headline above the fanned paper's lower edge on tall laptop screens. */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  [data-site='software'] .phero__title { font-size: clamp(40px, 4vw, 56px); }
+  [data-site='software'] .phero__lede { margin-top: 48px; }
+}
+
 @media (max-width: 767px) {
   /* Stop horizontal navigation on whole labels after touch or the kit's initial centring. */
   [data-site='software'] .sitebar__tabs { scroll-snap-type: x mandatory; }
