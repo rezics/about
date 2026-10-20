@@ -19,10 +19,6 @@ html[data-site='developers'] .dv-stack { display: grid; gap: 28px; }
 html[data-site='developers'] .dv-ways .cset__shared { max-width: 640px; }
 html[data-site='developers'] .dv-ways .cset__item .codetile { flex: none; }
 
-/* Give the shared tab-centering calculation a local offset parent. Otherwise its offsetLeft
-   includes the fixed site name and can scroll the beginning of the current tab out of view. */
-html[data-site='developers'] .sitebar__tabs { position: relative; padding-inline-end: 32px; }
-
 /* Keep tool names together in the two-column phone index. */
 @media (max-width: 767px) {
   html[data-site='developers'] .dv-pages .tile__name {
@@ -33,20 +29,8 @@ html[data-site='developers'] .sitebar__tabs { position: relative; padding-inline
   html[data-site='developers'] .dv-pages .tile__name wbr { display: none; }
 }
 
-/* Match the kit's quiet link feedback on the site bar, scoped to this site. */
-html[data-site='developers'] :is(.sitebar__home, .sitebar__tab) {
-  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-snap);
-}
-@media (hover: hover) {
-  html[data-site='developers'] :is(.sitebar__home, .sitebar__tab):hover { translate: 0 -2px; }
-}
-html[data-site='developers'] :is(.sitebar__home, .sitebar__tab):focus-visible { translate: 0 -2px; }
-html[data-site='developers'] :is(.sitebar__home, .sitebar__tab):active { translate: 0 0; }
 html[data-site='developers'] .codetile pre {
   scrollbar-width: thin;
   scrollbar-color: var(--c-muted) var(--c-panel);
   overscroll-behavior-inline: contain;
-}
-@media (prefers-reduced-motion: reduce) {
-  html[data-site='developers'] :is(.sitebar__home, .sitebar__tab) { transition: none; translate: none; }
 }

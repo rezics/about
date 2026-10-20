@@ -4,7 +4,7 @@
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
 import PhotoRow from '../../kit/components/PhotoRow.astro';
-import PhotoPreload from '../../sites/manga/PhotoPreload.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Closing from '../../kit/components/Closing.astro';
@@ -19,10 +19,10 @@ import '../../sites/manga/navigation.css';
 const s = site.strings.series;
 ---
 <MiniSiteLayout>
-  <PhotoPreload picture={s.levels.picture} />
+  <PhotoPreload slot="head" image={photo(s.levels.picture)} />
   <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
 
-  <PhotoRow eyebrow={s.levels.eyebrow} title={s.levels.heading} body={s.levels.lead} image={photo(s.levels.picture)} />
+  <PhotoRow priority eyebrow={s.levels.eyebrow} title={s.levels.heading} body={s.levels.lead} image={photo(s.levels.picture)} />
   <RowList><FactList items={s.levels.items} /></RowList>
 
   <Section eyebrow={s.catalogue.eyebrow} title={s.catalogue.heading}>

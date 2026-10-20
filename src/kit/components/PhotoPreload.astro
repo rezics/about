@@ -1,0 +1,16 @@
+---
+/** Use in MiniSiteLayout's head slot for the first visible PhotoRow. AVIF only: preloading
+ * both formats would download both in browsers that support them. The media and sources
+ * match Picture, including an art-directed phone crop. Later photographs stay lazy. */
+import { pictureSrcSet, PHONE_PICTURE, WIDE_PICTURE, PHOTO_ROW_SIZES, type PictureImage } from '../pictures';
+
+interface Props {
+  image: PictureImage;
+  sizes?: string;
+  media?: 'all' | 'phone' | 'desktop';
+}
+const { image, sizes = PHOTO_ROW_SIZES, media = 'all' } = Astro.props;
+const phone = image.phone ?? image;
+---
+{media !== 'phone' && <link rel="preload" as="image" type="image/avif" media={WIDE_PICTURE} imagesrcset={pictureSrcSet(image, 'avif')} imagesizes={sizes} fetchpriority="high" />}
+{media !== 'desktop' && <link rel="preload" as="image" type="image/avif" media={PHONE_PICTURE} imagesrcset={pictureSrcSet(phone, 'avif')} imagesizes="100vw" fetchpriority="high" />}

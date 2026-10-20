@@ -160,7 +160,6 @@ const strings: CreateStrings = {
     caption: '結算單示意：每一項扣除各占一行，任何一筆都不會重複扣，金額依每筆交易計算。',
   },
   family: {
-    ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
     closing: '你寫作，REZICS 替你記下每一版與每一筆帳。',
   },
 };

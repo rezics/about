@@ -4,21 +4,6 @@ body[data-site='visual-novels'] {
   --vn-tint: color-mix(in srgb, var(--field) 14%, var(--c-bg));
 }
 
-/* Keep the kit's active-tab centring relative to its scroll container on phones. */
-body[data-site='visual-novels'] .sitebar__tabs { position: relative; }
-
-/* Site tabs answer with the kit's quiet label movement. Header feedback comes from the kit. */
-body[data-site='visual-novels'] .sitebar__name,
-body[data-site='visual-novels'] .sitebar__tab {
-  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-snap);
-}
-@media (hover: hover) {
-  body[data-site='visual-novels'] .sitebar__home:hover .sitebar__name,
-  body[data-site='visual-novels'] .sitebar__tab:hover { translate: 0 -2px; }
-}
-body[data-site='visual-novels'] .sitebar__home:focus-visible .sitebar__name,
-body[data-site='visual-novels'] .sitebar__tab:focus-visible { translate: 0 -2px; }
-
 /* A block that continues the section above it (the landing's three queries after the photo row). */
 .vn-after { padding-top: 72px; }
 .vn-after__body { grid-column: 4 / 13; min-width: 0; }

@@ -16,28 +16,24 @@
  */
 import Picture from './Picture.astro';
 import Clauses from '../Clauses.astro';
+import type { PictureImage } from '../pictures';
 
-interface Crop {
-  src: string;
-  widths: number[];
-  width: number;
-  height: number;
-  position?: string;
-}
 interface Props {
   title: string;
   eyebrow?: string;
   lede?: string;
-  image: { src: string; widths: number[]; alt: string; width: number; height: number; position?: string; phone?: Crop };
+  image: PictureImage;
   side?: 'left' | 'right';
   align?: 'end' | 'center';
   phoneBand?: number;
   bar?: boolean;
+  /** Cap wide-screen copy within this photograph's empty paper. */
+  copyMax?: string;
   class?: string;
 }
-const { title, eyebrow, lede, image, side = 'left', align = 'end', phoneBand = 260, bar = false, class: className } = Astro.props;
+const { title, eyebrow, lede, image, side = 'left', align = 'end', phoneBand = 260, bar = false, copyMax, class: className } = Astro.props;
 ---
-<section class:list={['phero', `phero--${side}`, `phero--${align}`, bar && 'phero--bar', className]} aria-labelledby="hero-title" style={`--band:${phoneBand}px`}>
+<section class:list={['phero', `phero--${side}`, `phero--${align}`, bar && 'phero--bar', className]} aria-labelledby="hero-title" style={`--band:${phoneBand}px;${copyMax ? `--hero-copy-max:${copyMax}` : ''}`}>
   <div class="phero__copy">
     {eyebrow && <p class="eyebrow phero__eyebrow">{eyebrow}</p>}
     <h1 id="hero-title" class="phero__title"><Clauses text={title} /></h1>
@@ -74,12 +70,18 @@ const { title, eyebrow, lede, image, side = 'left', align = 'end', phoneBand = 2
   .phero--right .phero__copy { grid-column: 8 / 13; }
   .phero--center .phero__copy { align-self: center; padding-bottom: 0; }
   .phero__eyebrow { margin-bottom: 20px; }
-  .phero__title { font-size: var(--t-hero); line-height: var(--lh-title); letter-spacing: var(--track-display); }
+  .phero__title { font-size: var(--t-hero-mid); line-height: var(--lh-title); letter-spacing: var(--track-display); }
   .phero__lede { margin-top: 24px; max-width: 29em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
   .phero__act { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 16px 22px; align-items: center; }
-  @media (max-width: 1023px) {
-    .phero__copy { grid-column: 1 / 8; }
-    .phero--right .phero__copy { grid-column: 6 / 13; }
+  @media (min-width: 1200px) {
+    .phero__copy { max-width: var(--hero-copy-max, none); }
+  }
+  /* The shared mid-width scale also sets PageHead, through the token. */
+  @media (min-width: 768px) and (max-width: 1199px) {
+    .phero, .phero--bar { display: block; height: auto; min-height: 0; padding: 0; background: none; }
+    .phero .phero__copy { padding: 48px var(--gutter); }
+    .phero__lede { max-width: 36em; }
+    .phero__pic { position: relative; inset: auto; height: clamp(300px, 40vw, 440px); }
   }
   /* Phones: the copy first, the picture as a band after it. */
   @media (max-width: 767px) {

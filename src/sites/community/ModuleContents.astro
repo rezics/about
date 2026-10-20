@@ -14,6 +14,7 @@ const { label, items } = Astro.props;
   </div>
 </nav>
 <style>
+  :global(body:is([data-site='community'], [data-site='create'], [data-site='trust']) main h2[id]) { scroll-margin-top: 160px; }
   .module-contents { padding-top: 48px; }
   .module-contents__label { grid-column: 1 / 4; padding-top: 10px; }
   ul { grid-column: 4 / 13; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0; padding: 0 0 28px; list-style: none; border-bottom: 1px solid var(--c-line); }

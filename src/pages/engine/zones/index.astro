@@ -10,12 +10,11 @@ import Statement from '../../../kit/components/Statement.astro';
 import FactList from '../../../kit/components/FactList.astro';
 import Closing from '../../../kit/components/Closing.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
-import ModuleRing from '../../../sites/engine/ModuleRing.astro';
+import ModuleRing from '../../../kit/components/ModuleRing.astro';
 import Routes from '../../../sites/zones/Routes.astro';
 import { moduleById } from '../../../kit/content';
 import { splitStatement } from '../../../sites/engine/family';
 import site from '../../../content/sites/zones';
-import '../../../sites/engine/hero.css';
 
 const s = site.strings;
 const statement = splitStatement(moduleById('zones').statement);
@@ -23,7 +22,7 @@ const statement = splitStatement(moduleById('zones').statement);
 <MiniSiteLayout>
   <PhotoHero
     bar
-    class="modules-hero"
+    copyMax="28vw"
     eyebrow={s.hero.eyebrow}
     title={s.hero.headline}
     lede={s.hero.lede}

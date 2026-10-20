@@ -6,7 +6,6 @@
  */
 import PageHead from '../../kit/components/PageHead.astro';
 import Picture from '../../kit/components/Picture.astro';
-import NavFocus from './NavFocus.astro';
 import type { sectionPicture } from './pictures';
 
 interface Props {
@@ -17,7 +16,6 @@ interface Props {
 }
 const { label, title, lede, image } = Astro.props;
 ---
-<NavFocus />
 <PageHead label={label} title={title} lede={lede} />
 {image && (
   <div class="grid g-open">

@@ -26,6 +26,7 @@ const field = fieldOf(site.theme);
 const kind = site.theme && 'kind' in site.theme ? site.theme.kind : undefined;
 ---
 <BaseLayout title={page.meta.title} description={page.meta.description} field={field} siteId={site.id} kind={kind}>
+  <slot name="head" slot="head" />
   {bar && <SiteBar slot="bar" site={site} page={page} />}
   <slot />
 </BaseLayout>

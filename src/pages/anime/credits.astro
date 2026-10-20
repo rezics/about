@@ -8,7 +8,7 @@ import FactList from '../../kit/components/FactList.astro';
 import PhotoRow from '../../kit/components/PhotoRow.astro';
 import Closing from '../../kit/components/Closing.astro';
 import Onward from '../../sites/anime/Onward.astro';
-import PhotoPreload from '../../sites/anime/PhotoPreload.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import site from '../../content/sites/anime';
 import { sectionPhoto } from '../../sites/anime/pictures';
 import { kindTile, pageTile } from '../../sites/anime/tiles';
@@ -19,10 +19,10 @@ const photo = sectionPhoto(s.voice.photo);
 const voicePhoto = { ...photo, phone: { src: photo.src, widths: [640], width: 640, height: 427 } };
 ---
 <MiniSiteLayout>
-  <PhotoPreload image={voicePhoto} />
+  <PhotoPreload slot="head" image={voicePhoto} />
   <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
 
-  <PhotoRow side="left" eyebrow={s.voice.eyebrow} title={s.voice.headline} body={s.voice.body} image={voicePhoto} />
+  <PhotoRow priority side="left" eyebrow={s.voice.eyebrow} title={s.voice.headline} body={s.voice.body} image={voicePhoto} />
 
   <Section eyebrow={s.record.eyebrow} title={s.record.headline}>
     <FactList items={s.record.rows} />

@@ -8,18 +8,18 @@
  *
  *   current  the module this page is about
  */
-import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
-import Arrow from '../../kit/components/Arrow.astro';
-import { modules, moduleHref } from '../../kit/content';
-import { moduleFields } from '../../kit/theme';
+import TileMasonry, { type MasonryItem } from './TileMasonry.astro';
+import Arrow from './Arrow.astro';
+import { modules, moduleHref } from '../content';
+import { moduleFields } from '../theme';
 import type { ModuleId } from '../../content/schema';
-import engine from '../../content/sites/engine';
+import { moduleRing } from '../../content/modules';
 
 interface Props {
   current: ModuleId;
 }
 const { current } = Astro.props;
-const ring = engine.strings.family.ring;
+const ring = moduleRing;
 const items: MasonryItem[] = modules.map((m) => ({
   id: m.id,
   name: m.name,
@@ -47,7 +47,9 @@ const phone = [items.slice(0, 2), items.slice(2, 4), items.slice(4)].map((row) =
   .ring__tiles { grid-column: 1 / 13; margin-top: 28px; min-width: 0; }
   .ring__back { grid-column: 1 / 13; margin-top: 28px; }
   .ring :global(.tile__rel) { font-size: 13px; }
+  @media (max-width: 359px) { .ring :global(.tile) { --tile-name: 20px; } }
   @media (max-width: 767px) {
     .ring__tiles { margin-top: 16px; }
+    .ring :global(.tile__top) { position: static; margin-bottom: 12px; }
   }
 </style>

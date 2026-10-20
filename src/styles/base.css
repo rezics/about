@@ -50,6 +50,10 @@
    class `phrase`; scripts/phrase.mjs); overflow-wrap is the safety net. */
 h1, h2, h3, h4, .serif, .phrase, .t-title, .t-h2, .t-h3, .t-big, .t-statement, .t-mega, .t-xl, .t-l, .t-m, .lede, .lead { word-break: keep-all; overflow-wrap: anywhere; }
 p, dd, li, .lede { text-wrap: pretty; }
+/* Chromium's optimized line breaker can terminate the renderer when CJK text has explicit
+   phrase breaks (also with script off). Those elements already have editorial break points;
+   use the ordinary line breaker there. Unprocessed running text keeps pretty wrapping. */
+:is(h1, h2, h3, h4, p, dd, li):has(wbr) { text-wrap: wrap; }
 /* Phones: running text breaks between any characters again. */
 @media (max-width: 767px) {
   .lede, .lead { word-break: normal; }
@@ -188,9 +192,7 @@ pre code { white-space: inherit; font: inherit; }
    only. */
 .link-draw {
   position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2em;
+  display: inline-block;
   min-height: 24px;
   padding-bottom: 2px;
   border-bottom: 1px solid currentColor;
@@ -212,12 +214,31 @@ pre code { white-space: inherit; font: inherit; }
   transition: scale var(--d-m) var(--ease-snap);
   pointer-events: none;
 }
+/* A standalone action without an explicit Arrow gets the same directional response. Normal
+   inline formatting keeps the build's no-break tail inside the word, without flex gaps. */
+.link-draw:not(:has(.arrow))::before {
+  content: '';
+  position: absolute;
+  right: -19px;
+  top: calc(50% - 4px);
+  width: 7px;
+  height: 7px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  rotate: 45deg;
+  translate: -5px 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: translate var(--d-m) var(--ease-snap), opacity var(--d-s) var(--ease-soft);
+}
 @media (hover: hover) {
   .link-draw:hover { color: var(--link-on, var(--c-link)); }
   .link-draw:hover::after { scale: 1.08 1; }
+  .link-draw:hover::before { translate: 0 0; opacity: 1; }
 }
 .link-draw:focus-visible, .link-draw[aria-current='page'] { color: var(--link-on, var(--c-link)); }
 .link-draw:focus-visible::after { scale: 1.08 1; }
+.link-draw:focus-visible::before { translate: 0 0; opacity: 1; }
 .link-draw:active { translate: 0 1px; }
 .link-inline {
   color: var(--link-on, var(--c-link));
@@ -228,6 +249,7 @@ pre code { white-space: inherit; font: inherit; }
 }
 @media (hover: hover) { .link-inline:hover { text-decoration-thickness: 2px; } }
 .link-inline:focus-visible { text-decoration-thickness: 2px; }
+.link-inline:active { text-underline-offset: 0.12em; }
 .link-utility { color: var(--c-fg); transition: color var(--d-s); }
 @media (hover: hover) { .link-utility:hover { color: var(--c-link); } }
 .link-utility:focus-visible { color: var(--c-link); }

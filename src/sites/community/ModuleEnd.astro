@@ -6,7 +6,7 @@
  */
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
-import ModuleRing from './ModuleRing.astro';
+import ModuleRing from '../../kit/components/ModuleRing.astro';
 import { moduleById } from '../../kit/content';
 import type { ModuleId } from '../../content/schema';
 import type { ModuleFamilyStrings } from '../../content/sites/community';
@@ -20,5 +20,5 @@ const statement = moduleById(current).statement;
 const cut = statement.indexOf('，') + 1;
 ---
 <Statement text={statement.slice(0, cut)} sub={statement.slice(cut)} />
-<ModuleRing current={current} ring={family.ring} />
+<ModuleRing current={current} />
 <Closing title={family.closing} />

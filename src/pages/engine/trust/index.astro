@@ -3,7 +3,6 @@
 // marks, imports, decisions, the numbers in the policies, who sees what, privacy, then the module
 // family's closing.
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
-import '../../../sites/community/module-hero.css';
 import PhotoHero from '../../../kit/components/PhotoHero.astro';
 import Section from '../../../kit/components/Section.astro';
 import FactList from '../../../kit/components/FactList.astro';
@@ -20,7 +19,6 @@ const s = site.strings;
 ---
 <MiniSiteLayout>
   <PhotoHero
-    class="module-hero"
     bar
     eyebrow={shared.nav.engine}
     title={s.hero.headline}

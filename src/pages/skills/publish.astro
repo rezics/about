@@ -7,6 +7,7 @@ import PageHead from '../../kit/components/PageHead.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import PhotoRow from '../../kit/components/PhotoRow.astro';
 import Closing from '../../kit/components/Closing.astro';
 import NextPage from '../../sites/skills/NextPage.astro';
@@ -22,10 +23,10 @@ const apis = kindById('apis');
 const nextSite = { id: 'apis', name: apis.name, line: s.end.nextLine, href: kindHref('apis'), bg: kindFields.apis.field, on: kindFields.apis.on };
 ---
 <MiniSiteLayout>
-  <link rel="preload" as="image" href={`${importImage.phone.src}-640.avif`} type="image/avif" media="(max-width: 767px)" fetchpriority="high" />
+  <PhotoPreload slot="head" media="phone" image={importImage} />
   <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
 
-  <PhotoRow side="left" eyebrow={s.import.eyebrow} title={s.import.headline.join('')} body={s.import.body} image={importImage} />
+  <PhotoRow priority side="left" eyebrow={s.import.eyebrow} title={s.import.headline.join('')} body={s.import.body} image={importImage} />
 
   <Section eyebrow={s.steps.eyebrow} title={s.steps.headline}>
     <FactList items={s.steps.rows} numbered />

@@ -193,3 +193,5 @@ export const modules: Module[] = [
     usedBy: ['visual-novels', 'mcp', 'skills', 'apis'],
   },
 ];
+/** Shared labels for the five-module navigation at the end of every module page. */
+export const moduleRing = { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' };

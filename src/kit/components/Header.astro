@@ -79,6 +79,10 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
     padding-inline: var(--gutter);
   }
   .header__end { display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+  .header__logo :global(a) { transition: translate var(--d-m) var(--ease-snap); }
+  @media (hover: hover) { .header__logo :global(a:hover) { translate: 0 -2px; } }
+  .header__logo :global(a:focus-visible) { translate: 0 -2px; }
+  .header__logo :global(a:active) { translate: 0 1px; }
   /* Tabs: plain text, 14 px 500, 36 px apart; the current section is underlined, hover and an
      open panel take the link accent. */
   .header__tabs ul { display: flex; gap: 36px; }

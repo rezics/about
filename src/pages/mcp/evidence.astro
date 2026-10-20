@@ -13,7 +13,6 @@ import Specimen from '../../sites/mcp/Specimen.astro';
 import StateList from '../../sites/mcp/StateList.astro';
 import TwoLists from '../../sites/mcp/TwoLists.astro';
 import Words from '../../sites/mcp/Words.astro';
-import EagerPhoto from '../../sites/mcp/EagerPhoto.astro';
 import site from '../../content/sites/mcp';
 import { nextPages } from '../../sites/mcp/tiles';
 
@@ -24,12 +23,12 @@ const e = s.evidence;
   <Words>
     <PageHead label={site.name} title={e.hero.headline} lede={e.hero.lede} />
 
-    <EagerPhoto><PhotoRow
+    <PhotoRow priority
       side="left"
       eyebrow={e.specimen.label}
       title={e.specimen.headline}
       image={{ src: '/images/sites/mcp/records', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.records, phone: { src: '/images/sites/mcp/records', widths: [640], width: 640, height: 427 } }}
-    /></EagerPhoto>
+    />
     <div class="grid mcp-follow">
       <div class="mcp-follow__list">
         <Specimen label={e.specimen.label} fields={e.specimen.fields} caption={e.specimen.caption} />

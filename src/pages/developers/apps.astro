@@ -3,6 +3,7 @@
 // detail, the authorization request, what consent shows, revoking, the other pages.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PageHead from '../../kit/components/PageHead.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import PhotoRow from '../../kit/components/PhotoRow.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
@@ -18,19 +19,10 @@ const s = site.strings.apps;
 const image = picture('apps');
 ---
 <MiniSiteLayout>
-  <link
-    rel="preload"
-    as="image"
-    type="image/avif"
-    media="(max-width: 767px)"
-    href={`${image.phone.src}-640.avif`}
-    imagesrcset={image.phone.widths.map((width) => `${image.phone.src}-${width}.avif ${width}w`).join(', ')}
-    imagesizes="100vw"
-    fetchpriority="high"
-  />
+  <PhotoPreload slot="head" media="phone" image={image} />
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <PhotoRow side="left" eyebrow={s.layers.label} title={s.layers.headline} body={s.layers.body} image={image} />
+  <PhotoRow priority side="left" eyebrow={s.layers.label} title={s.layers.headline} body={s.layers.body} image={image} />
 
   <Section eyebrow={s.each.label} title={s.each.headline}>
     <FactList items={s.each.rows} numbered />

@@ -4,6 +4,7 @@
 // marker, and the phone sheet's fallback for browsers without invoker commands.
 import { gsap } from 'gsap';
 import { dur, ease, isTouch, onPage, onScroll, prefersReducedMotion } from '../../engine';
+import { wireSiteBar } from './sitebar';
 
 const OPEN_DELAY = 100;
 const CLOSE_DELAY = 280;
@@ -200,15 +201,6 @@ function wireMarker() {
   };
 }
 
-// Site bar on phones: its tabs scroll sideways; bring the current one into view.
-function wireSiteBar() {
-  const tabs = document.querySelector<HTMLElement>('[data-sitebar] .sitebar__tabs');
-  const current = tabs?.querySelector<HTMLElement>('[aria-current="page"]');
-  if (!tabs || !current || tabs.scrollWidth <= tabs.clientWidth) return;
-  const item = current.parentElement ?? current;
-  tabs.scrollLeft = Math.max(0, item.offsetLeft - (tabs.clientWidth - item.offsetWidth) / 2);
-}
-
 // Phone sheet: native <dialog> opened by invoker commands; a fallback for older browsers, and a
 // scroll lock while it is open.
 function wireMenu() {
@@ -251,11 +243,12 @@ export function startNavigation() {
     const a = wirePanels();
     const b = wireMarker();
     const c = wireMenu();
-    wireSiteBar();
+    const d = wireSiteBar();
     return () => {
       a();
       b();
       c();
+      d();
     };
   });
 }

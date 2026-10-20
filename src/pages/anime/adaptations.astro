@@ -11,7 +11,7 @@ import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace 
 import Statement from '../../kit/components/Statement.astro';
 import Closing from '../../kit/components/Closing.astro';
 import Onward from '../../sites/anime/Onward.astro';
-import PhotoPreload from '../../sites/anime/PhotoPreload.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/anime';
 import { sectionPhoto } from '../../sites/anime/pictures';
@@ -45,10 +45,10 @@ const familyPhone: MasonryRowPlace[][] = [
 ];
 ---
 <MiniSiteLayout>
-  <PhotoPreload image={examplePhoto} />
+  <PhotoPreload slot="head" media="desktop" image={examplePhoto} />
   <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
 
-  <PhotoRow side="right" eyebrow={s.example.eyebrow} title={s.example.headline} body={s.example.body} image={examplePhoto} />
+  <PhotoRow priority side="right" eyebrow={s.example.eyebrow} title={s.example.headline} body={s.example.body} image={examplePhoto} />
 
   <Section eyebrow={s.family.eyebrow} title={s.family.headline} lead={s.family.lead}>
     <Fragment slot="wide">

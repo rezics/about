@@ -1,15 +1,11 @@
 // The modules overview (/engine/), designed by modules agent A (src/sites/engine/SITE.md, "v3").
-// `family` holds the strings of the closing every module page shares (the ring of the five
-// modules). The kind picker reads each kind's eight parts and notes from kinds.ts.
+// The kind picker reads each kind's eight parts and notes from kinds.ts. Shared module-ring
+// labels live in modules.ts.
 // Placeholders in braces are filled at build time.
 import type { MiniSite, ModuleId, PartId } from '../schema';
 import { site as shared } from '../site';
 
 export interface EngineStrings {
-  family: {
-    /** The ring of the five modules that closes every module page. */
-    ring: { label: string; current: string; overview: string };
-  };
   hero: { headline: string; lede: string; alt: string };
   picker: {
     label: string;
@@ -46,9 +42,6 @@ export default {
     },
   ],
   strings: {
-    family: {
-      ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
-    },
     hero: {
       headline: '九種東西，同一套部件。',
       lede: '書、動畫、遊戲、軟體，連 MCP 伺服器也一樣：每一種都從十五個共用部件裡取八個組成。',

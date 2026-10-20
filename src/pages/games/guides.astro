@@ -1,7 +1,10 @@
 ---
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
+import { sectionPicture } from '../../sites/games/pictures';
 import Guides from '../../sites/games/Guides.astro';
 ---
 <MiniSiteLayout>
+  <PhotoPreload slot="head" media="phone" image={sectionPicture('guides')} />
   <Guides />
 </MiniSiteLayout>

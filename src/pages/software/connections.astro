@@ -11,7 +11,7 @@ import TileMasonry from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
 import Body from '../../sites/software/Body.astro';
 import Next from '../../sites/software/Next.astro';
-import PhonePhotoPreload from '../../sites/software/PhonePhotoPreload.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import site from '../../content/sites/software';
 import { kindById } from '../../kit/content';
 import { kindTile, sectionPicture } from '../../sites/software/site';
@@ -26,10 +26,10 @@ const nextKind = site.next as 'visual-novels';
 const next = [kindTile(nextKind)];
 ---
 <MiniSiteLayout>
-  <PhonePhotoPreload image={sectionPicture(pictures.tabs)} />
+  <PhotoPreload slot="head" media="phone" image={sectionPicture(pictures.tabs)} />
   <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
 
-  <PhotoRow side="left" eyebrow={s.relations.label} title={s.relations.headline} body={s.relations.lead} image={sectionPicture(pictures.tabs)} />
+  <PhotoRow priority side="left" eyebrow={s.relations.label} title={s.relations.headline} body={s.relations.lead} image={sectionPicture(pictures.tabs)} />
   <Body>
     <FactList items={s.relations.rows} />
   </Body>

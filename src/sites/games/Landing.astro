@@ -14,7 +14,6 @@ import { pageHref } from '../../kit/sites';
 import site from '../../content/sites/games';
 import { heroPicture, sectionPicture } from './pictures';
 import { blue, kindTile } from './tiles';
-import NavFocus from './NavFocus.astro';
 import './games.css';
 
 const s = site.strings.landing;
@@ -62,8 +61,7 @@ const kindColumns: MasonryPlace[][] = [
 ];
 const kindPhone: MasonryRowPlace[][] = [[{ id: 'visual-novels' }], [{ id: 'books' }, { id: 'anime' }], [{ id: 'manga' }, { id: 'software' }]];
 ---
-<NavFocus />
-<PhotoHero class="g-hero" eyebrow={site.name} title={s.hero.headline} lede={s.hero.lede} image={heroPicture} bar>
+<PhotoHero class="g-hero" copyMax="min(470px, calc(36vw - var(--gutter)))" eyebrow={site.name} title={s.hero.headline} lede={s.hero.lede} image={heroPicture} bar>
   <ProductCall />
 </PhotoHero>
 

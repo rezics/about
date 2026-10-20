@@ -10,24 +10,11 @@
  * Make the files with `.temp/images-v3/encode.mjs` (V3-SPEC sizes: a hero at 1920 and 960 wide,
  * ≤ 180 KB and ≤ 70 KB; a section picture at 1200 and 640 wide, ≤ 110 KB and ≤ 45 KB).
  */
-interface Crop {
-  src: string;
-  widths: number[];
-  width: number;
-  height: number;
-  /** object-position on phones. */
-  position?: string;
-}
-interface Props {
-  src: string;
-  widths: number[];
-  alt: string;
-  width: number;
-  height: number;
+import { pictureSrcSet, PHONE_PICTURE, type PictureImage } from '../pictures';
+
+interface Props extends PictureImage {
   /** The rendered width, for the browser's choice of file. */
   sizes?: string;
-  /** A different crop for phones (below 768 px). */
-  phone?: Crop;
   /** Fill the parent and crop (object-fit: cover) instead of keeping the ratio. */
   cover?: boolean;
   position?: string;
@@ -36,17 +23,16 @@ interface Props {
   class?: string;
 }
 const { src, widths, alt, width, height, sizes = '100vw', phone, cover = false, position, priority = false, class: className } = Astro.props;
-const set = (base: string, list: number[], ext: string) => [...list].sort((a, b) => a - b).map((w) => `${base}-${w}.${ext} ${w}w`).join(', ');
+const image = { src, widths };
 const sorted = [...widths].sort((a, b) => a - b);
 const fallback = `${src}-${sorted[Math.min(1, sorted.length - 1)]}.webp`;
-const PHONE = '(max-width: 767px)';
 const style = [position && `--pos:${position}`, phone?.position && `--pos-phone:${phone.position}`].filter(Boolean).join(';');
 ---
 <picture class:list={['pic', cover && 'pic--cover', className]} style={style || undefined}>
-  {phone && <source media={PHONE} type="image/avif" srcset={set(phone.src, phone.widths, 'avif')} sizes="100vw" width={phone.width} height={phone.height} />}
-  {phone && <source media={PHONE} type="image/webp" srcset={set(phone.src, phone.widths, 'webp')} sizes="100vw" width={phone.width} height={phone.height} />}
-  <source type="image/avif" srcset={set(src, widths, 'avif')} sizes={sizes} />
-  <source type="image/webp" srcset={set(src, widths, 'webp')} sizes={sizes} />
+  {phone && <source media={PHONE_PICTURE} type="image/avif" srcset={pictureSrcSet(phone, 'avif')} sizes="100vw" width={phone.width} height={phone.height} />}
+  {phone && <source media={PHONE_PICTURE} type="image/webp" srcset={pictureSrcSet(phone, 'webp')} sizes="100vw" width={phone.width} height={phone.height} />}
+  <source type="image/avif" srcset={pictureSrcSet(image, 'avif')} sizes={sizes} />
+  <source type="image/webp" srcset={pictureSrcSet(image, 'webp')} sizes={sizes} />
   <img
     src={fallback}
     alt={alt}

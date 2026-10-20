@@ -13,7 +13,6 @@ export interface ModuleSection {
 
 /** The module family's strings: the ring of the five modules and the page's closing line. */
 export interface ModuleFamilyStrings {
-  ring: { label: string; current: string; overview: string };
   closing: string;
 }
 
@@ -164,7 +163,6 @@ const strings: CommunityStrings = {
     lead: '每個 Realm 有自己的經驗值與等級，來源是被採納、真正幫上忙的評論、修正、翻譯、管理與創作。等級不能花用，不能轉讓，也不代表管理權；用多個帳號灌水換等級，違反使用規範。',
   },
   family: {
-    ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
     closing: '想自己決定每一頁，就替社群架一個站點。',
   },
 };

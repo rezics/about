@@ -141,7 +141,6 @@ const strings: TrustStrings = {
     ],
   },
   family: {
-    ring: { label: '五個模組', current: '你在這裡', overview: '回到模組總覽' },
     closing: '每一筆都寫明出處，你可以自己去查。',
   },
 };

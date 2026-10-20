@@ -3,8 +3,9 @@
  * A mini-site's bar under the global header (v3): a quiet row on paper between hairlines. The
  * site's name in the serif after a small square in its accent, its page tabs with the current
  * page underlined in the accent, and the site's own action when it sets one (`MiniSite.action`); 「前往 REZICS」 lives
- * once, in the global header. On phones the tabs scroll sideways with faded edges and the current
- * tab is scrolled into view. Sticky; when the header steps aside on scroll it moves up.
+ * once, in the global header. Overflowing tabs scroll sideways, centre the current page and
+ * show complete neighbouring labels between two edge cues. Sticky; when the header steps
+ * aside on scroll it moves up.
  */
 import type { MiniSite, MiniSitePage } from '../../content/schema';
 import { pageHref } from '../sites';
@@ -25,13 +26,15 @@ const action = site.action && site.action.href !== shared.productUrl && site.act
       <span class="sitebar__name serif">{site.name}</span>
     </a>
     {site.pages.length > 1 && (
-      <ul class="sitebar__tabs" role="list">
-        {site.pages.map((p) => (
-          <li>
-            <a class="sitebar__tab" href={pageHref(site, p)} aria-current={p.slug === page.slug ? 'page' : undefined}>{p.label}</a>
-          </li>
-        ))}
-      </ul>
+      <div class="sitebar__strip">
+        <ul class="sitebar__tabs" role="list">
+          {site.pages.map((p) => (
+            <li>
+              <a class="sitebar__tab" href={pageHref(site, p)} aria-current={p.slug === page.slug ? 'page' : undefined}><span class="sitebar__label">{p.label}</span></a>
+            </li>
+          ))}
+        </ul>
+      </div>
     )}
     {action && (
       <a class="btn btn--small sitebar__action" href={action.href}>
@@ -53,16 +56,45 @@ const action = site.action && site.action.href !== shared.productUrl && site.act
   }
   :global(html.frame-away) .sitebar { translate: 0 calc(-1 * var(--header-h)); }
   .sitebar__inner { height: var(--bar-h); display: flex; align-items: center; gap: 28px; padding-inline: var(--gutter); }
-  .sitebar__home { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; flex: none; }
+  .sitebar__home { position: relative; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; flex: none; }
   /* The site's accent as a small flat square: the sub-navigation's marker. */
   .sitebar__dot { width: 10px; height: 10px; background: var(--field); flex: none; }
   .sitebar__name { font-size: 16px; white-space: nowrap; }
-  .sitebar__tabs { display: flex; gap: 24px; overflow-x: auto; scrollbar-width: none; flex: 1 1 auto; min-width: 0; padding-right: 16px; mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent); }
+  .sitebar__name, .sitebar__label { display: inline-block; transition: translate var(--d-s) var(--ease-snap); }
+  .sitebar__strip { position: relative; flex: 1 1 auto; min-width: 0; }
+  .sitebar__tabs { position: relative; display: flex; gap: 24px; overflow-x: auto; scrollbar-width: none; min-width: 0; padding-inline: 16px; overscroll-behavior-inline: contain; }
+  .sitebar__tabs > li { flex: none; }
+  .sitebar__tabs > li[data-clipped] { opacity: 0; pointer-events: none; }
   .sitebar__tab { position: relative; display: inline-flex; align-items: center; min-height: var(--bar-h); font-size: 14px; font-weight: 500; white-space: nowrap; color: var(--c-muted); transition: color var(--d-s) var(--ease-soft); }
+  .sitebar__strip::before, .sitebar__strip::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: calc(50% - 3px);
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid var(--c-muted);
+    border-right: 1px solid var(--c-muted);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .sitebar__strip::before { left: 3px; rotate: -135deg; }
+  .sitebar__strip::after { right: 3px; rotate: 45deg; }
+  .sitebar__strip[data-before]::before, .sitebar__strip[data-after]::after { opacity: 1; }
   /* The current page: ink, with a bar in the site's accent along the bar's foot. */
   .sitebar__tab[aria-current='page'] { color: var(--c-fg); }
   .sitebar__tab[aria-current='page']::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--field); }
-  @media (hover: hover) { .sitebar__tab:hover, .sitebar__home:hover .sitebar__name { color: var(--c-link); } }
+  .sitebar__tab::before, .sitebar__home::after { content: ''; position: absolute; inset: auto 0 10px; height: 1px; background: currentColor; scale: 0 1; transform-origin: left; transition: scale var(--d-m) var(--ease-snap); pointer-events: none; }
+  .sitebar__home::after { left: 20px; bottom: 5px; }
+  @media (hover: hover) {
+    .sitebar__tab:hover, .sitebar__home:hover { color: var(--c-link); }
+    .sitebar__tab:hover::before, .sitebar__home:hover::after { scale: 1 1; }
+    .sitebar__tab:hover .sitebar__label, .sitebar__home:hover .sitebar__name { translate: 0 -2px; }
+  }
+  .sitebar__tab:focus-visible::before, .sitebar__home:focus-visible::after { scale: 1 1; }
+  .sitebar__tab:focus-visible .sitebar__label, .sitebar__home:focus-visible .sitebar__name { translate: 0 -2px; }
+  .sitebar__tab:active .sitebar__label, .sitebar__home:active .sitebar__name { translate: 0 1px; }
   .sitebar__action { margin-left: auto; flex: none; }
   @media (max-width: 599px) { .sitebar__action { display: none; } .sitebar__inner { gap: 20px; } }
+  @media (prefers-reduced-motion: reduce) { .sitebar__name, .sitebar__label { translate: none !important; } }
 </style>

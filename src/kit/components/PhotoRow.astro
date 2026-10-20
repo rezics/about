@@ -12,24 +12,21 @@
 import Picture from './Picture.astro';
 import Clauses from '../Clauses.astro';
 import { idFor } from '../ids';
+import { PHOTO_ROW_SIZES, type PictureImage } from '../pictures';
 
-interface Crop {
-  src: string;
-  widths: number[];
-  width: number;
-  height: number;
-}
 interface Props {
-  image: { src: string; widths: number[]; alt: string; width: number; height: number; phone?: Crop };
+  image: PictureImage;
   title: string;
   eyebrow?: string;
   body?: string | string[];
   link?: { href: string; text: string };
   side?: 'left' | 'right';
+  /** Load the first visible photograph eagerly at high priority. Later rows stay lazy. */
+  priority?: boolean;
   id?: string;
   class?: string;
 }
-const { image, title, eyebrow, body, link, side = 'right', id: given, class: className } = Astro.props;
+const { image, title, eyebrow, body, link, side = 'right', priority = false, id: given, class: className } = Astro.props;
 const paragraphs = body === undefined ? [] : Array.isArray(body) ? body : [body];
 const id = given ?? idFor('photo', title);
 ---
@@ -42,7 +39,7 @@ const id = given ?? idFor('photo', title);
       {link && <p class="prow__link"><a class="link-draw" href={link.href}>{link.text}</a></p>}
     </div>
     <div class="prow__pic" data-reveal="image">
-      <Picture src={image.src} widths={image.widths} alt={image.alt} width={image.width} height={image.height} phone={image.phone} sizes="(max-width: 767px) 100vw, 58vw" />
+      <Picture {...image} sizes={PHOTO_ROW_SIZES} priority={priority} />
     </div>
   </div>
 </section>

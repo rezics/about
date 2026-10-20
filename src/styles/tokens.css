@@ -86,6 +86,7 @@
   /* Type scale (V3-SPEC "Tokens"): h1 30 → 56 px at 1.32, h2 26 → 42 px at 1.45, statements
      26 → 56 px at 1.5 (serif 500, second half muted), body 16 → 17 px at 1.9, eyebrows 13 px. */
   --t-hero: clamp(1.875rem, 1.2rem + 2.9vw, 3.5rem);
+  --t-hero-mid: var(--t-hero);
   --t-title: var(--t-hero);
   --t-h2: clamp(1.625rem, 1.1rem + 1.9vw, 2.625rem);
   --t-statement: clamp(1.625rem, 3.6vw, 3.5rem);
@@ -159,6 +160,10 @@
   --z-header: 50;
   --z-panel: 60;
   --z-curtain: 90;
+}
+
+@media (min-width: 768px) and (max-width: 1399px) {
+  :root { --t-hero-mid: clamp(36px, 4vw, 52px); }
 }
 
 @media (max-width: 767px) {

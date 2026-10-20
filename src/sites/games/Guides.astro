@@ -20,12 +20,9 @@ const chain: MasonryItem[] = s.adaptations.chain.map((c, i) => ({ id: `a${i}`, n
 const columns = chain.map((c) => [{ id: c.id, h: 1 }]);
 const phone: MasonryRowPlace[][] = [[{ id: 'a0' }, { id: 'a1' }], [{ id: 'a2' }, { id: 'a3' }], [{ id: 'a4' }]];
 ---
-{/* PhotoRow does not expose Picture.priority. This body-allowed preload starts the
-    phone's first visible photograph before lazy-image discovery after font layout. */}
-<link rel="preload" as="image" type="image/avif" href={`${fogPicture.phone.src}-640.avif`} media="(max-width: 767px)" fetchpriority="high" />
 <Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} />
 
-<PhotoRow side="left" eyebrow={s.fog.label} title={s.fog.headline} body={s.fog.lead} image={fogPicture} />
+<PhotoRow priority side="left" eyebrow={s.fog.label} title={s.fog.headline} body={s.fog.lead} image={fogPicture} />
 
 <Section eyebrow={s.guides.label} title={s.guides.headline} lead={[s.guides.lead, s.guides.more]} />
 

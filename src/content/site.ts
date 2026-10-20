@@ -257,7 +257,7 @@ export const site: Site = {
     agents: 'AI 代理',
     source: '原始碼',
     sourceUrl: 'https://github.com/rezics/rezics-next',
-    colophon: '標題以 Noto Serif TC、內文以 Noto Sans TC 與 Manrope 排版。本站不做流量分析，也不載入第三方資源。',
+    colophon: '本站不做流量分析，也不載入第三方資源。',
     copyright: '© 2026 REZICS Inc.',
   },
 };

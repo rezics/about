@@ -9,14 +9,13 @@ import FactList from '../../kit/components/FactList.astro';
 import Closing from '../../kit/components/Closing.astro';
 import ProductCall from '../../kit/components/ProductCall.astro';
 import site from '../../content/sites/roadmap';
-import '../../sites/engine/hero.css';
 
 const s = site.strings;
 ---
 <MiniSiteLayout>
   <PhotoHero
     bar
-    class="modules-hero"
+    copyMax="28vw"
     title={s.hero.headline}
     lede={s.hero.lede}
     image={{

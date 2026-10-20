@@ -26,7 +26,7 @@ const { label, title, lede, class: className } = Astro.props;
 <style>
   .phead { padding-top: clamp(72px, 10vw, 160px); }
   .phead__label { grid-column: 1 / 4; grid-row: 1; padding-top: 20px; align-self: start; }
-  .phead__title { grid-column: 4 / 12; grid-row: 1; font-size: var(--t-hero); line-height: var(--lh-title); }
+  .phead__title { grid-column: 4 / 12; grid-row: 1; font-size: var(--t-hero-mid); line-height: var(--lh-title); }
   .phead__lede { grid-column: 4 / 9; margin-top: 28px; font-size: 17px; max-width: none; }
   .phead__ctas { grid-column: 4 / 13; margin-top: 36px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; }
   @media (max-width: 1023px) { .phead__lede { grid-column: 4 / 12; } }

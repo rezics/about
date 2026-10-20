@@ -11,14 +11,13 @@ import TileMasonry, { type MasonryItem } from '../../../kit/components/TileMason
 import FactList from '../../../kit/components/FactList.astro';
 import Closing from '../../../kit/components/Closing.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
-import ModuleRing from '../../../sites/engine/ModuleRing.astro';
+import ModuleRing from '../../../kit/components/ModuleRing.astro';
 import Names from '../../../sites/universal-index/Names.astro';
 import { moduleById } from '../../../kit/content';
 import { kindFields } from '../../../kit/theme';
 import { accentRamp } from '../../../kit/color';
 import { splitStatement } from '../../../sites/engine/family';
 import site from '../../../content/sites/universal-index';
-import '../../../sites/engine/hero.css';
 
 const s = site.strings;
 const statement = splitStatement(moduleById('universal-index').statement);
@@ -42,7 +41,7 @@ const phone = [[{ id: 'shinyaku' }, { id: 'souyaku' }], [{ id: 'manga' }, { id: 
 <MiniSiteLayout>
   <PhotoHero
     bar
-    class="modules-hero"
+    copyMax="28vw"
     eyebrow={s.hero.eyebrow}
     title={s.hero.headline}
     lede={s.hero.lede}
