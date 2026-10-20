@@ -29,6 +29,17 @@
 [data-site='apis'] .sitebar__tab:focus-visible::before { scale: 1 1; }
 [data-site='apis'] .sitebar__home:active .sitebar__name { translate: 1px 0; }
 
+/* The 1024 px Chromium layout terminates with pretty/balanced wrapping; plain wrapping is stable. */
+@media (min-width: 768px) and (max-width: 1399px) {
+  html[data-site='apis'] :is(h1, h2, h3, h4, p, li, .phrase) { text-wrap: wrap; }
+  html[data-site='apis'] .phero__copy { grid-column: 1 / 8; }
+}
+
+/* Keep short tile names together and avoid a lone opening character on narrow phones. */
+@media (max-width: 359px) {
+  [data-site='apis'] main .tile__name { --tile-name: 20px; text-wrap: balance; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   [data-site='apis'] .sitebar__name,
   [data-site='apis'] .sitebar__tab::before { transition: none; }

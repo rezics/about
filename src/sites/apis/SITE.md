@@ -1,7 +1,7 @@
 # API Hub (`apis`): site design record
 
 Routes: `/apis/` and `/apis/<page>/`. Kind colour `#a9c3dc` with ink text. This record
-follows `.temp/sites/V3-SPEC.md` (the approved v3 language, binding), then `DESIGN.md` and
+follows `.temp/ref/V3-SPEC.md` (the approved v3 language, binding), then `DESIGN.md` and
 the awwwards skill. Copy lives in `src/content/sites/apis.ts`; every claim and its source is
 in `facts.md` beside this file. The brief and research below carry over from stage 1; the
 plan under "v3" replaces the stage 1 concept (the routed request, request lines and status
@@ -239,6 +239,12 @@ fields).
   views 180 px with the medium name size, versions 220 px, and project-list entries 190 px
   with the medium name size. The five short measurement definitions keep label and value
   on one compact row even on phones, rather than each using a full stacked row.
+- At 320 px, tile names use 20 px balanced lines to avoid isolated opening characters.
+  The extended viewport pass also reproduced a Chromium renderer termination at 1024 px.
+  An isolated comparison passed with ordinary wrapping and failed when only inline-block
+  clauses were removed. `apis.css` uses ordinary wrapping from 768 to 1399 px as a scoped
+  workaround and keeps the hero copy across seven columns on those widths, preserving its
+  two-clause composition. Shared typography files remain untouched.
 - The version sequence now demonstrates a fictional weather API changing from no
   authentication to an API key. Every version carries a generic provider document and a
   confirmation date. The lead and caption explicitly mark all those values as 示意;
@@ -248,3 +254,17 @@ fields).
   代理. The shared CTA still reads 前往 REZICS.
 - First-pass evidence and the independent critic are in `.shots/`; the final report in
   `.temp/codex-report.md` records the completed checks and screenshot paths.
+
+### Final verification
+
+`task check` completed with zero diagnostics across 152 files and 195 passing tests;
+`task build` completed. The final seven-route QA measured phone LCP from 1820 to 2072 ms,
+CLS at most 0.001, zero axe violations, no console errors or failed requests, and 60 fps
+scrolling on all seven routes in that run. Every desktop and phone capture was reviewed.
+
+The extended pass covers 25 page/viewport combinations from 320 to 1920 px, including the
+1024 px case that exposed the wrapping issue. No overflow, clipped active tab or tile copy
+collision remains. No-JavaScript content is visible on every page; the phone menu keeps
+focus inside, closes on Escape and returns focus to its opener. A fixed-coordinate hover
+capture also confirms that the API Hub name moves 3 px. Geometry and interaction records,
+full-page captures and the final image sizes are linked from the completion report.
