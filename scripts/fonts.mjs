@@ -40,8 +40,18 @@ export async function source(key) {
   const local = path.join(cache, file);
   if (fs.existsSync(local)) return fs.readFileSync(local);
   fs.mkdirSync(cache, { recursive: true });
-  const response = await fetch(`https://github.com/google/fonts/raw/main/${remote}`);
-  if (!response.ok) throw new Error(`font download failed (${response.status}): ${remote}`);
+  // Large files over a flaky connection: retry before failing the build.
+  let response;
+  for (let attempt = 1; ; attempt++) {
+    try {
+      response = await fetch(`https://github.com/google/fonts/raw/main/${remote}`);
+      if (response.ok) break;
+      throw new Error(`HTTP ${response.status}`);
+    } catch (error) {
+      if (attempt >= 4) throw new Error(`font download failed: ${remote} (${error.message})`);
+      await new Promise((r) => setTimeout(r, 2000 * attempt));
+    }
+  }
   const buffer = Buffer.from(await response.arrayBuffer());
   const temp = `${local}.${process.pid}.part`;
   fs.writeFileSync(temp, buffer);

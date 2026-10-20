@@ -82,11 +82,13 @@ const fg = inkOn(bg, on, grain);
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: 0.04em;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     hyphens: auto;
     transition: translate 0.5s var(--ease-snap);
   }
   :global(html:not(:lang(zh)):not(:lang(ja)):not(:lang(ko))) .tile__name { letter-spacing: 0; }
+  /* Japanese names run long in katakana: they may break between characters inside a tile. */
+  :global(html:lang(ja)) .tile__name { word-break: normal; letter-spacing: 0.02em; }
   .tile--m .tile__name { --t-tile: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); }
   .tile__name--latin { font-family: var(--f-body); letter-spacing: 0.01em; font-weight: 500; }
   .tile__line { margin-top: 8px; max-width: 20em; font-size: 13.5px; line-height: 1.6; transition: translate 0.5s var(--ease-snap); }

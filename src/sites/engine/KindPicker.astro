@@ -83,6 +83,8 @@ const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k
   .pick__radio:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
   .pick__name { font-size: clamp(1.0625rem, 0.85rem + 0.45vw, 1.3125rem); font-weight: 600; line-height: 1.3; letter-spacing: 0.04em; white-space: nowrap; transition: translate 0.5s var(--ease-snap); }
   .pick__name--latin { font-family: var(--f-body); font-weight: 500; letter-spacing: 0.01em; }
+  /* Names are short in Chinese; in other locales they wrap rather than overflow the tile. */
+  :global(:root:not(:lang(zh))) .pick__name { white-space: normal; overflow-wrap: anywhere; letter-spacing: 0; }
   .pick__mark { position: absolute; top: var(--pad); right: var(--pad); width: 16px; height: 16px; opacity: 0; transition: opacity 0.3s var(--ease-snap); }
   .pick__tile:has(.pick__radio:checked) { box-shadow: inset 0 0 0 7px var(--c), inset 0 0 0 9px var(--on); }
   .pick__tile:has(.pick__radio:checked) .pick__mark { opacity: 1; }
