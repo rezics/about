@@ -1,0 +1,28 @@
+---
+/**
+ * The creator statement as a hairline ledger (SITE.md "v3"): each line's label in the serif, the
+ * operation (減, 等於) in a narrow muted column before it, the net line under a stronger rule.
+ * Labels only, no figures: the split is not stated (facts.md "Least certain" 2).
+ */
+interface Props {
+  rows: { label: string; op?: string; total?: boolean }[];
+  label: string;
+}
+const { rows, label } = Astro.props;
+---
+<ol class="ledger" aria-label={label}>
+  {rows.map((r) => (
+    <li class:list={['ledger__row', r.total && 'ledger__row--total']}>
+      <span class="ledger__op">{r.op ?? ''}</span>
+      <span class="ledger__label serif">{r.label}</span>
+    </li>
+  ))}
+</ol>
+<style>
+  .ledger { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--c-line); max-width: 640px; }
+  .ledger__row { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--c-line); }
+  .ledger__row--total { border-top: 1px solid var(--c-fg); margin-top: -1px; }
+  .ledger__op { font-size: 14px; color: var(--c-muted); }
+  .ledger__label { font-size: 19px; font-weight: 600; line-height: 1.5; }
+  @media (max-width: 767px) { .ledger__label { font-size: 17px; } }
+</style>

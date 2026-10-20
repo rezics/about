@@ -1,50 +1,41 @@
 ---
-// /games/store/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, what is on the
-// page before you pay, one purchase in six steps, what you keep as flat tiles, the ink band on
-// privacy, what this store does not do, the next page and the closing block.
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import ItemList from '../../kit/components/ItemList.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import Band from '../../kit/components/Band.astro';
-import ProductCall from '../../kit/components/ProductCall.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+// /games/store/ (SITE.md "v3"): the opening with the slit photograph, eight things shown before
+// paying, six purchase steps as a row of tiles, what you keep (prose), the privacy statement,
+// what the store does not do, the closing.
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
-import { accentRamp } from '../../kit/color';
 import site from '../../content/sites/games';
+import Opening from './Opening.astro';
+import { sectionPicture } from './pictures';
+import { sequence } from './tiles';
 import './games.css';
 
 const s = site.strings.store;
-const accent = kindFields.games.field;
-const page = site.pages.find((p) => p.slug === 'store')!;
-const ramp = accentRamp(accent);
-const keep = s.keep.squares.map((q, i) => ({ name: q.title, line: q.body, ...ramp[[0, 2, 4][i] ?? 0]! }));
+const pad = (n: number) => String(n).padStart(2, '0');
+// The six steps from light to deep: a purchase that settles in.
+const steps: MasonryItem[] = s.purchase.steps.map((t, i) => ({ id: `step-${i + 1}`, rel: pad(i + 1), name: t.title, line: t.body, ...sequence[i]! }));
+const columns = steps.map((t) => [{ id: t.id, h: 1 }]);
+const phone = [0, 2, 4].map((i) => [{ id: steps[i]!.id }, { id: steps[i + 1]!.id }]);
 ---
-<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
-  <ProductCall />
-  <a class="link-draw" href="#purchase">{s.hero.secondary}</a>
-</PageHead>
+<Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} image={sectionPicture('store')} />
 
-<Sec label="01" title={s.checkout.headline}>
-  <p class="text">{s.checkout.caption}</p>
-  <ItemGrid slot="wide" items={s.checkout.cells} cols={4} />
-</Sec>
+<Section eyebrow={s.checkout.label} title={s.checkout.headline} lead={s.checkout.lead}>
+  <FactList items={s.checkout.items} />
+</Section>
 
-<Sec id="purchase" label="02" title={s.purchase.headline}>
-  <p class="text">{s.purchase.lede}</p>
-  <ItemGrid slot="wide" items={s.purchase.steps} cols={3} numbered />
-</Sec>
+<Section eyebrow={s.purchase.label} title={s.purchase.headline} lead={s.purchase.lead}>
+  <TileMasonry slot="wide" items={steps} columns={columns} phone={phone} height={300} phoneRow={150} label={s.purchase.headline} />
+</Section>
 
-<Sec label="03" title={s.keep.headline}>
-  <p class="text">{s.keep.body}</p>
-  <TileRow slot="wide" items={keep} cols={3} height={200} label={s.keep.headline} />
-</Sec>
+<Section eyebrow={s.keep.label} title={s.keep.headline} lead={[s.keep.lead, s.keep.more]} />
 
-<Band label={page.label} title={s.privacy.statement} text={s.privacy.body} />
+<Statement text={s.privacy.text} sub={s.privacy.more} note={s.privacy.note} />
 
-<ItemList label="04" title={s.refuses.headline} items={s.refuses.rows} />
+<Section eyebrow={s.refuses.label} title={s.refuses.headline}>
+  <FactList items={s.refuses.items} />
+</Section>
 
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
+<Closing title={s.closing} body={site.strings.closingBody} />

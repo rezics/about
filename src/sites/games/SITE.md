@@ -1,15 +1,10 @@
 # 遊戲 `games`: site design record
 
-> **Direction v2, revised (2026-10-19).** Every page follows the Swiss grid and flat seamless
-> tiles of the reference mock (`.temp/mocks/home.html`; DESIGN.md "Direction v2"): the landing
-> is the copy beside a seamless wall of the site's own pages in shades of its accent (`#2a49c9`),
-> sections take the meta column and heading grid, hairline lists and tables, one ink band at most,
-> and the closing block in the accent. No scene images; the nine example releases, the versions, what you keep and the adaptation chain are flat example tiles (示意); the release table stays as a filter. Where this record describes
-> squares, curtains, painted art or the earlier calm manner, it is history.
-
-Built in stage 2. Routes `/games/` and `/games/<page>/`. All copy lives in
-`src/content/sites/games.ts`, claims and sources in `facts.md`. DESIGN.md's system (方塊, palette, type, grid, 歸位, voice,
-claims) is binding; this file only adds what is specific to the games site.
+Routes `/games/` and `/games/<page>/`. All copy lives in `src/content/sites/games.ts`, claims and
+sources in `facts.md`. The binding design language is v3 (`.temp/sites/V3-SPEC.md`, the mock
+`.temp/sites/v3-home-mock.html`); section "v3" below is how this site applies it. The v2 records
+(the 格位 concept, the 開箱 inventory signature, the night-blue theme, the print-style images,
+the slot sub-navigation) are history in Git and do not apply.
 
 ## 1. Brief
 
@@ -111,64 +106,11 @@ No product is named anywhere in copy. The specifics the copy leans on:
 | Guides | wiki pages calm, sourced, position-aware, versioned (fan wikis leaving ad-heavy hosts) | goal.md "Wiki+"; information-verification.md |
 | Library | one library across platforms and kinds; free export, even without login | markets-and-growth.md; ToS §10 |
 
-## 3. Concept variant
-
-### Three candidates
-
-| | A. 格位 (how players use games) | B. 盒背 (the material) | C. 十字鍵 (a formal system) |
-|---|---|---|---|
-| Idea | Games keep everything in slots: the inventory, the equipment screen, the save slots. REZICS gives every game a grid of slots, and every release, edition and playthrough sits in its own. | Every release is a box, and the back of the box tells the truth: platform, region, languages, requirements. The site turns boxes over. | The site moves like a game menu: one square cursor steps cell to cell along the axes, never diagonally, like a D-pad. |
-| Anchor | The inventory grid is the one interface nearly every player has spent hours sorting, and it is literally square cells where items snap into place. REZICS's square is a 3×3 of slots; 歸位 is how an item drops into an inventory cell. | Box backs are where players have always read platform and language facts. | D-pad navigation is axis-only, the same rule as 歸位. |
-| Layout rule | everything is a grid of cells; content is items placed in cells; empty cells are visible | each section is a box front / back pair | every section is a menu grid with one cursor |
-| Motion | items slide on rails and lock into cells; a cursor steps one cell per move | boxes flip to their back | cursor hops, menu panels slide |
-| Type | item labels heavy and short, like inventory names; a description box in text weight | back-of-box small print | menu labels, all one size |
-| Signature | the 遊戲 square's 版本 cell opens into an inventory of releases; a cursor steps between them and a description box reports each one's facts | a box rotates to show the back panel listing one release's facts | the cursor walks a platform × edition menu |
-| Screenshot | one game's inventory: releases in cells on the games blue, red cursor on 掌機・亞洲版, description box beside | a box mid-flip | a menu grid with the cursor |
-| O / F / Fe / P | 4 / 5 / 4 / 2 | 3 / 4 / 3 / 3 | 3 / 4 / 4 / 3 |
-| Weakness | needs care not to become fake UI | flips are not axis moves; physical boxes are fading; skeuomorphic | a mechanic, not a world; reads as a gimmick on its own |
-
-**Pick A, 格位.** It is the most specific to games, it is the 方塊 system seen from inside
-games (a square is a grid of slots, and every player already knows what goes in a slot), and
-it carries through every page: releases are items in an inventory, the checkout is a 3×3 of
-things you see before paying, playthroughs are save slots, the wiki is a map whose unvisited
-cells are fogged. **Steal from C** for one detail: the selection cursor moves exactly like a
-D-pad, one cell per step along an axis, and the arrow keys drive it.
-
-### Concept card
-
-```
-Idea:        Everything about a game has its own slot: every platform release, edition,
-             playthrough and wiki page sits in a cell of one game's grid.
-Metaphor:    格位: the inventory, equipment and save-slot screens of games, where every item
-             has a square cell and drops into it.
-Signature:   開箱. Scrolling past the hero, the 版本 part (one chip in the row of the
-             game's eight parts) opens into an inventory of that game's releases: items
-             leave the chip, travel along x then y and lock into their slots, then a red
-             square cursor steps slot to slot like a D-pad while a description box reports
-             the selected release (motion.md "Pinned chapters"; patterns.md "Driver module"
-             and "Sticky stage hero"). On a phone the inventory is one scroll-snap row.
-Emotion:     The calm of a sorted inventory: a lot of versions, each exactly where it belongs.
-Motion verb: 歸位 (shared). Items travel along x then y and lock with the ≤2 % settle;
-             the cursor moves one cell per step, never diagonally.
-Screenshot:  One game's inventory on the games blue: nine releases in a 4×3 grid with three
-             empty slots, the red cursor on 掌機版・亞洲版, its description box beside it.
-```
-
-How the concept survives everywhere on this site:
-
-- **Sub-navigation** is a row of seven slots; the current page holds the red cursor; the cursor
-  slides to a slot under the pointer or keyboard focus (one axis).
-- **Every page has one slotted form**: the inventory (landing), the platform × edition table
-  (releases), the 3×3 checkout square (store), save slots (library), version squares with
-  stacked blocks (reviews), the fogged map (guides), the ledger of rows (creators).
-- **Empty slots** are drawn as hairline cells (`line` colour), never filled with filler.
-- **Finale**: the next page appears as the next slot; on the last page, the next site's square.
-
-## 4. Pages
+## 3. Pages
 
 | Page | Slug | Purpose | The one thing a visitor leaves with |
 | --- | --- | --- | --- |
-| 遊戲 (landing) | `/games/` | Say what REZICS is for games, perform the signature, show the eight parts and neighbouring kinds, link every page. | One game, one page; every release sits in its own slot with its own facts. |
+| 遊戲 (landing) | `/games/` | Say what REZICS is for games, show the eight parts and neighbouring kinds, link every page. | One game, one page; every release is recorded apart with its own facts. |
 | 平台與版本 | `/games/releases/` | Releases by platform, region and edition; languages; requirements; bundles, DLC, remakes, mods; store availability; release states. | The language and the device have to be on the same release, and REZICS checks that for you. |
 | 商店 | `/games/store/` | The store for players: what is shown before paying, one purchase start to end, what you keep, what the store refuses. | Buy once, keep a DRM-free file, see everything before paying. |
 | 遊戲庫 | `/games/library/` | Status, playthroughs, one library across kinds, lists, playtime estimates, export. | My backlog across every platform, and it stays mine. |
@@ -176,110 +118,133 @@ How the concept survives everywhere on this site:
 | 攻略與 Wiki+ | `/games/guides/` | Spoiler-safe Wiki+ by progress, versioned guides, wiki rules, adaptations to books, anime and manga, a game's own Zone. | The wiki shows only what I have reached, and the story connects to its novels and anime. |
 | 創作者 | `/games/creators/` | For independent creators: rights, the itemised statement, one identity across media, a Realm, Zone and release kit, listing rules. | I keep my rights and can see every deduction. |
 
-Sub-navigation order (also the finale chain): 總覽 → 平台與版本 → 商店 → 遊戲庫 → 評分與評論 →
+Site order (site bar and next-page links): 總覽 → 平台與版本 → 商店 → 遊戲庫 → 評分與評論 →
 攻略與 Wiki+ → 創作者 → next site 軟體 (`software`, field `#0d6873`).
 
 The library is 「遊戲庫」 (lead decision; the kinds card uses it too).
 
-## 5. Site chrome
 
-- **Site bar:** the kit's bar (square, name, the seven tabs, the current one marked by the red
-  square). The stage 1 plan for a bespoke slot row was dropped: the kit owns the bar.
-- **Action:** every page leads into the product with the kit's `ProductCall`
-  (「前往 REZICS」 to `site.productUrl`).
-- **Finale** (`GamesFinale.astro`): the kit's full-bleed band for the next page in the site
-  order; on `/games/creators/` it is the next site, 軟體 (`next: 'software'`).
-- **Transitions:** the kit's. The landing's hero square is the Flip target (`flip="target"`).
+## v3
 
-## 6. Theme (one design language, the games room)
+### Theme
 
-- **Ground:** a console-menu night blue `#10173a` with paper ink `#f4f5f2`; muted `#aab4d6`
-  (8.5 : 1), lines in paper at 14 % and 34 %, links and focus `#9ab8e6`. Set under
-  `[data-site='games']` with the semantic tokens (`--c-bg`, `--c-fg`, `--c-muted`, `--c-line`,
-  `--c-link`, `--focus`), so the kit pieces follow.
-- **Bands:** the games field `#2a49c9` (paper text, 6.6 : 1) for the signature and one band per
-  page; the inverted band tokens (`--c-band-*`) are paper with ink, used by the footer and by the
-  light sections (`.g-light`) for statements and lists, so a page alternates night, field and
-  paper.
-- **Slot material:** a slot is a square cell with the hairline plus an inset frame (`--g-inset`).
-  The red square outline (`--c-mark`) is the selection cursor, a mark and never text.
-- **Type:** the shared families. Item and step names set heavy and short like inventory names;
-  version numbers and step counters in Martian Mono; statements one sentence per line (`Lines`).
-- **Images:** five illustrations in the series print style on the games field
-  (`public/images/sites/games/`), shown whole in squares; no text, logos or real products.
+The shared v3 ground and ink: paper `#efe9e0`, ink `#26292d`, muted `#6b6f73`, hairlines in ink
+at 14 %. The games blue `#2f4fa3` (paper text on it, 6.3 : 1) is this site's kind colour: the
+large photograph's main paper, the first tile of each masonry, and the link and hover accent
+the whole site already uses. Tiles of the site's own pages and example tiles take the blue, two
+deeper shades from the kit's ramp and three tints mixed toward a cool white (the warm paper
+greys the blue out; `tiles.ts`, AA checked in `drivers.test.ts`); tiles that stand for another
+kind take that kind's colour. No dark
+theme, no gradients, no shadows.
 
-## 7. Composition as built (phone first)
+### Pictures (the paper still-life series)
 
-Each page lists its sections in order with the layout family; the phone form is named where it
-differs. No page shares another's sequence; no large grid of text cells is a key visual.
+Five photographs, each one idea, generated with the reference photograph as style
+(`public/images/sites/games/`, AVIF and WebP):
 
-| Page | Sections |
+| Picture | Idea | Used on |
+| --- | --- | --- |
+| `hero` | one large blue sheet with smaller sheets fanned from its corner (blues, one violet, one teal): one game, its platform releases and editions | landing hero (copy in the empty paper at left); phone band crop |
+| `store` | a pale blue sheet passing through a slit in a blue card: a purchase that reaches you with nothing in between | store opening; landing store row |
+| `library` | a folded blue tray with sheets standing in its slits, one rose and one green among the blues, the last slit empty: every game in its own place, other kinds beside it | library opening |
+| `guides` | a blue strip folded into panels, the first panels open, the rest folded shut under a plain sheet: the wiki shows as far as you have reached | guides, the spoiler section |
+| `creators` | one blue card folded into a small standing pavilion beside a violet and a pale blue sheet: a creator's work standing on its own | creators opening |
+
+### Composition (one idea per section, slow rhythm)
+
+Parts are the kit's v3 parts: hero, section (eyebrow, serif h2, lead), tile masonry, photo row,
+statement, facts (hairline list), closing. Example data stays captioned 示意.
+
+| Page | Sections in order |
 | --- | --- |
-| `/games/` | 1 split hero: h1, lede, 前往 REZICS, the games kind square (Flip target), a blinking cursor by the caption · 2 開箱 on the field: part chips, inventory, description (phone: scroll-snap row) · 3 index list of the six pages, rows flood with the field on hover, a square preview (phone: rows) · 4 the kit's `PartsList`: labelled chips with this site's one-line notes · 5 statement on paper · 6 asymmetric pair of five neighbouring kind squares (phone: 2 columns) · 7 finale |
-| `/games/releases/` | 1 work-first: h1, lede, condition chips, the platform × edition table (phone: a stack per platform, each release a card naming its edition; missing combinations left out) · 2 filmstrip row of five release states, each square filled by its name (phone: scroll-snap) · 3 asymmetric pair, image and the three languages · 4 data/facts on the field: official, measured, unknown · 5 gallery wall: a complete edition holding base game and expansion, soundtrack, remake, mod (phone: stack) · 6 statement on paper · 7 finale |
-| `/games/store/` | 1 full-bleed field hero with the parcel image · 2 checkout: the 結帳前 square beside a two-column list of eight things shown before paying (phone: one column) · 3 filmstrip, pinned horizontal pan of six purchase steps (phone: scroll-snap row, focusable region) · 4 asymmetric pair: what you keep, three squares stepped (phone: rows) · 5 privacy statement on paper · 6 what the store does not do, as four crossed-out empty slots · 7 finale |
-| `/games/library/` | 1 asymmetric pair, cartridge image first (phone: text first) · 2 sticky narrative: one square names the state, five chapters (phone: the chapters alone, their titles are the states) · 3 index list of save slots on the field, an empty slot with the cursor · 4 gallery wall of kind squares, each with its unit · 5 playtime rules on paper (phone: rows) · 6 statement · 7 finale |
-| `/games/reviews/` | 1 statement hero · 2 filmstrip of version squares with block distributions on the field (phone: scroll-snap) · 3 asymmetric pair: population and period chips switch one distribution · 4 gallery wall of review targets (phone: stack) · 5 index list of ranking rules on paper · 6 poster line: three kinds of talk · 7 finale |
-| `/games/guides/` | 1 poster: 攻略與 Wiki+ at mega size · 2 the fog on the field: a chapter picker and a track of six chapter rows with entry chips; rows after the chosen chapter are covered · 3 asymmetric pair with the map image · 4 index list of Wiki+ rules on paper · 5 filmstrip chain of adaptations from 《三國演義》 (phone: 2 columns) · 6 Zone statement on the field · 7 finale |
-| `/games/creators/` | 1 split hero, workbench image first (phone: text first) · 2 index list: rights · 3 ledger on paper: labels only, no figures · 4 gallery wall of a creator's works across kinds · 5 asymmetric pair on the field: Realm, Zone, release kit, Wiki+ from scripts · 6 statement · 7 finale to 軟體 |
+| `/games/` | hero (photo `hero`; 「每一款遊戲，每一個版本，都記得清楚。」, one paragraph, 前往 REZICS) · section 發行 with four example releases as a facts list (示意) and a link to 平台與版本 · statement on versions, downloads and 未知 · section 六個頁面 as a tile masonry of the site's pages in blue shades · photo row `store` with a link to the store · section 相關的種類 as a tile masonry in the five neighbours' colours · closing |
+| `/games/releases/` | opening (text) · the release filter: language and platform toggles over a hairline table, a stack per platform on phones (示意) · facts: five release states, numbered · section 語言 with three facts · tile masonry: what one release can hold (示意) · statement on 未知 and dated offers · requirements as three tiles: official, measured, unknown · closing |
+| `/games/store/` | opening with photo `store` · facts: eight things shown before paying · six purchase steps as a numbered tile row from light to deep · section what you keep, in prose · statement on privacy toward creators · facts: what the store does not do · closing |
+| `/games/library/` | opening with photo `library` · facts: five statuses · section 存檔 with a hairline table of three playthroughs (示意) · statement on takeout · tile masonry: one library across kinds, each with its unit (示意) · facts: playtime rules and the opt-in note · closing |
+| `/games/reviews/` | opening (text) · tile row of five versions from light to deep (示意) · facts: whose score, three rules · tile masonry: what a review is about · statement on three kinds of talk · facts: how ranking works · closing |
+| `/games/guides/` | opening (text) · photo row `guides`: spoilers past your position stay covered · section 攻略, in prose · facts: five Wiki+ rules · statement on a game's own Zone · section 改編 on the approved example 《魔法禁書目錄》 (text only) with a tile row of its forms in their kinds' colours · closing |
+| `/games/creators/` | opening with photo `creators` · facts: what you keep and what you license · the statement ledger as a hairline list (labels only, no figures) · statement on listing honestly · tile row: one name across kinds · section Realm and Zone, in prose · closing |
 
-## 8. Signature moment: 開箱
+Statements are one or two lines with a note in body size under them, and never sit directly
+before the closing (two large serif lines in a row read as one repeated).
 
-- **What moves.** Nine release items leave the 版本 chip, travel along x then y and lock into
-  their slots with the settle, 45 ms apart; each label appears only once its item has locked;
-  the dashed slot frames are uncovered left to right; then the red cursor steps one slot per
-  move (x first, then y) and the description box rolls to the selected release.
-- **Single variable.** `p`, scroll progress through the sticky stage (desktop, fine pointer,
-  motion allowed). `open = p / 0.3` drives the travel; `indexAt(p)` selects the slot after
-  36 % of the stage. Arrow keys and taps write the selection and hold it until the scroll moves
-  on by a whole step (`inventory.ts`).
-- **Idle.** Once open and on screen, the cursor steps every 3.6 s on the GSAP clock; it pauses
-  with the toggle (暫停動畫 / 播放動畫), with the pointer or focus inside, and stops for good
-  after the visitor's first choice.
-- **Phone (390 px, composed first).** No pin. The part chips wrap above; the inventory is one
-  scroll-snap row of slots (about two and a half visible) ending in one empty slot; the
-  description box sits under the row. The row opens once when it comes into view; taps and
-  idle steps scroll the row itself, never the page.
-- **Reduced motion.** Open from the start, no travel, no idle, instant cursor.
-- **No script.** A radio group: arrow keys move the selection, `:has(:checked)` shows the
-  description and draws the red outline on the checked slot.
+At most two hairline lists per page; short lists become prose or tiles. The landing leaves
+the eight parts to the home page and the modules: as a list of eight rows it read as a
+specification sheet in the middle of a calm page. Every closing carries one games line
+(`closingBody`) instead of the site-wide product sentence. Serif display text avoids a closing
+bracket directly before punctuation (「未知」，), which the subset serif sets with a wide gap.
 
-Idle at rest: on the landing page the hero's red cursor blinks and the inventory steps; the
-inner pages stay still at rest on purpose (their moments answer the visitor's own choices:
-conditions, chapters, populations), and their hovers carry the life.
+Phones: copy and action first, the photograph after as a short band; masonry in two columns;
+the release table becomes a stack per platform; facts lists stack title over text.
+The landing keeps this copy-first composition through 1199 px, with a 300 to 400 px band on
+tablets. At 1200 px and up, the overlay copy is capped at 470 px and stays in the photograph's
+empty paper; the kit's default five-column area reached the coloured paper at narrower widths.
 
-Page moments (quiet, same verb):
+### Completion pass
 
-| Page | Moment | Variable | Phone / reduced motion |
-| --- | --- | --- | --- |
-| releases | failing releases fall back to outlines; the cursor steps to the first match; the count updates (`table.ts`) | active conditions | stack of cards / instant |
-| store | six purchase steps pan horizontally while pinned (`pan.ts`) | scroll progress | scroll-snap row / static row |
-| library | the status square's name slides in for each chapter (kit chapters) | active chapter | sticky strip / instant |
-| reviews | blocks drop into their columns and lock; again when population or period changes (`blocks.ts`) | entry, chip choice | same / static |
-| guides | the hatched cover wipes over chapters after the chosen one (CSS only) | chosen chapter | same / instant |
+The five existing photographs are retained after comparison with the approved reference.
+Phone hero encodes come from the original PNG and the original crop: 960 × 640 and
+640 × 427, AVIF and WebP. The four 640 × 427 section pictures are encoded from their original
+PNGs again; `sectionPicture()` passes a phone source restricted to 640 px, so a 390 px phone
+does not request the 1200 px desktop photograph. The 1920 and 1200 px desktop photographs
+are unchanged.
 
-## 9. Deviations from the stage 1 plan, with reasons
+The landing's four illustrative records use short labelled facts and correspond to all four
+platforms in the release filter. The fourth record shows announced availability with an
+unknown language rather than borrowing another platform's data. The filter retains its
+CSS-only path, gains a table caption and uses 44 px radio targets.
 
-- Notify actions removed; every action is 「前往 REZICS」 (direction of 2026-10-19).
-- The 3×3 squares of part names (landing hero, mini source square, parts section) became the
-  games kind square and labelled part chips (phones first, no large grids of text cells).
-- The store's 3×3 checkout square became a list beside one 結帳前 square; the guides' fog map
-  became a track of chapter rows with chips; the releases table becomes a stack on phones; the
-  inventory becomes a scroll-snap row on phones.
-- Paper ground replaced by the games night-blue theme (sites may take their own theme).
-- The fog needs no driver: CSS with `:has()` covers chapters, so it also works without script.
-- Stage 1 had a bespoke slot sub-navigation; the kit's site bar is used instead.
+Shared-kit workarounds stay in `games.css`: remove the flex gap that split text-only links;
+give site tabs a small rise on hover/focus; show the native thin scrollbar for the seven phone
+tabs. Standalone text actions (the header action, section/photo-row links and release-filter
+reset) reveal a small directional arrow on hover/focus, making the response visible alongside
+the shared underline. The second merge of `site/v3` supplies the header-label rise, text-link
+underline and serif preload fixes, so the redundant local header and text-link rules are
+removed. The final merge includes the kit's 44 px header/menu targets and text contrast over
+paper grain. No shared paths are edited locally.
 
-## 10. Kit changes requested
+`PhotoRow` does not forward `Picture.priority`. The guides photograph is visible at the foot
+of a phone's first screen; lazy discovery waited for font layout and repeatedly made LCP
+exceed 2.5 s. `Guides.astro` supplies a media-scoped AVIF preload for the same 640 px source,
+keeping the shared photo row intact. The preload link is
+[body-allowed by the HTML standard](https://html.spec.whatwg.org/multipage/links.html#link-type-preload).
 
-- Include `src/sites/**/*.test.ts` in the vitest config, so `src/sites/games/drivers.test.ts`
-  (inventory travel and stepping, correlated table matching) runs in `task check`. Until then it
-  runs with a config in `.temp/`.
+Keyboard traversal can scroll the phone site bar to its final tab while focus moves into the
+page. `NavFocus.astro` restores the current chapter after focus leaves the bar, using the
+engine's page lifecycle and cleanup. It adds no visual parts, and leaves focused tabs free to
+scroll into view while the user is still navigating them.
 
-## 11. Genericness test
+### Final validation
 
-A generic "game platform" page would open on a dark gradient with neon accents, a controller
-render, a carousel of box art, a feature grid and fake store screenshots. Here the dark ground
-is one flat night blue with paper type, the one game motif is the slot (which is also the REZICS
-square), the signature is a working diagram of release identity, and pixel fonts, neon and
-glitch effects are refused.
+`task check` passes with 184 tests and no Astro diagnostics; `task build` passes. Four full
+QA passes cover all seven routes. Targeted retests replace transient network-change failures
+in the shared test environment. Final throttled phone LCP is 2.128 s (landing), 1.864 s
+(releases), 2.336 s (store), 1.788 s (library), 1.816 s (reviews), 1.940 s (guides) and 1.772 s
+(creators); every CLS and axe violation count is zero. Final reports contain no console or
+request errors, overflow, hidden reduced-motion text or unresponsive hover targets. Phone
+scrolling is 57 to 60 fps in the headless test environment.
+
+All 35 page/width combinations at 320, 768, 1024, 1440 and 1920 px pass overflow, image and
+tile-fit checks. Same-release filters pass with and without script, through keyboard controls
+and client navigation. The active phone tab remains visible after keyboard traversal and
+history return on all seven routes. The seven image-background contrast checks pass against
+rendered background pixels: small labels at least 5.09:1, body 6.15:1 and large headings
+10.64:1. The Chinese skip link is visibly first even though the QA harness's English text
+matcher reports otherwise. Audit: zero FAIL; three warnings outside games.
+
+The final blind visual review scores 7.86/10 before the navigation/contrast follow-up, which
+confirms both findings are resolved. Its remaining suggestions (an illustrative rating
+distribution and shorter text-only openings) are optional; this pass retains the approved
+v3 page rhythm and quiet motion. Evidence and the route-by-route report live under `.shots/`
+and `.temp/codex-report.md`.
+
+### Copy changes for v3
+
+- The landing hero h1 is set as three short lines; its paragraph is shorter.
+- The guides page's h1 states the idea (「玩到哪裡，就看到哪裡。」) with 攻略與 Wiki+ as the
+  eyebrow; the adaptation section uses 《魔法禁書目錄》 as the one real example, text only, per
+  `.temp/sites/EXAMPLE-WORK.md` (facts cited in `facts.md`).
+- Interactive demos other than the release filter are dropped (inventory, distribution
+  blocks, the fog picker, the pinned purchase pan): the photographs and short lists carry those
+  ideas more calmly.
+- Every page ends in the closing statement and 「前往 REZICS」.

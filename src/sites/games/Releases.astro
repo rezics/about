@@ -1,50 +1,62 @@
 ---
-// /games/releases/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head with the
-// table that binds language and platform to one release (示意), release states, languages as
-// flat tiles, the ink band on requirements, bundles, the offers statement, the next page and the
-// closing block.
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import Band from '../../kit/components/Band.astro';
+// /games/releases/ (SITE.md "v3"): the opening, the release filter (示意), release states,
+// three kinds of language, what one release can hold, the statement on 未知, requirements, the
+// closing.
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields } from '../../kit/theme';
 import site from '../../content/sites/games';
+import Opening from './Opening.astro';
 import ReleaseTable from './ReleaseTable.astro';
+import { blue } from './tiles';
 import './games.css';
 
 const s = site.strings.releases;
-const accent = kindFields.games.field;
-const page = site.pages.find((p) => p.slug === 'releases')!;
+// What one release can hold: the complete edition tallest (it holds the others), then what it
+// holds, then what stands beside it.
+const tones = [blue.accent, blue.light, blue.deep, blue.tint, blue.deeper, blue.lightest];
+const ids = ['complete', 'base', 'expansion', 'soundtrack', 'remake', 'mod'];
+const bundles: MasonryItem[] = s.bundles.tiles.map((t, i) => ({ id: ids[i]!, name: t.title, line: t.body, ...tones[i]! }));
+const columns: MasonryPlace[][] = [
+  [{ id: 'complete', h: 1 }],
+  [{ id: 'base', h: 1 }, { id: 'expansion', h: 1 }],
+  [{ id: 'soundtrack', h: 1.3 }, { id: 'remake', h: 1 }, { id: 'mod', h: 1 }],
+];
+const phone: MasonryRowPlace[][] = [[{ id: 'complete' }], [{ id: 'base' }, { id: 'expansion' }], [{ id: 'soundtrack' }, { id: 'remake' }], [{ id: 'mod' }]];
+// Requirements: who said it. The official claim in the blue, the measurement in a tint, the
+// unknown in the lightest tint.
+const needTones = [blue.accent, blue.tint, blue.lightest];
+const needs: MasonryItem[] = s.requirements.tiles.map((t, i) => ({ id: `n${i}`, name: t.title, line: t.body, ...needTones[i]! }));
+const needColumns: MasonryPlace[][] = [[{ id: 'n0', h: 1 }], [{ id: 'n1', h: 1 }], [{ id: 'n2', h: 1 }]];
+const needPhone: MasonryRowPlace[][] = [[{ id: 'n0' }, { id: 'n1' }], [{ id: 'n2' }]];
 ---
-<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede}>
-  <div class="rel-table"><ReleaseTable copy={s.hero} example={site.strings.example} /></div>
-</PageHead>
+<Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} />
 
-<Sec label="01" title={s.states.headline}>
-  <p class="text">{s.states.lede}</p>
-  <ItemGrid slot="wide" items={s.states.steps} cols={5} numbered />
-</Sec>
+<Section eyebrow={s.filter.label} title={s.filter.headline} lead={s.filter.lead}>
+  <ReleaseTable copy={s.filter} example={site.strings.example} />
+</Section>
 
-<Sec label="02" title={s.languages.headline}>
-  <p class="text">{s.languages.body}</p>
-  <ItemGrid slot="wide" items={s.languages.items} cols={3} look="cards" />
-</Sec>
+<Section eyebrow={s.states.label} title={s.states.headline} lead={s.states.lead}>
+  <FactList items={s.states.items} numbered />
+</Section>
 
-<Band label={page.label} title={s.requirements.headline} text={s.requirements.lede} items={s.requirements.columns} />
+<Section eyebrow={s.languages.label} title={s.languages.headline} lead={s.languages.lead}>
+  <FactList items={s.languages.items} />
+</Section>
 
-<Sec label="03" title={s.bundles.headline}>
-  <p class="text">{s.bundles.lede}</p>
-  <ItemGrid slot="wide" items={s.bundles.tiles} cols={3} />
-</Sec>
+<Section eyebrow={s.bundles.label} title={s.bundles.headline} lead={s.bundles.lead}>
+  <div slot="wide">
+    <TileMasonry items={bundles} columns={columns} phone={phone} height={460} label={s.bundles.headline} />
+    <p class="g-cap">{s.bundles.caption}</p>
+  </div>
+</Section>
 
-<Statement text={s.offers.statement} note={s.offers.body} />
+<Statement text={s.offers.text} sub={s.offers.more} note={s.offers.note} />
 
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
+<Section eyebrow={s.requirements.label} title={s.requirements.headline} lead={s.requirements.lead}>
+  <TileMasonry slot="wide" items={needs} columns={needColumns} phone={needPhone} height={300} phoneRow={150} label={s.requirements.headline} />
+</Section>
 
-<style>
-  .rel-table { flex: 1 1 100%; margin-top: 24px; min-width: 0; }
-</style>
+<Closing title={s.closing} body={site.strings.closingBody} />

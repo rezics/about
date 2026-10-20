@@ -1,65 +1,46 @@
 ---
-// /games/creators/ (DESIGN.md "Direction v2": Swiss grid, flat tiles): the page head, what you keep
-// and what you license, the statement line by line, one name across everything you make as flat
-// tiles, a home for the game after release, the ink band on the rules, the next site and the
-// closing block.
-import PageHead from '../../kit/components/PageHead.astro';
-import Sec from '../../kit/components/Sec.astro';
-import ItemGrid from '../../kit/components/ItemGrid.astro';
-import ItemList from '../../kit/components/ItemList.astro';
-import TileRow from '../../kit/components/TileRow.astro';
-import Band from '../../kit/components/Band.astro';
-import SiteFinale from '../../kit/components/SiteFinale.astro';
+// /games/creators/ (SITE.md "v3"): the opening with the standing fold, rights, the statement
+// ledger (labels only), the statement on listing honestly, one name across kinds, a Realm and
+// a Zone, the closing.
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
 import Closing from '../../kit/components/Closing.astro';
-import { kindFields, palette } from '../../kit/theme';
 import site from '../../content/sites/games';
+import Opening from './Opening.astro';
+import Ledger from './Ledger.astro';
+import { sectionPicture } from './pictures';
+import { blue, kindTile } from './tiles';
 import './games.css';
 
 const s = site.strings.creators;
-const accent = kindFields.games.field;
-const page = site.pages.find((p) => p.slug === 'creators')!;
-const names = s.name.tiles.map((t) => ({ name: t.name, line: t.role, bg: t.to ? kindFields[t.to].field : palette.ink, on: t.to ? kindFields[t.to].on : ('paper' as const) }));
+const works: MasonryItem[] = s.name.tiles.map((t, i) => ({ id: `w${i}`, name: t.name, line: t.role, ...(t.to ? kindTile(t.to) : blue.lightest) }));
+const columns = works.map((w) => [{ id: w.id, h: 1 }]);
+const phone = [[{ id: 'w0' }, { id: 'w1' }], [{ id: 'w2' }, { id: 'w3' }]];
 ---
-<PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+<Opening label={site.name} title={s.hero.headline} lede={s.hero.lead} image={sectionPicture('creators')} />
 
-<ItemList label="01" title={s.rights.headline} items={s.rights.rows} />
+<Section eyebrow={s.rights.label} title={s.rights.headline}>
+  <FactList items={s.rights.items} />
+</Section>
 
-<Sec label="02" title={s.ledger.headline}>
-  <div class="g-stack">
-    <p class="text">{s.ledger.note}</p>
-    <ol class="cr-ledger" role="list">
-      {s.ledger.rows.map((r) => (
-        <li class:list={['cr-row', r.total && 'cr-row--total']}>
-          <span class="cr-op label">{r.op ?? ''}</span>
-          <span>{r.label}</span>
-        </li>
-      ))}
-    </ol>
-    <p class="g-cap">{s.ledger.reserve}</p>
-    <p class="g-cap">{s.ledger.caption}</p>
-  </div>
-</Sec>
+<Section eyebrow={s.ledger.label} title={s.ledger.headline}>
+  <Ledger rows={s.ledger.rows} label={s.ledger.headline} />
+  <p class="g-note">{s.ledger.note}</p>
+  <p class="g-note">{s.ledger.reserve}</p>
+  <p class="g-cap">{s.ledger.caption}</p>
+</Section>
 
-<Sec label="03" title={s.name.headline}>
-  <p class="text">{s.name.lede}</p>
-  <div slot="wide" class="g-stack">
-    <TileRow items={names} cols={4} height={200} label={s.name.headline} />
+<Statement text={s.rules.text} sub={s.rules.more} note={s.rules.note} />
+
+<Section eyebrow={s.name.label} title={s.name.headline} lead={s.name.lead}>
+  <div slot="wide">
+    <TileMasonry items={works} columns={columns} phone={phone} height={260} phoneRow={130} label={s.name.headline} />
     <p class="g-cap">{s.name.caption}</p>
   </div>
-</Sec>
+</Section>
 
-<Sec label="04" title={s.home.headline}>
-  <p class="text">{s.home.body}</p>
-  <ItemGrid slot="wide" items={s.home.items} cols={2} look="cards" />
-</Sec>
+<Section eyebrow={s.home.label} title={s.home.headline} lead={[s.home.lead, s.home.more]} />
 
-<Band label={page.label} title={s.rules.statement} text={s.rules.body} />
-
-<SiteFinale nextPage={site.strings.finale.nextPage} nextSite={site.strings.finale.nextSite} />
-<Closing bg={accent} />
-
-<style>
-  .cr-ledger { border-top: 1px solid var(--c-line); }
-  .cr-row { display: grid; grid-template-columns: 4em minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--c-line); }
-  .cr-row--total { border-top: 1.5px solid var(--c-fg); font-weight: 600; }
-</style>
+<Closing title={s.closing} body={site.strings.closingBody} />
