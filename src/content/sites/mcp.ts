@@ -154,7 +154,7 @@ const strings: McpStrings = {
         { kind: 'apis', line: '它包裝的 API，兩邊互相連結' },
         { kind: 'skills', line: '同一位維護者寫的技能' },
       ],
-      developers: { name: '開發者', line: 'REZICS 自己的 MCP 伺服器', href: '/developers/' },
+      developers: { name: '開發者', line: 'REZICS 自己的 MCP 伺服器', href: '/developers/mcp-server/' },
     },
     closing: {
       title: '先看紀錄，再決定用哪一個。',
@@ -454,7 +454,7 @@ const strings: McpStrings = {
       sub: '把結果交上來。',
       note: '這些紀錄會標明來自你的代理，和其他人的紀錄走同一套審核。',
       link: '看提交方式',
-      href: '/developers/',
+      href: '/developers/mcp-server/',
     },
     next: {
       headline: 'AI 代理用的技能，同樣有版本、紀錄與評分。',
