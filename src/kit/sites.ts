@@ -4,7 +4,9 @@
  */
 import { kindIds, moduleIds, type MiniSite, type MiniSitePage } from '../content/schema';
 
-const found = import.meta.glob<MiniSite>('../content/sites/*.ts', { eager: true, import: 'default' });
+// Translations (`<id>.<locale>.ts`) replace their source at build time (astro.config.ts); they are
+// not sites of their own.
+const found = import.meta.glob<MiniSite>(['../content/sites/*.ts', '!../content/sites/*.*.ts'], { eager: true, import: 'default' });
 
 export const sites: MiniSite[] = Object.entries(found)
   .map(([file, site]) => {
