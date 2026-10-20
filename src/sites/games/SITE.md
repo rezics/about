@@ -214,6 +214,30 @@ page. `NavFocus.astro` restores the current chapter after focus leaves the bar, 
 engine's page lifecycle and cleanup. It adds no visual parts, and leaves focused tabs free to
 scroll into view while the user is still navigating them.
 
+### Final validation
+
+`task check` passes with 184 tests and no Astro diagnostics; `task build` passes. Four full
+QA passes cover all seven routes. Targeted retests replace transient network-change failures
+in the shared test environment. Final throttled phone LCP is 2.128 s (landing), 1.864 s
+(releases), 2.336 s (store), 1.788 s (library), 1.816 s (reviews), 1.940 s (guides) and 1.772 s
+(creators); every CLS and axe violation count is zero. Final reports contain no console or
+request errors, overflow, hidden reduced-motion text or unresponsive hover targets. Phone
+scrolling is 57 to 60 fps in the headless test environment.
+
+All 35 page/width combinations at 320, 768, 1024, 1440 and 1920 px pass overflow, image and
+tile-fit checks. Same-release filters pass with and without script, through keyboard controls
+and client navigation. The active phone tab remains visible after keyboard traversal and
+history return on all seven routes. The seven image-background contrast checks pass against
+rendered background pixels: small labels at least 5.09:1, body 6.15:1 and large headings
+10.64:1. The Chinese skip link is visibly first even though the QA harness's English text
+matcher reports otherwise. Audit: zero FAIL; three warnings outside games.
+
+The final blind visual review scores 7.86/10 before the navigation/contrast follow-up, which
+confirms both findings are resolved. Its remaining suggestions (an illustrative rating
+distribution and shorter text-only openings) are optional; this pass retains the approved
+v3 page rhythm and quiet motion. Evidence and the route-by-route report live under `.shots/`
+and `.temp/codex-report.md`.
+
 ### Copy changes for v3
 
 - The landing hero h1 is set as three short lines; its paragraph is shorter.
