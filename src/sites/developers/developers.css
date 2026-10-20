@@ -1,0 +1,52 @@
+/* Developers (SITE.md "Theme"): the shared paper and type; only the code blocks take the site's
+   slate for strings and paths (6.9:1 on the code ground). */
+html[data-site='developers'] .codetile .s { color: #3b4a5a; }
+
+/* A code block keeps a reading measure inside the section body (columns 4 to 12). */
+html[data-site='developers'] .dv-narrow,
+html[data-site='developers'] .dv-pair__code { max-width: 640px; }
+html[data-site='developers'] .dv-pair { display: grid; gap: 56px; }
+html[data-site='developers'] .dv-path { margin-top: 16px; font: 12.5px/1.8 var(--f-mono); color: var(--c-muted); overflow-wrap: anywhere; }
+@media (max-width: 767px) {
+  html[data-site='developers'] .dv-pair { gap: 36px; }
+}
+
+/* The tool list: one hairline list per group under a small label. */
+html[data-site='developers'] .dv-groups { display: grid; gap: 56px; }
+html[data-site='developers'] .dv-tool-nav { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-bottom: 32px; font-size: 14px; }
+html[data-site='developers'] .dv-group__name { margin-bottom: 14px; font-weight: 400; scroll-margin-top: 24px; }
+html[data-site='developers'] .dv-stack { display: grid; gap: 28px; }
+html[data-site='developers'] .dv-ways .cset__shared { max-width: 640px; }
+html[data-site='developers'] .dv-ways .cset__item .codetile { flex: none; }
+
+/* Give the shared tab-centering calculation a local offset parent. Otherwise its offsetLeft
+   includes the fixed site name and can scroll the beginning of the current tab out of view. */
+html[data-site='developers'] .sitebar__tabs { position: relative; padding-inline-end: 32px; }
+
+/* Keep tool names together in the two-column phone index. */
+@media (max-width: 767px) {
+  html[data-site='developers'] .dv-pages .tile__name {
+    font-size: clamp(20px, calc(5.7vw + 1.75px), 24px);
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+  html[data-site='developers'] .dv-pages .tile__name wbr { display: none; }
+}
+
+/* Match the kit's quiet link feedback on the site bar, scoped to this site. */
+html[data-site='developers'] :is(.sitebar__home, .sitebar__tab) {
+  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-snap);
+}
+@media (hover: hover) {
+  html[data-site='developers'] :is(.sitebar__home, .sitebar__tab):hover { translate: 0 -2px; }
+}
+html[data-site='developers'] :is(.sitebar__home, .sitebar__tab):focus-visible { translate: 0 -2px; }
+html[data-site='developers'] :is(.sitebar__home, .sitebar__tab):active { translate: 0 0; }
+html[data-site='developers'] .codetile pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-muted) var(--c-panel);
+  overscroll-behavior-inline: contain;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-site='developers'] :is(.sitebar__home, .sitebar__tab) { transition: none; translate: none; }
+}

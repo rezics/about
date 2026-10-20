@@ -1,0 +1,44 @@
+---
+// Zone 主題 (SITE.md "v3"): the opening, settings first beside the picture, the tokens, the
+// package in named slots, the package's limits, review to launch, the statement, the other pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import CodeTile from '../../kit/components/CodeTile.astro';
+import Closing from '../../kit/components/Closing.astro';
+import More from '../../sites/developers/More.astro';
+import { picture } from '../../sites/developers/pictures';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.zones;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="left" eyebrow={s.theme.label} title={s.theme.headline} body={s.theme.body} image={picture('zones')} />
+
+  <Section eyebrow={s.settings.label} title={s.settings.headline}>
+    <CodeTile code={s.settings.tokens.code} caption={s.settings.caption} label={s.settings.headline} class="dv-narrow" />
+  </Section>
+
+  <Section eyebrow={s.slots.label} title={s.slots.headline} lead={s.slots.lead}>
+    <CodeTile code={s.slots.pkg.code} caption={s.slots.caption} label={s.slots.headline} class="dv-narrow" />
+  </Section>
+
+  <Section eyebrow={s.rules.label} title={s.rules.headline}>
+    <FactList items={s.rules.rows} />
+  </Section>
+
+  <Section eyebrow={s.review.label} title={s.review.headline}>
+    <FactList items={s.review.rows} numbered />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} note={s.statement.note} />
+
+  <More slug="zones" />
+  <Closing {...site.strings.common.closing} />
+</MiniSiteLayout>

@@ -1,0 +1,40 @@
+---
+// 本機 Wiki 工具組 (SITE.md "v3"): the opening, what stays and what goes beside the picture, the
+// steps with the two commands, the limits, the statement on circumvention, the other pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import CodeTile from '../../kit/components/CodeTile.astro';
+import Closing from '../../kit/components/Closing.astro';
+import CodeFacts from '../../sites/developers/CodeFacts.astro';
+import More from '../../sites/developers/More.astro';
+import { picture } from '../../sites/developers/pictures';
+import site from '../../content/sites/developers';
+import '../../sites/developers/developers.css';
+
+const s = site.strings.wiki;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="right" eyebrow={s.boundary.label} title={s.boundary.headline} body={s.boundary.body} image={picture('wiki')} />
+
+  <Section eyebrow={s.steps.label} title={s.steps.headline}>
+    <div class="dv-pair">
+      <CodeTile code={s.steps.sample.code} caption={s.steps.caption} label={s.steps.headline} class="dv-pair__code" />
+      <CodeFacts items={s.steps.rows} numbered />
+    </div>
+  </Section>
+
+  <Section eyebrow={s.limits.label} title={s.limits.headline}>
+    <FactList items={s.limits.rows} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} note={s.statement.licence} />
+
+  <More slug="wiki-toolkit" />
+  <Closing {...site.strings.common.closing} />
+</MiniSiteLayout>
