@@ -12,10 +12,11 @@ import Arrow from '../../kit/components/Arrow.astro';
 import { kinds, kindHref, partById } from '../../kit/content';
 import { inkOn, kindFields } from '../../kit/theme';
 import engine from '../../content/sites/engine';
+import { locale } from '../../kit/locale';
 
 const p = engine.strings.picker;
 const fill = (t: string, kind: string) => t.replaceAll('{kind}', kind);
-const latin = (name: string) => !/[⺀-鿿豈-﫿]/.test(name);
+const latin = (name: string) => /^(zh|ja|ko)/.test(locale) && !/[\u2e80-\u9fff\uf900-\ufaff\uac00-\ud7af]/.test(name);
 // One rule per kind: its checked radio shows its panel.
 const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k.id}{display:grid}`).join('');
 ---

@@ -11,7 +11,7 @@ const sources = Object.keys(files).filter((f) => !sidecar.test(f) && !f.endsWith
 
 /** Keys whose values are not copy: a translation keeps them exactly. */
 const SAME = new Set(['id', 'url', 'sourceUrl', 'href', 'base', 'slug', 'language', 'to', 'kind', 'group', 'theme', 'field', 'on', 'parts', 'usedBy', 'next', 'lang']);
-const HAN = /[㐀-鿿豈-﫿]/;
+const HAN = /[\u3400-\u9fff\uf900-\ufaff]/;
 const FOREIGN_ORIGINAL = /[぀-ヿ가-힯]/;
 const FULLWIDTH = /[，。；：「」『』！？、]/;
 // Traditional-only characters: Simplified Chinese written as a character conversion leaves these behind.
@@ -43,7 +43,8 @@ function compare(src: unknown, tr: unknown, at: string, locale: string, out: str
     for (const [k, v] of Object.entries(src)) {
       const t = (tr as Record<string, unknown>)[k];
       // A non-copy key holds an id, a link or a list of them; the same key holding an object is copy.
-      const fixed = typeof v !== 'object' || v === null || (Array.isArray(v) && v.every((x) => typeof x !== 'object'));
+      // Ids and links are ASCII; a CJK string under such a key is a label.
+      const fixed = (typeof v === 'string' ? !/[\u3000-\u9fff\uf900-\ufaff]/.test(v) : typeof v !== 'object' || v === null) || (Array.isArray(v) && v.every((x) => typeof x !== 'object'));
       if (SAME.has(k) && fixed) { if (JSON.stringify(v) !== JSON.stringify(t)) out.push(`${at}.${k}: must stay ${JSON.stringify(v)}`); }
       else compare(v, t, `${at}.${k}`, locale, out);
     }
