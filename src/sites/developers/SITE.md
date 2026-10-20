@@ -124,11 +124,11 @@ text (`strings.alts`), as the home page's pictures do. Generated with codex-2 ag
 
 | Name | Paper | Idea | Where | Files |
 |---|---|---|---|---|
-| `hero` | Three strips from three directions (slate from the top, sky from the right, amber from the bottom) tuck under one slate sheet | Person, program and agent reach the same operation | Landing hero | 1920 (174 / 164 KB), 960 (69 / 54 KB), phone crop 960 and 640 |
-| `mcp` | A sky strip woven through a row of punched holes in a slate sheet | MCP is threaded through the same openings, not a second door | MCP page, photo row | 1200 (106 / 107 KB), 640, phone crop |
-| `apps` | Four sheets nested, slate outermost, each smaller sheet inside the one below | An app's authority always lies inside the user's | Apps page, photo row | 1200 (107 / 100 KB), 640, phone crop |
-| `wiki` | A tall stack of cream and sky sheets stays whole; three small slate slips lie apart | REZICS receives proposals with short quotations, never the full text | Wiki toolkit page, photo row | 1200 (106 / 106 KB), 640, phone crop |
-| `zones` | A slate sheet folded into a small standing frame with a window, a sky sheet behind it | A Zone sets up its own frame on the platform's sheet | Zones page, photo row | 1200 (100 / 95 KB), 640, phone crop |
+| `hero` | Three strips from three directions (slate from the top, sky from the right, amber from the bottom) tuck under one slate sheet | Person, program and agent reach the same operation | Landing hero | 1920 (174 / 164 KiB), 960 (69 / 54 KiB), phone crop 960 and 640 |
+| `mcp` | A sky strip woven through a row of punched holes in a slate sheet | MCP is threaded through the same openings, not a second door | MCP page, photo row | 1200 (106 / 107 KiB), 640, phone crop |
+| `apps` | Four sheets nested, slate outermost, each smaller sheet inside the one below | An app's authority always lies inside the user's | Apps page, photo row | 1200 (107 / 109 KiB), 640, phone crop |
+| `wiki` | A tall stack of cream and sky sheets stays whole; three small slate slips lie apart | REZICS receives proposals with short quotations, never the full text | Wiki toolkit page, photo row | 1200 (104 / 95 KiB), 640, phone crop |
+| `zones` | A slate sheet folded into a small standing frame with a window, a sky sheet behind it | A Zone sets up its own frame on the platform's sheet | Zones page, photo row | 1200 (108 / 93 KiB), 640, phone crop |
 
 ### Pages (one idea per section, slow rhythm)
 
@@ -138,9 +138,10 @@ ends on 「其他頁面」 (the site's other pages as `IndexRows`; the last page
 書庫) and the closing with 「前往 REZICS」.
 
 **`/developers/` 開發者**
-1. `PhotoHero` (`hero`): 「每個按鈕，背後都是一個 API 操作。」, one paragraph, 「前往 REZICS」.
-2. 三種方式: 「三種方式進來，拿到同一份回應。」; code facts: 人 (the button), 程式 (the HTTP
-   request), 代理 (the MCP call), 同一個操作 (operationId and profile).
+1. `PhotoHero` (`hero`): 「每個按鈕，都是一個 API 操作。」, one paragraph, 「前往 REZICS」.
+2. 三種方式: 「三種方式進來，拿到同一份回應。」; the person's button in one fact row,
+   then the HTTP request and MCP parameters beside one another with their shared operation
+   underneath. Phones read these in order, with the same small code and shared result.
 3. 六個部分: 「你會用到的六樣東西」; a three-column masonry of the six pages.
 4. Statement: 「REZICS 的網站不直接碰資料庫，所有讀寫都經過 API；」 muted 「網站上做得到的事，
    API 一定也做得到。」
@@ -178,9 +179,9 @@ and 書庫.
 
 Copy and action first, the hero picture as a 260 px band from its phone crop; photo rows put the
 text first and the picture (its phone crop) after it. Fact rows stack title over text. Code
-blocks take the full width at 12.5 px; samples are written in short lines, and the few longer
-lines (the write request's identifier, the authorization request, the tokens) scroll sideways
-inside their block. Masonries run two tiles per row; side-by-side code blocks stack.
+blocks take the full width at 12.5 px; every sample fits at 390 px. At 320 px the few retained
+long lines scroll inside their focusable blocks, with a thin scrollbar. Masonries run two tiles
+per row; code comparisons stack below 1200 px and keep a 640 px reading measure.
 
 ### Copy changes for v3
 
@@ -201,7 +202,90 @@ inside their block. Masonries run two tiles per row; side-by-side code blocks st
   the site's single poster.
 - Slug `mcp-server`, not `mcp`, so it never reads as MCP Hub at `/mcp/`.
 - The last page hands over to 書庫 (site chain apis → developers → books).
+- Final pass: retain the five inherited paper photographs after inspecting them against the
+  approved reference. Every AVIF and WebP, including the unfinished crop refinements, is within
+  its v3 byte budget. No new picture is needed.
+- Final pass: shorten the landing h1 so its second clause fits one desktop line; keep CJK tool
+  names together on phone tiles. Consent fields sit beside their explanations rather than
+  leaving empty right-hand columns. MCP calls show actual `tools/call` parameters as JSON;
+  source excerpts are reflowed without changing their behavior to fit a 390 px phone.
+- Final pass: shorten large statements to their central sentence; technical and licence detail
+  remains in the smaller note. Each page closes with the developers' own invitation to use
+  the same API, followed by the standard product action.
+- Final pass: show code comparisons in one column below 1200 px, capped at 640 px. The extra
+  768 and 1024 px review exposed narrow response panes even though page overflow was contained;
+  tablets now read the complete examples in sequence.
+- Final pass: add a compact anchor index for the MCP tool list's three groups. Fragment targets
+  take keyboard focus and keep space below the sticky bar. Native phone and desktop checks
+  reach all six targets correctly.
+- Shared-kit workaround, only in `developers.css`: make `.sitebar__tabs` positioned so its
+  current-item `offsetLeft` is relative to the scroll container; add trailing room before its
+  fade. This fixes the clipped current tab without changing `src/kit`. Site-bar links get the
+  kit's small rise; the latest shared header and standalone-link treatments are used directly.
+  No kit, engine or shared-style file edited.
+- Shared-kit workaround: the Apps photo is partly visible on the first phone screen but
+  `PhotoRow` always loads lazily. Its page preloads the responsive phone AVIF so it can arrive
+  with the headline. `PhotoRow` could expose the existing `Picture.priority` option upstream.
+- Shared-kit workaround: suppress generated `wbr` only within the landing's phone tile names.
+  The phrase parser splits 「工具組」 after 「工」; these short names fit as whole words and
+  keep their normal space breaks. Other headings retain the shared phrase treatment.
+- Still at rest by decision, per v3: no idle motion or scroll-driven scene. The paper photograph
+  and serif headline remain the first screen's focus; physical feedback is confined to links
+  and tiles. Quiet cross-fades stay with the shared engine.
 
 ## 5. QA record
 
-To be filled in after the v3 QA pass.
+Final shared base: `site/v3` at `62a4613`, merged into `v3/developers`. No shared implementation
+file was edited locally. `task check` passes: Astro 0 errors and 0 warnings, 10 test files and
+195 tests. The final explicit `task build` passes: 37 pages, subset fonts and 37 Open Graph
+images. The 17 sample blocks were inspected; JSON, TypeScript and shell syntax checks pass.
+
+Two full `task qa` passes covered all seven routes. Targeted production follow-ups covered the
+landing's final tile names, the Apps preload and MCP's group links. Every desktop, phone,
+keyboard, hover, reduced-motion and transition frame was reviewed, along with full-page frames
+and 768/1024 px code comparisons. Evidence: `.shots/review/`, `.shots/full/` and each route's
+`report.json`.
+
+| Route under `/developers/` | Phone LCP (ms) | CLS | axe violations | Phone FPS |
+|---|---:|---:|---:|---:|
+| overview | 2240 | 0 | 0 | 60 |
+| `api/` | 2152 | 0.040 | 0 | 60 |
+| `mcp-server/` | 1968 | 0 | 0 | 60 |
+| `apps/` | 1948 | 0 | 0 | 60 |
+| `wiki-toolkit/` | 2044 | 0 | 0 | 60 |
+| `zones/` | 2168 | 0 | 0 | 60 |
+| `open-source/` | 1984 | 0.045 | 0 | 55 |
+
+Final route reports have no console errors, failed requests, page overflow, hidden text under
+reduced motion, invisible focus stops or missing hover feedback. Apps fell from 3052 ms before
+the phone preload to 1948 ms. An intermediate prefetch `ERR_NETWORK_CHANGED` did not recur in
+the clean follow-up. MCP's intermediate 53 FPS / 100 ms worst frame was followed by 60 FPS /
+17 ms in the final throttled run.
+
+The extra 42 viewport visits (320, 390, 768, 1024, 1440, 1920 px) show no page overflow or hidden
+current tabs. Code fits at 390, 768 and 1024 px; 320 px code overflow stays inside the blocks.
+All seven pages and the open phone menu pass the extra axe run. The five overview contrast
+review nodes were checked manually: headline and body remain on the photograph's light empty
+paper; the pill has its opaque ink ground. The skip link is the first stop and reaches `#main`.
+The QA script's English-only `skipLinkFirst` heuristic misses 「跳到主要內容」. Native modal
+focus stays within the menu whenever the document has focus; one Tab reaches browser chrome
+(`document.hasFocus() === false`), not page content. Escape closes the menu and restores focus.
+
+Responsive/menu evidence: `.shots/responsive-checks.json`, latest MCP subset
+`.shots/responsive-checks-mcp-final.json`; anchor reach/focus evidence:
+`.shots/mcp-anchor-checks.json` (six of six). The latter uses arrival conditions rather than the
+earlier fixed 900 ms snapshot during smooth scrolling.
+
+Static audit: 0 FAIL, 4 WARN, all warnings outside these routes (two repeated home tile labels,
+heading skips on books and games). Independent final visual critique: **7.51/10**; it asks for
+a more unified shared-operation comparison and easier access to the long MCP catalogue. Group
+shortcuts were added after that critique. The binding v3 stillness and quiet cross-fades remain;
+the skill's all-categories-at-8 aspiration is not claimed as achieved.
+
+Landing evidence:
+- Desktop full page: `.shots/full/developers/d-full-page.png`.
+- Phone first screen: `.shots/developers/m-01-hero.png`.
+
+No implementation or required QA remains unfinished. Product-source uncertainties are retained
+in `facts.md`: no published external SDK package or documented production API/MCP origin;
+samples therefore use the first-party call and relative paths.
