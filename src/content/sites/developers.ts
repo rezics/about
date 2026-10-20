@@ -207,7 +207,7 @@ const strings: DevelopersStrings = {
     hubs: {
       label: '索引',
       headline: '別人做的工具，也有索引',
-      lead: 'REZICS 也為其他人的 MCP 伺服器、Skill 與 API 建立索引，附上版本、相容性證據、評分與討論。',
+      lead: 'REZICS 也為其他人的 MCP 伺服器、Skill 與 API 建立索引，附上版本、來源、量測或使用紀錄、評分與討論。',
       items: [
         { kind: 'mcp', line: 'MCP 伺服器的索引' },
         { kind: 'skills', line: 'AI 代理 Skill 的索引' },
@@ -421,7 +421,7 @@ const strings: DevelopersStrings = {
       headline: '每一層管的事',
       rows: [
         { title: '帳號', body: '帳號服務確認你是誰。光是登入，不代表能動任何資源。' },
-        { title: '身分', body: '你以個人或組織的身分行動。資源權限給的是身分，不是帳號。' },
+        { title: '身分', body: '你以個人或組織身分行動，伺服器檢查這條代表關係與資源權限。' },
         { title: '安裝與同意', body: '安裝與同意是兩道各自獨立的上限。登記一個應用，本身不會得到任何資源權限。' },
         { title: '權杖範圍', body: '權杖只帶著你同意的範圍，例如 library:write。每個操作仍會重新檢查這次以哪個身分行動。' },
       ],
@@ -449,7 +449,7 @@ const strings: DevelopersStrings = {
       headline: '同意畫面會寫明的事',
       rows: [
         { text: '應用的名稱與網站', code: 'name · uri' },
-        { text: '每項權限在做什麼，以你的語言說明', code: 'scopes[].description' },
+        { text: '每項權限以你的語言說明，缺少譯文時用英文', code: 'scopes[].description' },
         { text: '應用尚未通過驗證時，會清楚標示', code: 'unverified' },
         { text: '授權完成後轉回哪個網域', code: 'redirectHost' },
         { text: '應用的隱私權政策與服務條款', code: 'policy · terms' },
@@ -578,7 +578,7 @@ const strings: DevelopersStrings = {
         { title: '不碰憑證', body: '不讀 Cookie、瀏覽器儲存空間或任何憑證。' },
         { title: '不遮住平台介面', body: '帳號選單、Zone 選單、檢舉與年齡確認都在插槽之外，每部作品的「為何在此」標記也一直都在。' },
         { title: '樣式只影響自己', body: '樣式限定在這個 Zone 的範圍裡，顏色與字型只用平台提供的變數。' },
-        { title: '有大小上限', body: '壓縮後 CSS 不超過 40 KB，JavaScript 不超過 50 KB。' },
+        { title: '有大小上限', body: 'gzip 壓縮後 CSS 不超過 40 KiB，JavaScript 不超過 50 KiB。' },
       ],
     },
     review: {
@@ -601,7 +601,7 @@ const strings: DevelopersStrings = {
   open: {
     hero: {
       headline: '原始碼公開，獨立套件任你取用。',
-      lede: '服務、網站、帳號頁面、設計文件與 API 定義，都在同一個公開的儲存庫。平台以 AGPL-3.0 授權；可以單獨使用的套件以 Apache-2.0 授權，不依賴 REZICS 的服務。',
+      lede: '服務、網站、帳號頁面、設計文件與 API 定義，都在同一個公開的儲存庫。平台以 AGPL-3.0 授權；Wiki 工具組與文件格式套件以 Apache-2.0 授權，不依賴 REZICS 的服務。',
       link: '前往原始碼',
       href: shared.footer.sourceUrl,
     },
@@ -698,7 +698,7 @@ export default {
       label: '連結應用',
       meta: {
         title: '連結應用：用 OAuth 取得授權',
-        description: '第三方應用以 OAuth 授權碼加 PKCE 取得權杖。同意畫面用使用者的語言列出每項權限；使用者在帳號的連結應用頁面能看到並移除授權，權杖隨之無法再用。',
+        description: '第三方應用以 OAuth 授權碼加 PKCE 取得權杖。同意畫面依使用者語言列出權限，缺少譯文時用英文；使用者在帳號的連結應用頁面能看到並移除授權，權杖隨之無法再用。',
       },
     },
     {

@@ -150,3 +150,30 @@ Pictures are abstract paper still lifes (V3-SPEC art direction) and claim nothin
    says only "complete export with dates and notes".
 9. **Spoiler voting** has a schema and aggregation policy, but `classification-judgments.md`
    says content spoiler labels have "no complete owner API or qualification yet".
+
+## V3 product claim audit (2026-10-20)
+
+Checked all nine original uncertainty items, all numeric examples, chapter/volume grain, import fields, age labels, publishing permissions and the shared manga kind card.
+
+Sources below are relative to `/home/edge/projects/rezics/rezics-next/` unless marked `about:`.
+Read-only product audit; observed product HEAD: `8b8a2c0a97b5662e6283fa7531a8f1c600f37fd0`.
+The earlier uncertainty notes are historical; the verdicts below resolve this audit.
+Documented plans and legal drafts count as current intent. Rollout gates alone do not require status labels.
+
+| Checked claim | Source path and heading | Verdict |
+|---|---|---|
+| Uncertainty 1: image-only chapters and page-by-page translation | docs/contracts/media.md § Images in the semantic graph; docs/contracts/creation.md § Native creation and reading | Keep as documented intent. Stable page occurrences and per-language representations are explicit; rollout/grant requirements alone do not require labels on this about site. |
+| Uncertainty 2: 原作, 作畫, 插畫 and translator role labels | docs/contracts/content-languages.md § Vocabulary labels are graph content; docs/product/platform-thesis.md § Relations in every language; scripts/dev/seed/relation-lexicon-data.ts § credit roles | Keep. Roles can carry language-specific labels; these are reader-facing descriptions, not assertions of exact seed labels. |
+| Uncertainty 3: owned volumes separate from reading | docs/contracts/work-and-release.md § Explicit identities, targets and units | Keep. Copies and loans are private native records and ownership never implies completion. |
+| Uncertainty 4: manga offers versus direct sales | docs/contracts/distribution.md § Creator distribution; docs/product/platform-thesis.md § Capabilities (Offered) | Keep. Copy records dated offers and native publication, with no manga distribution/payout promise. |
+| Uncertainty 5: Wiki+ without an image-reading local toolkit | docs/contracts/information-verification.md § A big-franchise wiki for every Work | Keep. No claim that the TXT/EPUB/literal-script toolkit reads manga image pages. |
+| Uncertainty 6: threads on indexed chapters | docs/plan/frontend.md § Work page (active Work, part and release threads); docs/contracts/work-and-release.md § Work levels, realizations and versions | Keep. The product explicitly provides part threads, beyond native chapter publication. Narrowed chapter location to the Work structure; a published volume is not required. |
+| Uncertainty 7: import status, dates, score, tags, notes and reread counts | services/main/src/modules/library-import/formats/mal.ts § statuses, malDate and parseMal; docs/contracts/source-lifecycle.md § Reader upload retention | Corrected. Mapped fields can enter native state; repeat counters and chapter/volume evidence do not invent sessions or exact locators. Residual source fields expire seven days after upload. |
+| Uncertainty 8: complete library export with dates and notes | docs/product/capabilities.md § First scenarios; docs/contracts/work-and-release.md § Explicit identities, targets and units; docs/contracts/source-lifecycle.md § Reader upload retention | Keep for native library records; the revised import paragraph explains the seven-day residual-data limit. No claim of a lossless arbitrary-format reimport. |
+| Uncertainty 9: independent spoiler votes, labels and reveal | docs/contracts/classification-judgments.md § Classification, spoilers and measurements; § Remaining contract; § Suitability and disclosure | Keep as documented intent. Reveal changes local viewing state and never casts a vote or grants age/access eligibility. |
+| Chapters 12/13, ten Japanese volumes, volume 3; six inner pages and eight selected parts | docs/contracts/work-and-release.md § Work levels, realizations and versions; about:src/content/sites/manga.ts § pages and progress; about:src/content/kinds.ts § manga.parts | Keep. Progress numbers are illustrative, not catalogue totals; six/eight count the actual local pages/part selection. |
+| ISBN, omnibus coverage, source continuity, publication-year browse and unknown facts | docs/contracts/work-and-release.md § Explicit identities, targets and units; § Catalogue acceptance fixtures; docs/contracts/realm-delivery.md § Publication-year browse | Keep. ISBN belongs to the release grain; accepted published dates drive browse; unknown data stays unknown. |
+| Privacy and AI training; general/R15/R18/R18G settings and unassessed | docs/legal/privacy-policy.md § 3. Why we use information; § 4. Visibility and access; § 5. AI; docs/legal/content-ratings-and-age-policy.md § 2. Our labels | Keep. Private library records are not advertising profiles or training input by default; categories are separate and unassessed is never general. |
+| Scheduled publication, four collaborator permissions, private translations, author control and backup | docs/contracts/creation.md § Creator experience; docs/contracts/content-languages.md § User-submitted translations; docs/contracts/main-version.md § Durable custody; docs/contracts/license-grants.md § AI disclosure and consent | Keep. Publication remains separate from editing, translation publication needs a recorded rights basis, revisions stay exact and creator control does not transfer. |
+| Approved example: author/illustrator, three related novel series, manga artist, spin-off and VN adaptation | about:.temp/ref/EXAMPLE-WORK.md § Verified facts; § How 《魔法禁書目錄》 may appear | Keep the permitted text-only facts and explicit no-partnership wording; no volume totals. |
+| Required versus optional extras | docs/contracts/work-and-release.md § Work levels, realizations and versions | Clarified that optional extras can be skipped; a required structural part is not excluded just because it is a special. |

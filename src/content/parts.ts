@@ -30,7 +30,7 @@ export const parts: Part[] = [
   {
     id: 'facets',
     name: '篩選',
-    gives: '依任何屬性篩選，一路翻到最後一筆，條件能存成檢視。',
+    gives: '依可用欄位篩選，一路翻到最後一筆，條件能存成檢視。',
   },
   {
     id: 'ratings',

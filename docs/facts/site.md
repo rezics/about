@@ -16,24 +16,6 @@ repeat what they say and add nothing.
 | One rating capability serves every kind ("the books rating is the same one MCP Hub uses") | `docs/product/platform-thesis.md#capabilities` (Reviewable, bound to any type) |
 | A correction in any language improves every view of that fact | `docs/product/platform-thesis.md#one-graph-many-language-fronts` |
 
-## 《西遊記》 chapters (home.identity)
-
-The novel is public domain. I did not name any adaptation, publisher or studio.
-
-| Claim | Source |
-| --- | --- |
-| The novel is one Work. Its 100 回 are chapters held in the Work's Structure, and progress is recorded per chapter | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` (chapters are occurrences in Structure with stable IDs and progress); `docs/contracts/creation.md` (progress belongs to stable occurrences) |
-| Each printing or edition has its own release record | `docs/contracts/work-and-release.md#closed-records-and-open-axes`, `#explicit-identities-targets-and-units` |
-| Translations in any language are realizations of the same Work, each with its own translators and rights | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions`; `docs/contracts/content-languages.md` |
-| Different authorship attributions each keep their sources | `docs/contracts/information-verification.md#quality-dimensions-and-records` ("Reviewed and disputed can coexist"). The attribution is genuinely debated; the copy names no author. |
-| An adaptation is its own Work, linked to the original by an adaptation relation | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` (Work relation: adaptation; derivation kinds) |
-| A Work's ratings are its own and do not merge into the novel's | `docs/contracts/ratings.md#scoped-targets-and-roll-ups` (an observation targets exactly one Resource; no implicit roll-up) |
-| Anime seasons and episodes are recorded separately; progress is per episode | `docs/contracts/work-and-release.md#explicit-identities-targets-and-units` ("anime series/seasons/episodes") |
-| One voice credit binds performer, character and Work | `docs/contracts/catalog.md` ("A contextual credit must bind performer, character and Work in one occurrence"). Stated there as a requirement on the remaining profile. |
-| A character is one identity across all the Works | `docs/product/goal.md#three-values-one-bet` ("connected once and reused everywhere"); `docs/contracts/information-verification.md#a-big-franchise-wiki-for-every-work` (fictional entities) |
-| Game releases are recorded per platform | `docs/contracts/work-and-release.md#explicit-identities-targets-and-units` (coverage: region, platform) |
-| Finishing one Work never completes another; correspondence only points the way | `docs/contracts/work-and-release.md#work-levels-realizations-and-versions` ("Correspondence alone transfers no progress or facts") |
-
 ## Community (home.community, community module)
 
 | Claim | Source |
@@ -132,7 +114,7 @@ production API hostname (`docs/operations/release.md`,
 `docs/operations/external-conditions.md` C-01), so the sample uses
 `$REZICS_API` for Main's origin. Put the real origin in when it is decided. The
 equivalent MCP call is the `search_catalogue` tool with
-`{"query": {"q": "西遊記", "limit": 5}}`, but it requires a Bearer token.
+`{"query": {"q": "輕小說", "limit": 5}}`, but it requires a Bearer token.
 
 ## Roadmap
 
@@ -172,3 +154,18 @@ The roadmap statement comes from `docs/product/markets-and-growth.md#strong-dema
 - **Legal statements** (no trackers, no training by default, export, appeals) come from drafts not yet reviewed by counsel, and some still carry `[REZICS TO FILL]` markers. They are the stated direction, not verified operation.
 - **Meta description length.** Total length is 50 to 80 characters. Descriptions heavy in Latin text (developers, zones) have fewer than 50 CJK characters but are similar in display width.
 - **Type check.** A `tsconfig.json` now sits at `about:` root, so the brief's command needs `--ignoreConfig` with TypeScript 7.0.2. With that flag it passes.
+
+## Claims ahead of the product's specification
+
+The 2026-10-20 claim audit found six claims that no rezics-next document settles. The site
+presents every feature as open, so each stays as written; it states the intended behaviour and
+the product should follow it, or the copy changes when the product decides otherwise.
+
+| Claim | Pages | Intended behaviour |
+| --- | --- | --- |
+| Airing times shown in the viewer's time zone | `/anime/`, `/anime/seasons/` | Display defaults to the viewer's local time zone |
+| API, software, MCP server and Skill entries link both ways | `/software/connections/`, `/mcp/`, `/mcp/directory/`, `/apis/connections/` | Provider, consumer, wrapper and uses relations, each shown from both ends |
+| Compatibility records name a language | `/mcp/`, `/mcp/directory/`, `/mcp/evidence/`, `/skills/directory/`, `/skills/evidence/` | The natural language of the task, its input and its output |
+| Tool changes between MCP versions are marked | `/mcp/versions/` | A public comparison of observed tools between versions |
+| Every Skill file listed with path, role, executable flag and hash | `/skills/`, `/skills/versions/`, `/skills/use/` | The public Work page shows the stored file inventory |
+| Authentication and specification recorded per API version, and usable as filters | `/apis/`, `/apis/specs/`, `/apis/directory/`, `/apis/versions/` | Version-level fields in the API Hub manifest, admitted as filter paths |

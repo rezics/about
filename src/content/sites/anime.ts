@@ -147,7 +147,7 @@ const site: MiniSite<AnimeStrings> = {
       meta: {
         title: '動畫進度：一集一集記',
         description:
-          '在 REZICS 記動畫進度：想看、在看、看完、暫停、棄番五種狀態，看完一集記一集，下一集跨季也找得到。重看另記一次，清單可以匯入，也能整份匯出。',
+          '在 REZICS 記動畫進度：想看、在看、看完、暫停、棄番五種狀態，看完一集記一集，依系列順序找下一集。重看另記一次，清單可以匯入，也能整份匯出。',
       },
     },
     {
@@ -210,7 +210,7 @@ const site: MiniSite<AnimeStrings> = {
         headline: '從播出表走到原作；一部動畫的六個面向，各有一頁。',
         lines: [
           { slug: 'seasons', line: '每一季的播出表，照你的時區' },
-          { slug: 'tracking', line: '下一集跨季也找得到' },
+          { slug: 'tracking', line: '依系列順序找下一集' },
           { slug: 'discussion', line: '沒看到的劇情先遮住' },
           { slug: 'ratings', line: '單集和整部，分開計分' },
           { slug: 'credits', line: '每個名字一個身分' },
@@ -227,7 +227,7 @@ const site: MiniSite<AnimeStrings> = {
           alt: '玫瑰色的窄紙條排成四行，像一週一週的日程；其中一條是灰紫色，一處空著。',
         },
       },
-      next: { text: '下一集是哪一集，', muted: '跨了季也找得到，不必回想。' },
+      next: { text: '下一集是哪一集，', muted: '沿著已確認的順序往下找。' },
       spoilers: {
         eyebrow: '每集討論',
         headline: '每一集一串討論，沒看到的先遮住。',
@@ -303,7 +303,7 @@ const site: MiniSite<AnimeStrings> = {
         rows: [
           {
             title: '時間不明，就不寫時間',
-            body: '來源只給了日期，表上就只放日期，排進那一天最前面的「時間未定」，不替它編一個時間。',
+            body: '來源只給了日期，表上就只放日期，標明「時間未定」，不替它編一個時間。',
           },
           {
             title: '播出不等於看得到',
@@ -318,7 +318,7 @@ const site: MiniSite<AnimeStrings> = {
       years: {
         eyebrow: '按年份',
         headline: '按年份瀏覽，一路翻到最後一部。',
-        lead: '選一個年份，目錄裡那一年開播的動畫都會列出，可以一直往下翻。總數算完之前，標的是「至少」多少部。',
+        lead: '選一個年份，目錄裡那一年發表的動畫會依資料列出，可以一直往下翻。總數算完之前，標的是「至少」多少部。',
       },
       next: '追上了和看完了，是兩回事。',
     },
@@ -337,15 +337,15 @@ const site: MiniSite<AnimeStrings> = {
         lead: '私人的觀看紀錄保持私人，除非你自己選擇分享。',
         rows: [
           { title: '想看', body: '先放進清單。之後有新消息，會通知你。' },
-          { title: '在看', body: '記到第幾集；新的一集播出，也會通知你。' },
-          { title: '看完', body: '整部看完。這部作品的 Wiki+，從此全部對你顯示。' },
+          { title: '在看', body: '記到第幾集；有新集數發布時，依通知設定提醒你。' },
+          { title: '看完', body: '整部看完。同一故事脈絡的 Wiki+，預設顯示全部劇情。' },
           { title: '暫停', body: '先停下來，進度留在原地。' },
           { title: '棄番', body: '不看了。紀錄還在，哪天想回來也可以。' },
         ],
       },
       seasons: {
         eyebrow: '跨季',
-        headline: '下一集，跨季也找得到。',
+        headline: '下一集，沿著系列順序找。',
         tiles: [
           { title: '第一季', body: '看完12／12集，接著看第二季' },
           { title: '第二季', body: '已看6／6集，追上目前播出' },
@@ -444,7 +444,7 @@ const site: MiniSite<AnimeStrings> = {
         rows: [
           { title: '故事', body: '劇情、角色與結局。' },
           { title: '製作', body: '作畫、音樂與演出。' },
-          { title: '翻譯', body: '某個語言版本的字幕或配音。' },
+          { title: '翻譯', body: '某個語言版本的字幕譯文，寫明是哪一版。' },
           { title: '這一集', body: '只談單獨一集，評論就留在那一集。' },
           { title: '某一集裡的角色', body: '「這個角色在這一集表現如何」，是另一個題目，有自己的分數。' },
         ],
