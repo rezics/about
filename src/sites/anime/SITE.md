@@ -165,3 +165,45 @@ Focus and reduced motion follow the kit.
 - **The approved example on the adaptations page.** 《魔法禁書目錄》 shows a real story's novel,
   manga, three anime seasons, film and spin-off as separate works with typed relations (text
   only, per `.temp/sites/EXAMPLE-WORK.md`); the family tiles below it stay generic and 示意.
+
+### Validation (2026-10-20, final)
+
+Merged `site/v3` through `62a4613`; the branch's remaining differences are confined to anime's
+own paths. No direct kit, engine, shared-style or shared-content changes.
+
+`task check` passes with zero type errors or warnings and 195 tests in 10 files.
+`task build` passes with 37 pages and their OG images. `task qa` passes for all seven routes.
+Final phone measurements use 390 × 844 at 2× DPR, slow 4G and 4× CPU slowdown:
+
+| Route | LCP (ms) | CLS | axe violations |
+|---|---:|---:|---:|
+| `/anime/` | 1952 | 0 | 0 |
+| `/anime/seasons/` | 1804 | 0 | 0 |
+| `/anime/tracking/` | 1832 | 0 | 0 |
+| `/anime/discussion/` | 1868 | 0 | 0 |
+| `/anime/ratings/` | 2044 | 0.03 | 0 |
+| `/anime/credits/` | 2004 | 0 | 0 |
+| `/anime/adaptations/` | 1960 | 0 | 0 |
+
+All seven reports have no console errors, failed requests, horizontal overflow, small touch
+targets, invisible keyboard focus or reduced-motion hidden text. All sampled primary hover
+targets respond beyond colour. Phone scroll is 60 fps; desktop is 56 to 60 fps on the
+headless software GPU. The keyboard report's English skip-link heuristic says false, but
+the actual first stop is 「跳到主要內容」, visible in every `k-01-focus.png`.
+
+Reviewed every official desktop and phone frame against the approved mock, plus full-page
+captures for every route and the landing at 320, 768, 1024, 1200, 1280 and 1920 px. All 28
+no-JavaScript checks (seven routes at 320, 390, 768 and 1024) show complete text and unclipped
+tiles. The native phone dialog keeps background links inert, closes with Escape and restores
+focus; the desktop popover opens with Enter and closes with Escape. A native browser-chrome
+Tab boundary initially tripped an overly strict temporary test; its recorded focus trail
+confirms no background element receives focus.
+
+The independent three-sample phone check after compression measures landing LCP at 2028,
+2000 and 1932 ms, all CLS 0, versus 2696, 2992 and 2964 ms before compression. All 24 AVIF
+and WebP derivatives fit the image budgets. The static audit has 0 FAIL and 4 WARN, all
+warnings outside anime. Seven unique titles, descriptions and canonicals, OG images,
+JSON-LD, ordered headings and image dimensions/alts pass metadata inspection.
+
+Evidence stays in `.shots/anime*/report.json`, `.shots/review/`, `.shots/final-overview/`,
+`.shots/usability/`, `.shots/anime-performance.json` and `.shots/anime-metadata.json`.
