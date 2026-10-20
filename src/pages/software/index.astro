@@ -1,8 +1,66 @@
 ---
-// STUB: the software site's builder replaces this page (src/kit/README.md).
+// 軟體 landing (v3): the photograph hero, the six pages as tiles, compatibility as a photo row,
+// the statement on 未知, what one identity carries, the neighbouring kinds, the closing.
+// Plan: src/sites/software/SITE.md "v3".
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import TileMasonry from '../../kit/components/TileMasonry.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import Body from '../../sites/software/Body.astro';
+import site from '../../content/sites/software';
+import { heroPicture, kindTile, pageHref, pageTiles, sectionPicture } from '../../sites/software/site';
+
+const s = site.strings.landing;
+const pics = site.strings.pictures;
+// Compatibility and the catalogue lead; the developer pages sit lower.
+const pageColumns = [
+  [{ id: 'catalogue', h: 4 }, { id: 'reviews', h: 3 }],
+  [{ id: 'compatibility', h: 5 }, { id: 'updates', h: 2.6 }],
+  [{ id: 'publishing', h: 3.6 }, { id: 'connections', h: 3.4 }],
+];
+const neighbours = s.neighbours.tiles.map((t) => kindTile(t.kind, t.line));
+const neighbourColumns = [[{ id: 'games', h: 1 }], [{ id: 'mcp', h: 1 }], [{ id: 'skills', h: 1 }, { id: 'apis', h: 1 }]];
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero eyebrow={s.hero.label} title={s.hero.headline} lede={s.hero.lede} image={heroPicture} bar>
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.pages.label} title={s.pages.headline}>
+    <TileMasonry slot="wide" items={pageTiles} columns={pageColumns} height={520} label={s.pages.label} />
+  </Section>
+
+  <PhotoRow
+    side="left"
+    eyebrow={s.compatibility.label}
+    title={s.compatibility.headline}
+    body={s.compatibility.lead}
+    link={{ href: pageHref('compatibility'), text: s.compatibility.link }}
+    image={sectionPicture(pics.holes)}
+  />
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <Section eyebrow={s.program.label} title={s.program.headline}>
+    <FactList items={s.program.items} />
+  </Section>
+
+  <PhotoRow
+    side="right"
+    eyebrow={s.neighbours.label}
+    title={s.neighbours.headline}
+    body={s.neighbours.lead}
+    link={{ href: pageHref('connections'), text: s.neighbours.link }}
+    image={sectionPicture(pics.tabs)}
+  />
+  <Body wide>
+    <TileMasonry items={neighbours} columns={neighbourColumns} height={320} label={s.neighbours.label} />
+  </Body>
+
+  <Closing title={s.closing} />
 </MiniSiteLayout>

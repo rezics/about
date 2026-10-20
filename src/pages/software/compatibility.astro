@@ -1,0 +1,54 @@
+---
+// 相容性 (v3): what a measurement records, the five states with the sample table, conditions
+// bound to one release, evidence and scope. Plan: src/sites/software/SITE.md "v3".
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Body from '../../sites/software/Body.astro';
+import Next from '../../sites/software/Next.astro';
+import CompatTable from '../../sites/software/CompatTable.astro';
+import PhonePhotoPreload from '../../sites/software/PhonePhotoPreload.astro';
+import site from '../../content/sites/software';
+import { nextTiles, sectionPicture } from '../../sites/software/site';
+
+const s = site.strings.compatibility;
+const { states, common, pictures } = site.strings;
+const stateRows = (Object.keys(s.states.body) as (keyof typeof states)[]).map((id) => ({ title: states[id], body: s.states.body[id] }));
+---
+<MiniSiteLayout>
+  <PhonePhotoPreload image={sectionPicture(pictures.holes)} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="left" eyebrow={s.anatomy.label} title={s.anatomy.headline} body={s.anatomy.lead} image={sectionPicture(pictures.holes)} />
+  <Body>
+    <FactList items={s.anatomy.rows} />
+  </Body>
+
+  <Section eyebrow={s.states.label} title={s.states.headline} lead={s.states.lead}>
+    <FactList items={stateRows} />
+    <div class="sw-gap"><CompatTable caption={s.states.caption} corner={s.states.corner} /></div>
+  </Section>
+
+  <Section eyebrow={s.conditions.label} title={s.conditions.headline} lead={[s.conditions.lead, s.conditions.example]}>
+    <FactList items={s.conditions.candidates} />
+    <p class="lead sw-result">{s.conditions.result}</p>
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} note={s.statement.note} />
+
+  <Next label={common.nextPage} items={nextTiles('compatibility')} />
+  <Closing title={s.closing} />
+</MiniSiteLayout>
+
+<style>
+  .sw-gap { margin-top: 72px; }
+  .sw-result { margin-top: 32px; max-width: 34em; font-size: 17px; }
+  @media (max-width: 767px) {
+    .sw-gap { margin-top: 44px; }
+    .sw-result { font-size: 16px; }
+  }
+</style>

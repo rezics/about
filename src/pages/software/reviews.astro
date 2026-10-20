@@ -1,0 +1,41 @@
+---
+// 評價 (v3): the rules beside a score, what a score answers, nothing drawn without ratings,
+// accountable picks and reasoned alternatives. Plan: src/sites/software/SITE.md "v3".
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/software/Next.astro';
+import site from '../../content/sites/software';
+import { nextTiles } from '../../sites/software/site';
+
+const s = site.strings.reviews;
+const { common } = site.strings;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.rules.label} title={s.rules.headline}>
+    <FactList items={s.rules.facts} class="sw-numbers" />
+  </Section>
+
+  <Section eyebrow={s.anatomy.label} title={s.anatomy.headline} lead={s.anatomy.lead}>
+    <FactList items={s.anatomy.points} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <Section eyebrow={s.picks.label} title={s.picks.headline}>
+    <FactList items={s.picks.rows} />
+  </Section>
+
+  <Next label={common.nextPage} items={nextTiles('reviews')} />
+  <Closing title={s.closing} />
+</MiniSiteLayout>
+
+<style>
+  /* The three rule numbers are the titles: set large in the serif. */
+  :global(.sw-numbers .facts__title) { font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem); font-weight: 500; line-height: 1.05; font-variant-numeric: tabular-nums; }
+</style>

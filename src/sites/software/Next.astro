@@ -1,0 +1,31 @@
+---
+/**
+ * The end of an inner page, before the closing: the next pages (or the next site) as flat tiles
+ * in one row, under a quiet eyebrow. A navigation landmark, so the tiles need no heading.
+ */
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+
+interface Props {
+  label: string;
+  items: MasonryItem[];
+}
+const { label, items } = Astro.props;
+const columns = items.map((it) => [{ id: it.id, h: 1 }]);
+const phone = [items.map((it) => ({ id: it.id }))];
+---
+<nav class="sw-next" aria-label={label}>
+  <div class="grid">
+    <p class="eyebrow sw-next__eyebrow">{label}</p>
+    <div class="sw-next__tiles" data-reveal="up">
+      <TileMasonry items={items} columns={columns} phone={phone} height={240} phoneRow={150} />
+    </div>
+  </div>
+</nav>
+<style>
+  .sw-next { padding-top: var(--space-section); }
+  .sw-next__eyebrow { grid-column: 1 / 4; padding-top: 14px; }
+  .sw-next__tiles { grid-column: 4 / 13; min-width: 0; }
+  @media (max-width: 767px) {
+    .sw-next__eyebrow { padding: 0 0 14px; }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+/** PhotoRow loads lazily and the mini-site layout does not forward a head slot. Its first
+ * photograph is visible on these phone openings, so issue the resource hint before the copy. */
+interface Props {
+  image: { phone: { src: string; widths: number[] } };
+}
+const { phone } = Astro.props.image;
+const widths = [...phone.widths].sort((a, b) => a - b);
+---
+<link
+  rel="preload"
+  as="image"
+  type="image/avif"
+  media="(max-width: 767px)"
+  href={`${phone.src}-${widths[0]}.avif`}
+  imagesrcset={widths.map(width => `${phone.src}-${width}.avif ${width}w`).join(', ')}
+  imagesizes="100vw"
+  fetchpriority="high"
+/>

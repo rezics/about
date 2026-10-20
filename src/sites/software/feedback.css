@@ -1,0 +1,34 @@
+/* The kit handles header and standalone-link feedback. The local site tabs still need the
+   same quiet rise/press response, scoped to software and without motion at rest. */
+[data-site='software'] :is(.sitebar__home, .sitebar__tab) {
+  transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-soft);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-site='software'] :is(.sitebar__home, .sitebar__tab):hover {
+    translate: 0 -2px;
+  }
+}
+
+[data-site='software'] :is(.sitebar__home, .sitebar__tab):active {
+  translate: 0 0;
+}
+
+/* The phrase pass may put its final break directly before the statement's closing mark.
+   Keep that mark attached to the preceding phrase across the ink/quiet span boundary. */
+[data-site='software'] .stmt__text > wbr:last-of-type {
+  display: none;
+}
+
+/* Keep each hero clause on one line as the grid switches to five columns. The wider gap
+   also holds the headline above the fanned paper's lower edge on tall laptop screens. */
+@media (min-width: 1024px) and (max-width: 1399px) {
+  [data-site='software'] .phero__title { font-size: clamp(40px, 4vw, 56px); }
+  [data-site='software'] .phero__lede { margin-top: 48px; }
+}
+
+@media (max-width: 767px) {
+  /* Stop horizontal navigation on whole labels after touch or the kit's initial centring. */
+  [data-site='software'] .sitebar__tabs { scroll-snap-type: x mandatory; }
+  [data-site='software'] .sitebar__tabs > li { scroll-snap-align: start; }
+}

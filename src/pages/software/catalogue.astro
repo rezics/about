@@ -1,0 +1,49 @@
+---
+// 目錄與版本 (v3): one identity per program; each release sealed; no download counts; names
+// and identity; conditions bound to one release. Plan: src/sites/software/SITE.md "v3".
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Table from '../../kit/components/Table.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Body from '../../sites/software/Body.astro';
+import Next from '../../sites/software/Next.astro';
+import PhonePhotoPreload from '../../sites/software/PhonePhotoPreload.astro';
+import site from '../../content/sites/software';
+import { nextTiles, sectionPicture } from '../../sites/software/site';
+
+const s = site.strings.catalogue;
+const { sample, channels, common, pictures } = site.strings;
+const rows = sample.releases.map((r) => [r.version, channels[r.channel], r.date, r.platforms]);
+---
+<MiniSiteLayout>
+  <PhonePhotoPreload image={sectionPicture(pictures.versions)} />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <PhotoRow side="right" eyebrow={s.releases.label} title={s.releases.headline} body={s.releases.lead} image={sectionPicture(pictures.versions)} />
+  <Body>
+    <Table columns={[...s.list.columns]} rows={rows} caption={s.list.caption} class="sw-releases" />
+    <FactList items={s.list.points} />
+  </Body>
+
+  <Statement text={s.statement.text} sub={s.statement.sub} />
+
+  <Section eyebrow={s.identity.label} title={s.identity.headline}>
+    <FactList items={s.identity.rows} />
+  </Section>
+
+  <Section eyebrow={s.browse.label} title={s.browse.headline} lead={s.browse.lead}>
+    <FactList items={s.browse.points} />
+  </Section>
+
+  <Next label={common.nextPage} items={nextTiles('catalogue')} />
+  <Closing title={s.closing} />
+</MiniSiteLayout>
+
+<style>
+  :global(.sw-releases th[scope='row']) { font-variant-numeric: tabular-nums; }
+  :global(.sw-releases td) { font-variant-numeric: tabular-nums; }
+</style>
