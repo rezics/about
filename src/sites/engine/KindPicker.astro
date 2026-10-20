@@ -1,0 +1,126 @@
+---
+/**
+ * The kind picker on /engine/ (SITE.md "v3", section 2): nine flat kind tiles as a radio group;
+ * the chosen kind's eight parts follow as a hairline list (part name left, what it does for this
+ * kind right, from kinds.ts) with a link to the kind's site. CSS only (`:has()` on the radios):
+ * each radio lies over its tile, so the focus ring is drawn on the radio itself; the chosen tile
+ * carries an inner ring and an arrow down to its list. Books is chosen at first. Wide screens:
+ * one row of nine; under 1200 px five and four, ending level; phones three columns.
+ */
+import FactList from '../../kit/components/FactList.astro';
+import Arrow from '../../kit/components/Arrow.astro';
+import { kinds, kindHref, partById } from '../../kit/content';
+import { inkOn, kindFields } from '../../kit/theme';
+import engine from '../../content/sites/engine';
+
+const p = engine.strings.picker;
+const fill = (t: string, kind: string) => t.replaceAll('{kind}', kind);
+const latin = (name: string) => !/[⺀-鿿豈-﫿]/.test(name);
+// One rule per kind: its checked radio shows its panel.
+const css = kinds.map((k) => `.pick:has(#pick-${k.id}:checked) .pick__panel--${k.id}{display:grid}`).join('');
+---
+<fieldset class="pick">
+  <legend class="sr-only">{p.legend}</legend>
+  <div class="pick__tiles">
+    {kinds.map((k, i) => {
+      const f = kindFields[k.id];
+      return (
+        <label class:list={['pick__tile', f.on === 'ink' && 'pick__tile--ink']} style={`--c:${f.field};--on:${inkOn(f.field, f.on)}`}>
+          <input class="pick__radio" type="radio" name="pick-kind" id={`pick-${k.id}`} value={k.id} aria-label={k.name} aria-controls={`pick-panel-${k.id}`} checked={i === 0} />
+          <span class:list={['pick__name', latin(k.name) ? 'pick__name--latin' : 'serif']}>{k.name}</span>
+          <svg class="pick__mark" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M8 3v9.5M4 8.5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </label>
+      );
+    })}
+  </div>
+  <div class="pick__panels">
+    {kinds.map((k) => (
+      <section id={`pick-panel-${k.id}`} class:list={['pick__panel', `pick__panel--${k.id}`]} aria-labelledby={`pick-title-${k.id}`}>
+        <div class="pick__head">
+          <h3 id={`pick-title-${k.id}`} class="pick__title">{fill(p.listTitle, k.name)}</h3>
+          <p class="pick__link"><a class="link-draw" href={kindHref(k.id)}>{fill(p.link, k.name)}<Arrow /></a></p>
+        </div>
+        <FactList class="pick__list" level="h4" items={k.parts.map((id) => ({ title: partById(id).name, body: k.partNotes[id] ?? partById(id).gives }))} />
+      </section>
+    ))}
+  </div>
+</fieldset>
+<p class="pick__note">{p.note}</p>
+<style is:inline set:html={css}></style>
+<style>
+  .pick { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .pick__tiles { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .pick__tile {
+    --pad: clamp(14px, 1.2vw, 18px);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    min-height: 128px;
+    padding: var(--pad);
+    background: var(--c);
+    color: var(--on);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.4s var(--ease-snap), scale 0.14s var(--ease-soft);
+  }
+  /* The radio covers its tile: clicking anywhere chooses, and its focus ring is the tile's. */
+  .pick__radio {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    appearance: none;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .pick__radio:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .pick__name { font-size: clamp(1.0625rem, 0.85rem + 0.45vw, 1.3125rem); font-weight: 600; line-height: 1.3; letter-spacing: 0.04em; white-space: nowrap; transition: translate 0.5s var(--ease-snap); }
+  .pick__name--latin { font-family: var(--f-body); font-weight: 500; letter-spacing: 0.01em; }
+  .pick__mark { position: absolute; top: var(--pad); right: var(--pad); width: 16px; height: 16px; opacity: 0; transition: opacity 0.3s var(--ease-snap); }
+  .pick__tile:has(.pick__radio:checked) { box-shadow: inset 0 0 0 7px var(--c), inset 0 0 0 9px var(--on); }
+  .pick__tile:has(.pick__radio:checked) .pick__mark { opacity: 1; }
+  @media (hover: hover) {
+    .pick__tile:hover { background: color-mix(in oklab, var(--c) 88%, #000); }
+    .pick__tile--ink:hover { background: color-mix(in oklab, var(--c) 86%, #fff); }
+    .pick__tile:hover .pick__name { translate: 0 -4px; }
+  }
+  .pick__tile:active { scale: 0.985; }
+  .pick__panels { margin-top: 64px; }
+  .pick__panel {
+    display: none;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+  .pick__head { grid-column: 1 / 4; }
+  .pick__title { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.625rem); line-height: 1.45; }
+  .pick__link { margin-top: 20px; }
+  .pick :global(.pick__list) { grid-column: 4 / 13; }
+  .pick__note { margin-top: 32px; margin-left: calc((100% + var(--gutter)) * 3 / 12); max-width: 36em; font-size: 14px; line-height: 1.8; color: var(--c-muted); }
+  @media (max-width: 1199px) {
+    .pick__tiles { grid-template-columns: repeat(20, minmax(0, 1fr)); }
+    .pick__tile { grid-column: span 4; min-height: 104px; }
+    .pick__tile:nth-child(n + 6) { grid-column: span 5; }
+  }
+  @media (max-width: 767px) {
+    .pick__tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .pick__tile, .pick__tile:nth-child(n + 6) { grid-column: auto; min-height: 72px; }
+    .pick__name { font-size: 17px; }
+    .pick__mark { top: 10px; right: 10px; width: 14px; height: 14px; }
+    .pick__panels { margin-top: 40px; }
+    .pick__panel { grid-template-columns: minmax(0, 1fr); }
+    .pick__head, .pick :global(.pick__list) { grid-column: 1 / -1; }
+    .pick__head { margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+    .pick__link { margin-top: 0; }
+    .pick__note { margin-left: 0; }
+  }
+  @media (max-width: 359px) {
+    .pick__tile { --pad: 10px; }
+    .pick__name { font-size: 16px; letter-spacing: 0.02em; }
+  }
+</style>

@@ -1,8 +1,76 @@
 ---
-// STUB: the engine site's builder replaces this page (src/kit/README.md).
+// The modules overview (v3; src/sites/engine/SITE.md): the hero, the kind picker (each kind's
+// eight parts), the statement, the fifteen parts, the five modules, a new kind as configuration,
+// the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import KindPicker from '../../sites/engine/KindPicker.astro';
+import PartsIndex from '../../sites/engine/PartsIndex.astro';
+import { modules, moduleHref } from '../../kit/content';
+import { moduleFields } from '../../kit/theme';
+import site from '../../content/sites/engine';
+import '../../sites/engine/hero.css';
+
+const s = site.strings;
+const tiles: MasonryItem[] = modules.map((m) => ({
+  id: m.id,
+  name: m.name,
+  line: s.modules.roles[m.id],
+  href: moduleHref(m.id),
+  bg: moduleFields[m.id].field,
+  on: moduleFields[m.id].on,
+}));
+// The index first and tallest, the other four in two columns of two.
+const columns = [[{ id: 'universal-index', h: 1 }], [{ id: 'community', h: 1 }, { id: 'zones', h: 1 }], [{ id: 'create', h: 1 }, { id: 'trust', h: 1 }]];
+const phone = [[{ id: 'universal-index' }], [{ id: 'community' }, { id: 'zones' }], [{ id: 'create' }, { id: 'trust' }]];
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    bar
+    class="modules-hero"
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/engine/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: s.hero.alt,
+      position: '100% 40%',
+      phone: { src: '/images/sites/engine/hero-phone', widths: [640, 780, 960], width: 960, height: 640 },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.picker.label} title={s.picker.headline} lead={s.picker.lead}>
+    <KindPicker slot="wide" />
+  </Section>
+
+  <Statement text={s.statement[0]} sub={s.statement[1]} />
+
+  <Section eyebrow={s.parts.label} title={s.parts.headline} lead={s.parts.lead}>
+    <PartsIndex />
+  </Section>
+
+  <Section eyebrow={s.modules.label} title={s.modules.headline} lead={s.modules.lead}>
+    <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={440} phoneRow={128} label={s.modules.label} />
+  </Section>
+
+  <Section eyebrow={s.config.label} title={s.config.headline} lead={s.config.lead}>
+    <FactList items={s.config.items} />
+    <p class="config-note">{s.config.note}</p>
+  </Section>
+
+  <Closing title={s.closing} />
 </MiniSiteLayout>
+
+<style>
+  .config-note { margin-top: 32px; max-width: 34em; font-size: 16px; line-height: 1.9; color: var(--c-text); }
+</style>

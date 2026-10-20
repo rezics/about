@@ -1,0 +1,31 @@
+---
+/**
+ * A Zone's routes as a table of contents (站點, section 2): the kit's hairline list with the
+ * route's title in the serif on the left and its path on the right; a child route is indented
+ * under its parent. A caption names the example as illustrative (示意).
+ */
+interface Props {
+  entries: { title: string; path: string; depth?: 1; note?: string }[];
+  caption: string;
+}
+const { entries, caption } = Astro.props;
+---
+<p class="routes__caption">{caption}</p>
+<ul class="routes" role="list">
+  {entries.map((e) => (
+    <li class:list={['routes__row', e.depth && 'routes__row--child']}>
+      <p class="routes__title serif">{e.title}{e.note && <span class="routes__note">{e.note}</span>}</p>
+      <p class="routes__path" translate="no">{e.path}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .routes__caption { margin-bottom: 20px; font-size: 13px; line-height: 1.6; color: var(--c-muted); }
+  .routes { border-top: 1px solid var(--c-line); }
+  .routes__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 4px var(--gutter); align-items: baseline; padding: 20px 0 22px; border-bottom: 1px solid var(--c-line); }
+  .routes__row--child .routes__title { padding-left: 1.5em; }
+  .routes__title { font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem); font-weight: 600; line-height: 1.55; }
+  .routes__note { margin-left: 0.8em; font-family: var(--f-body); font-size: 13px; font-weight: 400; color: var(--c-muted); }
+  .routes__path { font-size: 15px; line-height: 1.7; color: var(--c-text); overflow-wrap: anywhere; }
+  @media (max-width: 767px) { .routes__row { grid-template-columns: minmax(0, 1fr); padding: 18px 0 20px; } }
+</style>
