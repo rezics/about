@@ -46,6 +46,19 @@ const phone = [items.slice(0, 2), items.slice(2, 4), items.slice(4)].map((row) =
   .ring__tiles { grid-column: 1 / 13; margin-top: 28px; min-width: 0; }
   .ring__back { grid-column: 1 / 13; margin-top: 28px; }
   .ring :global(.tile__rel) { font-size: 13px; }
+  .ring__back a { display: inline-flex; transition: color var(--d-s) var(--ease-soft), translate var(--d-m) var(--ease-snap); }
+  @media (hover: hover) {
+    .ring__back a:hover { translate: 0 -3px; }
+  }
+  .ring__back a:focus-visible { translate: 0 -3px; }
+  .ring__back a:active { translate: 0 1px; }
+  @media (max-width: 359px) {
+    .ring :global(.tile) { --tile-name: 20px; }
+    .ring :global(.tile__top) { position: static; margin-bottom: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ring__back a { transition: none; }
+  }
   @media (max-width: 767px) {
     .ring__tiles { margin-top: 16px; }
   }

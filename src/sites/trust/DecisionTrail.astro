@@ -1,0 +1,41 @@
+---
+import { inkOn, moduleFields } from '../../kit/theme';
+interface Props {
+  label: string;
+  stages: string[];
+  items: { title: string; body: string }[];
+}
+const { label, stages, items } = Astro.props;
+const fields = [moduleFields['universal-index'], moduleFields.zones, moduleFields.trust];
+---
+<figure class="decision-trail">
+  <figcaption class="decision-trail__label eyebrow">{label}</figcaption>
+  <ol role="list">
+    {items.map((item, index) => {
+      const field = fields[index % fields.length]!;
+      return (
+        <li style={`--sheet:${field.field};--sheet-ink:${inkOn(field.field, field.on)}`}>
+          <p class="decision-trail__stage">{stages[index]}</p>
+          <h3 class="serif">{item.title}</h3>
+          <p class="decision-trail__body">{item.body}</p>
+        </li>
+      );
+    })}
+  </ol>
+</figure>
+<style>
+  .decision-trail { margin-bottom: 56px; }
+  .decision-trail__label { margin-bottom: 16px; }
+  ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3px; margin: 0; padding: 0; list-style: none; }
+  li { min-width: 0; padding: 24px; background: var(--sheet); color: var(--sheet-ink); }
+  .decision-trail__stage { font-size: 13px; line-height: 1.8; }
+  h3 { margin-top: 44px; font-size: 22px; line-height: 1.55; }
+  .decision-trail__body { margin-top: 20px; font-size: 16px; line-height: 1.9; }
+  @media (max-width: 767px) {
+    .decision-trail { margin-bottom: 36px; }
+    ol { grid-template-columns: 1fr; }
+    li { padding: 24px; }
+    h3 { margin-top: 28px; font-size: 22px; }
+    .decision-trail__body { margin-top: 16px; }
+  }
+</style>

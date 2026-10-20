@@ -11,7 +11,9 @@ import Statement from '../../../kit/components/Statement.astro';
 import ProductCall from '../../../kit/components/ProductCall.astro';
 import FactGrid from '../../../sites/community/FactGrid.astro';
 import Account from '../../../sites/create/Account.astro';
+import EditionRecord from '../../../sites/create/EditionRecord.astro';
 import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
+import ModuleContents from '../../../sites/community/ModuleContents.astro';
 import { site as shared } from '../../../kit/content';
 import site from '../../../content/sites/create';
 
@@ -37,34 +39,45 @@ const s = site.strings;
     <ProductCall />
   </PhotoHero>
 
-  <Section eyebrow={s.writing.label} title={s.writing.headline} lead={s.writing.lead}>
+  <ModuleContents label={s.contentsLabel} items={[
+    { id: "create-writing", label: s.writing.label },
+    { id: "create-world", label: s.world.label },
+    { id: "create-chapters", label: s.chapters.label },
+    { id: "create-editions", label: s.editions.label },
+    { id: "create-rights", label: s.rights.label },
+    { id: "create-sell", label: s.sell.label },
+    { id: "create-account", label: s.account.label },
+  ]} />
+
+  <Section id="create-writing" eyebrow={s.writing.label} title={s.writing.headline} lead={s.writing.lead}>
     <FactList items={s.writing.facts!} />
   </Section>
 
-  <Section eyebrow={s.world.label} title={s.world.headline} lead={s.world.lead}>
+  <Section id="create-world" eyebrow={s.world.label} title={s.world.headline} lead={s.world.lead}>
     <FactGrid items={s.world.facts!} label={s.world.headline} />
   </Section>
 
-  <Section eyebrow={s.chapters.label} title={s.chapters.headline} lead={s.chapters.lead}>
+  <Section id="create-chapters" eyebrow={s.chapters.label} title={s.chapters.headline} lead={s.chapters.lead}>
     <FactList items={s.chapters.facts!} />
   </Section>
 
-  <Section eyebrow={s.editions.label} title={s.editions.headline} lead={s.editions.lead}>
+  <Section id="create-editions" eyebrow={s.editions.label} title={s.editions.headline} lead={s.editions.lead}>
+    <EditionRecord {...s.editions.specimen} />
     <FactGrid items={s.editions.facts!} label={s.editions.headline} />
     <p class="module-note phrase">{s.editions.note}</p>
   </Section>
 
   <Statement text={s.copyright.statement} sub={s.copyright.sub} />
 
-  <Section eyebrow={s.rights.label} title={s.rights.headline} lead={s.rights.lead}>
+  <Section id="create-rights" eyebrow={s.rights.label} title={s.rights.headline} lead={s.rights.lead}>
     <FactList items={s.rights.facts!} />
   </Section>
 
-  <Section eyebrow={s.sell.label} title={s.sell.headline} lead={s.sell.lead}>
+  <Section id="create-sell" eyebrow={s.sell.label} title={s.sell.headline} lead={s.sell.lead}>
     <FactGrid items={s.sell.facts!} label={s.sell.headline} />
   </Section>
 
-  <Section eyebrow={s.account.label} title={s.account.headline} lead={s.account.lead}>
+  <Section id="create-account" eyebrow={s.account.label} title={s.account.headline} lead={s.account.lead}>
     <Account rows={s.account.rows} deduct={s.account.deduct} caption={s.account.caption} label={s.account.label} />
   </Section>
 

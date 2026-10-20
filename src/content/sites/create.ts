@@ -5,10 +5,17 @@ import type { ModuleFamilyStrings, ModuleSection, ModuleStatement } from './comm
 
 export interface CreateStrings {
   hero: { headline: string; lede: string; imageAlt: string };
+  contentsLabel: string;
   writing: ModuleSection;
   world: ModuleSection;
   chapters: ModuleSection;
-  editions: ModuleSection;
+  editions: ModuleSection & {
+    specimen: {
+      label: string;
+      items: { title: string; value: string; unit: string; note: string }[];
+      caption: string;
+    };
+  };
   copyright: ModuleStatement;
   rights: ModuleSection;
   sell: ModuleSection;
@@ -23,6 +30,7 @@ export interface CreateStrings {
 }
 
 const strings: CreateStrings = {
+  contentsLabel: '本頁內容',
   hero: {
     headline: '作者、版次與權利，每一筆都記清楚。',
     lede: '寫稿、排程、發出章節都在這裡。每次正式發行都封存起來，譯本與授權逐筆記名；直接賣書與遊戲時，結算單列出每一筆扣除。',
@@ -67,12 +75,20 @@ const strings: CreateStrings = {
   },
   editions: {
     label: '版次',
+    specimen: {
+      label: '版次示意',
+      items: [
+        { title: '主版本', value: '13', unit: '章', note: '加入新章後繼續更新' },
+        { title: '已封存的第一版', value: '12', unit: '章', note: '仍是發行當時的內容' },
+      ],
+      caption: '同一部作品，第十三章加入主版本後，第一版仍只收錄前十二章。',
+    },
     headline: '發行過的就封存，後來的另立一筆。',
     lead: '每部作品有一條持續更新的主版本，新的章節與語言一直加進來。正式發行則是從主版本封存下來的紀錄，只記當時真正出版的內容；之後的翻譯與增補，一律另立一筆，再指回它的來源。',
     facts: [
       { title: '主版本', body: '每部作品都有唯一的主版本，所有讀者從這裡進來。新的章節、新的語言都加在這裡，作品的身分不會因此分岔。' },
       { title: '網路連載', body: '在網路上連載的版本，也算一種發行。內容會變，所以記下原始網址與每一次的日期快照，每張快照各自封存。' },
-      { title: '固定版本', body: '選好已發布的內容，封存成一個固定版本，以示意章節為例，第一版收錄第 1 到 12 章。之後再出新章，也不會出現在這一版裡。' },
+      { title: '固定版本', body: '選好已發布的內容，封存成一個固定版本。之後再出新章，也不會出現在這一版裡。' },
       { title: '一版，多個通路', body: '一個版本可以同時放在許多商店與網站，地方再多都只是一筆發行；擅自轉貼的版本另立紀錄，從不併入正式版。' },
       { title: '譯本', body: '譯本是新的內容版本，寫明譯自哪一次修訂或哪一版。來源不清楚就標成未確定，不靠猜。' },
       {

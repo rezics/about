@@ -5,9 +5,10 @@ import type { Figure, ModuleFamilyStrings, ModuleSection } from './community';
 
 export interface TrustStrings {
   hero: { headline: string; lede: string; imageAlt: string };
+  contentsLabel: string;
   marks: ModuleSection;
   imports: ModuleSection;
-  humans: ModuleSection;
+  humans: ModuleSection & { trail: { label: string; stages: string[] } };
   /** Numbers written into the policies: a numeral, its unit and one sentence. */
   numbers: ModuleSection & { figures: Figure[] };
   views: ModuleSection;
@@ -17,6 +18,7 @@ export interface TrustStrings {
 }
 
 const strings: TrustStrings = {
+  contentsLabel: '本頁內容',
   hero: {
     headline: '誰決定、根據什麼，都看得到。',
     lede: '事實寫明來源，授權寫明條款，管理決定寫明依據的規則與證據。審核、爭議與申訴一筆一筆加上去，後來的不會蓋掉先前的。',
@@ -62,6 +64,10 @@ const strings: TrustStrings = {
   },
   humans: {
     label: '申訴與決定',
+    trail: {
+      label: '封面移除與申訴示意',
+      stages: ['原決定', '申訴', '新決定'],
+    },
     headline: '拍板的是人。',
     lead: '檢舉與權利申訴都是指控，不是結論。由人判斷該走一般爭議，還是法定的通知與反通知程序；決定寫明依據的規則與證據，也只作用在被指出的內容與用途上。',
     facts: [

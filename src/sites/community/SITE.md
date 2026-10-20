@@ -299,3 +299,13 @@ The first critic reviewed the production full-page captures and 320/768/1024 px 
 The complete three-page QA measured phone LCP at 2308 ms (community), 2868 ms (create), 2592 ms (trust), with CLS 0 and axe 0 throughout. Add 780 × 520 sources for create and trust so the 390 px / DPR 2 phone no longer decodes a 960 px source. AVIF payloads are 20,368 and 17,113 bytes, respectively; WebP fallbacks are 13,930 and 10,954 bytes. Existing 640 and 960 sources remain for other pixel densities. Recheck the changed pages with the same QA runner and shared semaphore against the newly verified production build.
 
 The supplemental captures confirmed left-aligned cropping, but showed that the first medium-width type override tied the scoped PhotoHero rule and lost by source order. `.phero.module-hero .phero__title` now has sufficient specificity to apply 32–52 px at 768–1399 px. Verify computed sizes as well as the resulting two-line heading. The 1440 px and 390 px layouts are unaffected.
+
+### Second independent visual review and final refinements
+
+The fresh second critic read all desktop, phone, reduced-motion, keyboard, hover and transition captures, plus the extra widths and full pages. Scores: Design 7.6, Usability 7.9, Creativity 7.3, Content 8.2, weighted 7.69. The material reads as a paper archive where identities, versions, rights and decisions remain traceable. The refreshed phone sample cleared the trust FPS concern (60 FPS / 17 ms).
+
+The reviewer found a concrete 320 px collision in the active create tile. Below 360 px, the ring now sets names to 20 px and puts the active marker in normal flow with a 12 px gap; the five-module structure remains unchanged. Supplemental captures confirm that the five-character name stays together.
+
+To address the long-page rhythm and revisiting: add a compact section index after the hero on all three pages, with real heading anchors and 44 px targets. The existing edition example becomes a paired flat-paper comparison, explicitly marked 示意; the trust cover-removal and appeal facts become three consecutive flat sheets, preserving the original decision alongside the later records. Copy remains in the three owned content files. The opening and closing stay in the agreed family.
+
+The reviewer also found weak primary text-link feedback. The ring overview link and, through body[data-site] selectors in the owned module stylesheet, the header action and logo now rise 3 px on hover/focus and press down on activation. No shared source files were changed. Clipped rest/hover captures and computed styles confirm the motion; reduced motion removes the transition. These small local adjustments are the kit workaround to port if the maintainer wants the same treatment elsewhere.

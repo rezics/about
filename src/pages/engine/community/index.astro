@@ -13,6 +13,7 @@ import FactGrid from '../../../sites/community/FactGrid.astro';
 import Byline from '../../../sites/community/Byline.astro';
 import Figures from '../../../sites/community/Figures.astro';
 import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
+import ModuleContents from '../../../sites/community/ModuleContents.astro';
 import { site as shared } from '../../../kit/content';
 import site from '../../../content/sites/community';
 
@@ -38,36 +39,46 @@ const s = site.strings;
     <ProductCall />
   </PhotoHero>
 
-  <Section eyebrow={s.person.label} title={s.person.headline} lead={s.person.lead}>
+  <ModuleContents label={s.contentsLabel} items={[
+    { id: "community-person", label: s.person.label },
+    { id: "community-lead", label: s.lead.label },
+    { id: "community-realm", label: s.realm.label },
+    { id: "community-ratings", label: s.ratings.label },
+    { id: "community-follow", label: s.follow.label },
+    { id: "community-feed", label: s.feed.label },
+    { id: "community-recognition", label: s.recognition.label },
+  ]} />
+
+  <Section id="community-person" eyebrow={s.person.label} title={s.person.headline} lead={s.person.lead}>
     <FactList items={s.person.facts!} />
   </Section>
 
-  <Section eyebrow={s.lead.label} title={s.lead.headline} lead={s.lead.lead}>
+  <Section id="community-lead" eyebrow={s.lead.label} title={s.lead.headline} lead={s.lead.lead}>
     <Byline {...s.lead.specimen} />
     <FactList items={s.lead.facts!} />
     <p class="module-note phrase">{s.lead.note}</p>
   </Section>
 
-  <Section eyebrow={s.realm.label} title={s.realm.headline} lead={s.realm.lead}>
+  <Section id="community-realm" eyebrow={s.realm.label} title={s.realm.headline} lead={s.realm.lead}>
     <FactGrid items={s.realm.facts!} label={s.realm.headline} />
   </Section>
 
   <Statement text={s.leave.statement} sub={s.leave.sub} />
 
-  <Section eyebrow={s.ratings.label} title={s.ratings.headline} lead={s.ratings.lead}>
+  <Section id="community-ratings" eyebrow={s.ratings.label} title={s.ratings.headline} lead={s.ratings.lead}>
     <Figures figures={s.ratings.figures} label={s.ratings.headline} />
     <p class="module-note phrase">{s.ratings.note}</p>
   </Section>
 
-  <Section eyebrow={s.follow.label} title={s.follow.headline} lead={s.follow.lead}>
+  <Section id="community-follow" eyebrow={s.follow.label} title={s.follow.headline} lead={s.follow.lead}>
     <FactGrid items={s.follow.facts!} label={s.follow.headline} />
   </Section>
 
-  <Section eyebrow={s.feed.label} title={s.feed.headline} lead={s.feed.lead}>
+  <Section id="community-feed" eyebrow={s.feed.label} title={s.feed.headline} lead={s.feed.lead}>
     <FactList items={s.feed.facts!} />
   </Section>
 
-  <Section eyebrow={s.recognition.label} title={s.recognition.headline} lead={s.recognition.lead} />
+  <Section id="community-recognition" eyebrow={s.recognition.label} title={s.recognition.headline} lead={s.recognition.lead} />
 
   <ModuleEnd current="community" family={s.family} />
 </MiniSiteLayout>

@@ -33,6 +33,7 @@ export interface ModuleStatement {
 
 export interface CommunityStrings {
   hero: { headline: string; lede: string; imageAlt: string };
+  contentsLabel: string;
   person: ModuleSection;
   lead: ModuleSection & {
     /** The post's byline as two kinds of reader see it (示意). */
@@ -57,6 +58,7 @@ export interface CommunityStrings {
 }
 
 const strings: CommunityStrings = {
+  contentsLabel: '本頁內容',
   hero: {
     headline: '你是說話的人，Realm 是場地。',
     lede: '你只有一個公開身分，評論、清單與書庫都跟著你。每個 Realm 給你話題、規則與管理，不會把你收進它的名下。',
