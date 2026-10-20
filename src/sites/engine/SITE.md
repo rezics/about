@@ -206,3 +206,12 @@ is confirmed as the first focus stop. Full-page screenshots are saved as `deskto
 and `phone-full.png` in each route folder; the landing phone first screen is
 `.shots/engine/phone-first.png`. Shared-kit follow-up: the phone menu's close row scrolls out
 of view at the bottom; a sticky close row would help touch users. No shared files were changed.
+
+The separate visual critic scored the four-page set 8.11/10 and found no blocking assigned-page
+defect. The settled catalogue screenshots and `catalog-state.json` verify its closed/down and
+open/up chevron, including the 180-degree computed rotation, without JavaScript. The 27 axe
+contrast review items are documented in `.shots/contrast/review.json`: nine picker labels pass
+on their computed flat colours (minimum 4.89:1); eighteen photo-text items pass at the darker
+5th-percentile background luminance beneath their text ranges (minimum 4.56:1). The background
+captures hide the copy in the browser only so the photographs can be sampled; minimum and
+median ratios are also retained for review. Real-device and screen-reader testing were not run.
