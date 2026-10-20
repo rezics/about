@@ -1,0 +1,31 @@
+---
+// Skill Hub use (v3; SITE.md "v3"): six steps from finding to using, agents reading Skill Hub
+// through the API and MCP, what happens with later versions, then the publish page.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPage from '../../sites/skills/NextPage.astro';
+import site from '../../content/sites/skills';
+import { pageLine, pageTile } from '../../sites/skills/site';
+import '../../sites/skills/skills.css';
+
+const s = site.strings.use;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
+
+  <Section eyebrow={s.steps.eyebrow} title={s.steps.headline}>
+    <FactList items={s.steps.rows} numbered />
+  </Section>
+
+  <Section eyebrow={s.agent.eyebrow} title={s.agent.headline} lead={s.agent.paragraphs} link={{ href: '/developers/', text: s.agent.link }} />
+
+  <Section eyebrow={s.later.eyebrow} title={s.later.headline}>
+    <FactList items={s.later.rows} />
+  </Section>
+
+  <NextPage eyebrow={site.strings.ui.nextPage} title={s.end.next} tile={pageTile('publish', pageLine('publish'))} />
+  <Closing title={s.end.closing} body="" />
+</MiniSiteLayout>

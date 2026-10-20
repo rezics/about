@@ -1,0 +1,39 @@
+---
+// Skill Hub directory (v3; SITE.md "v3"): one line per skill, the filters, complete traversal,
+// lists as a bundled set, saved views you follow, then the skill page.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPage from '../../sites/skills/NextPage.astro';
+import site from '../../content/sites/skills';
+import { pageLine, pageTile, sectionImage } from '../../sites/skills/site';
+import '../../sites/skills/skills.css';
+
+const s = site.strings.directory;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
+
+  <Section eyebrow={s.specimens.eyebrow} title={s.specimens.headline} lead={s.specimens.lead}>
+    <FactList items={s.specimens.rows} />
+  </Section>
+
+  <Section eyebrow={s.filters.eyebrow} title={s.filters.headline} lead={s.filters.lead}>
+    <FactList items={s.filters.rows} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <PhotoRow side="left" eyebrow={s.lists.eyebrow} title={s.lists.headline.join('')} body={s.lists.body} image={sectionImage(s.lists.pic)} />
+
+  <Section eyebrow={s.views.eyebrow} title={s.views.headline} lead={s.views.lead}>
+    <FactList items={s.views.rows} numbered />
+  </Section>
+
+  <NextPage eyebrow={site.strings.ui.nextPage} title={s.end.next} tile={pageTile('versions', pageLine('versions'))} />
+  <Closing title={s.end.closing} body="" />
+</MiniSiteLayout>

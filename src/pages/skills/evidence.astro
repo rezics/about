@@ -1,0 +1,56 @@
+---
+// Skill Hub evidence (v3; SITE.md "v3"): the author's declaration as code, what a record holds,
+// how to read records, ratings and comments pinned to versions, the statement that a record is
+// no safety guarantee, then the use page.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import CodeTile from '../../kit/components/CodeTile.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPage from '../../sites/skills/NextPage.astro';
+import site from '../../content/sites/skills';
+import { pageLine, pageTile } from '../../sites/skills/site';
+import '../../sites/skills/skills.css';
+
+const s = site.strings.evidence;
+const half = Math.ceil(s.record.rows.length / 2);
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
+
+  <Section eyebrow={s.declaration.eyebrow} title={s.declaration.headline} lead={s.declaration.lead}>
+    <CodeTile code={s.declaration.code} caption={s.declaration.caption} label={s.declaration.codeLabel} class="sk-code" />
+  </Section>
+
+  <Section eyebrow={s.record.eyebrow} title={s.record.headline} lead={s.record.lead}>
+    <div class="sk-two">
+      <FactList items={s.record.rows.slice(0, half)} />
+      <FactList items={s.record.rows.slice(half)} />
+    </div>
+  </Section>
+
+  <Section eyebrow={s.rules.eyebrow} title={s.rules.headline}>
+    <FactList items={s.rules.rows} />
+  </Section>
+
+  <Section eyebrow={s.opinions.eyebrow} title={s.opinions.headline}>
+    <FactList items={s.opinions.rows} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <NextPage eyebrow={site.strings.ui.nextPage} title={s.end.next} tile={pageTile('use', pageLine('use'))} />
+  <Closing title={s.end.closing} body="" />
+</MiniSiteLayout>
+
+<style>
+  :global(.sk-code) { max-width: 620px; }
+  /* The eight fields of a record in two lists side by side; one list on phones. */
+  .sk-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); }
+  @media (max-width: 1023px) {
+    .sk-two { grid-template-columns: minmax(0, 1fr); }
+    .sk-two > :global(* + *) { border-top: 0; }
+  }
+</style>

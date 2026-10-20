@@ -1,0 +1,53 @@
+---
+// Skill Hub publish (v3; SITE.md "v3"): the inert import (slit picture), the six things that
+// happen at import, the limits, the description as the first line read, credits and rights, then
+// the next site (API Hub).
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPage from '../../sites/skills/NextPage.astro';
+import { kindById, kindHref } from '../../kit/content';
+import { kindFields } from '../../kit/theme';
+import site from '../../content/sites/skills';
+import { sectionImage } from '../../sites/skills/site';
+import '../../sites/skills/skills.css';
+
+const s = site.strings.publish;
+const importImage = sectionImage(s.import.pic);
+const apis = kindById('apis');
+const nextSite = { id: 'apis', name: apis.name, line: s.end.nextLine, href: kindHref('apis'), bg: kindFields.apis.field, on: kindFields.apis.on };
+---
+<MiniSiteLayout>
+  <link rel="preload" as="image" href={`${importImage.phone.src}-640.avif`} type="image/avif" media="(max-width: 767px)" fetchpriority="high" />
+  <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
+
+  <PhotoRow side="left" eyebrow={s.import.eyebrow} title={s.import.headline.join('')} body={s.import.body} image={importImage} />
+
+  <Section eyebrow={s.steps.eyebrow} title={s.steps.headline}>
+    <FactList items={s.steps.rows} numbered />
+  </Section>
+
+  <Section eyebrow={s.limits.eyebrow} title={s.limits.headline} lead={s.limits.after}>
+    <FactList items={s.limits.rows} />
+  </Section>
+
+  <Statement text={s.statement.text} sub={s.statement.muted} note={s.statement.note}>
+    <div class="grid sk-examples"><FactList items={s.statement.rows} level="p" class="sk-examples__list" /></div>
+  </Statement>
+
+  <Section eyebrow={s.credits.eyebrow} title={s.credits.headline}>
+    <FactList items={s.credits.rows} />
+  </Section>
+
+  <NextPage eyebrow={site.strings.ui.nextSite} title={s.end.next} tile={nextSite} />
+  <Closing title={s.end.closing} body="" />
+</MiniSiteLayout>
+
+<style>
+  .sk-examples { padding: 0; }
+  .sk-examples :global(.sk-examples__list) { grid-column: 4 / 13; }
+</style>
