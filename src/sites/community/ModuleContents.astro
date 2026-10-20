@@ -17,7 +17,9 @@ const { label, items } = Astro.props;
   :global(body:is([data-site='community'], [data-site='create'], [data-site='trust']) main h2[id]) { scroll-margin-top: 160px; }
   .module-contents { padding-top: 48px; }
   .module-contents__label { grid-column: 1 / 4; padding-top: 10px; }
-  ul { grid-column: 4 / 13; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0; padding: 0 0 28px; list-style: none; border-bottom: 1px solid var(--c-line); }
+  /* The shared list reset used to supply this zero padding through bundle order. Keep the
+     existing contents rhythm explicit when components move between site and kit chunks. */
+  ul { grid-column: 4 / 13; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid var(--c-line); }
   a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 10px; color: var(--c-fg); font-size: 14px; line-height: 1.8; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; transition: color var(--d-s) var(--ease-soft), background-color var(--d-s) var(--ease-soft), translate var(--d-m) var(--ease-snap); }
   @media (hover: hover) {
     a:hover { color: var(--c-bg); background: var(--c-fg); translate: 0 -2px; }
@@ -27,7 +29,7 @@ const { label, items } = Astro.props;
   @media (max-width: 767px) {
     .module-contents { padding-top: 32px; }
     .module-contents__label { padding: 0 0 12px; }
-    ul { gap: 4px 8px; padding-bottom: 24px; }
+    ul { gap: 4px 8px; }
   }
   @media (prefers-reduced-motion: reduce) { a { transition: none; } }
 </style>

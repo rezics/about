@@ -330,4 +330,6 @@ The remaining craft suggestions are to compress repeated explanatory rows, give 
 
 Deleted `module-hero.css` and the local `ModuleRing.astro`. ModuleEnd uses the kit ring shared with universal index and zones; duplicate family-ring labels are removed from community/create/trust content. PhotoHero now supplies the same tablet band and mid-width title scale for all module pages and the overview. The ring uses 180 px phone rows and a static current marker with 12 px spacing, including the short 320 px name treatment. Kept the photograph positions, section-anchor margin in ModuleContents, byline radios, FactGrid, edition/account and appeal specimens. Header and ring-link feedback use the shared kit.
 
+ModuleContents explicitly retains its original zero list padding. The old value came from the shared reset through bundle order; making it local prevents a spacing shift when the ring moves into the kit.
+
 This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.
