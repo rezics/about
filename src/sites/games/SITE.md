@@ -209,6 +209,11 @@ exceed 2.5 s. `Guides.astro` supplies a media-scoped AVIF preload for the same 6
 keeping the shared photo row intact. The preload link is
 [body-allowed by the HTML standard](https://html.spec.whatwg.org/multipage/links.html#link-type-preload).
 
+Keyboard traversal can scroll the phone site bar to its final tab while focus moves into the
+page. `NavFocus.astro` restores the current chapter after focus leaves the bar, using the
+engine's page lifecycle and cleanup. It adds no visual parts, and leaves focused tabs free to
+scroll into view while the user is still navigating them.
+
 ### Copy changes for v3
 
 - The landing hero h1 is set as three short lines; its paragraph is shorter.
