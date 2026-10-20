@@ -25,6 +25,9 @@ function compare(src: unknown, tr: unknown, at: string, locale: string, out: str
     const latinScript = ['en', 'de', 'fr', 'es', 'ko'].includes(locale);
     if (latinScript && HAN.test(tr) && !FOREIGN_ORIGINAL.test(src)) out.push(`${at}: untranslated Chinese: ${tr}`);
     if (latinScript && FULLWIDTH.test(tr) && !FOREIGN_ORIGINAL.test(src)) out.push(`${at}: full-width punctuation: ${tr}`);
+    // Simplified Chinese shares many words with the source, and Japanese a few short ones.
+    const sameAllowed = locale === 'zh-Hans' || (locale === 'ja' && [...src].length <= 6);
+    if (HAN.test(src) && tr === src && !FOREIGN_ORIGINAL.test(src) && !sameAllowed) out.push(`${at}: unchanged from the source: ${tr}`);
     if (locale === 'zh-Hans' && TRADITIONAL.test(tr) && !FOREIGN_ORIGINAL.test(src)) out.push(`${at}: Traditional characters: ${tr}`);
     return;
   }
@@ -39,7 +42,9 @@ function compare(src: unknown, tr: unknown, at: string, locale: string, out: str
     if (a !== b) return void out.push(`${at}: keys differ (${a} → ${b})`);
     for (const [k, v] of Object.entries(src)) {
       const t = (tr as Record<string, unknown>)[k];
-      if (SAME.has(k)) { if (JSON.stringify(v) !== JSON.stringify(t)) out.push(`${at}.${k}: must stay ${JSON.stringify(v)}`); }
+      // A non-copy key holds an id, a link or a list of them; the same key holding an object is copy.
+      const fixed = typeof v !== 'object' || v === null || (Array.isArray(v) && v.every((x) => typeof x !== 'object'));
+      if (SAME.has(k) && fixed) { if (JSON.stringify(v) !== JSON.stringify(t)) out.push(`${at}.${k}: must stay ${JSON.stringify(v)}`); }
       else compare(v, t, `${at}.${k}`, locale, out);
     }
     return;

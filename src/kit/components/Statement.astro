@@ -6,6 +6,7 @@
  * follows in the slot.
  */
 import { idFor } from '../ids';
+import { locale } from '../locale';
 
 interface Props {
   text: string;
@@ -20,10 +21,12 @@ interface Props {
 const { text, sub, note, level, id: given, class: className } = Astro.props;
 const Tag = level ?? (Astro.slots.has('default') ? 'h2' : 'p');
 const id = given ?? idFor('statement', text);
+// Chinese and Japanese run the halves together; other languages need a space between them.
+const gap = /^(zh|ja)/.test(locale) ? '' : ' ';
 ---
 <div class:list={['stmt', className]}>
   <div class="grid">
-    <Tag id={id} class="stmt__text t-statement">{text}{sub && <span class="quiet">{sub}</span>}</Tag>
+    <Tag id={id} class="stmt__text t-statement">{text}{sub && <>{gap}<span class="quiet">{sub}</span></>}</Tag>
     {note && <p class="stmt__note">{note}</p>}
     {Astro.slots.has('default') && <div class="stmt__more"><slot /></div>}
   </div>
