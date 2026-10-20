@@ -22,13 +22,13 @@ const { href = '/', label, wordmark = true } = Astro.props;
     color: var(--c-fg);
     transition: opacity var(--d-s) var(--ease-soft), scale var(--d-s) var(--ease-soft);
   }
-  /* Quiet: the logo eases back a little under the pointer. */
+  /* Both parts lift together; the link's hit area stays still. */
   @media (hover: hover) {
-    .logo:hover { opacity: 0.72; }
-    .logo:hover svg { translate: 2px 0; }
+    .logo:hover { opacity: 0.88; }
+    .logo:hover svg, .logo:hover .logo__word { translate: 0 -3px; }
   }
-  .logo:focus-visible svg { translate: 2px 0; }
-  .logo:active { opacity: 0.72; scale: 0.985; }
+  .logo:focus-visible svg, .logo:focus-visible .logo__word { translate: 0 -3px; }
+  .logo:active { opacity: 0.88; scale: 0.985; }
   .logo svg { width: 25px; height: 18px; fill: var(--c-mark); flex: none; transition: translate var(--d-s) var(--ease-snap); }
   /* The wordmark in the interface face, as in the product. */
   .logo__word {
@@ -36,5 +36,6 @@ const { href = '/', label, wordmark = true } = Astro.props;
     font-weight: 800;
     font-size: 14px;
     letter-spacing: 0.22em;
+    transition: translate var(--d-s) var(--ease-snap);
   }
 </style>

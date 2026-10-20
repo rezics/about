@@ -32,7 +32,8 @@ hover, press, focus, and the existing page cross-fade.
 9. Closing statement, ink pill, paper footer with link columns.
 
 404: the cut-out paper photograph, a direct explanation and a route home, a quiet
-set of kind links, then the shared closing and footer. `noindex` is preserved.
+set of kind links, then the shared closing and footer. The links are one row on wide
+desktops, three columns on tablets, and two on phones. `noindex` is preserved.
 
 ### Assets
 
@@ -43,7 +44,8 @@ picture is needed. Hero and missing: 1920 and 960 wide. Section images: 1200 and
 640 wide. AVIF and WebP remain within the v3 byte budgets. The home phone source
 preserves the reference's composition rather than magnifying the coloured papers.
 Both phone variants are 3:2: 960 × 640 and 640 × 427, in AVIF and WebP. The 404
-also has its own 640 × 427 variants, derived from the existing cut-out photograph.
+has separate `missing-phone` variants from the existing cut-out photograph: its
+960 px AVIF is 24.9 KiB, down from 66.9 KiB, while retaining the paper texture.
 
 ### Shared kit and verification
 
@@ -51,7 +53,24 @@ Keep the existing component props stable. Finish the inherited `tiles.ts` helper
 and serif font preload fix, document optional changes, and check existing mini-site
 builds and navigation. All visible copy stays in `src/content/site.ts`.
 
-Run `task check`, `task build`, and two production `task qa -- / /missing/`
-passes. Read every desktop and phone screenshot, inspect keyboard, hover and
-reduced-motion states, and obtain a fresh screenshot-only critic review per pass.
-Record the final metrics and screenshot paths in `.temp/codex-report.md`.
+Completed production QA passes for `/` and `/missing/`, plus a final targeted 404
+pass after the phone-image compression. All desktop, phone, keyboard, hover,
+reduced-motion and navigation states were read, with fresh screenshot-only critics.
+The final independent weighted score is 8.10/10, with no blocking findings.
+
+`task check`: 142 Astro files with zero diagnostics; 183 tests pass. `task build`:
+31 pages pass. The nine shared navigation and dark-theme Playwright checks pass.
+Eighteen additional layout/no-script cases at 320, 390, 768, 1024, 1280, 1440 and
+1920 px pass, including menu focus restoration and no clipped labels. The narrow
+home labels, 404 tablet heading and category layout were adjusted after visual QA.
+
+Final throttled phone LCP: home 2184 ms, 404 1964 ms. CLS 0, axe violations 0,
+reported phone scroll 60 fps on both; no console errors, failed requests, overflow,
+invisible focus or reduced-motion hidden text. Four texture contrast review flags
+were checked against conservative darkest-grain bounds (at least 4.63:1).
+The static audit has zero FAILs; its four WARNs are repeated navigation summaries
+and existing books/games heading skips outside this assignment.
+
+Full desktop landing: `.shots/layout/home-1440-full.png`; phone first screen:
+`.shots/layout/home-390-first.png`. Final details and asset sizes:
+`.temp/codex-report.md`. No deployment or push.

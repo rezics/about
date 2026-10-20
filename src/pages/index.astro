@@ -53,7 +53,7 @@ const moduleRows = modules.map((m) => ({ name: m.name, desc: h.platform.modules[
     <ProductCall label={h.hero.primary} />
   </PhotoHero>
 
-  <Section id="products" eyebrow={h.kinds.eyebrow} title={h.kinds.headline}>
+  <Section id="products" class="home-kinds" eyebrow={h.kinds.eyebrow} title={h.kinds.headline}>
     <TileMasonry slot="wide" items={tiles} columns={columns} phone={phone} height={560} label={h.kinds.eyebrow} />
   </Section>
 
@@ -106,7 +106,7 @@ const moduleRows = modules.map((m) => ({ name: m.name, desc: h.platform.modules[
     :global(.home-hero .phero__act) { margin-top: 32px; }
   }
   @media (max-width: 359px) {
-    :global(#products .tile) { --pad: 12px; }
-    :global(#products .tile__name--latin) { --tile-name: 20px; }
+    :global(.home-kinds .tile) { --pad: 12px; }
+    :global(.home-kinds .tile__name--latin) { --tile-name: 20px; }
   }
 </style>
