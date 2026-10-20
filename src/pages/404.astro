@@ -42,9 +42,6 @@ const phone = [0, 2, 4, 6, 8].map((i) => tiles.slice(i, i + 2).map((t) => ({ id:
   /* The prose tail binder also sees tile names; narrow tiles need to wrap the four CJK
      characters instead of holding the entire label on one line. */
   :global(.nf-kinds .tile__name .nw) { white-space: normal; word-break: normal; }
-  @media (min-width: 1024px) and (max-width: 1199px) {
-    :global(.nf .phero__title) { font-size: 44px; }
-  }
   @media (min-width: 768px) and (max-width: 1439px) {
     :global(.nf-kinds .masonry) { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, 120px); gap: 3px; height: auto; margin: 0; }
     :global(.nf-kinds .masonry__cell) { grid-column: auto; grid-row: auto; padding: 0; }

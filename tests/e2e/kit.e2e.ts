@@ -45,6 +45,21 @@ test('keyboard leaves the strip on the active tab; resizing, navigation and hist
   await expect.poll(() => stripState(page)).toEqual({ centered: true, currentVisible: true, partial: 0 });
 });
 
+test('tablet heroes put wide copy before the photograph, including pages with a desktop copy cap', async ({ page }) => {
+  for (const width of [768, 1024, 1199]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ['/', '/missing/', '/anime/', '/apis/', '/books/', '/developers/', '/engine/', '/engine/community/', '/engine/create/', '/engine/trust/', '/engine/universal-index/', '/engine/zones/', '/games/', '/manga/', '/mcp/', '/skills/', '/software/', '/visual-novels/', '/roadmap/']) {
+      await page.goto(route);
+      const geometry = await page.locator('.phero').evaluate(hero => {
+        const copy = hero.querySelector('.phero__copy')!.getBoundingClientRect();
+        const photo = hero.querySelector('.phero__pic')!.getBoundingClientRect();
+        return { wide: copy.width >= innerWidth * .9, separate: photo.top >= copy.bottom - 1 };
+      });
+      expect(geometry, `${route} at ${width}`).toEqual({ wide: true, separate: true });
+    }
+  }
+});
+
 for (const javaScriptEnabled of [true, false]) {
   test(`phone close bar stays visible while the sheet scrolls, script=${javaScriptEnabled}`, async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled, viewport: { width: 390, height: 844 } });

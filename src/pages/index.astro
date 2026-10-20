@@ -38,6 +38,7 @@ const moduleRows = modules.map((m) => ({ name: m.name, desc: h.platform.modules[
 <PageLayout meta={site.meta} home action={false}>
   <PhotoHero
     class="home-hero"
+    copyMax="min(32vw, 470px)"
     title={h.hero.headline}
     lede={h.hero.lede}
     image={{
@@ -95,12 +96,10 @@ const moduleRows = modules.map((m) => ({ name: m.name, desc: h.platform.modules[
 <style>
   /* The approved mock's copy measure and two-line headline. At narrow desktop aspect ratios,
      keep the empty left paper in view rather than cropping into it from the right. */
-  :global(.home-hero .phero__copy) { max-width: min(32vw, 470px); }
   :global(.home-hero .phero__title) { font-size: clamp(34px, 3.6vw, 56px); }
   :global(.home-hero .phero__title .clause) { display: block; width: max-content; white-space: nowrap; }
   :global(.home-code) { max-width: 620px; }
   @media (max-width: 767px) {
-    :global(.home-hero .phero__copy) { max-width: none; }
     :global(.home-hero .phero__title) { font-size: 30px; }
     :global(.home-hero .phero__lede) { margin-top: 24px; }
     :global(.home-hero .phero__act) { margin-top: 32px; }

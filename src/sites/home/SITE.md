@@ -77,6 +77,6 @@ Full desktop landing: `.shots/layout/home-1440-full.png`; phone first screen:
 
 ## v3 shared-kit consolidation, 2026-10-20
 
-The shared PhotoHero now uses copy followed by a photograph band at 768–1199 px; its wide desktop and phone composition are retained. The footer keeps the privacy sentence and drops the font-stack sentence. Text with generated phrase breaks uses the shared Chromium safeguard. No home-local workaround was removed.
+The shared PhotoHero now uses copy followed by a photograph band at 768–1199 px; its wide desktop and phone composition are retained. The approved home copy measure uses PhotoHero.copyMax, so it applies only to wide-screen photograph overlays; the 404 uses the shared mid-width headline scale. The footer keeps the privacy sentence and drops the font-stack sentence. Text with generated phrase breaks uses the shared Chromium safeguard.
 
 This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.
