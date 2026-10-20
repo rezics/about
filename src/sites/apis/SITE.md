@@ -258,9 +258,11 @@ fields).
 ### Final verification
 
 `task check` completed with zero diagnostics across 152 files and 195 passing tests;
-`task build` completed. The final seven-route QA measured phone LCP from 1820 to 2072 ms,
-CLS at most 0.001, zero axe violations, no console errors or failed requests, and 60 fps
-scrolling on all seven routes in that run. Every desktop and phone capture was reviewed.
+`task build` completed. Shared changes through `d83e09b` are merged, including the logo's
+hover feedback and the QA script's recognition of the Chinese skip link. Seven-route QA
+has zero axe violations, console errors or failed requests. Every desktop and phone capture
+was reviewed. The completion report records the final phone LCP, CLS and scrolling figures
+for each page.
 
 The extended pass covers 25 page/viewport combinations from 320 to 1920 px, including the
 1024 px case that exposed the wrapping issue. No overflow, clipped active tab or tile copy
