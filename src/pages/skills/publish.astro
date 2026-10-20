@@ -17,13 +17,15 @@ import { sectionImage } from '../../sites/skills/site';
 import '../../sites/skills/skills.css';
 
 const s = site.strings.publish;
+const importImage = sectionImage(s.import.pic);
 const apis = kindById('apis');
 const nextSite = { id: 'apis', name: apis.name, line: s.end.nextLine, href: kindHref('apis'), bg: kindFields.apis.field, on: kindFields.apis.on };
 ---
 <MiniSiteLayout>
+  <link rel="preload" as="image" href={`${importImage.phone.src}-640.avif`} type="image/avif" media="(max-width: 767px)" fetchpriority="high" />
   <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
 
-  <PhotoRow side="left" eyebrow={s.import.eyebrow} title={s.import.headline.join('')} body={s.import.body} image={sectionImage(s.import.pic)} />
+  <PhotoRow side="left" eyebrow={s.import.eyebrow} title={s.import.headline.join('')} body={s.import.body} image={importImage} />
 
   <Section eyebrow={s.steps.eyebrow} title={s.steps.headline}>
     <FactList items={s.steps.rows} numbered />

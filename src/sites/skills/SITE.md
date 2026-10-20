@@ -162,6 +162,8 @@ compete with them).
   shows actual name-plus-description specimens; the versions page shows two dated illustrative
   releases, so the explanatory claims have something concrete to read. Names, dates and version
   numbers in those examples are explicitly labelled 示意, never presented as live catalogue data.
+- The final desktop screenshot pass shortened the five large statements to one idea in two
+  lines; detailed declarations, roles, limits and safety boundaries stay in their facts lists.
 
 ### Local kit workarounds
 
@@ -179,6 +181,10 @@ compete with them).
 - At 768 to 1279 px the hero puts copy before a 320 px photograph band. At 768 px the shared
   overlaid layout placed the headline on the fold; at 1024 px it broke the two clauses into
   four lines. The wide desktop composition and 260 px phone band retain their kit layouts.
+- Section pictures explicitly use the 640 px source on phones, rather than downloading the
+  1200 px variant at high pixel density. The publish page preloads its first phone picture in
+  the body because the shared mini-site layout does not forward a head slot; the photo row
+  remains the kit component. These hints and the smaller encoding address its measured LCP.
 
 ### Pictures
 
@@ -194,6 +200,10 @@ needed. The hero remains 1920/960 wide, its phone crop 960/640 wide, and the fou
 The phone crop was then re-encoded for the throttled-phone LCP budget. At 960 px AVIF is 20,740
 bytes and WebP 31,844 bytes; at 640 px AVIF is 14,805 bytes and WebP 19,096 bytes. Each result was
 viewed against the original: the crop, muted colour, upper-left light and paper fibre remain.
+
+The final pass also keeps every 1200 px file below 110,000 bytes: the re-encoded bundle and fan
+AVIFs are 102,859 and 103,094 bytes. The publish picture's 640 px AVIF/WebP are 19,625/24,162
+bytes. All four new encodings were inspected at full size before replacing their files.
 
 | Stem | Used on | Idea | Picture |
 |---|---|---|---|

@@ -27,6 +27,7 @@ export const sectionImage = (pic: Pic) => ({
   width: 1200,
   height: 800,
   alt: pic.alt,
+  phone: { src: base + pic.src, widths: [640], width: 640, height: 427 },
 });
 
 // Ramp stops (color.ts): 0 the accent, 1 a pale tint, 2 a deep shade, 4 a deeper shade, 5 a
