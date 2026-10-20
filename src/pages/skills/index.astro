@@ -60,7 +60,7 @@ const neighbourColumns: MasonryPlace[][] = neighbours.map((n) => [{ id: n.id, h:
   <Statement text={s.statement.text} sub={s.statement.muted} />
 
   <Section eyebrow={s.pages.eyebrow} title={s.pages.headline}>
-    <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={480} phoneRow={132} label={s.pages.eyebrow} />
+    <TileMasonry slot="wide" class="sk-pages" items={pages} columns={pageColumns} phone={pagePhone} height={480} phoneRow={132} label={s.pages.eyebrow} />
   </Section>
 
   <Section eyebrow={s.neighbours.eyebrow} title={s.neighbours.headline} lead={s.neighbours.lead}>

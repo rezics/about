@@ -130,3 +130,8 @@ Source: https://agentskills.io/specification (fetched 2026-10-19; the docs cite 
     `1.0.0` and `1.1.0`, and their October 2026 dates are fictional format examples, explicitly
     marked 示意 in their sections. They demonstrate the documented name/description and immutable
     revision rules; they are not assertions about REZICS's live catalogue, usage or release count.
+16. **The filled record and reading-layer excerpts** are also invented format examples for
+    `chapter-cast`. The evidence lead explicitly labels its date, agent version, method and
+    result as 示意. The three characters, two aliases, local agent and 1.0.0 client are fictional;
+    no execution or compatibility result is claimed. The short SKILL.md instruction and the
+    references/aliases.md field list demonstrate the same specimen, not a real package.

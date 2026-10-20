@@ -164,6 +164,10 @@ compete with them).
   numbers in those examples are explicitly labelled 示意, never presented as live catalogue data.
 - The final desktop screenshot pass shortened the five large statements to one idea in two
   lines; detailed declarations, roles, limits and safety boundaries stay in their facts lists.
+- The independent 285-image review led to a filled eight-field evidence example tied to the
+  same dated `chapter-cast` version, plus actual illustrative instruction/reference excerpts in
+  the three reading rows. Every fictional result remains explicitly labelled 示意. Phone title
+  orphans and the hard left edge of the scrolled tab strip received a final polish pass.
 
 ### Local kit workarounds
 
@@ -171,7 +175,8 @@ compete with them).
 
 - The shared site-bar centring uses `item.offsetLeft`, but its scrollport was not positioned.
   Giving `.sitebar__tabs` `position: relative` makes the offset local, so the active phone tab
-  stays visible. Its right padding also clears the 24 px edge fade.
+  stays visible. Its right padding clears the 24 px edge fade; a padded left fade softens
+  clipped neighbours without fading the first tab at the start of the strip.
 - The site-bar home link and tabs lift 2 px on hover/focus and press down 1 px. The first QA
   pass identified the home link's colour-only response. Shared files are unchanged locally;
   these two fixes can be promoted to the kit by its owner.
@@ -214,6 +219,38 @@ bytes. All four new encodings were inspected at full size before replacing their
 | `bundle` | directory, 清單 | a list is a bundled set | a stack of lime, off-white, pale blue and mustard sheets held by a lime paper band |
 | `fan` | versions, 版本 | every version stays | five sheets fanned in sequence, lime to off-white |
 | `slit` | publish, 匯入 | import passes through unchanged | an off-white strip threaded through a slit in a lime sheet, a mustard corner beneath |
+
+### Completion checks, 2026-10-20
+
+The pre-polish production build at `f6fc4f5` passed `task check` (150 Astro files, no diagnostics, 193
+tests) and `task build`. The six-page `task qa` run and the version-page request retry used the
+same frozen build. Every final report has no console errors, failed requests, axe violations,
+overflow, small targets, hidden reduced-motion text or invisible focus stops. All primary hover
+targets respond. Phone scrolling measured 60 fps on every route; headless software-GPU desktop
+results range from 52 to 60 fps.
+
+| Route | Phone LCP | CLS | axe violations |
+|---|---:|---:|---:|
+| `/skills/` | 1952 ms | 0 | 0 |
+| `/skills/directory/` | 1808 ms | 0 | 0 |
+| `/skills/versions/` | 2128 ms | 0 | 0 |
+| `/skills/evidence/` | 1744 ms | 0.001 | 0 |
+| `/skills/use/` | 1848 ms | 0 | 0 |
+| `/skills/publish/` | 2016 ms | 0 | 0 |
+
+Additional production captures cover 360, 768 and 1024 px on every route and 1920 px on the
+landing. Active tabs stay fully visible; no width overflows. With JavaScript disabled, all six
+pages retain their headings and body text. Desktop dropdown and phone dialog open from the
+keyboard, close with Escape and return focus. A 36-stop phone trace confirms the dialog is
+modal and no page control outside it receives focus; the native browser boundary explains the
+coarse review script's `trap=false` flag. Similarly, shoot's `skipLinkFirst=false` regex does
+not recognise the actual first stop 「跳到主要內容」, visible in `k-01`.
+
+All six static audits have 0 FAIL and 0 WARN. Each page has one h1, zh-Hant, unique metadata,
+canonical, OG data and JSON-LD; all 23 linked internal paths return 200. The frozen evidence is
+`.shots/skills-final/` (285 images, reports, metadata, menu trace and the independent critique).
+Landing full-page: `.shots/skills/review/d-full.png`; phone first screen:
+`.shots/skills/m-01-hero.png`.
 
 ## Revisions
 

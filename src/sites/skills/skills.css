@@ -4,6 +4,10 @@ body[data-site='skills'] .sitebar__tabs {
   position: relative;
   /* Keep the final tab clear of the shared 24px edge fade. */
   padding-right: 32px;
+  /* Empty padding protects the first label; after scrolling, the same fade softens
+     clipped neighbouring characters beside the fixed Skill Hub label. */
+  padding-left: 16px;
+  mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 24px), transparent);
 }
 
 body[data-site='skills'] .sitebar__name,
@@ -15,6 +19,13 @@ body[data-site='skills'] .sitebar__tab {
    JavaScript. Keep ordinary wrapping throughout these owned page bodies. */
 body[data-site='skills'] main * {
   text-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  /* Keep the two characters of 代理 on the same line in the half-width tile. */
+  [data-site='skills'] .sk-pages a[href='/skills/use/'] .tile__name {
+    max-width: 4.3em;
+  }
 }
 
 /* The fold leaves room for the title only on wide screens. Tablets use the same
