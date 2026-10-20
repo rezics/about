@@ -94,6 +94,10 @@ const nav = site.nav;
     color: var(--c-fg);
     overflow: auto;
     overscroll-behavior: contain;
+    /* The page below dims through a shadow cast down from the panel's top edge, not ::backdrop:
+       a backdrop covers the header too and appears and disappears in one frame, outside the
+       panel's fade (the page flashed dark on hover). The shadow fades with the panel. */
+    box-shadow: 0 100vh 0 100vh color-mix(in srgb, var(--c-fg) 12%, transparent);
     opacity: 1;
     translate: 0 0;
     transition: opacity 0.2s var(--ease-soft), translate 0.28s var(--ease-snap), overlay 0.28s allow-discrete, display 0.28s allow-discrete;
@@ -102,7 +106,6 @@ const nav = site.nav;
   @starting-style {
     .panel:popover-open { opacity: 0; translate: 0 -6px; }
   }
-  .panel::backdrop { background: color-mix(in srgb, var(--c-fg) 12%, transparent); }
   .ptiles { display: grid; gap: 3px; padding: 0; margin: 0; list-style: none; }
   .ptiles--products { grid-template-columns: repeat(5, minmax(0, 1fr)); grid-auto-rows: clamp(148px, 19vh, 196px); }
   .ptiles--engine { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: clamp(176px, 24vh, 232px); }

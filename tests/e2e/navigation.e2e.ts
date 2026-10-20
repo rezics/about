@@ -1,5 +1,6 @@
 // The global navigation: disclosure panels by pointer and keyboard, Escape, the phone sheet.
 import { expect, test } from '@playwright/test';
+import sharp from 'sharp';
 
 test.describe('desktop panels', () => {
   test.use({ viewport: { width: 1440, height: 900 } });
@@ -19,6 +20,23 @@ test.describe('desktop panels', () => {
     await page.mouse.move(700, 880);
     await page.mouse.click(700, 880);
     await expect(panel).toBeHidden();
+  });
+
+  test('an open panel dims the page below it with its own fade and never the header', async ({ page }) => {
+    const mean = async (y: number) => {
+      const png = await page.screenshot({ clip: { x: 0, y, width: 1440, height: 4 } });
+      const { channels } = await sharp(png).stats();
+      return channels.slice(0, 3).reduce((sum, c) => sum + c.mean, 0) / 3;
+    };
+    await page.goto('/');
+    const header = await mean(2);
+    const below = await mean(880);
+    await page.locator('[data-panel-button="panel-products"]').hover();
+    const panel = page.locator('#panel-products');
+    await expect.poll(() => panel.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+    expect(await panel.evaluate((el) => getComputedStyle(el, '::backdrop').backgroundColor)).toBe('rgba(0, 0, 0, 0)');
+    expect(Math.abs((await mean(2)) - header)).toBeLessThan(1);
+    expect(await mean(880)).toBeLessThan(below - 5);
   });
 
   test('moving from 產品 to 引擎 switches panels; Escape closes and returns focus', async ({ page }) => {
