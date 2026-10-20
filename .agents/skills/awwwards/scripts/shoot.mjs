@@ -143,6 +143,7 @@ async function keyboard(page, shot) {
   const stops = [];
   const noVisibleFocus = [];
   const invisibleFocus = [];
+  let firstIsSkip = false;
   let repeats = 0;
   for (let i = 1; i <= tabs; i++) {
     await page.keyboard.press('Tab');
@@ -165,6 +166,9 @@ async function keyboard(page, shot) {
       };
     });
     if (!stop) { stops.push('(body: focus left the page)'); break; }
+    // A localized skip link may not contain the English word "skip" in its label. Judge its
+    // actual fragment target as well, rather than reporting a false failure for zh-Hant.
+    if (i === 1) firstIsSkip = stop.tag === 'a' && /^#(?:main|content)$/.test(stop.href ?? '');
     if (i <= 4) await shot(page, `k-${String(i).padStart(2, '0')}-focus`);
     const blurred = await page.evaluate(async () => { window.__focused.blur(); await new Promise((r) => setTimeout(r, 300)); const s = window.__snap(); window.__focused.focus({ preventScroll: true }); return s; });
     const name = `${stop.tag} "${stop.label}"`;
@@ -177,7 +181,7 @@ async function keyboard(page, shot) {
   const first = stops[0] || '';
   return {
     stops,
-    skipLinkFirst: /skip|#main|#content/i.test(first),
+    skipLinkFirst: firstIsSkip || /skip|#main|#content/i.test(first),
     noVisibleFocus,
     invisibleFocus,
     stuck: repeats >= 2,
@@ -382,7 +386,9 @@ async function shootPage(browser, axeSource, url, out) {
     page.on('requestfailed', (r) => report.failed.push(`[${tag}] ${r.url()} ${r.failure()?.errorText}`));
     page.on('response', (r) => {
       if (r.status() < 400) return;
-      if (expect404 && r.status() === 404 && r.request().resourceType() === 'document') return;
+      // Client-side Back navigation fetches the same expected 404 as HTML rather than as a
+      // document request. Ignore only that page's URL; a missing asset must still be reported.
+      if (expect404 && r.status() === 404 && new URL(r.url()).pathname === new URL(url).pathname) return;
       report.failed.push(`[${tag}] ${r.status()} ${r.url()}`);
     });
   };

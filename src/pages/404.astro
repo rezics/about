@@ -24,7 +24,7 @@ const phone = [0, 2, 4, 6, 8].map((i) => tiles.slice(i, i + 2).map((t) => ({ id:
     image={{
       src: '/images/home/missing', widths: [960, 1920], width: 1920, height: 1280,
       alt: nf.imageAlt, position: '0% 50%',
-      phone: { src: '/images/home/missing', widths: [640, 960], width: 960, height: 640 },
+      phone: { src: '/images/home/missing-phone', widths: [640, 960], width: 960, height: 640 },
     }}
   >
     <ProductCall href="/" label={nf.back} />
@@ -39,6 +39,16 @@ const phone = [0, 2, 4, 6, 8].map((i) => tiles.slice(i, i + 2).map((t) => ({ id:
   :global(.nf-kinds .section__title) { font-size: clamp(1.375rem, 1.1rem + 1vw, 1.875rem); }
   :global(.nf-kinds .section__wide) { margin-top: 48px; }
   :global(.nf-kinds .tile__name--latin) { --tile-name: clamp(1rem, 1.4vw, 1.25rem); }
+  /* The prose tail binder also sees tile names; narrow tiles need to wrap the four CJK
+     characters instead of holding the entire label on one line. */
+  :global(.nf-kinds .tile__name .nw) { white-space: normal; word-break: normal; }
+  @media (min-width: 1024px) and (max-width: 1199px) {
+    :global(.nf .phero__title) { font-size: 44px; }
+  }
+  @media (min-width: 768px) and (max-width: 1439px) {
+    :global(.nf-kinds .masonry) { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, 120px); gap: 3px; height: auto; margin: 0; }
+    :global(.nf-kinds .masonry__cell) { grid-column: auto; grid-row: auto; padding: 0; }
+  }
   @media (max-width: 1023px) {
     :global(.nf-kinds .tile) { --pad: 12px; }
   }
