@@ -1,0 +1,48 @@
+---
+/**
+ * The end of an inner page (kit README "Deprecated": a masonry of next pages instead of the v2
+ * finale): the lead-in line as the heading, the next page as the tall tile, and four more of the
+ * site's pages beside it. On the last page the next site takes the tall tile. Each page keeps its
+ * one colour (tiles.ts), the same as on the landing.
+ */
+import Section from '../../kit/components/Section.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import { fieldOf } from '../../kit/theme';
+import { pageTiles } from './tiles';
+import { nextSite, pageHref, siteFor } from '../../kit/sites';
+import site from '../../content/sites/visual-novels';
+
+interface Props {
+  /** The lead-in line: what the next page (or site) is about. */
+  line: string;
+}
+const { line } = Astro.props;
+const sh = site.strings.shared;
+const rows = site.strings.landing.pagesIndex.rows;
+const found = siteFor(Astro.url.pathname);
+if (!found || found.site.id !== site.id) throw new Error(`${Astro.url.pathname}: NextPages is for the visual-novels site`);
+const inner = site.pages.filter((p) => p.slug);
+const tileOf = (slug: string, withLine: string): MasonryItem => {
+  const p = inner.find((x) => x.slug === slug)!;
+  return { id: p.slug, name: p.label, line: withLine, href: pageHref(site, p), ...pageTiles[slug]! };
+};
+const here = inner.findIndex((p) => p.slug === found.page.slug);
+const nextPage = inner[here + 1];
+const other = nextPage ? undefined : nextSite(site);
+if (!nextPage && !other) throw new Error('NextPages: no next page or site');
+const lead: MasonryItem = nextPage
+  ? tileOf(nextPage.slug, rows[nextPage.slug]!)
+  : { id: other!.id, name: other!.name, line: sh.nextSiteLine, href: other!.base, bg: fieldOf(other!.theme).field, on: fieldOf(other!.theme).on };
+const rest = inner.filter((p) => p.slug !== found.page.slug && p.slug !== nextPage?.slug).slice(0, 4).map((p) => tileOf(p.slug, rows[p.slug]!));
+const items = [lead, ...rest];
+const columns: MasonryPlace[][] = [
+  [{ id: lead.id, h: 1 }],
+  rest.slice(0, 2).map((t) => ({ id: t.id, h: 1, line: false })),
+  rest.slice(2, 4).map((t) => ({ id: t.id, h: 1, line: false })),
+];
+const phone: MasonryRowPlace[][] = [[{ id: lead.id }], rest.slice(0, 2).map((t) => ({ id: t.id, line: false })), rest.slice(2, 4).map((t) => ({ id: t.id, line: false }))];
+const label = nextPage ? sh.nextPage : sh.nextSite;
+---
+<Section eyebrow={label} title={line}>
+  <TileMasonry slot="wide" items={items} columns={columns} phone={phone} height={320} phoneRow={96} label={site.name} />
+</Section>

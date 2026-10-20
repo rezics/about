@@ -1,0 +1,46 @@
+---
+// Wiki+ (SITE.md "v3"): five steps from script to reader, the locator, the statement on the full
+// text staying local, the wiki as a site, the next pages.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import NextPages from '../../sites/visual-novels/NextPages.astro';
+import site from '../../content/sites/visual-novels';
+import '../../sites/visual-novels/vn.css';
+
+const s = site.strings.wiki;
+const l = s.locator;
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+
+  <Section eyebrow={s.steps.label} title={s.steps.headline}>
+    <FactList items={s.steps.items} numbered />
+  </Section>
+
+  <Section eyebrow={l.label} title={l.headline} lead={l.body}>
+    <dl class="vn-locator">
+      {l.fields.map((f) => (
+        <div class="vn-locator__row">
+          <dt class="vn-locator__label">{f.label}</dt>
+          <dd class="vn-locator__value">{f.code ? <code>{f.value}</code> : f.value}</dd>
+        </div>
+      ))}
+    </dl>
+    <p class="vn-caption">{l.caption}</p>
+  </Section>
+
+  <Statement text={s.local.text} sub={s.local.more}>
+    <div class="vn-notes">
+      {s.local.body.map((p) => <p class="text">{p}</p>)}
+    </div>
+  </Statement>
+
+  <Section eyebrow={s.zone.label} title={s.zone.headline} lead={s.zone.body} />
+
+  <NextPages line={s.finale} />
+  <Closing title={site.strings.shared.closing} />
+</MiniSiteLayout>

@@ -1,0 +1,126 @@
+---
+/**
+ * The release filter on /visual-novels/releases/: three radio groups (語言, 平台, 完整度) over the
+ * six releases of the illustrative work. The rule is releases.ts; the build renders the first
+ * selection, so the table is complete and still without script (the controls show only with
+ * script). A release that fails says which condition it fails; a translated title alone is named
+ * as such. Phones: each release is a short stack.
+ */
+import site from '../../content/sites/visual-novels';
+import { filterDims, initialSelection, judge, matches, verdictText } from './releases';
+
+const sh = site.strings.shared;
+const m = site.strings.releases.matrix;
+const releases = sh.releases;
+const tableDims = ['language', 'platform', 'region', 'coverage'] as const;
+
+const count = m.count.replace('{n}', String(matches(releases, initialSelection).length)).replace('{total}', String(releases.length));
+const labels = { dims: sh.dims, fails: sh.fails, titleOnly: sh.titleOnly, match: sh.match };
+const data = {
+  releases: releases.map((r) => ({ id: r.id, values: r.values, titleLanguage: r.titleLanguage })),
+  labels,
+  count: m.count,
+};
+---
+<div class="vrf" data-vn-filter={JSON.stringify(data)}>
+  <div class="vrf__controls" role="group" aria-label={m.filtersLabel}>
+    {filterDims.map((d) => (
+      <fieldset class="vrf__group">
+        <legend class="vrf__legend">{sh.dims[d]}</legend>
+        <div class="vrf__options">
+          {[['', m.any] as const, ...Object.entries(sh.options[d]!)].map(([value, label]) => (
+            <label class="vrf__opt">
+              <input type="radio" name={`vn-${d}`} value={value} data-dim={d} checked={(initialSelection[d] ?? '') === value} />
+              <span>{label}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    ))}
+  </div>
+  <p class="vrf__count" aria-live="polite" data-vn-count>{count}</p>
+  <table class="vrf__table">
+    <caption class="vrf__caption">{m.caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{sh.columns.name}</th>
+        {tableDims.map((d) => <th scope="col">{sh.dims[d]}</th>)}
+        <th scope="col" class="vrf__result-h"><span class="sr-only">{sh.match}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      {releases.map((r) => {
+        const v = judge(r, initialSelection);
+        return (
+          <tr data-id={r.id} data-state={v.state}>
+            <th scope="row" class="vrf__name">{r.name}</th>
+            {tableDims.map((d) => (
+              <td data-dim={d} data-col={sh.dims[d]} data-out={v.fails.includes(d) ? '' : undefined}>
+                {sh.options[d]![r.values[d]]}
+                {d === 'coverage' && r.coverageNote && <span class="vrf__note">（{r.coverageNote}）</span>}
+              </td>
+            ))}
+            <td class="vrf__verdict" data-verdict>{verdictText(r, initialSelection, labels)}</td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+  <p class="vrf__foot">{m.note}</p>
+</div>
+
+<script>
+  import { startReleaseFilter } from './filter';
+  startReleaseFilter();
+</script>
+
+<style>
+  .vrf { min-width: 0; }
+  .vrf__controls { display: none; gap: 20px; margin-bottom: 40px; }
+  :global(html.js) .vrf__controls { display: grid; }
+  .vrf__group { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); align-items: center; gap: 12px; margin: 0; padding: 0; border: 0; min-width: 0; }
+  .vrf__legend { float: left; padding: 0; font-size: 13px; color: var(--c-muted); }
+  .vrf__options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vrf__opt { position: relative; display: inline-flex; }
+  .vrf__opt input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .vrf__opt span {
+    display: inline-flex; align-items: center; height: 40px; padding: 0 18px; border-radius: 999px;
+    border: 1px solid var(--c-line-strong, rgb(38 41 45 / 0.3)); font-size: 15px; color: var(--c-fg);
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  }
+  .vrf__opt:hover span { border-color: var(--c-fg); }
+  .vrf__opt input:checked + span { background: var(--c-fg); border-color: var(--c-fg); color: var(--c-bg); }
+  .vrf__opt input:focus-visible + span { outline: 2px solid var(--focus, #2f4fa3); outline-offset: 3px; }
+  .vrf__count { font-size: 15px; font-weight: 600; margin-bottom: 18px; }
+
+  .vrf__table { width: 100%; border-collapse: collapse; }
+  .vrf__caption { caption-side: bottom; text-align: left; margin-top: 14px; font-size: 14px; color: var(--c-muted); }
+  .vrf__table thead th { text-align: left; font-size: 13px; font-weight: 400; color: var(--c-muted); padding: 0 16px 12px 0; }
+  .vrf__table tbody tr { border-top: 1px solid var(--c-line); transition: background-color 0.3s ease; }
+  .vrf__table tbody tr:last-child { border-bottom: 1px solid var(--c-line); }
+  .vrf__table tbody th, .vrf__table td { text-align: left; vertical-align: top; padding: 18px 16px 18px 0; font-size: 16px; line-height: 1.7; }
+  .vrf__name { font-weight: 600; }
+  .vrf__note { color: var(--c-muted); font-size: 14px; }
+  .vrf__verdict { font-size: 14px; color: var(--c-muted); white-space: nowrap; }
+  .vrf__table tbody tr[data-state='match'] { background: var(--vn-tint); }
+  .vrf__table tbody tr[data-state='match'] th { padding-left: 14px; box-shadow: inset 3px 0 0 var(--field); }
+  .vrf__table tbody tr[data-state='match'] .vrf__verdict { color: var(--c-fg); font-weight: 600; }
+  .vrf__table tbody tr[data-state='fail'] th, .vrf__table tbody tr[data-state='fail'] td:not([data-verdict]) { color: var(--c-muted); }
+  .vrf__table td[data-out] { text-decoration: line-through; text-decoration-thickness: 1px; }
+  .vrf__foot { margin-top: 28px; font-size: 15px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
+
+  @media (max-width: 767px) {
+    .vrf__group { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .vrf__legend { float: none; margin-bottom: 8px; }
+    .vrf__table thead { display: none; }
+    /* The verdict cannot take width away from the metadata below it. Values wrap as units. */
+    .vrf__table tbody tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 0; padding: 16px 0; }
+    .vrf__table tbody th, .vrf__table td { display: block; padding: 0; }
+    .vrf__table tbody th { flex: 1 1 60%; min-width: 0; }
+    .vrf__table .vrf__verdict { order: 1; flex: 0 1 40%; min-width: 0; text-align: right; white-space: normal; text-wrap: balance; padding-left: 12px; }
+    .vrf__table td[data-dim] { order: 2; flex: 0 0 auto; max-width: 100%; font-size: 15px; }
+    .vrf__table td[data-dim] + td[data-dim]::before { content: '・'; display: inline-block; color: var(--c-muted); text-decoration: none; }
+    .vrf__table tbody tr[data-state='match'] { padding-inline: 14px; box-shadow: inset 3px 0 0 var(--field); }
+    .vrf__table tbody tr[data-state='match'] th { padding-left: 0; box-shadow: none; }
+  }
+</style>
