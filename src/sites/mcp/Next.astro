@@ -1,0 +1,21 @@
+---
+/**
+ * The end of an MCP Hub page before the closing: a section whose eyebrow says where it leads
+ * (下一頁 or 下一個網站), whose heading says what is there, and a tile masonry of the pages (or
+ * sites) that follow, the next one leading.
+ */
+import Section from '../../kit/components/Section.astro';
+import TileMasonry from '../../kit/components/TileMasonry.astro';
+import type { McpMasonry } from './tiles';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  masonry: McpMasonry;
+  height?: number;
+}
+const { eyebrow, title, masonry, height = 360 } = Astro.props;
+---
+<Section eyebrow={eyebrow} title={title}>
+  <TileMasonry slot="wide" items={masonry.items} columns={masonry.columns} phone={masonry.phone} height={height} label={eyebrow} />
+</Section>

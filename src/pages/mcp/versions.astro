@@ -1,0 +1,68 @@
+---
+// MCP Hub versions (v3; src/sites/mcp/SITE.md section 3): a new version starts without records,
+// the tool list compared between two observations, package identity, follow levels, ratings
+// pinned to a version.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Table from '../../kit/components/Table.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Next from '../../sites/mcp/Next.astro';
+import Note from '../../sites/mcp/Note.astro';
+import Words from '../../sites/mcp/Words.astro';
+import EagerPhoto from '../../sites/mcp/EagerPhoto.astro';
+import site from '../../content/sites/mcp';
+import { nextPages } from '../../sites/mcp/tiles';
+
+const s = site.strings;
+const v = s.versions;
+const rows = v.diff.rows.map((r) => [r.tool, r.before, r.after]);
+---
+<MiniSiteLayout>
+  <Words>
+    <PageHead label={site.name} title={v.hero.headline} lede={v.hero.lede} />
+
+    <EagerPhoto><PhotoRow
+      side="right"
+      eyebrow={v.start.label}
+      title={v.start.headline}
+      body={[v.start.body, v.start.note]}
+      image={{ src: '/images/sites/mcp/versions', widths: [640, 1200], width: 1200, height: 800, alt: s.pictures.versions, phone: { src: '/images/sites/mcp/versions', widths: [640], width: 640, height: 427 } }}
+    /></EagerPhoto>
+
+    <Section eyebrow={v.diff.label} title={v.diff.headline} lead={[v.diff.body, v.diff.consequence]}>
+      <Table class="mcp-diff" columns={v.diff.columns} rows={rows} caption={v.diff.caption} label={v.diff.headline} />
+    </Section>
+
+    <Section eyebrow={v.ledger.label} title={v.ledger.headline} lead={v.ledger.body}>
+      <FactList items={v.ledger.rows} />
+    </Section>
+
+    <Section eyebrow={v.follow.label} title={v.follow.headline} lead={v.follow.body}>
+      <FactList items={v.follow.levels} />
+      <Note text={v.follow.channels} />
+    </Section>
+
+    <Statement text={v.statement.text} sub={v.statement.sub} note={v.statement.note} />
+
+    <Next eyebrow={s.next.page} title={v.next} masonry={nextPages('versions')} />
+
+    <Closing title={v.closing} body="" />
+  </Words>
+</MiniSiteLayout>
+
+<style>
+  :global(.mcp-diff) { max-width: 760px; }
+  /* The short comparison stays a table on phones; the kit stacks generic tables. */
+  @media (max-width: 599px) {
+    :global(.mcp-diff table) { table-layout: fixed; font-size: 14px; }
+    :global(.mcp-diff thead) { display: table-header-group; }
+    :global(.mcp-diff tr) { display: table-row; padding-block: 0; }
+    :global(.mcp-diff th), :global(.mcp-diff td) { display: table-cell; padding: 16px 10px 16px 0; }
+    :global(.mcp-diff th:last-child), :global(.mcp-diff td:last-child) { padding-right: 0; }
+    :global(.mcp-diff td::before) { display: none; }
+  }
+</style>

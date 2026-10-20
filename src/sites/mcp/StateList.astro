@@ -1,0 +1,37 @@
+---
+/**
+ * The four states a combination can be in, as a hairline list (the kit's FactList look) with a
+ * small paper mark before each name. The word always carries the state; the mark only repeats
+ * it: 成功 an ochre square, 未通過 an ink outline, 有爭議 an ochre square with an ink corner,
+ * 沒有紀錄 a hairline outline.
+ */
+import type { McpState } from '../../content/sites/mcp';
+
+interface Props {
+  names: Record<McpState, string>;
+  items: Record<McpState, string>;
+}
+const { names, items } = Astro.props;
+const order: McpState[] = ['ok', 'fail', 'disputed', 'none'];
+---
+<ul class="mstates" role="list">
+  {order.map((s) => (
+    <li class="mstates__row">
+      <h3 class="mstates__title serif"><span class:list={['mstate', `mstate--${s}`]} aria-hidden="true"></span>{names[s]}</h3>
+      <p class="mstates__body">{items[s]}</p>
+    </li>
+  ))}
+</ul>
+<style>
+  .mstates { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--c-line); }
+  .mstates__row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 8px var(--gutter); padding: 30px 0 32px; border-bottom: 1px solid var(--c-line); }
+  .mstates__title { display: flex; align-items: center; gap: 14px; font-size: var(--t-h3); line-height: 1.55; }
+  .mstates__body { font-size: 16px; line-height: 1.9; color: var(--c-text); max-width: 34em; }
+  .mstate { position: relative; flex: none; width: 16px; height: 16px; box-sizing: border-box; }
+  .mstate--ok { background: var(--field); }
+  .mstate--fail { border: 1.5px solid var(--c-fg); }
+  .mstate--disputed { background: var(--field); }
+  .mstate--disputed::after { content: ''; position: absolute; top: 0; right: 0; width: 7px; height: 7px; background: var(--c-fg); }
+  .mstate--none { border: 1px solid var(--c-line-strong); }
+  @media (max-width: 767px) { .mstates__row { grid-template-columns: minmax(0, 1fr); padding: 24px 0 26px; } }
+</style>

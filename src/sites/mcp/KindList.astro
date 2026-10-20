@@ -1,0 +1,47 @@
+---
+/**
+ * One mixed list (示意): ordered rows, each with a small paper mark in its kind's colour, the
+ * kind's name, the item and its note. Shows that a list holds servers, skills, APIs and
+ * software together.
+ */
+import { kindFields } from '../../kit/theme';
+import { kindById } from '../../kit/content';
+import type { KindId } from '../../content/schema';
+
+interface Props {
+  title: string;
+  items: { kind: KindId; name: string; note: string }[];
+}
+const { title, items } = Astro.props;
+---
+<figure class="mkinds">
+  <figcaption class="mkinds__title serif">{title}</figcaption>
+  <ol class="mkinds__list">
+    {items.map((it, i) => (
+      <li class="mkinds__row">
+        <span class="mkinds__n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        <span class="mkinds__item">
+          <span class="mkinds__kind"><span class="mkinds__mark" style={`background:${kindFields[it.kind].field}`} aria-hidden="true"></span>{kindById(it.kind).name}</span>
+          <span class="mkinds__name serif">{it.name}</span>
+        </span>
+        <span class="mkinds__note">{it.note}</span>
+      </li>
+    ))}
+  </ol>
+</figure>
+<style>
+  .mkinds { margin: 0; }
+  .mkinds__title { font-size: var(--t-h3); line-height: 1.55; padding-bottom: 18px; border-bottom: 1px solid var(--c-line); }
+  .mkinds__list { list-style: none; margin: 0; padding: 0; }
+  .mkinds__row { display: grid; grid-template-columns: 40px minmax(0, 4fr) minmax(0, 5fr); gap: 8px var(--gutter); align-items: baseline; padding: 22px 0 24px; border-bottom: 1px solid var(--c-line); }
+  .mkinds__n { font-size: 13px; color: var(--c-muted); }
+  .mkinds__item { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .mkinds__kind { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--c-muted); }
+  .mkinds__mark { width: 10px; height: 10px; flex: none; }
+  .mkinds__name { font-size: 18px; line-height: 1.5; font-weight: 600; }
+  .mkinds__note { font-size: 16px; line-height: 1.9; color: var(--c-text); }
+  @media (max-width: 767px) {
+    .mkinds__row { grid-template-columns: 32px minmax(0, 1fr); }
+    .mkinds__note { grid-column: 2; }
+  }
+</style>

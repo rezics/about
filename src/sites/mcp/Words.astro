@@ -1,0 +1,16 @@
+---
+/**
+ * Renders its content and keeps this site's technical words whole (words.ts): each one in the
+ * text is wrapped in a `.nw` span, so the build's phrase breaks never split 伺服器 or 用戶端.
+ */
+import { joinWords } from './words';
+
+const html = await Astro.slots.render('default');
+---
+<Fragment set:html={joinWords(html)} />
+
+<style>
+  /* SiteBar centres the current tab with offsetLeft. Give that measurement the scrolling
+     strip as its origin so the active tab remains visible on narrow MCP pages. */
+  :global(html[data-site='mcp'] .sitebar__tabs) { position: relative; }
+</style>
