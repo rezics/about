@@ -24,7 +24,20 @@
 [data-site='books'] :is(.link-draw, .sitebar__tab):active,
 [data-site='books'] .sitebar__home:active .sitebar__name,
 [data-site='books'] .header .tab:active > span:first-child { translate: none; }
+/* Keep the fan on the right when the tablet hero crops a wide photograph into a tall frame. */
+@media (min-width: 768px) and (max-width: 1199px) {
+  [data-site='books'] .phero img { --pos: 0% 30%; }
+  [data-site='books'] .phero .phero__copy { grid-column: 1 / 8; }
+  [data-site='books'] .phero .phero__title { font-size: clamp(40px, 4.8vw, 48px); }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+  [data-site='books'] .phero .phero__title { font-size: 48px; }
+}
 @media (max-width: 767px) {
+  [data-site='books'] .sitebar .sitebar__tabs {
+    padding-left: 12px;
+    mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 24px), transparent);
+  }
   [data-site='books'] .bk-under { display: block; }
   [data-site='books'] .bk-note { margin-top: 20px; font-size: 14px; }
   [data-site='books'] .bk-gap { margin-top: 36px; }

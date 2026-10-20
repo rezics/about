@@ -278,3 +278,44 @@ name and show an arrow on hover; the position control swaps its lists with a sho
 - **Withheld entries:** the first critic found that invisible Wiki text still kept a full
   entry's height. Later entries now fold to a 64 px notice; selecting a later position restores
   their complete content. The control itself stays in place.
+- **Tablet hero crop:** at 768 px the shared centred cover crop pulled the green fan under the
+  headline and paragraph. Between 768 and 1199 px, books sets the picture's crop from the left
+  edge and keeps a seven-column copy area with a 40–48 px title, preventing a two-character
+  orphan at the shared 1024 px breakpoint. Desktop and phone crops keep their original framing;
+  this workaround lives in `books.css` without changing the kit.
+- **Earlier phone tabs:** the books-scoped bar masks both overflow edges, with a 12 px start
+  inset so the first tab remains clear at the beginning. This signals that earlier pages are
+  available when the shared bar scrolls the selected page into view.
+
+### Verification (v3, 2026-10-20)
+
+`task check` passed: 151 Astro files with no diagnostics, 31 static routes built, 187 tests
+passed. The final production audit has no failures or warnings on any books route.
+
+| Page | Phone LCP (ms) | CLS | axe violations |
+|---|---:|---:|---:|
+| `/books/` | 2128 | 0 | 0 |
+| `/books/work/` | 1264 | 0 | 0 |
+| `/books/wiki/` | 1772 | 0 | 0 |
+| `/books/editions/` | 1964 | 0 | 0 |
+| `/books/library/` | 1816 | 0 | 0 |
+| `/books/serial/` | 1752 | 0 | 0 |
+| `/books/publish/` | 1328 | 0 | 0 |
+
+Phone measurements use 4× CPU slowdown and slow 4G. All seven final runs recorded 60 fps,
+no browser errors or failed requests, no page overflow or small targets, no invisible focus
+stops and no text hidden under reduced motion. Every primary hover target responds beyond
+colour alone. The Chinese skip link is the first keyboard stop; the QA helper's English-only
+skip-link heuristic reports a false negative, independently checked against its actual href.
+
+The screenshot review covers all 273 desktop, phone, focus, hover, reduced-motion and
+navigation frames. A supplemental production check loaded every route at 14 widths from
+320 to 1920 px (98 loads), verified image loading, heading/anchor structure and first focus,
+and captured complete pages with lazy pictures decoded. The hero's actual glyph positions
+pass contrast at all 11 desktop/tablet widths: minimum 5.06:1 for the large heading and
+4.91:1 for its paragraph. All six chapter positions and arrow-key selection work with
+JavaScript disabled; later rows remain compact and their text is hidden.
+
+QA artifacts live in `.shots/books*`, with the complete landing at
+`.shots/books-review-final/books-1440-full.png` and the throttled phone opening at
+`.shots/books/m-01-hero.png`. No shared kit, engine, style or content files were edited.
