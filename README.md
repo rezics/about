@@ -1,6 +1,7 @@
 # REZICS about site
 
-The public site at `about.rezics.com`: what REZICS is, one square per kind of thing. zh-Hant.
+The public site at `about.rezics.com`: what REZICS is, in the product's eight interface locales
+(en, zh-Hant, zh-Hans, ja, ko, de, fr, es), each under `/<locale>/`.
 
 - Design brief: [DESIGN.md](DESIGN.md). Agent instructions: [AGENTS.md](AGENTS.md).
 - Mini-site kit (how each product site is built): [src/kit/README.md](src/kit/README.md).
@@ -10,6 +11,15 @@ The public site at `about.rezics.com`: what REZICS is, one square per kind of th
 Astro (static output), GSAP and Lenis on one clock, plain CSS with tokens, TypeScript. Cloudflare
 serves `dist/` as static assets (no Worker script, no database). Every action leads into the live
 product at `site.productUrl`.
+
+## Languages
+
+zh-Hant is the source copy. Each content module `src/content/<module>.ts` has a translation
+beside it, `<module>.<locale>.ts`, with the same shape (`tests/unit/locales.test.ts` checks keys,
+links and leftovers; a locale build fails on a missing one). `task build` runs one Astro build per
+locale and assembles `dist/<locale>/` (`scripts/build.mjs`). `/` and unprefixed paths go to a Pages
+Function (`functions/[[path]].ts`) that picks the locale from the `rezics_locale` cookie, then
+Accept-Language, then English. A copy change in zh-Hant needs the same change in every locale.
 
 ## Commands
 

@@ -6,7 +6,9 @@
 - Mini-site builders: read [src/kit/README.md](src/kit/README.md). Edit only your own paths.
 - Run every command through Task (`task --list`; arguments after `--`). Yarn (Berry, through
   corepack) installs dependencies.
-- The site is zh-Hant only. All visible text lives in `src/content/`; pages contain no copy.
+- zh-Hant is the source copy, translated into seven more locales as `src/content/<module>.<locale>.ts`
+  (README "Languages"). All visible text lives in `src/content/`; pages contain no copy. Change a
+  string in zh-Hant and in every translation in the same commit.
 - Temporary files go in `.temp/`. QA output goes in `.shots/` (both are ignored by git).
 - Never deploy, never run `wrangler login`, never touch Cloudflare remote resources. The
   maintainer deploys.
