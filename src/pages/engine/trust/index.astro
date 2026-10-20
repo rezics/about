@@ -1,8 +1,81 @@
 ---
-// STUB: the trust module page's builder replaces this page (src/kit/README.md).
+// 信任 /engine/trust/ (v3; plan in src/sites/community/SITE.md). One picture, one idea per section:
+// marks, imports, decisions, the numbers in the policies, who sees what, privacy, then the module
+// family's closing.
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../../kit/components/StubLanding.astro';
+import '../../../sites/community/module-hero.css';
+import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import Section from '../../../kit/components/Section.astro';
+import FactList from '../../../kit/components/FactList.astro';
+import ProductCall from '../../../kit/components/ProductCall.astro';
+import FactGrid from '../../../sites/community/FactGrid.astro';
+import Figures from '../../../sites/community/Figures.astro';
+import DecisionTrail from '../../../sites/trust/DecisionTrail.astro';
+import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
+import ModuleContents from '../../../sites/community/ModuleContents.astro';
+import { site as shared } from '../../../kit/content';
+import site from '../../../content/sites/trust';
+
+const s = site.strings;
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    class="module-hero"
+    bar
+    eyebrow={shared.nav.engine}
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/trust/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: s.hero.imageAlt,
+      position: '0% 50%',
+      phone: { src: '/images/sites/trust/hero-phone', widths: [640, 780, 960], width: 960, height: 640, position: '50% 50%' },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <ModuleContents label={s.contentsLabel} items={[
+    { id: "trust-marks", label: s.marks.label },
+    { id: "trust-imports", label: s.imports.label },
+    { id: "trust-humans", label: s.humans.label },
+    { id: "trust-numbers", label: s.numbers.label },
+    { id: "trust-views", label: s.views.label },
+    { id: "trust-privacy", label: s.privacy.label },
+  ]} />
+
+  <Section id="trust-marks" eyebrow={s.marks.label} title={s.marks.headline} lead={s.marks.lead}>
+    <FactList items={s.marks.facts!} />
+  </Section>
+
+  <Section id="trust-imports" eyebrow={s.imports.label} title={s.imports.headline} lead={s.imports.lead}>
+    <FactGrid items={s.imports.facts!} label={s.imports.headline} />
+  </Section>
+
+  <Section id="trust-humans" eyebrow={s.humans.label} title={s.humans.headline} lead={s.humans.lead}>
+    <DecisionTrail {...s.humans.trail} items={s.humans.facts!.slice(0, 3)} />
+    <FactList items={s.humans.facts!.slice(3)} />
+  </Section>
+
+  <Section id="trust-numbers" eyebrow={s.numbers.label} title={s.numbers.headline} lead={s.numbers.lead}>
+    <Figures figures={s.numbers.figures} label={s.numbers.headline} />
+    <p class="module-note phrase">{s.numbers.note}</p>
+  </Section>
+
+  <Section id="trust-views" eyebrow={s.views.label} title={s.views.headline} lead={s.views.lead}>
+    <FactGrid items={s.views.facts!} label={s.views.headline} />
+  </Section>
+
+  <Section id="trust-privacy" eyebrow={s.privacy.label} title={s.privacy.headline}>
+    <FactList items={s.privacy.facts!} />
+  </Section>
+
+  <ModuleEnd current="trust" family={s.family} />
 </MiniSiteLayout>
+
+<style>
+  .module-note { margin-top: 12px; max-width: 40em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
+</style>

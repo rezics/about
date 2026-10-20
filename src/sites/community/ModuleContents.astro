@@ -1,0 +1,32 @@
+---
+interface Props {
+  label: string;
+  items: { id: string; label: string }[];
+}
+const { label, items } = Astro.props;
+---
+<nav class="module-contents" aria-label={label}>
+  <div class="grid">
+    <p class="module-contents__label eyebrow">{label}</p>
+    <ul role="list">
+      {items.map(item => <li><a href={`#${item.id}`}>{item.label}</a></li>)}
+    </ul>
+  </div>
+</nav>
+<style>
+  .module-contents { padding-top: 48px; }
+  .module-contents__label { grid-column: 1 / 4; padding-top: 10px; }
+  ul { grid-column: 4 / 13; display: flex; flex-wrap: wrap; gap: 8px 12px; margin: 0; padding: 0 0 28px; list-style: none; border-bottom: 1px solid var(--c-line); }
+  a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 10px; color: var(--c-fg); font-size: 14px; line-height: 1.8; text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; transition: color var(--d-s) var(--ease-soft), background-color var(--d-s) var(--ease-soft), translate var(--d-m) var(--ease-snap); }
+  @media (hover: hover) {
+    a:hover { color: var(--c-bg); background: var(--c-fg); translate: 0 -2px; }
+  }
+  a:focus-visible { outline: 2px solid var(--c-link); outline-offset: 3px; }
+  a:active { translate: 0 1px; }
+  @media (max-width: 767px) {
+    .module-contents { padding-top: 32px; }
+    .module-contents__label { padding: 0 0 12px; }
+    ul { gap: 4px 8px; padding-bottom: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) { a { transition: none; } }
+</style>

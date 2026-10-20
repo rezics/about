@@ -1,0 +1,46 @@
+---
+import { inkOn, moduleFields } from '../../kit/theme';
+interface Props {
+  label: string;
+  items: { title: string; value: string; unit: string; note: string }[];
+  caption: string;
+}
+const { label, items, caption } = Astro.props;
+const fields = [moduleFields.create, moduleFields['universal-index']];
+---
+<figure class="edition-record">
+  <figcaption class="edition-record__label eyebrow">{label}</figcaption>
+  <div class="edition-record__pair">
+    {items.map((item, index) => {
+      const field = fields[index % fields.length]!;
+      return (
+        <div class="edition-record__sheet" style={`--sheet:${field.field};--sheet-ink:${inkOn(field.field, field.on)}`}>
+          <h3 class="serif">{item.title}</h3>
+          <p class="edition-record__count"><span class="serif">{item.value}</span><span>{item.unit}</span></p>
+          <p class="edition-record__note">{item.note}</p>
+        </div>
+      );
+    })}
+  </div>
+  <p class="edition-record__caption">{caption}</p>
+</figure>
+<style>
+  .edition-record { margin-bottom: 56px; }
+  .edition-record__label { margin-bottom: 16px; }
+  .edition-record__pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3px; }
+  .edition-record__sheet { min-width: 0; padding: 28px; background: var(--sheet); color: var(--sheet-ink); }
+  h3 { font-size: 22px; line-height: 1.5; }
+  .edition-record__count { display: flex; align-items: baseline; gap: 12px; margin-top: 36px; }
+  .edition-record__count .serif { font-size: 76px; line-height: 1.1; }
+  .edition-record__count > span:last-child { font-size: 15px; }
+  .edition-record__note { margin-top: 20px; font-size: 15px; line-height: 1.9; }
+  .edition-record__caption { margin-top: 18px; font-size: 13px; line-height: 1.9; color: var(--c-text); }
+  @media (max-width: 767px) {
+    .edition-record { margin-bottom: 36px; }
+    .edition-record__sheet { padding: 20px 16px; }
+    h3 { font-size: 18px; min-height: 54px; }
+    .edition-record__count { gap: 8px; margin-top: 20px; }
+    .edition-record__count .serif { font-size: 56px; }
+    .edition-record__note { margin-top: 16px; font-size: 14px; }
+  }
+</style>

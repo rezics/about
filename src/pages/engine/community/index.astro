@@ -1,8 +1,88 @@
 ---
-// STUB: the community module page's builder replaces this page (src/kit/README.md).
+// 社群 /engine/community/ (v3; plan in src/sites/community/SITE.md). One picture, one idea per
+// section: identity, the byline rule, the Realm, leaving, ratings, follows, the feed,
+// recognition, then the module family's closing (statement, ring of the five modules, closing).
 import MiniSiteLayout from '../../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../../kit/components/StubLanding.astro';
+import '../../../sites/community/module-hero.css';
+import PhotoHero from '../../../kit/components/PhotoHero.astro';
+import Section from '../../../kit/components/Section.astro';
+import FactList from '../../../kit/components/FactList.astro';
+import Statement from '../../../kit/components/Statement.astro';
+import ProductCall from '../../../kit/components/ProductCall.astro';
+import FactGrid from '../../../sites/community/FactGrid.astro';
+import Byline from '../../../sites/community/Byline.astro';
+import Figures from '../../../sites/community/Figures.astro';
+import ModuleEnd from '../../../sites/community/ModuleEnd.astro';
+import ModuleContents from '../../../sites/community/ModuleContents.astro';
+import { site as shared } from '../../../kit/content';
+import site from '../../../content/sites/community';
+
+const s = site.strings;
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero
+    class="module-hero"
+    bar
+    eyebrow={shared.nav.engine}
+    title={s.hero.headline}
+    lede={s.hero.lede}
+    image={{
+      src: '/images/sites/community/hero',
+      widths: [960, 1920],
+      width: 1920,
+      height: 1280,
+      alt: s.hero.imageAlt,
+      position: '0% 50%',
+      phone: { src: '/images/sites/community/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
+    }}
+  >
+    <ProductCall />
+  </PhotoHero>
+
+  <ModuleContents label={s.contentsLabel} items={[
+    { id: "community-person", label: s.person.label },
+    { id: "community-lead", label: s.lead.label },
+    { id: "community-realm", label: s.realm.label },
+    { id: "community-ratings", label: s.ratings.label },
+    { id: "community-follow", label: s.follow.label },
+    { id: "community-feed", label: s.feed.label },
+    { id: "community-recognition", label: s.recognition.label },
+  ]} />
+
+  <Section id="community-person" eyebrow={s.person.label} title={s.person.headline} lead={s.person.lead}>
+    <FactList items={s.person.facts!} />
+  </Section>
+
+  <Section id="community-lead" eyebrow={s.lead.label} title={s.lead.headline} lead={s.lead.lead}>
+    <Byline {...s.lead.specimen} />
+    <FactList items={s.lead.facts!} />
+    <p class="module-note phrase">{s.lead.note}</p>
+  </Section>
+
+  <Section id="community-realm" eyebrow={s.realm.label} title={s.realm.headline} lead={s.realm.lead}>
+    <FactGrid items={s.realm.facts!} label={s.realm.headline} />
+  </Section>
+
+  <Statement text={s.leave.statement} sub={s.leave.sub} />
+
+  <Section id="community-ratings" eyebrow={s.ratings.label} title={s.ratings.headline} lead={s.ratings.lead}>
+    <Figures figures={s.ratings.figures} label={s.ratings.headline} />
+    <p class="module-note phrase">{s.ratings.note}</p>
+  </Section>
+
+  <Section id="community-follow" eyebrow={s.follow.label} title={s.follow.headline} lead={s.follow.lead}>
+    <FactGrid items={s.follow.facts!} label={s.follow.headline} />
+  </Section>
+
+  <Section id="community-feed" eyebrow={s.feed.label} title={s.feed.headline} lead={s.feed.lead}>
+    <FactList items={s.feed.facts!} />
+  </Section>
+
+  <Section id="community-recognition" eyebrow={s.recognition.label} title={s.recognition.headline} lead={s.recognition.lead} />
+
+  <ModuleEnd current="community" family={s.family} />
 </MiniSiteLayout>
+
+<style>
+  .module-note { margin-top: 28px; max-width: 40em; font-size: var(--t-xs); line-height: 1.8; color: var(--c-muted); }
+</style>
