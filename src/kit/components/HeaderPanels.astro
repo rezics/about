@@ -10,12 +10,19 @@
  * tints) with the name in the serif and a subtle paper grain; on hover the tone shifts, the name
  * rises and an arrow slides in (Tile).
  */
-import { kinds, modules, site, kindHref, moduleHref } from '../content';
+import { kinds, modules, site, kindHref, moduleHref, productHref } from '../content';
 import { kindFields, moduleFields } from '../theme';
 import Logo from './Logo.astro';
 import Arrow from './Arrow.astro';
 import Tile from './Tile.astro';
 import Clauses from '../Clauses.astro';
+import { locale, localized } from '../locale';
+import { languageLabel, locales, localeNames } from '../locales';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
 
 const nav = site.nav;
 ---
@@ -74,7 +81,13 @@ const nav = site.nav;
       <ul class="sheet__list sheet__list--main" role="list">
         <li><a class="serif" href="/developers/">{nav.developers}</a></li>
         <li><a class="serif" href="/roadmap/">{nav.roadmap}</a></li>
-        <li><a class="serif" href={site.productUrl}>{nav.action}</a></li>
+        <li><a class="serif" href={productHref}>{nav.action}</a></li>
+      </ul>
+      <p class="sheet__label eyebrow">{languageLabel[locale]}</p>
+      <ul class="sheet__langs" role="list">
+        {locales.map((l) => (
+          <li><a href={localized(path, l)} hreflang={l} lang={l} data-locale={l} aria-current={l === locale ? 'true' : undefined}>{localeNames[l]}</a></li>
+        ))}
       </ul>
     </div>
   </dialog>
@@ -152,4 +165,7 @@ const nav = site.nav;
   .sheet__list a:active { translate: 2px 0; }
   .sheet__close:active { translate: 0 1px; }
   .sheet__list--main { margin-top: 28px; }
+  .sheet__langs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+  .sheet__langs a { display: flex; align-items: center; min-height: 44px; border-bottom: 1px solid var(--c-line); font-size: 15px; }
+  .sheet__langs a[aria-current] { font-weight: 600; color: var(--c-link); }
 </style>

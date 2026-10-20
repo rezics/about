@@ -13,7 +13,7 @@ test.describe('desktop panels', () => {
     await button.hover();
     await expect(panel).toBeVisible();
     await expect(button).toHaveAttribute('aria-expanded', 'true');
-    await expect(panel.locator('a[href="/books/"]')).toBeVisible();
+    await expect(panel.locator('a[href="/zh-Hant/books/"]')).toBeVisible();
     // A click on a tab the pointer opened keeps the panel open.
     await button.click();
     await expect(panel).toBeVisible();
@@ -69,7 +69,7 @@ test.describe('desktop panels', () => {
 
   test('the current section is marked', async ({ page }) => {
     await page.goto('/roadmap/');
-    await expect(page.locator('.tab[href="/roadmap/"]')).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('.tab[href="/zh-Hant/roadmap/"]')).toHaveAttribute('aria-current', 'page');
     await page.goto('/books/');
     await expect(page.locator('[data-panel-button="panel-products"]')).toHaveAttribute('aria-current', 'true');
     await expect(page.locator('[data-sitebar] a[aria-current="page"]').first()).toBeVisible();

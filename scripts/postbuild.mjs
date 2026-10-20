@@ -8,11 +8,13 @@ import path from 'node:path';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import subsetFont from 'subset-font';
-import { cjk, pages, source } from './fonts.mjs';
+import { cjk, faceKeys, pages, source } from './fonts.mjs';
 import { phraseHtml } from './phrase.mjs';
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const dist = path.resolve(process.argv[2] ?? path.join(root, 'dist'));
+// Locales built under dist/<locale>/ (scripts/build.mjs); none means one zh-Hant build at dist/.
+const locales = process.argv.slice(3);
 
 const decode = (s) =>
   s.replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
@@ -27,6 +29,8 @@ const MUTED = '#606468';
 const MARK = '#df3d35';
 const KIND_FIELDS = ['#3f5a45', '#b77d77', '#26282b', '#2f4fa3', '#24555a', '#7768a3', '#c9963f', '#b8c58a', '#a9c3dc'];
 
+// Latin-script locales: longer clips for the same box (set per locale by og()).
+let LATIN = false;
 function h(type, style, children) {
   return { type, props: { style, children } };
 }
@@ -55,10 +59,10 @@ function card({ title, description, name, field, onField }) {
   const clip = (s, n) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
   // A page with its own square states its description large; the home page leads with its title.
   const text = field
-    ? [h('div', { fontFamily: 'Noto Serif TC', fontSize: 40, fontWeight: 600, lineHeight: 1.45, color: INK }, clip(description, 46))]
+    ? [h('div', { fontFamily: 'Noto Serif TC', fontSize: 40, fontWeight: 600, lineHeight: 1.45, color: INK }, clip(description, LATIN ? 96 : 46))]
     : [
-        h('div', { fontFamily: 'Noto Serif TC', fontSize: 54, fontWeight: 600, lineHeight: 1.3, color: INK }, clip(title, 30)),
-        h('div', { fontSize: 26, fontWeight: 400, lineHeight: 1.7, color: MUTED }, clip(description, 52)),
+        h('div', { fontFamily: 'Noto Serif TC', fontSize: LATIN ? 46 : 54, fontWeight: 600, lineHeight: 1.3, color: INK }, clip(title, LATIN ? 60 : 30)),
+        h('div', { fontSize: 26, fontWeight: 400, lineHeight: 1.7, color: MUTED }, clip(description, LATIN ? 110 : 52)),
       ];
   return h('div', { width: 1200, height: 630, display: 'flex', alignItems: 'center', justifyContent: 'center', background: PAPER, fontFamily: 'Noto Sans TC' }, [h('div', { width: 1072, height: 502, display: 'flex' }, [
     h('div', { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: 596, height: 502, paddingRight: 48 }, [
@@ -80,13 +84,14 @@ function card({ title, description, name, field, onField }) {
   ])]);
 }
 
-async function og() {
-  const list = pages(dist).map(([route, file]) => {
+async function og(dir = dist, locale = 'zh-Hant') {
+  LATIN = !/^(zh|ja|ko)/.test(locale);
+  const list = pages(dir).map(([route, file]) => {
     const html = fs.readFileSync(file, 'utf8');
     const image = meta(html, 'og:image');
     const full = meta(html, 'og:title');
     // `頁面｜REZICS` → 頁面; the home title (`REZICS｜…`) stays whole.
-    const title = full.endsWith('｜REZICS') ? full.slice(0, -'｜REZICS'.length) : full;
+    const title = full.replace(/(｜| \| )REZICS$/, '');
     const body = html.match(/<body[^>]*>/)?.[0] ?? '';
     const field = body.match(/--field:(#[0-9a-f]{3,8})/i)?.[1];
     const onField = body.match(/--on-field:(#[0-9a-f]{3,8})/i)?.[1] ?? PAPER;
@@ -94,8 +99,8 @@ async function og() {
   });
   const text = list.map((p) => p.title + p.description).join('') + 'REZICS…';
   const [serif600, noto400, archivo900] = await Promise.all([
-    subsetFont(await source('serif'), text, { targetFormat: 'truetype', variationAxes: { wght: 600 } }),
-    subsetFont(await source('noto'), text, { targetFormat: 'truetype', variationAxes: { wght: 400 } }),
+    subsetFont(await source(faceKeys(locale)[1]), text, { targetFormat: 'truetype', variationAxes: { wght: 600 } }),
+    subsetFont(await source(faceKeys(locale)[0]), text, { targetFormat: 'truetype', variationAxes: { wght: 400 } }),
     subsetFont(await source('archivo'), 'REZICS…', { targetFormat: 'truetype', variationAxes: { wght: 900, wdth: 100 } }),
   ]);
   const fonts = [
@@ -113,10 +118,13 @@ async function og() {
     fs.writeFileSync(file, png);
     n++;
   }
-  console.log(`OG: ${n} images in ${path.relative(root, path.join(dist, 'og'))}/`);
+  console.log(`OG: ${n} images for ${locale}`);
 }
 
 // Phrase breaks first: they add no glyphs, and the font slicing reads the final HTML.
-for (const [, file] of pages(dist)) fs.writeFileSync(file, phraseHtml(fs.readFileSync(file, 'utf8')));
-await cjk(dist);
-await og();
+for (const locale of locales.length ? locales : [null]) {
+  const dir = locale ? path.join(dist, locale) : dist;
+  for (const [, file] of pages(dir)) fs.writeFileSync(file, phraseHtml(fs.readFileSync(file, 'utf8'), locale ?? 'zh-Hant'));
+  await cjk(dir, locale ? { locale, base: `/${locale}` } : undefined);
+  await og(dir, locale ?? 'zh-Hant');
+}

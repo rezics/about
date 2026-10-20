@@ -25,6 +25,12 @@ const cache = path.join(fs.realpathSync(path.join(root, 'node_modules')), '.cach
 const sources = {
   noto: ['NotoSansTC[wght].ttf', 'ofl/notosanstc/NotoSansTC%5Bwght%5D.ttf'],
   serif: ['NotoSerifTC[wght].ttf', 'ofl/notoseriftc/NotoSerifTC%5Bwght%5D.ttf'],
+  'noto-zh-Hans': ['NotoSansSC[wght].ttf', 'ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf'],
+  'serif-zh-Hans': ['NotoSerifSC[wght].ttf', 'ofl/notoserifsc/NotoSerifSC%5Bwght%5D.ttf'],
+  'noto-ja': ['NotoSansJP[wght].ttf', 'ofl/notosansjp/NotoSansJP%5Bwght%5D.ttf'],
+  'serif-ja': ['NotoSerifJP[wght].ttf', 'ofl/notoserifjp/NotoSerifJP%5Bwght%5D.ttf'],
+  'noto-ko': ['NotoSansKR[wght].ttf', 'ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf'],
+  'serif-ko': ['NotoSerifKR[wght].ttf', 'ofl/notoserifkr/NotoSerifKR%5Bwght%5D.ttf'],
   archivo: ['Archivo[wdth,wght].ttf', 'ofl/archivo/Archivo%5Bwdth,wght%5D.ttf'],
   martian: ['MartianMono[wdth,wght].ttf', 'ofl/martianmono/MartianMono%5Bwdth,wght%5D.ttf'],
 };
@@ -95,6 +101,7 @@ export function pages(dist) {
 }
 
 const isCjk = (cp) =>
+  (cp >= 0x1100 && cp <= 0x11ff) || (cp >= 0xac00 && cp <= 0xd7af) ||
   (cp >= 0x2e80 && cp <= 0x9fff) || (cp >= 0xf900 && cp <= 0xfaff) || (cp >= 0xfe30 && cp <= 0xfe4f) ||
   (cp >= 0xff00 && cp <= 0xffef) || (cp >= 0x3000 && cp <= 0x303f) || (cp >= 0x20000 && cp <= 0x2fa1f);
 
@@ -162,7 +169,7 @@ function serifChars(html) {
 
 /** One face sliced by use: slice 0 on every page, slice 1 the rest of the home page, then the
  * remaining characters most widely used first. Returns the faces and each page's slices. */
-async function slice(all, chars, { key, family, weights, prefix }) {
+async function slice(all, chars, { key, family, weights, prefix, base = '' }) {
   const home = chars.get('/') ?? new Set();
   const chrome = new Set([...(chars.get(all[0].route) ?? [])].filter((c) => all.every((p) => chars.get(p.route).has(c))));
   const homeOnly = [...home].filter((c) => !chrome.has(c));
@@ -182,11 +189,16 @@ async function slice(all, chars, { key, family, weights, prefix }) {
     fs.writeFileSync(path.join(all.outDir, name), woff2);
     faces.push({ i, name, codes: new Set(codes), bytes: woff2.length, range: unicodeRange(codes) });
   }
-  const css = (f) => `@font-face{font-family:"${family}";src:url(/fonts/${f.name}) format("woff2");font-weight:${weights.min} ${weights.max};font-display:swap;unicode-range:${f.range}}`;
+  const css = (f) => `@font-face{font-family:"${family}";src:url(${base}/fonts/${f.name}) format("woff2");font-weight:${weights.min} ${weights.max};font-display:swap;unicode-range:${f.range}}`;
   return { faces, css };
 }
 
-export async function cjk(dist = path.join(root, 'dist')) {
+/** The sans and serif sources a locale's pages are sliced from: the regional Noto faces for
+ * Simplified Chinese, Japanese and Korean, Traditional Chinese for every other locale (whose pages
+ * carry CJK only in names such as the language menu). */
+export const faceKeys = (locale) => (['zh-Hans', 'ja', 'ko'].includes(locale) ? [`noto-${locale}`, `serif-${locale}`] : ['noto', 'serif']);
+
+export async function cjk(dist = path.join(root, 'dist'), { locale = 'zh-Hant', base = '' } = {}) {
   const all = pages(dist).map(([route, file]) => ({ route, file, html: fs.readFileSync(file, 'utf8') }));
   if (!all.length) throw new Error(`no pages in ${dist}`);
   if (all.every((p) => !p.html.includes('name="rezics:fonts"') && p.html.includes('"REZICS Sans"'))) {
@@ -197,8 +209,9 @@ export async function cjk(dist = path.join(root, 'dist')) {
   fs.mkdirSync(all.outDir, { recursive: true });
   const sansChars = new Map(all.map((p) => [p.route, pageChars(p.html)]));
   const serifCharsBy = new Map(all.map((p) => [p.route, serifChars(p.html)]));
-  const sans = await slice(all, sansChars, { key: 'noto', family: 'REZICS Sans', weights: { min: 400, max: 900 }, prefix: 'rezics-sans' });
-  const serif = await slice(all, serifCharsBy, { key: 'serif', family: 'REZICS Serif', weights: { min: 500, max: 600 }, prefix: 'rezics-serif' });
+  const [sansKey, serifKey] = faceKeys(locale);
+  const sans = await slice(all, sansChars, { key: sansKey, family: 'REZICS Sans', weights: { min: 400, max: 900 }, prefix: 'rezics-sans', base });
+  const serif = await slice(all, serifCharsBy, { key: serifKey, family: 'REZICS Serif', weights: { min: 500, max: 600 }, prefix: 'rezics-serif', base });
   const report = [];
   for (const page of all) {
     const usedSans = sansChars.get(page.route);
@@ -217,7 +230,7 @@ export async function cjk(dist = path.join(root, 'dist')) {
       .slice(0, 2)
       .map((x) => x.f);
     const preload = [...needSans.slice(0, 2), ...serifFirst]
-      .map((f) => `<link rel="preload" href="/fonts/${f.name}" as="font" type="font/woff2" crossorigin>`)
+      .map((f) => `<link rel="preload" href="${base}/fonts/${f.name}" as="font" type="font/woff2" crossorigin>`)
       .join('');
     const css = needSans.map(sans.css).join('') + needSerif.map(serif.css).join('');
     const tag = /<meta name="rezics:fonts"[^>]*>/;

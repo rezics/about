@@ -12,7 +12,9 @@
  * Phones get a 選單 button that opens a modal sheet (native <dialog> through invoker commands,
  * with a script fallback).
  */
-import { kinds, site, kindHref } from '../content';
+import { kinds, site, kindHref, productHref } from '../content';
+import { locale, localized } from '../locale';
+import { languageLabel, locales, localeNames } from '../locales';
 import Logo from './Logo.astro';
 
 interface Props {
@@ -50,7 +52,16 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
       </ul>
     </nav>
     <div class="header__end">
-      <a class="header__go link-draw" href={site.productUrl}>{nav.action}</a>
+      <button type="button" class="header__lang" popovertarget="lang-menu" aria-controls="lang-menu" aria-label={`${languageLabel[locale]}: ${localeNames[locale]}`}>
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.2" /><path d="M1.5 8h13M8 1.5c-2.2 2.4-2.2 10.6 0 13M8 1.5c2.2 2.4 2.2 10.6 0 13" fill="none" stroke="currentColor" stroke-width="1.2" /></svg>
+        <span>{localeNames[locale]}</span>
+      </button>
+      <ul id="lang-menu" class="lang-menu" popover role="list">
+        {locales.map((l) => (
+          <li><a href={localized(path, l)} hreflang={l} lang={l} data-locale={l} aria-current={l === locale ? 'true' : undefined}>{localeNames[l]}</a></li>
+        ))}
+      </ul>
+      <a class="header__go link-draw" href={productHref}>{nav.action}</a>
       <button type="button" class="header__menu" command="show-modal" commandfor="menu" aria-haspopup="dialog" data-menu-open>
         {nav.menu}
       </button>
@@ -118,6 +129,25 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
   }
   .tab[aria-expanded='true'] .tab__caret { rotate: 225deg; translate: 0 1px; }
   .header__go { font-size: 14px; }
+  .header__lang { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; color: var(--c-fg); font-size: 13px; font-weight: 500; transition: color var(--d-s) var(--ease-soft); }
+  @media (hover: hover) { .header__lang:hover { color: var(--c-link); } }
+  .header__lang:focus-visible { color: var(--c-link); }
+  .lang-menu {
+    position: fixed;
+    inset: var(--header-h) var(--gutter) auto auto;
+    margin: 0;
+    padding: 6px 0;
+    min-width: 168px;
+    border: 1px solid var(--c-line);
+    background: var(--c-bg);
+    color: var(--c-fg);
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--c-fg) 10%, transparent);
+  }
+  .lang-menu a { display: flex; align-items: center; min-height: 40px; padding: 0 18px; font-size: 14px; transition: color var(--d-s) var(--ease-soft), translate var(--d-m) var(--ease-snap); }
+  .lang-menu a[aria-current] { font-weight: 600; }
+  .lang-menu a[aria-current]::after { content: ''; width: 6px; height: 6px; margin-left: auto; background: var(--c-mark, #df3d35); }
+  @media (hover: hover) { .lang-menu a:hover { color: var(--c-link); translate: 3px 0; } }
+  .lang-menu a:focus-visible { color: var(--c-link); translate: 3px 0; }
   .header__menu {
     display: none;
     min-height: 44px;
@@ -134,5 +164,6 @@ const section = kinds.some((k) => path.startsWith(kindHref(k.id)))
     .header__tabs { display: none; }
     .header__menu { display: inline-flex; align-items: center; }
     .header__go { display: none; }
+    .header__lang span { display: none; }
   }
 </style>

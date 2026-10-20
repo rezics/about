@@ -7,6 +7,8 @@
 import { ClientRouter } from 'astro:transitions';
 import { site } from '../content';
 import { ogPath } from '../seo';
+import { locale, localized, titleSeparator } from '../locale';
+import { locales, ogLocales } from '../locales';
 import type { Field } from '../theme';
 import { fieldStyle } from '../theme';
 import Header from '../components/Header.astro';
@@ -34,9 +36,11 @@ interface Props {
 const { title, description, field, siteId, kind, noindex = false, action = true } = Astro.props;
 const path = Astro.url.pathname;
 const origin = Astro.site ?? new URL(site.url);
-const fullTitle = title ? `${title}｜${site.name}` : site.meta.title;
-const canonical = new URL(path, origin).href;
-const ogImage = new URL(ogPath(path === '/404.html' ? '/404/' : path), origin).href;
+const fullTitle = title ? `${title}${titleSeparator}${site.name}` : site.meta.title;
+const canonical = new URL(localized(path), origin).href;
+const ogImage = new URL(localized(ogPath(path === '/404.html' ? '/404/' : path)), origin).href;
+// Every page exists in every locale; x-default is the unprefixed path, which picks a locale.
+const alternates = noindex ? [] : [...locales.map((l) => ({ hreflang: l, href: new URL(localized(path, l), origin).href })), { hreflang: 'x-default', href: new URL(path, origin).href }];
 const isHome = path === '/';
 const websiteId = new URL('/#website', origin).href;
 const jsonLd = isHome
@@ -44,7 +48,7 @@ const jsonLd = isHome
       '@context': 'https://schema.org',
       '@graph': [
         { '@type': 'Organization', '@id': new URL('/#organization', origin).href, name: site.name, url: origin.href, logo: new URL('/favicon.svg', origin).href },
-        { '@type': 'WebSite', '@id': websiteId, name: site.name, url: origin.href, inLanguage: 'zh-Hant', description },
+        { '@type': 'WebSite', '@id': websiteId, name: site.name, url: origin.href, inLanguage: locale, description },
       ],
     }
   : {
@@ -53,18 +57,19 @@ const jsonLd = isHome
       name: fullTitle,
       url: canonical,
       description,
-      inLanguage: 'zh-Hant',
+      inLanguage: locale,
       isPartOf: { '@type': 'WebSite', '@id': websiteId, name: site.name, url: origin.href },
     };
 ---
 <!doctype html>
-<html lang="zh-Hant" transition:animate="none" data-site={siteId} data-kind={kind}>
+<html lang={locale} transition:animate="none" data-site={siteId} data-kind={kind}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#efe9e0" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -73,7 +78,7 @@ const jsonLd = isHome
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:locale" content={ogLocales[locale]} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -88,6 +93,11 @@ const jsonLd = isHome
     <script is:inline>
       document.documentElement.classList.add('js');
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+      // A language chosen in the menu is remembered for the unprefixed paths, which pick a locale.
+      document.addEventListener('click', (e) => {
+        const a = e.target instanceof Element && e.target.closest('a[data-locale]');
+        if (a) document.cookie = `rezics_locale=${a.dataset.locale}; path=/; max-age=31536000; samesite=lax; secure`;
+      });
     </script>
     <slot name="head" />
     <ClientRouter fallback="swap" />
@@ -101,7 +111,7 @@ const jsonLd = isHome
       <slot />
     </main>
     <Footer action={action} />
-    <HeaderPanels />
+    <HeaderPanels path={path} />
     <script>
       import { start } from '../../engine/astro';
       import { setupMotion } from '../motion/setup';

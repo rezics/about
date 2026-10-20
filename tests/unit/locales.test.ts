@@ -14,6 +14,8 @@ const SAME = new Set(['id', 'url', 'sourceUrl', 'href', 'base', 'slug', 'languag
 const HAN = /[㐀-鿿豈-﫿]/;
 const FOREIGN_ORIGINAL = /[぀-ヿ가-힯]/;
 const FULLWIDTH = /[，。；：「」『』！？、]/;
+// Traditional-only characters: Simplified Chinese written as a character conversion leaves these behind.
+const TRADITIONAL = /[這們個說時會來對開發與為從產業選單內張圍動畫書劃題變觀點後過還體樣當應頁標擊網際關聯讀資訊設計數據記錄係統實現務將進場環視邊導覽語詞連結檔種類號碼價錢買賣廣權條規則評論討區組織閱戲遊軟雜誌貼圖編輯製員專屬隱訂幫範歷劇熱門歡註冊帳戶驗讓兩]/;
 
 function compare(src: unknown, tr: unknown, at: string, locale: string, out: string[]) {
   if (typeof src === 'function') return;
@@ -23,6 +25,7 @@ function compare(src: unknown, tr: unknown, at: string, locale: string, out: str
     const latinScript = ['en', 'de', 'fr', 'es', 'ko'].includes(locale);
     if (latinScript && HAN.test(tr) && !FOREIGN_ORIGINAL.test(src)) out.push(`${at}: untranslated Chinese: ${tr}`);
     if (latinScript && FULLWIDTH.test(tr) && !FOREIGN_ORIGINAL.test(src)) out.push(`${at}: full-width punctuation: ${tr}`);
+    if (locale === 'zh-Hans' && TRADITIONAL.test(tr) && !FOREIGN_ORIGINAL.test(src)) out.push(`${at}: Traditional characters: ${tr}`);
     return;
   }
   if (Array.isArray(src)) {

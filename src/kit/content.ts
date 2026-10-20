@@ -5,7 +5,12 @@ import { parts } from '../content/parts';
 import type { Kind, KindId, Module, ModuleId, Part, PartId } from '../content/schema';
 
 export { kinds, modules, parts };
-export { site } from '../content/site';
+import { site } from '../content/site';
+import { locale } from './locale';
+
+export { site };
+/** 「前往 REZICS」: the product in the same locale. */
+export const productHref = `${site.productUrl}/${locale}/`;
 
 const byId = <T extends { id: string }>(list: T[], id: string, what: string): T => {
   const found = list.find((x) => x.id === id);

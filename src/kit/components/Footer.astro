@@ -4,7 +4,7 @@
  * the six works and software, the three hubs for AI agents, the modules, and REZICS itself; the
  * small print under a second hairline. Pages end on their own Closing before it.
  */
-import { kinds, modules, site, kindHref, moduleHref } from '../content';
+import { kinds, modules, site, kindHref, moduleHref, productHref } from '../content';
 import Logo from './Logo.astro';
 
 interface Props {
@@ -41,7 +41,7 @@ const agents = kinds.filter((k) => k.group === 'agents');
         <li><a class="link-utility" href="/developers/">{nav.developers}</a></li>
         <li><a class="link-utility" href="/roadmap/">{nav.roadmap}</a></li>
         <li><a class="link-utility" href={f.sourceUrl} rel="noopener">{f.source}</a></li>
-        <li><a class="link-utility" href={site.productUrl}>{nav.action}</a></li>
+        <li><a class="link-utility" href={productHref}>{nav.action}</a></li>
       </ul>
     </div>
   </nav>

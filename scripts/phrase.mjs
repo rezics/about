@@ -4,9 +4,11 @@
 // `word-break: keep-all` on them, so lines break only between phrases. Runs over the build
 // output, so every site's pages get it without code of their own.
 //   import { phraseHtml } from './phrase.mjs'
-import { loadDefaultTraditionalChineseParser } from 'budoux';
+import { loadDefaultJapaneseParser, loadDefaultSimplifiedChineseParser, loadDefaultTraditionalChineseParser } from 'budoux';
 
-const parser = loadDefaultTraditionalChineseParser();
+// One BudouX model per locale that needs phrase breaks; other locales break at spaces.
+const parsers = { 'zh-Hant': loadDefaultTraditionalChineseParser(), 'zh-Hans': loadDefaultSimplifiedChineseParser(), ja: loadDefaultJapaneseParser() };
+let parser = parsers['zh-Hant'];
 const CJK = /[㐀-鿿豈-﫿]/;
 const PUNCT = /[，。、；：！？」』）》〉]$/;
 
@@ -122,7 +124,9 @@ export function bindTail(inner, n = TAIL) {
 
 /** Insert phrase breaks into the headings and display paragraphs of one HTML document, and keep
  * every paragraph's last characters together. */
-export function phraseHtml(html) {
+export function phraseHtml(html, locale = 'zh-Hant') {
+  if (!parsers[locale]) return html;
+  parser = parsers[locale];
   return html
     .replace(HEADING, (_, tag, attrs = '', inner) => `<${tag}${attrs}>${breakInner(inner)}</${tag}>`)
     .replace(DISPLAY_P, (_, attrs, inner) => `<p${attrs}>${breakInner(inner)}</p>`)

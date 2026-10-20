@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, test } from 'vitest';
 
-const dist = new URL('../../dist/', import.meta.url);
+const dist = new URL('../../dist/zh-Hant/', import.meta.url);
 const built = existsSync(new URL('index.html', dist));
 const html = (route: string) => readFileSync(new URL(`${route.replace(/^\//, '')}index.html`, dist), 'utf8');
 const firstRow = (page: string) => page.match(/<section\b[^>]*class="prow\b[\s\S]*?<\/section>/)?.[0] ?? '';
@@ -72,8 +72,8 @@ describe.skipIf(!built)('shared module family', () => {
     const ring = page.match(/<nav\b[^>]*class="ring"[\s\S]*?<\/nav>/)![0];
     expect(ring).toContain('你在這裡');
     expect(ring).toContain('回到模組總覽');
-    expect(ring).not.toContain(`href="/engine/${current}/"`);
-    for (const other of ['universal-index', 'community', 'zones', 'create', 'trust'].filter(id => id !== current)) expect(ring).toContain(`href="/engine/${other}/"`);
+    expect(ring).not.toContain(`href="/zh-Hant/engine/${current}/"`);
+    for (const other of ['universal-index', 'community', 'zones', 'create', 'trust'].filter(id => id !== current)) expect(ring).toContain(`href="/zh-Hant/engine/${other}/"`);
   });
   test('footer retains the privacy sentence without the type colophon', () => {
     const footer = html('/').match(/<footer[\s\S]*?<\/footer>/)![0];

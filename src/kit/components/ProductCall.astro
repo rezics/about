@@ -4,7 +4,7 @@
  * panel and any page that needs a primary action use this one component: an ink-blue pill with
  * an arrow after the label that steps forward on hover or focus.
  */
-import { site } from '../content';
+import { site, productHref } from '../content';
 
 interface Props {
   label?: string;
@@ -14,7 +14,7 @@ interface Props {
   variant?: 'primary' | 'secondary';
   class?: string;
 }
-const { label = site.nav.action, href = site.productUrl, size = 'normal', variant = 'primary', class: className } = Astro.props;
+const { label = site.nav.action, href = productHref, size = 'normal', variant = 'primary', class: className } = Astro.props;
 ---
 <a class:list={['btn', 'btn--icon', size === 'small' && 'btn--small', variant === 'secondary' && 'btn--secondary', className]} href={href}>
   <span class="btn__label"><span>{label}</span></span>

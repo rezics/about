@@ -1,10 +1,11 @@
-// The production build (run `task build` first; `task check` does): every route in dist is a
-// complete page. Routes come from the build output, so new mini-site pages are covered by
+// The production build (run `task build` first; `task check` does): every route of every locale
+// in dist/<locale>/ is a complete page. Routes come from the build output, so new mini-site pages are covered by
 // themselves.
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { describe, expect, test } from 'vitest';
+import { locales } from '../../src/kit/locales';
 
 const dist = new URL('../../dist/', import.meta.url).pathname;
 const ORIGIN = 'https://about.rezics.com';
@@ -17,45 +18,46 @@ function htmlFiles(dir: string): string[] {
   );
 }
 const built = existsSync(dist);
-const pages = built
-  ? htmlFiles(dist).map((file) => {
-      const rel = relative(dist, file).split(sep).join('/');
-      const route = rel === '404.html' ? '/404/' : `/${rel.replace(/index\.html$/, '')}`;
-      return { route, html: readFileSync(file, 'utf8') };
-    })
-  : [];
+const builtLocales = built ? readdirSync(dist).filter((n) => (locales as readonly string[]).includes(n)) : [];
+const pages = builtLocales.flatMap((locale) =>
+  htmlFiles(join(dist, locale)).map((file) => {
+    const rel = relative(join(dist, locale), file).split(sep).join('/');
+    const route = rel === '404.html' ? `/${locale}/404/` : `/${locale}/${rel.replace(/index\.html$/, '')}`;
+    return { locale, route, html: readFileSync(file, 'utf8') };
+  }),
+);
 const attr = (html: string, re: RegExp) => html.match(re)?.[1] ?? null;
 const metaContent = (html: string, key: string) => attr(html, new RegExp(`<meta[^>]+(?:name|property)="${key}"[^>]*content="([^"]*)"`));
 
 describe.skipIf(!built)('build output', () => {
   test('there are pages', () => {
     expect(pages.length).toBeGreaterThanOrEqual(19);
-    expect(pages.map((p) => p.route)).toEqual(expect.arrayContaining(['/', '/404/', '/books/', '/engine/', '/engine/community/', '/developers/', '/roadmap/']));
+    for (const l of builtLocales)
+      expect(pages.map((p) => p.route)).toEqual(expect.arrayContaining(['/', '/404/', '/books/', '/engine/', '/engine/community/', '/developers/', '/roadmap/'].map((r) => `/${l}${r}`)));
   });
 
   test.each(pages.map((p) => [p.route, p] as const))('%s: one h1, lang, title, description, canonical, OG image, fonts', (route, p) => {
     expect((p.html.match(/<h1[\s>]/g) ?? []).length).toBe(1);
-    expect(p.html).toMatch(/<html[^>]+lang="zh-Hant"/);
+    expect(p.html).toMatch(new RegExp(`<html[^>]+lang="${p.locale}"`));
     expect(attr(p.html, /<title>([^<]+)<\/title>/)?.trim()).toBeTruthy();
     expect(metaContent(p.html, 'description')?.trim()).toBeTruthy();
     const canonical = attr(p.html, /<link rel="canonical" href="([^"]+)"/);
-    if (route !== '/404/') expect(canonical).toBe(`${ORIGIN}${route}`);
+    if (!route.endsWith('/404/')) expect(canonical).toBe(`${ORIGIN}${route}`);
     const og = metaContent(p.html, 'og:image');
-    expect(og).toMatch(new RegExp(`^${ORIGIN}/og/.+\\.png$`));
+    expect(og).toMatch(new RegExp(`^${ORIGIN}/${p.locale}/og/.+\\.png$`));
     expect(existsSync(join(dist, new URL(og!).pathname)), og!).toBe(true);
     expect(p.html).toContain('application/ld+json');
     expect(p.html, 'font slices were written by scripts/postbuild.mjs').not.toContain('name="rezics:fonts"');
     expect(p.html).toContain('"REZICS Sans"');
     expect(p.html).toContain('"REZICS Serif"');
-    expect(p.html, 'the serif that sets the h1 is preloaded').toMatch(/<link rel="preload" href="\/fonts\/rezics-serif-/);
+    expect(p.html, 'the serif that sets the h1 is preloaded').toMatch(new RegExp(`<link rel="preload" href="/${p.locale}/fonts/rezics-serif-`));
     expect(p.html).toMatch(/<a class="skip-link" href="#main">/);
   });
 
-  test('titles and descriptions are unique', () => {
-    const titles = pages.map((p) => attr(p.html, /<title>([^<]+)<\/title>/));
-    const descriptions = pages.map((p) => metaContent(p.html, 'description'));
-    expect(new Set(titles).size).toBe(pages.length);
-    expect(new Set(descriptions).size).toBe(pages.length);
+  test.each(builtLocales)('%s: titles and descriptions are unique', (locale) => {
+    const own = pages.filter((p) => p.locale === locale);
+    expect(new Set(own.map((p) => attr(p.html, /<title>([^<]+)<\/title>/))).size).toBe(own.length);
+    expect(new Set(own.map((p) => metaContent(p.html, 'description'))).size).toBe(own.length);
   });
 
   test.each(pages.map((p) => [p.route, p] as const))('%s: scripts stay within 120 KB gzip', (_, p) => {
@@ -76,8 +78,8 @@ describe.skipIf(!built)('build output', () => {
     expect(bytes).toBeLessThanOrEqual(SCRIPT_BUDGET);
   });
 
-  test('CJK font bytes on the home page stay within 400 KB', () => {
-    const report = JSON.parse(readFileSync(join(dist, 'fonts/report.json'), 'utf8')) as { pages: { route: string; bytes: number }[] };
+  test.each(builtLocales)('%s: CJK font bytes on the home page stay within 400 KB', (locale) => {
+    const report = JSON.parse(readFileSync(join(dist, locale, 'fonts/report.json'), 'utf8')) as { pages: { route: string; bytes: number }[] };
     const home = report.pages.find((p) => p.route === '/');
     expect(home?.bytes).toBeGreaterThan(0);
     expect(home!.bytes).toBeLessThanOrEqual(CJK_HOME_BUDGET);
@@ -95,7 +97,7 @@ describe.skipIf(!built)('build output', () => {
   test('no page asks to sign up: every primary action leads into the product', () => {
     for (const p of pages) {
       expect(p.html, p.route).not.toMatch(/\/api\/notify|id="notify"|開放時通知我/);
-      expect(p.html, p.route).toContain('href="https://rezics.com"');
+      expect(p.html, p.route).toContain(`href="https://rezics.com/${p.locale}/"`);
     }
   });
 

@@ -27,18 +27,17 @@ tasks:
       - npx astro dev logs {{.CLI_ARGS}}
 
   build:
-    desc: Production build into dist/ (Astro, then CJK font slices and Open Graph images)
+    desc: Production build into dist/<locale>/ for every locale (scripts/build.mjs; `task build -- zh-Hant en` builds some)
     cmds:
-      - npx astro build
-      - node scripts/postbuild.mjs
+      - node scripts/build.mjs {{.CLI_ARGS}}
 
   preview:
-    desc: Production build served as static assets (wrangler, as deployed) on 127.0.0.1:4400 (PORT=… to change)
+    desc: Production build served as on Cloudflare Pages, Function included (wrangler pages dev) on 127.0.0.1:4400 (PORT=… to change)
     deps: [build]
     vars:
       PORT: '{{.PORT | default "4400"}}'
     cmds:
-      - npx wrangler dev --ip 127.0.0.1 --port {{.PORT}}
+      - npx wrangler pages dev dist --ip 127.0.0.1 --port {{.PORT}}
 
   deploy:
     desc: 'Maintainer only: build and upload dist/ to the Cloudflare Pages project rezics-about, which serves about.rezics.com'

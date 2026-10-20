@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import { freePort } from './scripts/free-port.mjs';
 
-// The production build served as static assets the way Cloudflare serves them (wrangler dev,
+// The production build served the way Cloudflare Pages serves it (wrangler pages dev, Function included,
 // no login). A free port per run, so parallel worktrees never collide; `task e2e` queues on a
 // shared slot.
 process.env.E2E_PORT ??= String(await freePort());
@@ -16,11 +16,12 @@ export default defineConfig({
   retries: 0,
   timeout: 60_000,
   reporter: [['list']],
-  use: { baseURL: `http://127.0.0.1:${port}`, trace: 'retain-on-failure' },
+  // zh-TW: the unprefixed paths the tests visit redirect to zh-Hant, the source copy.
+  use: { baseURL: `http://127.0.0.1:${port}`, trace: 'retain-on-failure', locale: 'zh-TW' },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: `npx wrangler dev --ip 127.0.0.1 --port ${port}`,
-    url: `http://127.0.0.1:${port}/`,
+    command: `npx wrangler pages dev dist --ip 127.0.0.1 --port ${port}`,
+    url: `http://127.0.0.1:${port}/zh-Hant/`,
     reuseExistingServer: false,
     timeout: 120_000,
     env: { WRANGLER_SEND_METRICS: 'false' },

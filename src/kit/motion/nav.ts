@@ -2,6 +2,7 @@
 // pointer intent (100 ms) and grace (280 ms), a safe area for diagonal moves into a panel,
 // aria-expanded in step with each panel, Escape returning focus to the tab, the sliding red
 // marker, and the phone sheet's fallback for browsers without invoker commands.
+import { withoutLocale } from '../locale';
 import { gsap } from 'gsap';
 import { dur, ease, isTouch, onPage, onScroll, prefersReducedMotion } from '../../engine';
 import { wireSiteBar } from './sitebar';
@@ -129,15 +130,15 @@ function wirePanels() {
 // included: aria-current is recomputed here rather than trusted from markup that may have been
 // restored from a cache. Its filled red square is drawn by CSS from aria-current.
 function currentTab(tabs: HTMLElement[]): HTMLElement | undefined {
-  const path = location.pathname.endsWith('/') ? location.pathname : `${location.pathname}/`;
+  const path = withoutLocale(location.pathname.endsWith('/') ? location.pathname : `${location.pathname}/`);
   const panelOwns = (id: string) =>
     [...document.querySelectorAll<HTMLAnchorElement>(`#${id} a[href]`)].some((a) => {
-      const href = a.getAttribute('href') ?? '';
+      const href = withoutLocale(a.getAttribute('href') ?? '');
       return href.startsWith('/') && !href.includes('#') && href !== '/' && path.startsWith(href);
     });
   return tabs.find((t) => {
     const href = t.getAttribute('href');
-    if (href) return path.startsWith(href);
+    if (href) return path.startsWith(withoutLocale(href));
     const panel = t.dataset.panelButton;
     return panel === 'panel-engine' ? path.startsWith('/engine/') : panel ? panelOwns(panel) : false;
   });
