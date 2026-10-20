@@ -1,0 +1,49 @@
+---
+// 評分與清單 (v3, src/sites/anime/SITE.md "Pages"): five parts of a score, episode versus
+// whole, what a review is about, lists in your order.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Onward from '../../sites/anime/Onward.astro';
+import site from '../../content/sites/anime';
+import { pageTile, tone } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.ratings;
+// Four example lists (示意), alternating tones; the first and longest list a little taller.
+const stops = [4, 1, 0, 3];
+const lists: MasonryItem[] = s.lists.tiles.map((name, i) => ({ id: `l${i}`, name, ...tone(stops[i]!) }));
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
+
+  <Section eyebrow={s.anatomy.eyebrow} title={s.anatomy.headline}>
+    <FactList items={s.anatomy.rows} />
+  </Section>
+
+  <Statement text={s.episodes.text} sub={s.episodes.muted} note={s.episodes.note} />
+
+  <Section eyebrow={s.targets.eyebrow} title={s.targets.headline} lead={s.targets.lead}>
+    <FactList items={s.targets.rows} />
+  </Section>
+
+  <Section eyebrow={s.lists.eyebrow} title={s.lists.headline} lead={s.lists.lead}>
+    <Fragment slot="wide">
+      <TileMasonry
+        items={lists}
+        columns={[[{ id: 'l0', h: 1 }], [{ id: 'l1', h: 1 }], [{ id: 'l2', h: 1 }], [{ id: 'l3', h: 1 }]]}
+        height={220}
+        label={s.lists.eyebrow}
+      />
+      <p class="anime-caption">{site.strings.common.example}</p>
+    </Fragment>
+  </Section>
+
+  <Onward title={s.next} tiles={[pageTile('credits', 0), pageTile('adaptations', 3)]} />
+
+  <Closing title={s.closing.headline} body={s.closing.body} />
+</MiniSiteLayout>

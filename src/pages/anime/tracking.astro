@@ -1,0 +1,50 @@
+---
+// 追蹤進度 (v3): a concrete season-progress example first, five statuses, a rewatch as a new
+// session, and the list is yours to take. All example numbers are captioned 示意.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import TileMasonry, { type MasonryItem } from '../../kit/components/TileMasonry.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Onward from '../../sites/anime/Onward.astro';
+import site from '../../content/sites/anime';
+import { pageTile, tone } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.tracking;
+// Season one deep (finished), season two in the accent (caught up), the specials light (optional).
+const stops = [2, 0, 3];
+const seasons: MasonryItem[] = s.seasons.tiles.map((t, i) => ({ id: `s${i}`, name: t.title, line: t.body, ...tone(stops[i]!) }));
+---
+<MiniSiteLayout>
+  <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
+
+  <Section class="anime-first-section" eyebrow={s.seasons.eyebrow} title={s.seasons.headline}>
+    <Fragment slot="wide">
+      <TileMasonry
+        class="anime-progress-tiles"
+        items={seasons}
+        columns={[[{ id: 's0', h: 1 }], [{ id: 's1', h: 1 }], [{ id: 's2', h: 1 }]]}
+        phone={[[{ id: 's0' }, { id: 's1' }], [{ id: 's2' }]]}
+        height={180}
+        phoneRow={164}
+        label={s.seasons.eyebrow}
+      />
+      <p class="anime-caption">{site.strings.common.example}</p>
+    </Fragment>
+  </Section>
+
+  <Section eyebrow={s.statuses.eyebrow} title={s.statuses.headline} lead={s.statuses.lead}>
+    <FactList items={s.statuses.rows} />
+  </Section>
+
+  <Section eyebrow={s.rewatch.eyebrow} title={s.rewatch.headline} lead={s.rewatch.lead} />
+
+  <Statement text={s.lists.text} sub={s.lists.muted} />
+
+  <Onward title={s.next} tiles={[pageTile('discussion', 0), pageTile('ratings', 3)]} />
+
+  <Closing title={s.closing.headline} body={s.closing.body} />
+</MiniSiteLayout>

@@ -1,8 +1,89 @@
 ---
-// STUB: the anime site's builder replaces this page (src/kit/README.md).
+// 動畫 landing (v3, src/sites/anime/SITE.md "Pages"): the folded-strip hero, the six pages as a
+// masonry in the accent's tones, the schedule in your time zone, the next episode, discussion
+// with later plot covered, the eight parts, the neighbouring kinds, the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
-import StubLanding from '../../kit/components/StubLanding.astro';
+import PhotoHero from '../../kit/components/PhotoHero.astro';
+import Section from '../../kit/components/Section.astro';
+import TileMasonry, { type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import Statement from '../../kit/components/Statement.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import ProductCall from '../../kit/components/ProductCall.astro';
+import { partById } from '../../kit/content';
+import { kinds } from '../../content/kinds';
+import site from '../../content/sites/anime';
+import { heroPhoto, sectionPhoto } from '../../sites/anime/pictures';
+import { kindTile, pageTile } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.landing;
+
+// The six pages: the schedule and the sources run the full height at either end, the four in
+// between alternate deep and light tones.
+const pages = [
+  pageTile('seasons', 0),
+  pageTile('tracking', 2),
+  pageTile('discussion', 1),
+  pageTile('ratings', 3),
+  pageTile('credits', 4),
+  pageTile('adaptations', 5),
+];
+const pageColumns: MasonryPlace[][] = [
+  [{ id: 'seasons', h: 1 }],
+  [{ id: 'tracking', h: 3 }, { id: 'discussion', h: 2 }],
+  [{ id: 'ratings', h: 2 }, { id: 'credits', h: 3 }],
+  [{ id: 'adaptations', h: 1 }],
+];
+const pagePhone: MasonryRowPlace[][] = [
+  [{ id: 'seasons' }, { id: 'tracking' }],
+  [{ id: 'discussion' }, { id: 'ratings' }],
+  [{ id: 'credits' }, { id: 'adaptations' }],
+];
+
+const anime = kinds.find((k) => k.id === 'anime')!;
+const parts = anime.parts.map((id) => ({ title: partById(id).name, body: s.parts.notes[id] ?? anime.partNotes[id] ?? '' }));
+
+const neighbours = s.neighbours.tiles.map((t) => kindTile(t.to, t.label));
+const neighbourColumns: MasonryPlace[][] = neighbours.map((t) => [{ id: t.id, h: 1 }]);
 ---
 <MiniSiteLayout>
-  <StubLanding />
+  <PhotoHero class="anime-hero" title={s.hero.headline} lede={s.hero.lede} image={heroPhoto(s.hero.photo)} bar>
+    <ProductCall />
+  </PhotoHero>
+
+  <Section eyebrow={s.pages.eyebrow} title={s.pages.headline}>
+    <TileMasonry slot="wide" items={pages} columns={pageColumns} phone={pagePhone} height={520} phoneRow={156} label={s.pages.eyebrow} />
+  </Section>
+
+  <PhotoRow
+    side="right"
+    eyebrow={s.schedule.eyebrow}
+    title={s.schedule.headline}
+    body={s.schedule.body}
+    link={{ href: '/anime/seasons/', text: s.schedule.link }}
+    image={sectionPhoto(s.schedule.photo)}
+  />
+
+  <Statement text={s.next.text} sub={s.next.muted} />
+
+  <PhotoRow
+    side="left"
+    eyebrow={s.spoilers.eyebrow}
+    title={s.spoilers.headline}
+    body={s.spoilers.body}
+    link={{ href: '/anime/discussion/', text: s.spoilers.link }}
+    image={sectionPhoto(s.spoilers.photo)}
+  />
+
+  <Section eyebrow={s.parts.eyebrow} title={s.parts.headline} lead={s.parts.lead}>
+    <FactList items={parts} />
+  </Section>
+
+  <Section eyebrow={s.neighbours.eyebrow} title={s.neighbours.headline} lead={s.neighbours.lead}>
+    <TileMasonry slot="wide" items={neighbours} columns={neighbourColumns} height={300} label={s.neighbours.eyebrow} />
+  </Section>
+
+  <Closing title={s.closing.headline} body={s.closing.body} />
 </MiniSiteLayout>

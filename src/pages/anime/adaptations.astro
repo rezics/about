@@ -1,0 +1,71 @@
+---
+// 原作與改編 (v3, src/sites/anime/SITE.md "Pages"): the approved example beside the overlapping
+// sheets, a generic family in its kinds' colours, progress and facts kept apart, named
+// relations, two orders; onward to 漫畫.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import TileMasonry, { type MasonryItem, type MasonryPlace, type MasonryRowPlace } from '../../kit/components/TileMasonry.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import Onward from '../../sites/anime/Onward.astro';
+import PhotoPreload from '../../sites/anime/PhotoPreload.astro';
+import { kindFields } from '../../kit/theme';
+import site from '../../content/sites/anime';
+import { sectionPhoto } from '../../sites/anime/pictures';
+import { kindTile } from '../../sites/anime/tiles';
+import '../../sites/anime/anime.css';
+
+const s = site.strings.adaptations;
+const examplePhoto = sectionPhoto(s.example.photo);
+/** A relation still waiting for its source: a deeper paper, ink text. */
+const PENDING = '#e2dace';
+const family: MasonryItem[] = s.family.tiles.map((t, i) => ({
+  id: `f${i}`,
+  name: t.name,
+  rel: t.relation,
+  bg: t.kind ? kindFields[t.kind].field : PENDING,
+  on: t.kind ? kindFields[t.kind].on : 'ink',
+}));
+// The source leads (tallest, first column); tiles of one kind never touch.
+const familyColumns: MasonryPlace[][] = [
+  [{ id: 'f0', h: 5 }, { id: 'f5', h: 3 }],
+  [{ id: 'f1', h: 3 }, { id: 'f2', h: 5 }],
+  [{ id: 'f4', h: 4 }, { id: 'f6', h: 4 }],
+  [{ id: 'f3', h: 5 }, { id: 'f7', h: 3 }],
+];
+const familyPhone: MasonryRowPlace[][] = [
+  [{ id: 'f0' }],
+  [{ id: 'f1' }, { id: 'f2' }],
+  [{ id: 'f3' }, { id: 'f4' }],
+  [{ id: 'f5' }, { id: 'f6' }],
+  [{ id: 'f7' }],
+];
+---
+<MiniSiteLayout>
+  <PhotoPreload image={examplePhoto} />
+  <PageHead label={site.name} title={s.head.headline} lede={s.head.lede} />
+
+  <PhotoRow side="right" eyebrow={s.example.eyebrow} title={s.example.headline} body={s.example.body} image={examplePhoto} />
+
+  <Section eyebrow={s.family.eyebrow} title={s.family.headline} lead={s.family.lead}>
+    <Fragment slot="wide">
+      <TileMasonry items={family} columns={familyColumns} phone={familyPhone} height={520} label={s.family.eyebrow} />
+      <p class="anime-caption">{site.strings.common.example}</p>
+    </Fragment>
+  </Section>
+
+  <Section eyebrow={s.scoped.eyebrow} title={s.scoped.headline} lead={s.scoped.lead} />
+
+  <Section eyebrow={s.relations.eyebrow} title={s.relations.headline} lead={s.relations.lead}>
+    <FactList items={s.relations.rows} />
+  </Section>
+
+  <Statement text={s.orders.text} sub={s.orders.muted} note={s.orders.note} />
+
+  <Onward title={s.next} tiles={[kindTile('manga'), kindTile('books')]} />
+
+  <Closing title={s.closing.headline} body={s.closing.body} />
+</MiniSiteLayout>

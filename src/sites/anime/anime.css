@@ -1,0 +1,77 @@
+/* Site-local adjustments to the kit's paper language (SITE.md "v3"). */
+.anime-caption {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+
+/* Complete the local bar's quiet feedback; the shared bar only changes link colour. */
+[data-site='anime'] .sitebar__name {
+  display: inline-block;
+  transition: translate var(--d-s) var(--ease-soft);
+}
+[data-site='anime'] .sitebar__tab:not([aria-current='page'])::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 11px;
+  height: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale var(--d-s) var(--ease-soft);
+}
+@media (hover: hover) {
+  [data-site='anime'] .sitebar__home:hover .sitebar__name { translate: 0 -2px; }
+  [data-site='anime'] .sitebar__tab:hover::before { scale: 1 1; }
+}
+[data-site='anime'] .sitebar__home:focus-visible .sitebar__name { translate: 0 -2px; }
+[data-site='anime'] .sitebar__tab:focus-visible::before { scale: 1 1; }
+
+/* The accordion enters the copy area when a tall tablet crops the wide photograph.
+   Give tablets the same copy-first composition as phones, with a deeper picture band. */
+@media (min-width: 768px) and (max-width: 1279px) {
+  [data-site='anime'] main .anime-hero {
+    display: block;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    background: none;
+  }
+
+  [data-site='anime'] .anime-hero .phero__copy {
+    padding: 48px var(--gutter);
+  }
+
+  [data-site='anime'] .anime-hero .phero__title {
+    max-width: 12em;
+    font-size: clamp(38px, 4vw, 46px);
+  }
+
+  [data-site='anime'] .anime-hero .phero__lede { max-width: 36em; }
+
+  [data-site='anime'] .anime-hero .phero__pic {
+    position: relative;
+    inset: auto;
+    height: clamp(320px, 42vw, 460px);
+  }
+
+  [data-site='anime'] .anime-hero .phero__pic img { object-position: 100% 100%; }
+}
+
+@media (min-width: 768px) {
+  [data-site='anime'] main .anime-first-section { padding-top: 120px; }
+}
+
+/* Optional specials read as a short note beneath the two main seasons. */
+@media (max-width: 767px) {
+  [data-site='anime'] main .anime-progress-tiles {
+    grid-template-rows: minmax(164px, auto) minmax(112px, auto);
+  }
+}
+
+/* Five-character page labels still fit a two-column list at 320 px. */
+@media (max-width: 359px) {
+  [data-site='anime'] main .tile__name { font-size: 20px; }
+}
