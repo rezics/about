@@ -277,3 +277,9 @@ counts, "trending" tabs and a big install button. Here: no cards and no icons; o
 per idea (a fold for reading in layers, a folder, a bundle, a fan, a slit); no invented counts or
 stars; the structure follows the format's own reading order; safety is a plain statement, not a
 badge; declarations and records are kept apart; nothing implies REZICS runs or certifies a skill.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Removed tab positioning/edge masks, tab feedback, the all-body ordinary-wrapping override and tablet hero duplication from `skills.css`. The shared generated-phrase wrapping guard replaces the crash workaround. Publish now uses PhotoPreload in the head slot and PhotoRow priority, retaining the phone-only 640 px source. Kept the first-section spacing, the short 代理 tile measure and the site’s own specimen/record compositions.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

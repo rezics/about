@@ -319,3 +319,9 @@ JavaScript disabled; later rows remain compact and their text is hidden.
 QA artifacts live in `.shots/books*`, with the complete landing at
 `.shots/books-review-final/books-1440-full.png` and the throttled phone opening at
 `.shots/books/m-01-hero.png`. No shared kit, engine, style or content files were edited.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Removed `books.css` phone tab masks/padding, local link/header/tab feedback, ordinary phone-lead wrapping and tablet hero grid/type overrides. Shared SiteBar, text links, the CJK phrase guard and PhotoHero now own those behaviours. Kept PhotoHead, the contents index, green/sage tile palette and reading-position controls: these are books’ page composition and subject-specific interaction. The footer’s font-stack sentence is removed centrally.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

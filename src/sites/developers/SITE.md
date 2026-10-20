@@ -289,3 +289,9 @@ Landing evidence:
 No implementation or required QA remains unfinished. Product-source uncertainties are retained
 in `facts.md`: no published external SDK package or documented production API/MCP origin;
 samples therefore use the first-party call and relative paths.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Removed tab positioning/trailing padding and site-bar feedback from `developers.css`. The Apps page uses shared PhotoPreload in the head slot and PhotoRow priority, preserving its phone crop and phone-only hint. Kept slate code styles, code measures, group anchors, narrow code scrolling and short phone tile-name handling; these are developer-content presentation rather than kit defects.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

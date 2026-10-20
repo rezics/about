@@ -248,3 +248,9 @@ and `.temp/codex-report.md`.
   blocks, the fog picker, the pinned purchase pan): the photographs and short lists carry those
   ideas more calmly.
 - Every page ends in the closing statement and 「前往 REZICS」.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Deleted `NavFocus.astro` and both imports; shared SiteBar now restores the active tab after keyboard traversal. Removed local flex-gap, action-arrow, tab-feedback, scrollbar and tablet-hero rules from `games.css`. Guides uses the shared head preload and PhotoRow priority instead of its inline body hint. Kept the photograph’s wide copy cap through PhotoHero.copyMax, the games-blue palette, custom opening composition, notes and release filter.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

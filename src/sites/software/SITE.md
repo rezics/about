@@ -361,3 +361,9 @@ the assigned seven pages. No push or deployment.
 - Terms: 「AI 代理」 on first mention in a section, then 「代理」; 「MCP 伺服器」; 「技能」 in
   running text ("Skill Hub" stays as a name). Taiwan usage: 程式、套件、套件庫、依賴、發行管道、
   穩定版、測試版、雜湊值、分支、處理器架構、位元、更新說明、外掛、模組.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Deleted `PhonePhotoPreload.astro`; catalogue, compatibility and connections use shared PhotoPreload in the head slot and PhotoRow priority, retaining their phone-only hints and 800 px crops. Removed local tab feedback/snapping and mid-width title scaling from `feedback.css`. Kept the teal tile palette, image crop, statement punctuation binding and narrow-desktop headline-to-body spacing because they preserve the software photograph and editorial composition.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

@@ -270,3 +270,9 @@ collision remains. No-JavaScript content is visible on every page; the phone men
 focus inside, closes on Escape and returns focus to its opener. A fixed-coordinate hover
 capture also confirms that the API Hub name moves 3 px. Geometry and interaction records,
 full-page captures and the final image sizes are linked from the completion report.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Removed `apis.css` tab positioning/feedback, the ordinary-wrapping override and the widened tablet hero copy. Shared SiteBar now centres complete labels with edge cues and focus-out restoration; the kit’s generated-phrase guard prevents the renderer termination. PhotoHero supplies the copy-first tablet band and shared title scale. Kept compact measurement definitions, notes, the API-specific tile palette and small 320 px tile names.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

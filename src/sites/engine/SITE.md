@@ -215,3 +215,9 @@ on their computed flat colours (minimum 4.89:1); eighteen photo-text items pass 
 5th-percentile background luminance beneath their text ranges (minimum 4.56:1). The background
 captures hide the copy in the browser only so the photographs can be sampled; minimum and
 median ratios are also retained for review. Real-device and screen-reader testing were not run.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Deleted `hero.css` and the local `ModuleRing.astro`. All five module pages use kit ModuleRing with labels held once in shared `src/content/modules.ts`; duplicate engine family-ring strings are removed. PhotoHero supplies the shared tablet band and mid-width title scale, while copyMax="28vw" preserves the empty-paper width of these particular photographs. The engine overview and roadmap keep their pictures, selector and distinct masonry composition. The phone close bar is fixed centrally while the sheet scrolls.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

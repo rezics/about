@@ -245,3 +245,9 @@ diff, a sticky declared-to-disputed square, a maintainer filmstrip, and no pictu
 all of it: one focal point per screen, editorial type and the paper photograph series replace
 the diagrams. The content survives as facts lists, a table and statements; claims and their
 sources are unchanged in `facts.md`.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Deleted `EagerPhoto.astro`; the directory, evidence and versions rows now use PhotoRow priority directly. Removed the tab-positioning style from Words.astro. Shared SiteBar owns complete labels and restoration; shared PhotoHero owns the tablet band. Kept Words.astro/words.ts for this site’s technical terms, the compact three-column comparison, 640 px phone sources, and the photographic six-column copy at 1200–1279 px.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

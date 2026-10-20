@@ -250,3 +250,9 @@ Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus
   blocker. Its remaining craft opportunities are more varied interior explanations and
   chapter transitions; the finished pages retain the approved shared v3 parts and motion.
 
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Deleted `PhotoPreload.astro`; the four photographed inner pages use shared head preloads and PhotoRow priority with unchanged responsive image definitions. Removed local tab positioning/snapping/feedback from `navigation.css` and the 768–1023 px copy-first hero from `hero.css`. Shared PhotoHero supplies the tablet band through 1199 px. Kept the six-column headline and short lead at 1200–1439 px because they follow this photograph’s empty paper, plus the chapter reading order, first-section spacing and 800 px picture variants.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

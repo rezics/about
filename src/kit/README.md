@@ -53,6 +53,23 @@ const s = site.strings.editions;
 site bar. A path that is not in your `pages` list fails the build with a message saying so. The
 sitemap, Open Graph images, transitions and every test pick new pages up by themselves.
 
+The named `head` slot forwards to the document head. For a first visible photo row, use the
+shared preload there and `priority` on the row; keep later rows lazy:
+
+```astro
+<MiniSiteLayout>
+  <PhotoPreload slot="head" image={firstPhoto} media="phone" />
+  <PageHead label={site.name} title={s.hero.headline} lede={s.hero.lede} />
+  <PhotoRow image={firstPhoto} title={s.photo.headline} priority />
+</MiniSiteLayout>
+```
+
+Import `PhotoPreload` from the same components directory. Omit `media` to hint both phone and
+desktop sources; `media="desktop"` hints only widths from 768 px. Its default `sizes` matches
+PhotoRow. The AVIF hint uses the same sorted sources and phone crop as Picture, so it does not
+request a second format or a different phone image. `priority` alone sets eager loading, high
+fetch priority and synchronous decoding; it does not add a preload to every row.
+
 Each page has exactly one `<h1>` (the `PhotoHero` or `PageHead` title). Keep copy in your content
 file, never in the page.
 
@@ -70,13 +87,14 @@ Import from `src/kit/components/`. Props are stable; new props will be optional.
 
 | Part | Use and props |
 |---|---|
-| `PhotoHero` | A landing's hero and its h1: one photograph, one sentence, one action. `title` (two short clauses), `eyebrow?`, `lede?` (about 60 characters), the ink pill in the slot, `image` = `{ src, widths, alt, width, height, position?, phone? }` (see `Picture`), `side` (`left` or `right`: where the picture's empty paper is), `align` (`end` or `center`), `phoneBand` (px, default 260), `bar` (true on a mini-site, so the site bar fits). Phones: copy first, the picture as a band from its phone crop. |
+| `PhotoHero` | A landing's hero and its h1: one photograph, one sentence, one action. `title` (two short clauses), `eyebrow?`, `lede?` (about 60 characters), the ink pill in the slot, `image` = `{ src, widths, alt, width, height, position?, phone? }` (see `Picture`), `side` (`left` or `right`: where the picture's empty paper is), `align` (`end` or `center`), `phoneBand` (px, default 260), `bar` (true on a mini-site, so the site bar fits), `copyMax?` (CSS length, a photograph-specific cap on copy from 1200 px). Below 1200 px: copy first; phones use their crop and 260 px band, tablets a 300 to 440 px band. |
 | `PageHead` | An inner page's opening without a picture and its h1: `label` (the site's name, as the eyebrow), `title`, `lede?`, actions in the slot. |
 | `Section` | One idea on the 12-column grid: `eyebrow?` (columns 1 to 3), `title` (serif h2, a string or its lines, columns 4 to 11), `lead?` (one paragraph or several, columns 4 to 9), `link?` `{ href, text }`, the default slot across 4 to 12 (a `FactList`, `IndexRows`, `CodeTile`, more text), slot `wide` across the grid (a `TileMasonry`, a `Picture`), `id?`, `space` (`normal` or `none`). |
 | `TileMasonry` | Seamless flat tiles 3 px apart in columns that end level, heights by importance (products, a site's own pages, neighbouring kinds). `items` (`{ id, name, bg, on, href?, line?, rel? }`, in reading order), `columns` (the wide layout: columns of `{ id, h, line? }`), `phone?` (rows of `{ id, w?, line? }`; default two per row), `height` (px, default 560), `phoneRow` (px, default 120), `size` (`l` or `m` for many narrow tiles), `grain?`, `label?` (the list's accessible name). Every id must have a place in both layouts. |
 | `src/kit/tiles.ts` | Items for a masonry: `kindTiles(ids, lines?)` (kinds in their colours, linked, with their summaries), `pageTiles(site, field, rows)` (your own pages in `accentRamp` shades), `oneRow(items)` (columns for one level row). |
 | `Tile` | One flat tile: `name` (serif; a Latin name such as MCP Hub is set in Manrope), `bg`, `on` (`paper` or `ink`), `href?`, `line?`, `lineOn?`, `rel?` (a note at the top), `grain?`, `size` (`l` or `m`), `level?`. Hover: tone shifts away from the text, name rises, arrow slides in. |
-| `PhotoRow` | A still-life photograph beside a short text block: `image`, `title` (serif h2), `eyebrow?`, `body?` (one paragraph or several), `link?`, `side` (`right` or `left`: the picture's side). Picture seven columns, text four, feet level. Phones: text first. |
+| `PhotoRow` | A still-life photograph beside a short text block: `image`, `title` (serif h2), `eyebrow?`, `body?` (one paragraph or several), `link?`, `side` (`right` or `left`: the picture's side), `priority?` (false by default; forwarded to Picture). Picture seven columns, text four, feet level. Phones: text first. |
+| `PhotoPreload` | Optional responsive AVIF hint in the layout's `head` slot: `image` (same definition as Picture), `media` (`all` default, `phone` or `desktop`), `sizes?` (PhotoRow's sizes by default). Use with the first visible row's `priority`, preserving its phone crop. |
 | `Picture` | The responsive photograph: `src` (base path, files `${src}-${width}.avif|webp`), `widths`, `alt`, `width`, `height` (intrinsic ratio), `sizes?`, `phone?` (`{ src, widths, width, height, position? }`, an art-directed crop under 768 px), `cover?` (fill and crop the parent), `position?`, `priority?` (the page's largest picture). For a picture below a text block put it in a `Section`'s `wide` slot. |
 | `Statement` | One or two lines of large serif across columns 2 to 11: `text`, `sub` (the second half, muted), `note?`, `level?` (`p` default, `h2` when the slot holds what it heads). |
 | `FactList` | A hairline list, title left (serif) and text right: principles, specifications, steps. `items` (`{ title, body }`), `numbered?` (01, 02 … for steps), `level?`. Put it in a `Section`. |
@@ -84,10 +102,19 @@ Import from `src/kit/components/`. Props are stable; new props will be optional.
 | `CodeTile` | One real request, quiet: mono on a deeper paper with a caption. `code`, `caption?`, `label` (accessible name). |
 | `Closing` | Every page ends on it: a final statement in the large serif and the ink pill. `title?` (default `site.product.headline`), `body?`, `label?`, `href?`. |
 | `ProductCall` | The ink pill into REZICS (`label?`, `href?`, `size="small"`, `variant="secondary"`). |
+| `ModuleRing` | The five-module navigation at the end of a module page: `current` (ModuleId). Shared labels in `src/content/modules.ts`; current module unlinked, two-column phone rows with space for the current marker. The overview keeps its own masonry composition. |
 
 The header (paper, centred tabs, the underlined 「前往 REZICS」 link, phone 選單), the dropdown
 panels (flat tiles with the paper grain), the phone sheet, the site bar and the footer come from
 the layouts; a page does not place them.
+
+The site-bar strip supplies its own positioning, edge padding and scroll cues at every width
+where it overflows. The current tab is centred, including the first and last tabs. Partial
+neighbouring labels are concealed; each remains in keyboard order and becomes fully visible
+when focused. Leaving the strip restores the current page. Resizes, font loading, client
+navigation and history restores remeasure it through the shared page lifecycle. Without
+script all links remain available by native horizontal scrolling. Do not add local centring,
+edge masks, snapping or focus-out drivers.
 
 ### Type and classes
 
@@ -96,6 +123,13 @@ the layouts; a page does not place them.
   half in `.quiet`; text is Noto Sans TC 400 at 1.9 (`.lead` 17 px for leads, `.text`);
   `.eyebrow` labels are 13 px sans in muted ink; Latin is Manrope (inside serif headings the
   serif's own Latin). No mono outside code.
+- PhotoHero and PageHead share `--t-hero-mid`: 36 to 52 px from 768 to 1399 px. Explicit
+  phrase breaks and inline-block clauses use ordinary wrapping: Chromium's optimized CJK
+  line breaker can terminate with generated `<wbr>`, including without JavaScript. Running
+  paragraphs without phrase breaks keep pretty wrapping. Keep this safeguard in the kit.
+- Site-bar links, including the current page, share underline, lift and press feedback.
+  `.link-draw` uses normal inline formatting so generated no-break tails cannot create flex
+  gaps inside words; links without an explicit Arrow reveal a small directional arrow.
 - The build subsets the serif to the text it finds in h1 to h3 and in elements with the class
   `serif` (or `t-statement`, `t-h2`, `t-title`, `t-h3`). If you set other text in the serif,
   give its element the class `serif`, or it falls back to the system serif.

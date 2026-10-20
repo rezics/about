@@ -217,3 +217,9 @@ The final screenshots, performance measurements and remaining limitations are re
   part, kept because it is the product's claim shown working; it does not animate at idle.
 - **Copy revised for v3:** square wording removed from the spoilers page (「往前讀一格」); 「AI
   代理」 then 「代理」 on each page; the landing names 《魔法禁書目錄》 as the one real example.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Removed the tab-positioning and tab-feedback copies from `vn.css`. Shared SiteBar owns centring, whole labels, cues, hover/focus/press and keyboard restoration. Kept the violet release states, correlated filters, compact phone metadata, tables and route-position presentation; they are this site’s subject and composition.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

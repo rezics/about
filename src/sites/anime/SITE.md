@@ -207,3 +207,9 @@ JSON-LD, ordered headings and image dimensions/alts pass metadata inspection.
 
 Evidence stays in `.shots/anime*/report.json`, `.shots/review/`, `.shots/final-overview/`,
 `.shots/usability/`, `.shots/anime-performance.json` and `.shots/anime-metadata.json`.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Removed `PhotoPreload.astro`; credits and adaptations use the shared PhotoPreload in MiniSiteLayout’s head slot and PhotoRow priority. Adaptations retains its desktop-only preload; credits retains both responsive sources. Removed local site-bar feedback and copy-first tablet layout from `anime.css`. The shared hero owns 768–1199 px and mid-width title scaling. Kept the accordion’s bottom-anchored tablet crop, compact progress tiles, narrow-phone tile names, captions and first-section spacing because they are this site’s photographic and editorial composition.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.

@@ -325,3 +325,9 @@ A fresh reviewer, without source, planning notes or previous reviews, inspected 
 Design 7.8, Usability 8.3, Creativity 7.4, Content 8.3: weighted 7.92/10. Developer scores: Semantics/SEO 7.8, Animations/Transitions 7.3, Accessibility 8.3, WPO 8.2, Responsive Design 8.5, Markup/Meta-data 7.5. The skill's all-categories-at-8 target is not fully reached; no higher score is claimed.
 
 The remaining craft suggestions are to compress repeated explanatory rows, give the byline/edition/decision examples more middle-page prominence, carry a shared index anchor through page changes, retain more artifact silhouette in the 768 px crop, and reduce the late font-shard tail. The existing family opening, empty paper behind tablet copy, quiet transitions and shared engine/font system are retained within the binding V3 language and ownership boundaries. All assigned routes and assets are present and the final technical QA is clean.
+
+## v3 shared-kit consolidation, 2026-10-20
+
+Deleted `module-hero.css` and the local `ModuleRing.astro`. ModuleEnd uses the kit ring shared with universal index and zones; duplicate family-ring labels are removed from community/create/trust content. PhotoHero now supplies the same tablet band and mid-width title scale for all module pages and the overview. The ring uses 180 px phone rows and a static current marker with 12 px spacing, including the short 320 px name treatment. Kept the photograph positions, section-anchor margin in ModuleContents, byline radios, FactGrid, edition/account and appeal specimens. Header and ring-link feedback use the shared kit.
+
+This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.
