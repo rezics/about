@@ -20,3 +20,15 @@
     height: 320px;
   }
 }
+
+/* At narrow desktop widths the whole second clause still fits in the photograph's blank
+   paper. Give the title one more grid column while keeping the lead away from the dark sheet. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  [data-site='manga'] .manga-hero .phero__copy {
+    grid-column: 1 / 7;
+  }
+
+  [data-site='manga'] .manga-hero .phero__lede {
+    max-width: 24rem;
+  }
+}
