@@ -3,6 +3,7 @@
 // what it proves, the site's five pages, the neighbouring indexes, the closing.
 import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
 import PhotoHero from '../../kit/components/PhotoHero.astro';
+import PhotoPreload from '../../kit/components/PhotoPreload.astro';
 import Section from '../../kit/components/Section.astro';
 import FactList from '../../kit/components/FactList.astro';
 import Statement from '../../kit/components/Statement.astro';
@@ -18,8 +19,20 @@ const s = site.strings;
 const l = s.landing;
 const pages = landingPages();
 const near = neighbours();
+// Use the existing phone rendition within the slow-phone transfer budget. Desktop sources
+// and the photograph's composition stay the same; the head hint and Picture share this data.
+const heroImage = {
+  src: '/images/sites/mcp/hero',
+  widths: [960, 1920],
+  width: 1920,
+  height: 1280,
+  alt: s.pictures.hero,
+  position: '0% 50%',
+  phone: { src: '/images/sites/mcp/hero-phone', widths: [640], width: 960, height: 640, position: '50% 50%' },
+};
 ---
 <MiniSiteLayout>
+  <PhotoPreload slot="head" image={heroImage} sizes="100vw" media="phone" />
   <Words>
     <PhotoHero
       class="mcp-hero"
@@ -27,15 +40,7 @@ const near = neighbours();
       title={l.hero.headline}
       lede={l.hero.lede}
       bar
-      image={{
-        src: '/images/sites/mcp/hero',
-        widths: [960, 1920],
-        width: 1920,
-        height: 1280,
-        alt: s.pictures.hero,
-        position: '0% 50%',
-        phone: { src: '/images/sites/mcp/hero-phone', widths: [640, 960], width: 960, height: 640, position: '50% 50%' },
-      }}
+      image={heroImage}
     >
       <ProductCall />
     </PhotoHero>

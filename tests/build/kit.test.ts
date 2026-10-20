@@ -49,6 +49,21 @@ describe.skipIf(!built)('shared photograph options', () => {
     expect(head('/games/guides/')).toContain('guides-640.avif 640w');
     expect(head('/games/guides/')).not.toContain('guides-1200.avif');
   });
+
+  test('MCP hero reuses its existing phone rendition in a matching head hint', () => {
+    const page = html('/mcp/');
+    const head = page.match(/<head[\s\S]*?<\/head>/)![0];
+    const hero = page.match(/<section\b[^>]*class="phero\b[\s\S]*?<\/section>/)![0];
+    const hint = attrs(head.match(/<link\b[^>]*as="image"[^>]*>/)![0]);
+    const sources = [...hero.matchAll(/<source\b[^>]*type="image\/avif"[^>]*>/g)].map(m => attrs(m[0]));
+    const phone = sources.find(s => s.media === '(max-width: 767px)')!;
+    expect(phone.srcset).toBe('/images/sites/mcp/hero-phone-640.avif 640w');
+    expect(hint.media).toBe(phone.media);
+    expect(hint.imagesrcset).toBe(phone.srcset);
+    expect(hint.imagesizes).toBe(phone.sizes);
+    expect(hint.fetchpriority).toBe('high');
+    expect(sources.find(s => !s.media)!.srcset).toBe('/images/sites/mcp/hero-960.avif 960w, /images/sites/mcp/hero-1920.avif 1920w');
+  });
 });
 
 describe.skipIf(!built)('shared module family', () => {

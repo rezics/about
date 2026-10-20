@@ -250,4 +250,6 @@ sources are unchanged in `facts.md`.
 
 Deleted `EagerPhoto.astro`; the directory, evidence and versions rows now use PhotoRow priority directly. Removed the tab-positioning style from Words.astro. Shared SiteBar owns complete labels and restoration; shared PhotoHero owns the tablet band. Kept Words.astro/words.ts for this site’s technical terms, the compact three-column comparison, 640 px phone sources, and the photographic six-column copy at 1200–1279 px.
 
+The combined-site QA exposed a 2.8 s phone LCP on the landing, reproduced in the untouched combined baseline too. The landing now uses the existing 640 px phone rendition with a matching shared PhotoPreload head hint, instead of offering 960 px to high-density phones. Desktop sources, image files, crop and composition stay the same. The requested 390 px comparison already selected 640 px, so its photograph pixels stay identical. The ignored kit report records repeated phone timing and the final targeted QA.
+
 This section supersedes the earlier local-workaround notes. Shared checks, route-by-route screenshot comparisons and QA results are recorded in the kit round’s ignored `.temp/codex-report.md`. No deployment or push.
