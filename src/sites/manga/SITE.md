@@ -215,27 +215,38 @@ Delivered as AVIF and WebP: hero 1920 and 960 wide (≤ 180 KB / ≤ 70 KB) plus
   whole labels. The manga return link lifts on hover and keyboard focus. Interior openings
   use 120 to 160 px before their first section, retaining the normal rhythm below it.
 - The publishing headline loses an unnecessary phrase so its second clause fits a phone
-  without leaving 「身分」 on a separate line. No new interaction or illustrated product state
-  is added: the approved v3 photograph, facts, statements and flat tiles remain the language.
+  without leaving 「身分」 on a separate line. The approved v3 photograph, facts, statements
+  and flat tiles remain the composition language.
+- From 1024 to 1439 px the landing headline takes six grid columns; the lead stays within
+  24 rem of blank paper. Both headline clauses fit on their own line through the narrow
+  desktop range, including the 1439/1440 px boundary.
 
 ### Validation (2026-10-20)
 
-- `task check`: 154 Astro files, no errors, warnings or hints; 194 tests pass in 10 files.
-  `task build`: 37 static pages. Both complete QA passes cover every manga route; the final
+- `task check`: 154 Astro files, no errors, warnings or hints; 195 tests pass in 10 files.
+  `task build`: 37 static pages. Three complete QA passes cover every manga route; the final
   pass has 273 desktop, phone, hover, keyboard, reduced-motion and navigation screenshots.
 - Final throttled phone LCP, in route order (overview, series, progress, creators, adaptations,
-  community, publish): **1948, 2076, 1936, 1856, 1948, 1920, 1844 ms**. Every page has CLS 0,
+  community, publish): **2008, 1996, 1936, 1840, 1952, 1808, 1876 ms**. Every page has CLS 0,
   zero axe violations, no console/request errors, no overflow, no hidden reduced-motion text,
   no invisible focus stops, and no unresponsive or color-only primary hover targets.
-- All seven routes also hold at 320, 390, 768, 1024, 1440 and 1920 px, with no leading tab
+- All seven routes also hold at 320, 390, 768, 1024, 1280, 1360, 1439, 1440 and 1920 px
+  (63 layouts), with no leading tab
   fragments or clipped current tab. Their main content remains available without JavaScript.
   The skip link is first and Enter focuses `main`; the native phone dialog keeps background
   links out of the Tab sequence and restores focus on Escape.
 - The landing's image-background contrast cases were checked against the source photograph
-  under the actual text rectangles: headline at least 10.23:1, body at least 5.89:1 on desktop;
+  under the actual text rectangles: headline at least 10.05:1, body at least 5.89:1 on desktop;
   the copy-first layouts exceed these. The QA tool's English-only skip-link flag is a false
   negative for 「跳到主要內容」; the keyboard check above verifies the behavior directly.
 - All 34 AVIF/WebP files meet their width and byte budgets. The static audit has 0 FAIL and
-  four warnings on home/books/games, none on manga. Phone scroll runs at 59 to 60 fps;
-  desktop's 45 to 60 fps is the documented headless software-GPU floor.
+  four warnings on home/books/games, none on manga. Phone scroll runs at 56 to 60 fps;
+  desktop's 54 to 60 fps is the documented headless software-GPU floor.
+- Two final routes encountered Chromium `ERR_NETWORK_CHANGED` while throttling. They were
+  repeated against the same build; the final reports and screenshots have no failed requests.
+  Full-page captures for all seven routes and nine landing first screens are kept beside the
+  canonical QA screenshots.
+- The final independent evidence-only critic scored 7.86 overall, with no demonstrated
+  blocker. Its remaining craft opportunities are more varied interior explanations and
+  chapter transitions; the finished pages retain the approved shared v3 parts and motion.
 
