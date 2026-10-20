@@ -192,7 +192,9 @@ pre code { white-space: inherit; font: inherit; }
    only. */
 .link-draw {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
   min-height: 24px;
   padding-bottom: 2px;
   border-bottom: 1px solid currentColor;
@@ -214,8 +216,8 @@ pre code { white-space: inherit; font: inherit; }
   transition: scale var(--d-m) var(--ease-snap);
   pointer-events: none;
 }
-/* A standalone action without an explicit Arrow gets the same directional response. Normal
-   inline formatting keeps the build's no-break tail inside the word, without flex gaps. */
+/* A standalone action without an explicit Arrow gets the same directional response. Zero
+   gap keeps generated no-break tails attached to the preceding text; Arrow owns its margin. */
 .link-draw:not(:has(.arrow))::before {
   content: '';
   position: absolute;

@@ -60,6 +60,19 @@ test('tablet heroes put wide copy before the photograph, including pages with a 
   }
 });
 
+test('a built text link has no gap inside its generated no-break tail', async ({ page }) => {
+  await page.goto('/games/');
+  await page.evaluate(() => document.fonts.ready);
+  const gap = await page.locator('.prow__link .link-draw').evaluate(link => {
+    const tail = link.querySelector('.nw')!;
+    const text = tail.previousSibling!;
+    const range = document.createRange();
+    range.selectNodeContents(text);
+    return tail.getBoundingClientRect().left - range.getBoundingClientRect().right;
+  });
+  expect(Math.abs(gap)).toBeLessThan(1);
+});
+
 for (const javaScriptEnabled of [true, false]) {
   test(`phone close bar stays visible while the sheet scrolls, script=${javaScriptEnabled}`, async ({ browser }) => {
     const context = await browser.newContext({ javaScriptEnabled, viewport: { width: 390, height: 844 } });

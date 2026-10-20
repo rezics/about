@@ -128,8 +128,9 @@ edge masks, snapping or focus-out drivers.
   line breaker can terminate with generated `<wbr>`, including without JavaScript. Running
   paragraphs without phrase breaks keep pretty wrapping. Keep this safeguard in the kit.
 - Site-bar links, including the current page, share underline, lift and press feedback.
-  `.link-draw` uses normal inline formatting so generated no-break tails cannot create flex
-  gaps inside words; links without an explicit Arrow reveal a small directional arrow.
+  `.link-draw` keeps its vertically centred targets with zero flex gap so generated no-break
+  tails stay attached to the preceding text. Arrow supplies its own margin; links without an
+  explicit Arrow reveal a small directional arrow.
 - The build subsets the serif to the text it finds in h1 to h3 and in elements with the class
   `serif` (or `t-statement`, `t-h2`, `t-title`, `t-h3`). If you set other text in the serif,
   give its element the class `serif`, or it falls back to the system serif.

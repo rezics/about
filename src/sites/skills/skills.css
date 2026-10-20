@@ -1,7 +1,4 @@
-/* The first interior idea arrives sooner; the short phone tile keeps 代理 together. */
-@media (min-width: 768px) {
-  [data-site='skills'] .phead + :is(.prow, .section) { padding-top: clamp(120px, 10vw, 160px); }
-}
+/* The short phone tile keeps 代理 together. */
 @media (max-width: 767px) {
   [data-site='skills'] .sk-pages a[href='/skills/use/'] .tile__name { max-width: 4.3em; }
 }
