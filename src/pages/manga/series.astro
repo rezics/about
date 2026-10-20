@@ -1,0 +1,39 @@
+---
+// 系列 (第 1 話, SITE.md "v3"): the intro, the stack of volumes beside the five levels of one
+// manga, the catalogue facts, names and editions, the next page and the closing.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import PhotoPreload from '../../sites/manga/PhotoPreload.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Closing from '../../kit/components/Closing.astro';
+import RowList from '../../sites/manga/RowList.astro';
+import Notes from '../../sites/manga/Notes.astro';
+import NextChapter from '../../sites/manga/NextChapter.astro';
+import { photo } from '../../sites/manga/pictures';
+import { nextAfter } from '../../sites/manga/next';
+import site from '../../content/sites/manga';
+import '../../sites/manga/navigation.css';
+
+const s = site.strings.series;
+---
+<MiniSiteLayout>
+  <PhotoPreload picture={s.levels.picture} />
+  <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
+
+  <PhotoRow eyebrow={s.levels.eyebrow} title={s.levels.heading} body={s.levels.lead} image={photo(s.levels.picture)} />
+  <RowList><FactList items={s.levels.items} /></RowList>
+
+  <Section eyebrow={s.catalogue.eyebrow} title={s.catalogue.heading}>
+    <FactList items={s.catalogue.items} />
+    <Notes notes={s.catalogue.footnotes} />
+  </Section>
+
+  <Section eyebrow={s.names.eyebrow} title={s.names.heading} lead={s.names.body}>
+    <FactList items={s.names.items} />
+  </Section>
+
+  <NextChapter {...nextAfter('series', s.closing)} />
+  <Closing title={s.closing.statement} body="" />
+</MiniSiteLayout>

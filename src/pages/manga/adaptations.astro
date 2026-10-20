@@ -1,0 +1,44 @@
+---
+// 改編 (第 4 話, SITE.md "v3"): the intro, three sheets beside the one approved example (text
+// only, EXAMPLE-WORK.md), the kinds of relation, progress kept apart, two continuities in Wiki+,
+// the next page and the closing.
+import MiniSiteLayout from '../../kit/layouts/MiniSiteLayout.astro';
+import PageHead from '../../kit/components/PageHead.astro';
+import PhotoRow from '../../kit/components/PhotoRow.astro';
+import PhotoPreload from '../../sites/manga/PhotoPreload.astro';
+import Section from '../../kit/components/Section.astro';
+import FactList from '../../kit/components/FactList.astro';
+import Statement from '../../kit/components/Statement.astro';
+import Closing from '../../kit/components/Closing.astro';
+import RowList from '../../sites/manga/RowList.astro';
+import Notes from '../../sites/manga/Notes.astro';
+import NextChapter from '../../sites/manga/NextChapter.astro';
+import { photo } from '../../sites/manga/pictures';
+import { nextAfter } from '../../sites/manga/next';
+import site from '../../content/sites/manga';
+import '../../sites/manga/navigation.css';
+
+const s = site.strings.adaptations;
+---
+<MiniSiteLayout>
+  <PhotoPreload picture={s.example.picture} />
+  <PageHead label={s.intro.eyebrow} title={s.intro.headline} lede={s.intro.lede} />
+
+  <PhotoRow eyebrow={s.example.eyebrow} title={s.example.heading} body={s.example.lead} image={photo(s.example.picture)} />
+  <RowList>
+    <FactList items={s.example.items} />
+    <Notes notes={[s.example.footnote]} />
+  </RowList>
+
+  <Section eyebrow={s.relations.eyebrow} title={s.relations.heading}>
+    <FactList items={s.relations.items} />
+    <Notes notes={[s.relations.footnote]} />
+  </Section>
+
+  <Section eyebrow={s.apart.eyebrow} title={s.apart.heading} lead={s.apart.lead} />
+
+  <Statement text={s.statement.text} sub={s.statement.muted} />
+
+  <NextChapter {...nextAfter('adaptations', s.closing)} />
+  <Closing title={s.closing.statement} body="" />
+</MiniSiteLayout>

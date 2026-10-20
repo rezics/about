@@ -1,0 +1,29 @@
+---
+/**
+ * The next page of the site (or the next site), before the closing: its chapter label as the
+ * eyebrow and one calm index row (the kit's IndexRows hover) with the page's name and line.
+ */
+import IndexRows from '../../kit/components/IndexRows.astro';
+
+interface Props {
+  label: string;
+  name: string;
+  line: string;
+  href: string;
+}
+const { label, name, line, href } = Astro.props;
+---
+<nav class="m-next" aria-label={label}>
+  <div class="grid">
+    <p class="eyebrow m-next__label">{label}</p>
+    <div class="m-next__row"><IndexRows rows={[{ name, desc: line, href }]} /></div>
+  </div>
+</nav>
+<style>
+  .m-next { padding-top: var(--space-section); }
+  .m-next__label { grid-column: 1 / 4; padding-top: 30px; }
+  .m-next__row { grid-column: 4 / 13; min-width: 0; }
+  @media (max-width: 767px) {
+    .m-next__label { padding: 0 0 14px; }
+  }
+</style>

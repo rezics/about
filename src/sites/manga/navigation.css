@@ -1,0 +1,34 @@
+/* Keep chapter labels whole when the shared bar centres the current chapter on phones. */
+[data-site='manga'] .sitebar__tabs {
+  position: relative;
+  scroll-snap-type: x mandatory;
+}
+
+[data-site='manga'] .sitebar__tabs > li {
+  scroll-snap-align: start;
+}
+
+[data-site='manga'] .sitebar__home {
+  transition: translate var(--d-m) var(--ease-snap);
+}
+
+[data-site='manga'] .sitebar__home:focus-visible {
+  translate: 0 -2px;
+}
+
+@media (hover: hover) {
+  [data-site='manga'] .sitebar__home:hover {
+    translate: 0 -2px;
+  }
+}
+
+[data-site='manga'] .sitebar__home:active {
+  translate: 0 0;
+}
+
+/* The first interior idea follows the opening a little sooner than later chapters. */
+@media (min-width: 768px) {
+  [data-site='manga'] .phead + :is(.prow, .section) {
+    padding-top: clamp(120px, 10vw, 160px);
+  }
+}

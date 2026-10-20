@@ -1,0 +1,21 @@
+---
+/**
+ * The list that belongs to the photo row above it: a FactList (and any notes) across columns 4
+ * to 12, the same place as a Section's body, close under the row so the two read as one idea.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+<div class:list={['m-rowlist', className]}>
+  <div class="grid">
+    <div class="m-rowlist__body"><slot /></div>
+  </div>
+</div>
+<style>
+  .m-rowlist__body { grid-column: 4 / 13; margin-top: 72px; min-width: 0; }
+  @media (max-width: 767px) {
+    .m-rowlist__body { margin-top: 44px; }
+  }
+</style>
