@@ -23,4 +23,7 @@ task e2e        # Playwright on the production build (queued on a shared slot)
 task qa         # screenshots and audit into .shots/
 ```
 
-Deployment is done by the maintainer (`wrangler deploy --env production`).
+Deployment is done by the maintainer: `task deploy` uploads `dist/` to the Cloudflare Pages
+project `rezics-about` (REZICS account), which holds the `about.rezics.com` domain. Pages keeps
+every deployment, so a rollback is one click in its dashboard. `wrangler.jsonc` serves the same
+build locally for `task preview` and the end-to-end tests.

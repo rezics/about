@@ -40,6 +40,14 @@ tasks:
     cmds:
       - npx wrangler dev --ip 127.0.0.1 --port {{.PORT}}
 
+  deploy:
+    desc: 'Maintainer only: build and upload dist/ to the Cloudflare Pages project rezics-about, which serves about.rezics.com'
+    deps: [build]
+    env:
+      CLOUDFLARE_ACCOUNT_ID: dcc939f004008f8e36e11456df3f0fe2
+    cmds:
+      - npx wrangler pages deploy dist --project-name rezics-about --branch main --commit-hash "$(git rev-parse HEAD)" --commit-message "$(git log -1 --format=%s)" --commit-dirty=false
+
   check:
     desc: Types (astro check), then a build and the unit and build tests
     cmds:
