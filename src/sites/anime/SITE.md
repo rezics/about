@@ -111,6 +111,10 @@ objects; light and paper as the reference). Encoded by `.temp/images-v3/anime/pr
 Sizes: hero 1920 and 960 wide, phone crop 960 and 640 wide; section pictures 1200 and 640 wide; AVIF and
 WebP each, within the V3-SPEC budgets (`public/images/sites/anime/`).
 
+The phone hero is encoded from the original cropped master at AVIF quality 65 and WebP 82.
+The initial maximum-budget AVIF was 69.9 KB and became the phone's late LCP; the smaller
+encoding keeps the paper fibre and fold edges visible at the displayed 390 × 260 px.
+
 ### Phone (390 px), composed first
 
 Copy and action first, then the hero as a 260 px band from `hero-phone`. Sections stack as one
@@ -121,6 +125,9 @@ masonry runs in two columns; the adaptations family keeps kind colours in two co
 The own-page index and onward links stay in two columns. A 156 to 164 px minimum row gives
 their short lines room; the longer Zone description gets 208 px. Below 360 px tile names are
 20 px, so five-character page names fit without a one-character last line.
+
+On tracking, the full-width optional-specials tile is a shorter 112 px row beneath the two
+164 px season tiles, keeping secondary information from dominating the example.
 
 ### Tablets
 
@@ -140,7 +147,9 @@ press. No site driver, no scrubbed scene, no idle loop. The old season chart, it
 and the credit roll are gone.
 
 The latest v3 kit draws the standalone links' underline and lifts the header labels. The
-site adds no second movement to those links; focus and reduced motion follow the kit.
+site adds no second movement to those links. The local site bar lifts its home label and
+draws a fine underline below inactive tabs, completing the kit bar's colour-only feedback.
+Focus and reduced motion follow the kit.
 
 ### Changes from the earlier record, with reasons
 
