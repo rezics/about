@@ -13,7 +13,8 @@ html[data-site='developers'] .dv-path { margin-top: 16px; font: 12.5px/1.8 var(-
 
 /* The tool list: one hairline list per group under a small label. */
 html[data-site='developers'] .dv-groups { display: grid; gap: 56px; }
-html[data-site='developers'] .dv-group__name { margin-bottom: 14px; font-weight: 400; }
+html[data-site='developers'] .dv-tool-nav { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-bottom: 32px; font-size: 14px; }
+html[data-site='developers'] .dv-group__name { margin-bottom: 14px; font-weight: 400; scroll-margin-top: 24px; }
 html[data-site='developers'] .dv-stack { display: grid; gap: 28px; }
 html[data-site='developers'] .dv-ways .cset__shared { max-width: 640px; }
 html[data-site='developers'] .dv-ways .cset__item .codetile { flex: none; }
@@ -29,6 +30,7 @@ html[data-site='developers'] .sitebar__tabs { position: relative; padding-inline
     word-break: keep-all;
     overflow-wrap: normal;
   }
+  html[data-site='developers'] .dv-pages .tile__name wbr { display: none; }
 }
 
 /* Match the kit's quiet link feedback on the site bar, scoped to this site. */

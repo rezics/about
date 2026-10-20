@@ -30,10 +30,13 @@ const s = site.strings.mcp;
   </Section>
 
   <Section eyebrow={s.tools.label} title={s.tools.headline} lead={s.tools.lead}>
+    <nav class="dv-tool-nav" aria-label={s.tools.label}>
+      {s.tools.groups.map((g, i) => <a class="link-draw" href={`#developer-tools-${i + 1}`}>{g.name}</a>)}
+    </nav>
     <div class="dv-groups">
-      {s.tools.groups.map((g) => (
+      {s.tools.groups.map((g, i) => (
         <div class="dv-group">
-          <h3 class="eyebrow dv-group__name">{g.name}</h3>
+          <h3 class="eyebrow dv-group__name" id={`developer-tools-${i + 1}`} tabindex="-1">{g.name}</h3>
           <CodeFacts
             mono
             level="h4"

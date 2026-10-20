@@ -2,7 +2,7 @@
 /**
  * Two or three small code blocks side by side (the kit's CodeTile), each under a short label:
  * the same request sent two ways, or the answers to one request. Under them an optional shared
- * block across the row (what every block reaches) and a caption. Phones: one column.
+ * block across the row (what every block reaches) and a caption. Below 1200 px: one column.
  */
 import CodeTile from '../../kit/components/CodeTile.astro';
 import type { Shown } from '../../content/sites/developers';
@@ -39,7 +39,8 @@ const { items, shared, caption, class: className } = Astro.props;
   .cset__item :global(.cset__code) { flex: 1 1 auto; }
   .cset__shared { margin-top: 28px; }
   .cset__caption { margin-top: 18px; max-width: 40em; font-size: 13px; line-height: 1.8; color: var(--c-muted); }
-  @media (max-width: 767px) {
-    .cset__row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  @media (max-width: 1199px) {
+    .cset__row { grid-template-columns: minmax(0, 1fr); gap: 24px; max-width: 640px; }
+    .cset__shared { max-width: 640px; }
   }
 </style>
