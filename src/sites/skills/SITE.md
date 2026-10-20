@@ -251,6 +251,16 @@ canonical, OG data and JSON-LD; all 23 linked internal paths return 200. The fro
 Landing full-page: `.shots/skills/review/d-full.png`; phone first screen:
 `.shots/skills/m-01-hero.png`.
 
+The final fresh critic opened all 285 images and all 42 hover pairs: Design 7.7, Usability 8.0,
+Creativity 7.2, Content 7.8; weighted 7.70. Developer scores: Semantics 8.0, Animations 7.0,
+Accessibility 8.0, WPO 8.5, Responsive 8.2, Metadata 8.0. No primary hover failure was found.
+The skill's aspirational 8.0 jury bar remains unmet. Further recommendations are a layered
+interactive specimen, local section navigation, a source-paragraph/result comparison, and more
+specific transitions; these are recorded in `.shots/skills-delivery/critic.md`. With JavaScript
+disabled, the local tab strip remains scrollable but does not automatically centre the active
+tab. The approved shared editorial parts and quiet still-life direction remain the delivered
+design; no functional or required QA task remains open.
+
 ## Revisions
 
 - 2026-10-19, v3: rebuilt in the approved v3 language. The plain-text theme, the stacked card and
