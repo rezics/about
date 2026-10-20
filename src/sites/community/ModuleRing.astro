@@ -54,12 +54,12 @@ const phone = [items.slice(0, 2), items.slice(2, 4), items.slice(4)].map((row) =
   .ring__back a:active { translate: 0 1px; }
   @media (max-width: 359px) {
     .ring :global(.tile) { --tile-name: 20px; }
-    .ring :global(.tile__top) { position: static; margin-bottom: 12px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .ring__back a { transition: none; }
   }
   @media (max-width: 767px) {
     .ring__tiles { margin-top: 16px; }
+    .ring :global(.tile__top) { position: static; margin-bottom: 12px; }
   }
 </style>

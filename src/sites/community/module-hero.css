@@ -8,7 +8,6 @@
 /* Keep these feedback and anchor adjustments within the three owned module pages. */
 body:is([data-site='community'], [data-site='create'], [data-site='trust']) .header__go,
 body:is([data-site='community'], [data-site='create'], [data-site='trust']) .header__logo a {
-  display: inline-flex;
   transition: color var(--d-s) var(--ease-soft), opacity var(--d-s) var(--ease-soft), translate var(--d-m) var(--ease-snap);
 }
 body:is([data-site='community'], [data-site='create'], [data-site='trust']) main h2[id] {

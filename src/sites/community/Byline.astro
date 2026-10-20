@@ -19,8 +19,8 @@ const { toggleLabel, toggle, you, realm, follow, post, caption } = Astro.props;
 <figure class="byline">
   <fieldset class="byline__pick">
     <legend class="sr-only">{toggleLabel}</legend>
-    <label class="byline__opt"><input class="sr-only" type="radio" name="byline-reader" value="follower" checked /><span>{toggle[0]}</span></label>
-    <label class="byline__opt"><input class="sr-only" type="radio" name="byline-reader" value="new" /><span>{toggle[1]}</span></label>
+    <label class="byline__opt"><input class="sr-only" type="radio" name="byline-reader" value="follower" checked /><span class="byline__choice">{toggle[0]}</span></label>
+    <label class="byline__opt"><input class="sr-only" type="radio" name="byline-reader" value="new" /><span class="byline__choice">{toggle[1]}</span></label>
   </fieldset>
   <div class="byline__post" aria-live="polite">
     <p class="byline__meta byline__meta--you">
@@ -41,7 +41,8 @@ const { toggleLabel, toggle, you, realm, follow, post, caption } = Astro.props;
 <style>
   .byline { margin: 0 0 72px; }
   .byline__pick { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; border: 0; }
-  .byline__opt {
+  .byline__opt { display: inline-flex; cursor: pointer; }
+  .byline__choice {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
@@ -49,16 +50,16 @@ const { toggleLabel, toggle, you, realm, follow, post, caption } = Astro.props;
     border-radius: 999px;
     font-size: 14px;
     font-weight: 500;
+    background: transparent;
     color: var(--c-fg);
     box-shadow: inset 0 0 0 1px var(--c-line-strong);
-    cursor: pointer;
     transition: box-shadow 0.3s var(--ease-snap), translate var(--d-s) var(--ease-soft), scale var(--d-s) var(--ease-soft);
   }
-  @media (hover: hover) { .byline__opt:hover { box-shadow: inset 0 0 0 1px var(--c-fg); translate: 0 -1px; } }
-  .byline__opt:active { scale: 0.98; }
-  .byline__opt:has(input:checked) { background: var(--c-pill); color: var(--c-on-pill); box-shadow: none; }
-  @media (hover: hover) { .byline__opt:has(input:checked):hover { background: var(--c-link); } }
-  .byline__opt:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: 3px; }
+  @media (hover: hover) { .byline__opt:hover .byline__choice { box-shadow: inset 0 0 0 1px var(--c-fg); translate: 0 -1px; } }
+  .byline__opt:active .byline__choice { scale: 0.98; }
+  .byline__opt input:checked + .byline__choice { background: var(--c-pill); color: var(--c-on-pill); box-shadow: none; }
+  @media (hover: hover) { .byline__opt:hover input:checked + .byline__choice { background: var(--c-link); color: var(--c-on-pill); } }
+  .byline__opt input:focus-visible + .byline__choice { outline: 2px solid var(--focus); outline-offset: 3px; }
 
   .byline__post { margin-top: 32px; padding: 40px 0 44px; border-block: 1px solid var(--c-line); }
   .byline__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 16px; line-height: 1.6; }
