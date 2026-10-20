@@ -174,3 +174,32 @@ developer or platform named; no REZICS data about it.
    is assumed to be the premiere date.
 10. **Privacy wording.** The privacy policy says "reading records"; the copy applies it to
     watching records, which the policy's library information (sessions, progress) covers.
+
+## V3 product claim audit (2026-10-20)
+
+Checked all ten Unsure items, every numeric/time example, calendar exchange, progress and privacy claims, and the shared anime kind card.
+
+Sources below are relative to `/home/edge/projects/rezics/rezics-next/` unless marked `about:`.
+Read-only product audit; observed product HEAD: `8b8a2c0a97b5662e6283fa7531a8f1c600f37fd0`.
+The earlier uncertainty notes are historical; the verdicts below resolve this audit.
+Documented plans and legal drafts count as current intent. Rollout gates alone do not require status labels.
+
+| Checked claim | Source path and heading | Verdict |
+|---|---|---|
+| Unsure 1: automatic viewer-timezone airing display | docs/architecture/scheduled-plans.md § Time, recurrence and cancellation; docs/plan/frontend.md § Work page | Unsettled display default. Keep the specific timezone section for maintainer decision; the source explicitly separates display timezone from occurrence timezone. |
+| Unsure 2: quarterly broadcast calendar | docs/product/platform-thesis.md § Capabilities (Scheduled); docs/architecture/scheduled-plans.md § Meaning, occurrence identity and configuration | Keep as a calendar over selected evidenced airing observations. It does not claim a distinct backend or availability from broadcast time alone. |
+| Unsure 3: anime import and five library statuses | services/main/src/modules/library-import/formats/mal.ts § statuses, malDate and parseMal; docs/product/capabilities.md § First scenarios | Keep. Code handles anime rows and maps Watching/Completed/On-Hold/Dropped/Plan to Watch to the five displayed states, preserving partial dates. |
+| Unsure 4: next episode across seasons | docs/contracts/work-and-release.md § Work levels, realizations and versions | Narrowed across all four occurrences to confirmed series/composition order. Sequel links alone do not establish the next required episode. |
+| Unsure 5: notification on a broadcast | docs/contracts/community-interactions.md § Follow, Join and notification; docs/contracts/notifications.md § Recipients and levels; docs/contracts/work-and-release.md § Posts, texts and Works | Narrowed to new episode publication and the viewer’s notification settings. Library follow defaults are documented intent, not guaranteed delivery on every broadcast. |
+| Unsure 6: episode guides in a Zone | docs/contracts/information-verification.md § A big-franchise wiki for every Work; docs/contracts/space.md § Surfaces and routers; docs/contracts/work-and-release.md § Explicit identities, targets and units | Keep. Wiki guides over episode parts use the same routed Zone and episode position model as chapter guides. |
+| Unsure 7: dubbing classified as translation | docs/contracts/work-and-release.md § Explicit identities, targets and units; § Work levels, realizations and versions | Narrowed the translation review example to subtitle text. Dubbing is a performance/realization and is not unconditionally a translation rating. |
+| Unsure 8: contextual voice credits and the five-field explanation | docs/contracts/catalog.md § Catalog grain still to qualify; docs/contracts/semantic-model.md § Identities, variants and projections; § Relation lexicon | Keep as documented intent. Performer, character and Work bind in one occurrence, with credited name, role and realization scope. |
+| Unsure 9: premiere-year browse | docs/contracts/realm-delivery.md § Publication-year browse | Corrected to publication year from available accepted dates; the API does not promise every premiere record. |
+| Unsure 10: private viewing history | docs/legal/privacy-policy.md § 2. Information we collect; § 4. Visibility and access | Keep. Library information explicitly includes sessions and progress, so the privacy rule covers viewing records. |
+| 25:00, 01:00 and 00:00 timezone illustration; January/April/July/October quarters | docs/architecture/scheduled-plans.md § Time, recurrence and cancellation (instants versus civil dates); IANA timezone arithmetic for Asia/Tokyo, Asia/Taipei and America/Los_Angeles | Keep as general scheduling examples. Tuesday 25:00 is Wednesday 01:00 JST, Wednesday 00:00 Taipei and Tuesday morning Los Angeles, including DST. Removed the unsupported within-day ordering for date-only events. |
+| Calendar file and chosen reminder; changed source time | docs/architecture/scheduled-plans.md § Meaning, occurrence identity and configuration; § Export and leaving | Keep documented iCalendar VEVENT intent. Date-only remains DATE; a source correction requires reconciliation rather than moving the private reminder. |
+| 12/12 and 6/6 episode examples; 20 votes, histogram 10/6/2/1/1, mean 4.15 rounded to 4.2 | about:src/content/sites/anime.ts § tracking.seasons and ratings.anatomy (labelled 示意); docs/contracts/ratings.md § Scoped targets and roll-ups | Keep. Counts are illustrative, arithmetic checks, and episode and series scores do not roll up implicitly. |
+| Completed status reveals Wiki+; anonymous default; masks | docs/contracts/information-verification.md § A big-franchise wiki for every Work; docs/contracts/classification-judgments.md § Remaining contract | Narrowed completion to the same continuity and a default spoiler position. Completion does not override private access, age rules or unreadable continuities. |
+| Approved example: three anime seasons, one film and spin-off | about:.temp/ref/EXAMPLE-WORK.md § Verified facts | Keep the permitted text-only facts, with no volume totals or implied sale/partnership. |
+| Six inner pages, eight selected parts, three conversations and independent scores | about:src/content/sites/anime.ts § pages and landing.parts; about:src/content/kinds.ts § anime.parts; docs/plan/frontend.md § Work page; docs/contracts/ratings.md § Scoped targets and roll-ups | Keep. Counts describe the site’s information structure or explicitly separate documented targets. |
+| Shared kind completion exceptions | docs/contracts/work-and-release.md § Work levels, realizations and versions | Narrowed special-episode exemption to optional viewing; a special admitted as required can still count toward completion. |
