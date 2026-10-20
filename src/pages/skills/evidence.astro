@@ -18,7 +18,6 @@ const s = site.strings.evidence;
 const half = Math.ceil(s.record.rows.length / 2);
 ---
 <MiniSiteLayout>
-  <div class="sk-evidence">
   <PageHead label={site.name} title={s.head.headline.join('')} lede={s.head.lede} />
 
   <Section eyebrow={s.declaration.eyebrow} title={s.declaration.headline} lead={s.declaration.lead}>
@@ -44,7 +43,6 @@ const half = Math.ceil(s.record.rows.length / 2);
 
   <NextPage eyebrow={site.strings.ui.nextPage} title={s.end.next} tile={pageTile('use', pageLine('use'))} />
   <Closing title={s.end.closing} body="" />
-  </div>
 </MiniSiteLayout>
 
 <style>

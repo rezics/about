@@ -11,9 +11,9 @@ body[data-site='skills'] .sitebar__tab {
   transition: color var(--d-s) var(--ease-soft), translate var(--d-s) var(--ease-soft);
 }
 
-/* Chromium's pretty wrapping crashes on this page, including with JavaScript off.
-   Plain wrapping preserves the evidence page's type and all its content. */
-[data-site='skills'] .sk-evidence * {
+/* Chromium's pretty wrapping crashes on CJK text at some widths, even without
+   JavaScript. Keep ordinary wrapping throughout these owned page bodies. */
+body[data-site='skills'] main * {
   text-wrap: wrap;
 }
 
